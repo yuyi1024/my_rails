@@ -1,0 +1,8 @@
+- @products.each do |product|
+  = link_to product.name, product_path(product)
+  p  
+    = product.price
+  p  
+    = product.description
+  p 
+    '=============
