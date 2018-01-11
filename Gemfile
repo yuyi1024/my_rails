@@ -38,8 +38,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'slim'
 gem "slim-rails"
 
-# # Use jquery as the JavaScript library
-# gem 'jquery-rails'
+# Use jquery as the JavaScript library
+gem 'jquery-rails'
 # gem "jquery-slick-rails"
 
 # gem 'simple_form'
@@ -49,6 +49,8 @@ gem "slim-rails"
 # gem 'omniauth'
 # gem 'omniauth-facebook'
 # gem 'cancancan', '~> 1.10'
+
+gem 'bootstrap-sass', '~> 3.3.6'
 
 # # Upload files to Google Storage
 # gem 'carrierwave', '~> 1.0'
@@ -64,8 +66,12 @@ gem "slim-rails"
 # gem 'summernote-rails'
 # gem 'codemirror-rails'
 
+# To solve the problems on the turbolinks
+# gem 'jquery-turbolinks'
+# gem 'sdoc', '~> 0.4.0', group: :doc
 
 
+gem "awesome_print"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
