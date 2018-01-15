@@ -10,8 +10,8 @@ $(document).on('turbolinks:load', function() {
     // if($target.is(':visible')){
       
     // }
-    //$target.toggle();
 
+    $target.toggle();
 
 
     $('#cat1_field').val($(this).text());

@@ -1,0 +1,3 @@
+<% if @cat2s.present? %>
+  $('#cat2').html("<%= j render partial: 'result', locals: { cat2s: @cat2s } %>");
+<% end %>
