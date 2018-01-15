@@ -1,15 +1,15 @@
 = form_tag products_path, method: :get, remote: :true, id: 'search_form' do 
   
   #selector.row
-    .col-sm-3 data-target='#cat1' 商品分類
-    .col-sm-3 data-target='#arrange_box' 排序
+    .col-sm-3 data-target='#cat_box' 商品分類
+    .col-sm-3 data-target='#arr_box' 排序
     .col-sm-3 價格
     .col-sm-3 搜尋
 
   br
   br
 
-  #box
+  #cat_box
     #cat1.row
       - @cat1s.each_with_index do |cat1,index|
         .col-sm-3 data-target='#cat2'
