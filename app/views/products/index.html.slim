@@ -3,42 +3,60 @@
   #selector.row
     .col-sm-3 data-target='#cat_box' 商品分類
     .col-sm-3 data-target='#arr_box' 排序
-    .col-sm-3 價格
-    .col-sm-3 搜尋
+    .col-sm-3 
+      span 價錢 
+      = text_field_tag :price_bottom
+      span  ~ 
+      = text_field_tag :price_top
+    .col-sm-3 
+      span 搜尋 
+      = text_field_tag :search
 
   br
   br
 
-  #cat_box
-    #cat1.row
-      - @cat1s.each_with_index do |cat1,index|
-        .col-sm-3 data-target='#cat2'
-          = cat1.cat1
+  #boxes.row
+    #cat_box.row
+      #cat1.row
+        - @cat1s.each_with_index do |cat1|
+          .col-sm-1 data-target='#cat2'
+            = cat1.cat1
 
-      = hidden_field_tag :cat1_field
+        = hidden_field_tag :cat1_field
 
-    #cat2.row 
-      - if @cat2s.present? 
-        - @cat2s.each do |cat2|
-          .col-sm-3 
-            = cat2.cat2
-        = hidden_field_tag :cat2_field
+      #cat2.row 
+        - if @cat2s.present? 
+          - @cat2s.each do |cat2|
+            .col-sm-1 onclick='cat2(this);'
+              = cat2.cat2
+          = hidden_field_tag :cat2_field
+
+    #arr_box
+      - ['價錢','最新','熱門','庫存數量'].each do |arr|
+        .col-sm-2 
+          = arr
+
+
+
   br
-  br
 
-
-
-  br
-  br
   #tag.row
 
-  br
 
-  - @products.each do |product|
-    = link_to product.name, product_path(product)
-    p  
-      = product.price
-    p  
-      = product.description
-    p 
-      '=============
+  #item.row
+    - @products.each do |product|
+      .col-sm-2
+        .thumbnail
+          / img src="..." alt="..."
+          .caption
+            h3 
+              = link_to product.name, product_path(product)
+            p $#{product.price}
+            p #{product.description}
+            
+            a.btn.btn-primary.col-sm-8 href="#" role="button"
+              span.glyphicon.glyphicon-shopping-cart
+              
+            a.btn.btn-default href="#" role="button" 
+              span.glyphicon.glyphicon-heart
+       

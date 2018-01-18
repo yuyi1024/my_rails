@@ -2,15 +2,68 @@
 @import "bootstrap";
 
 #selector{
+	background-color: #ffffe0;
+	height: 50px;
   div{
-    border: 2px red solid;
+    border-left: 2px #d2b48c dashed;
+    border-top: 2px #d2b48c dashed;
+    line-height: 50px;
+    font-size: 20px;
+
+    #price_bottom, #price_top{
+    	width: 100px;
+    	line-height: 20px;
+    }
+    #search{
+    	width: 70%;
+    	line-height: 20px;
+    }
   }
 }
 
-#cat1{
-  display: none;
-  border: 2px blue solid;
+#boxes{
+	margin: 0;
+
+	#cat_box{
+	  display: none;
+	  background-color: #ffffe0;
+	  width: 100%;
+	  .row{
+	  	margin: 0;
+	    font-size: 18px;
+	    text-align: center;
+	  }
+	  
+	  #cat1{
+	  	div{
+	  		border: 2px #800000 solid;
+		    height: 45px;
+		    line-height: 40px;
+		    border-radius: 10px;
+	  		margin: 5px;
+	  	}
+	  }
+	  #cat2{
+	  	div{
+	  		border: 2px #bc8f8f solid;
+		    height: 40px;
+		    line-height: 35px;
+		    border-radius: 10px;
+		    margin: 5px;
+	  	}
+	  }
+	}
+
+
+
+	#arr_box{
+	  display: none;
+	  div{
+			border: 2px yellow solid;
+			border-radius: 5px;
+			padding: 5px;
+		}
+	}
+    
 }
 
-
-    
