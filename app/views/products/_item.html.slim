@@ -1,20 +1,19 @@
 - if @items.present? 
-	- @items.each do |item|
-	  - item.product.each do |product|
-		  .col-sm-2
-		    .thumbnail
-		      / img src="..." alt="..."
-		      .caption
-		        h3 
-		          = link_to product.name, product_path(product)
-		        p $#{product.price}
-		        p #{product.description}
-		        p
-		          a.btn.btn-primary.col-sm-8 href="#" role="button"	
-		          	span.glyphicon.glyphicon-shopping-cart
-		            
-		          a.btn.btn-default href="#" role="button"
-		          	span.glyphicon.glyphicon-heart
+  - @items.each do |product|
+	  .col-sm-2
+	    .thumbnail
+	      / img src="..." alt="..."
+	      .caption
+	        h3 
+	          = link_to product.name, product_path(product)
+	        p $#{product.price}
+	        p #{product.description}
+	        p
+	          a.btn.btn-primary.col-sm-8 href="#" role="button"	
+	          	span.glyphicon.glyphicon-shopping-cart
+	            
+	          a.btn.btn-default href="#" role="button"
+	          	span.glyphicon.glyphicon-heart
 
 
 

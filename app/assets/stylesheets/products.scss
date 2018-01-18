@@ -11,13 +11,17 @@
     font-size: 20px;
 
     #price_bottom, #price_top{
-    	width: 100px;
+    	width: 20%;
     	line-height: 20px;
     }
     #search{
-    	width: 70%;
+    	width: 50%;
     	line-height: 20px;
     }
+  	.label{
+  		margin-left: 20px;
+    	padding: 8px;
+  	}
   }
 }
 

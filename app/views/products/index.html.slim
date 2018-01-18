@@ -8,9 +8,11 @@
       = text_field_tag :price_bottom
       span  ~ 
       = text_field_tag :price_top
+      span.label.label-warning onclick='search();' Search
     .col-sm-3 
       span 搜尋 
       = text_field_tag :search
+      span.label.label-warning Search
 
   br
   br
@@ -25,11 +27,7 @@
         = hidden_field_tag :cat1_field
 
       #cat2.row 
-        - if @cat2s.present? 
-          - @cat2s.each do |cat2|
-            .col-sm-1 onclick='cat2(this);'
-              = cat2.cat2
-          = hidden_field_tag :cat2_field
+       
 
     #arr_box
       - ['價錢','最新','熱門','庫存數量'].each do |arr|
