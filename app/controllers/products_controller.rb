@@ -12,6 +12,19 @@ class ProductsController < ApplicationController
     if params[:cat2_field].present?
       @items = @items.cat2_search(params[:cat2_field])
     end
+
+    if params[:price_bottom].present? && params[:price_top].present?
+      @items = @items.price_search(params[:price_bottom],params[:price_top])
+    elsif params[:price_bottom].present?
+      @items = @items.price_top(params[:price_bottom])
+    elsif params[:price_top].present?
+      params[:price_bottom] = 0
+      @items = @items.price_search(params[:price_bottom],params[:price_top])  
+    end
+
+    if params[:keyword].present?
+      @items = @items.keyword(params[:keyword])
+    end
     
     respond_to do |format|
       format.html

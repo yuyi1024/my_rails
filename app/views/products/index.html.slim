@@ -11,8 +11,11 @@
       span.label.label-warning onclick='search();' Search
     .col-sm-3 
       span 搜尋 
-      = text_field_tag :search
-      span.label.label-warning Search
+      = text_field_tag :keyword
+      span.label.label-warning onclick='search();' Search
+
+    = hidden_field_tag :cat1_field
+    = hidden_field_tag :cat2_field
 
   br
   br
@@ -21,10 +24,10 @@
     #cat_box.row
       #cat1.row
         - @cat1s.each_with_index do |cat1|
-          .col-sm-1 data-target='#cat2'
+          .col-sm-1 data-target='#cat2' onclick='cat1(this);'
             = cat1.cat1
 
-        = hidden_field_tag :cat1_field
+        
 
       #cat2.row 
        
@@ -33,6 +36,7 @@
       - ['價錢','最新','熱門','庫存數量'].each do |arr|
         .col-sm-2 
           = arr
+
 
 
 

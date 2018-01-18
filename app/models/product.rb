@@ -3,6 +3,7 @@ class Product < ApplicationRecord
 
   scope :cat1_search, ->(params){ where( :categories => { :cat1 => params } ) }
   scope :cat2_search, ->(params){ where( :categories => { :cat2 => params } ) }
-  scope :price_search, ->(){ where("price between ? and ?",params[:price_bottom],params[:price_top]) }
+  scope :price_search, ->(params1, params2){ where("price between ? and ?", params1, params2) }
+  scope :price_top, ->(params){ where("price > ? ", params ) }
+  scope :keyword, ->(params){ where("name LIKE ?", "%#{params}%") }
 end
-
