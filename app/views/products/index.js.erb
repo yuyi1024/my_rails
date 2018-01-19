@@ -2,6 +2,5 @@
   $('#cat2').html("<%= j render partial: 'result', locals: { cat2s: @cat2s } %>");
 <% end %>
 
-<% if @items.present? %>
-  $('#item').html("<%= j render partial: 'item', locals: { items: @items } %>");
-<% end %>
+
+$('#item').html("<%= j render partial: 'item', locals: { items: @items } %>");

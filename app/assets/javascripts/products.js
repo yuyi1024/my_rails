@@ -31,6 +31,12 @@ function cat1(object){
   $target2.slideDown();
   $('#cat1_field').val($(object).text());
   $('#cat2_field').val('');
+
+  var selectBubble = document.createElement('div');
+  var bubbleText = document.createTextNode($('cat1_field').val());
+  selectBubble.appendChild(bubbleText);
+
+
   $('#search_form').submit();
 }
 
@@ -44,4 +50,11 @@ function search(){
 }
 
 
+// var selectBubble = document.createElement("div")
+// var bubbleText = document.createTextNode(tagName + ' x')
+// selectBubble.className = tagCategory + "_tag"
+// selectBubble.id = 'selected-with-tag-id-' + tagId
+// selectBubble.appendChild(bubbleText)
+// selectBubble.setAttribute('onclick', "destroy('"+tagId+"')");
+// document.getElementById("choose").appendChild(selectBubble)
 
