@@ -33,9 +33,10 @@ function cat1(object){
   $('#cat2_field').val('');
 
   var selectBubble = document.createElement('div');
-  var bubbleText = document.createTextNode($('cat1_field').val());
+  var bubbleText = document.createTextNode($('#cat1_field').val());
   selectBubble.appendChild(bubbleText);
-
+  selectBubble.id = 'ttt';
+  document.getElementById('tag').appendChild(selectBubble);
 
   $('#search_form').submit();
 }

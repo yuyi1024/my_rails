@@ -23,8 +23,8 @@
   #boxes.row
     #cat_box.row
       #cat1.row
-        - @cat1s.each_with_index do |cat1|
-          .col-sm-1 data-target='#cat2' onclick='cat1(this);'
+        - @cat1s.each_with_index do |cat1,index|
+          .col-sm-1 data-target='#cat2' onclick='cat1(this);' id='cat-#{index}'
             = cat1.cat1
 
         
