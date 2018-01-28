@@ -19,10 +19,6 @@ $(document).on('turbolinks:load', function() {
     
   });
 
-  
-
-
-
 
 });
 
@@ -32,10 +28,18 @@ function cat1(object){
   $('#cat1_field').val($(object).text());
   $('#cat2_field').val('');
 
+  $('#cat1 div').css({'background-color': 'transparent', 'color': '#000000'});
+  $(object).css({'background-color': '#800000', 'color': '#ffffff'});
+
+  $('.cat1_tag').remove();
+  //$('.cat2_tag').remove();
+
   var selectBubble = document.createElement('div');
   var bubbleText = document.createTextNode($('#cat1_field').val());
   selectBubble.appendChild(bubbleText);
-  selectBubble.id = 'ttt';
+  // selectBubble.id = 'ttt';
+  selectBubble.className = 'cat1_tag';
+  selectBubble.setAttribute('onclick', "destroy(this)");
   document.getElementById('tag').appendChild(selectBubble);
 
   $('#search_form').submit();
@@ -50,12 +54,11 @@ function search(){
   $('#search_form').submit();
 }
 
+function destroy(object){
+  $(object).remove();
+}
+//  selectBubble.setAttribute('onclick', "destroy('"+tagId+"')");
 
-// var selectBubble = document.createElement("div")
-// var bubbleText = document.createTextNode(tagName + ' x')
-// selectBubble.className = tagCategory + "_tag"
-// selectBubble.id = 'selected-with-tag-id-' + tagId
-// selectBubble.appendChild(bubbleText)
-// selectBubble.setAttribute('onclick', "destroy('"+tagId+"')");
-// document.getElementById("choose").appendChild(selectBubble)
+
+
 
