@@ -31,11 +31,10 @@ $(document).on('turbolinks:load', function() {
 
 //click cat1
 function cat1(object){
-  //$("input[name='cat2_field[]'']").remove();
+  $("input[name='cat2_field[]']").remove();
   $target2 = $($(object).data('target')); //->#cat2
   $target2.slideDown(); //#cat2 slideDown
   $('#cat1_field').val($(object).text());
-  $('#cat2_field').val('');
 
   $('#cat1 div').css({'background-color': 'transparent', 'color': '#000000'}); //復原全部cat1
   $(object).css({'background-color': '#800000', 'color': '#ffffff'});
