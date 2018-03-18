@@ -1,5 +1,4 @@
-- if @cat2s.present? 
+- if @cat2s.present?
   - @cat2s.each_with_index do |cat2,index|
-    .col-sm-1 onclick='cat2(this);' id='cat-#{cat2.read_attribute_before_type_cast(:cat1)}-#{index}'
+    .col-sm-1 onclick='cat2(this);' data-name='#{cat2.cat2}' data-id='#{cat2.id}' data-cat1='#{cat2.read_attribute_before_type_cast(:cat1)}' data-category='cat2'
       = cat2.cat2
-

@@ -1,64 +1,67 @@
 = form_tag products_path, method: :get, remote: :true, id: 'search_form' do 
   
   #selector.row
-    .col-sm-3 data-target='#cat_box' 商品分類
-    .col-sm-3 data-target='#arr_box' 排序
-    .col-sm-3 
+    .col-sm-4.cat data-target='#cat_box' 商品分類 ▾
+    / .col-sm-3 data-target='#arr_box' 排序
+    .col-sm-4 
       span 價錢 
       = text_field_tag :price_bottom
       span  ~ 
       = text_field_tag :price_top
       span.label.label-warning onclick='search();' Search
-    .col-sm-3 
-      span 搜尋 
+    .col-sm-4 
+      span 關鍵字搜尋 
       = text_field_tag :keyword
       span.label.label-warning onclick='search();' Search
 
     = hidden_field_tag :cat1_field
-    = hidden_field_tag :cat2_field
+
+    = hidden_field_tag :cat2_click
 
   br
   br
 
-  #boxes.row
-    #cat_box.row
-      #cat1.row
-        - @cat1s.each_with_index do |cat1,index|
-          .col-sm-1 data-target='#cat2' onclick='cat1(this);' id='cat-#{index}'
-            = cat1.cat1
+/分類的box
+#boxes.row
+  #cat_box.row
+    /分類1按鈕
+    #cat1.row 
+      - @cat1s.each_with_index do |cat1,index|
+        .col-sm-1 data-target='#cat2' onclick='cat1(this);' id='cat-#{index}'
+          = cat1.cat1
 
-        
+      
+    /分類2按鈕
+    #cat2.row 
+     
 
-      #cat2.row 
-       
+  / #arr_box
+  /   - ['價錢','最新','熱門','庫存數量'].each do |arr|
+  /     .col-sm-2 
+  /       = arr
 
-    #arr_box
-      - ['價錢','最新','熱門','庫存數量'].each do |arr|
-        .col-sm-2 
-          = arr
+br
 
+/分類的tag
+#tag.row
 
-
-
-  br
-
-  #tag.row
+#clear_tag clear
 
 
-  #item.row
-    - @products.each do |product|
-      .col-sm-2
-        .thumbnail
-          / img src="..." alt="..."
-          .caption
-            h3 
-              = link_to product.name, product_path(product)
-            p $#{product.price}
-            p #{product.description}
+#item.row
+  - @products.each do |product|
+    .col-sm-2
+      .thumbnail
+        / img src="..." alt="..."
+        .caption
+          h3 
+            = link_to product.name, product_path(product)
+          p $#{product.price}
+          p #{product.description}
+          
+          a.btn.btn-primary.col-sm-8 href="#" role="button"
+            span.glyphicon.glyphicon-shopping-cart
             
-            a.btn.btn-primary.col-sm-8 href="#" role="button"
-              span.glyphicon.glyphicon-shopping-cart
-              
-            a.btn.btn-default href="#" role="button" 
-              span.glyphicon.glyphicon-heart
-       
+          a.btn.btn-default href="#" role="button" 
+            span.glyphicon.glyphicon-heart
+     
