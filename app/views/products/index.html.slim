@@ -27,7 +27,7 @@
     /分類1按鈕
     #cat1.row 
       - @cat1s.each_with_index do |cat1,index|
-        .col-sm-1 data-target='#cat2' onclick='cat1(this);' id='cat-#{index}'
+        .col-sm-1 data-target='#cat2' data-name='#{cat1.cat1}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
           = cat1.cat1
 
       
@@ -45,8 +45,7 @@ br
 /分類的tag
 #tag.row
 
-#clear_tag clear
-
+#clear_tag onclick='clear_tag();' clear
 
 #item.row
   - @products.each do |product|
