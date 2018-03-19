@@ -8,11 +8,11 @@
       = text_field_tag :price_bottom
       span  ~ 
       = text_field_tag :price_top
-      span.label.label-warning onclick='search();' Search
+      span.label.label-warning onclick='price();' Search
     .col-sm-4 
       span 關鍵字搜尋 
       = text_field_tag :keyword
-      span.label.label-warning onclick='search();' Search
+      span.label.label-warning onclick='form_submit();' Search
 
     = hidden_field_tag :cat1_field
 
@@ -44,6 +44,13 @@ br
 
 /分類的tag
 #tag.row
+  #tag_cat1
+
+  #tag_cat2
+   
+  #tag_price
+   
+  #tag_keyword
 
 #clear_tag onclick='clear_tag();' clear
 

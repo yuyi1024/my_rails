@@ -72,11 +72,40 @@
 }
 
 #tag{
-	.cat1_tag{
-		color: red;
+	cursor: pointer;
+
+	#tag_cat1{
+		div{
+			background-color: #ff9797;
+		}
 	}
-	.cat2_tag{
-		color: blue;
+	#tag_cat2{
+		div{
+			background-color: #ffd2d2;
+		}
+	}
+	#tag_price{
+		div{
+			background-color: yellow;
+		}
+	}
+	#tag_keyword{
+		div{
+			background-color: green;
+		}
+	}
+
+	.bubble{
+		float: left;
+		margin-right: 5px;
+		padding: 2px 10px;
+		border-radius: 5px;
 	}
 }
 
+#clear_tag{
+	font-weight: bold;
+	color: red;
+	font-size: 15px;
+	margin: 10px;
+}

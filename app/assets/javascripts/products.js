@@ -1,7 +1,5 @@
 $(document).on('turbolinks:load', function() {
 
-  var cat1_tag = '';
-  var cat2_tag = '';
   var price_bottom = 0;
   var price_up = 0;
   
@@ -21,31 +19,32 @@ $(document).on('turbolinks:load', function() {
 
 });
 
-//click cat1
+//click cat1_box
 function cat1(object){
   $("input[name='cat2_field[]']").remove();
-  $(".cat2_tag").remove();
+  $("#tag_cat2 .bubble").remove();
   $('#cat2').slideDown(); //#cat2 slideDown
   
   tagName = $(object).data('name');
   tagId = $(object).data('id');
 
   if(tagName == $('#cat1_field').val()){
-    destroy($('#cat1-tag-'+tagId), 1,);
+    destroy($('#cat1-tag-'+tagId), 'cat1');
   }else{
     $('#cat1 div').css({'background-color': 'transparent', 'color': '#000000'}); //復原全部cat1
     $(object).css({'background-color': '#800000', 'color': '#ffffff'});
 
     $('#cat1_field').val(tagName);
 
-    $('.cat1_tag').remove();
-    tag_create(tagName, tagId, 1);
+    $('#tag_cat1 .bubble').remove();
+    tag_create(tagName, tagId, 'cat1');
   }
 
   $('#cat2_click').val('');
   form_submit();
 }
 
+//click cat2_box
 function cat2(object){
   tagId = $(object).data('id');
   tagName = $(object).data('name');
@@ -63,56 +62,63 @@ function cat2(object){
     input.id = 'cat2-input-'+tagId;
     document.getElementById('search_form').appendChild(input);
 
-    tag_create(tagName, tagId, 2);
+    tag_create(tagName, tagId, 'cat2');
 
 
   }else{ //已被選過 -> 刪除分類
-    destroy($('#cat2-tag-'+tagId), 2);
+    destroy($('#cat2-tag-'+tagId), 'cat2');
   }  
   $('#cat2_click').val('true');
   form_submit(); 
 }
 
-function tag_create(tagName, tagId, n){
-  //分類的tag
+//新增tag
+function tag_create(tagName, tagId, cat){
   var selectBubble = document.createElement('div');
   var bubbleText = document.createTextNode(tagName+' x'); //文字
   selectBubble.appendChild(bubbleText);
-  selectBubble.id = 'cat'+n+'-tag-'+tagId;
-  selectBubble.className = 'cat'+n+'_tag'; //class
-  selectBubble.setAttribute('onclick', "destroy(this, "+n+")");
+  selectBubble.id = cat+'-tag-'+tagId;
+  selectBubble.className = 'bubble'; //class
+  selectBubble.setAttribute('onclick', "destroy(this, '"+cat+"')");
   selectBubble.setAttribute('data-id', tagId);
-  document.getElementById('tag').appendChild(selectBubble);
+  document.getElementById('tag_'+cat).appendChild(selectBubble);
 }
 
+//取消tag
 function destroy(object, cat){
   tagId = $(object).data('id');
-  if(cat == 1){
+
+  if(cat == 'cat1'){ //cat1
     $('#cat1-box-'+tagId).css({'background-color': 'transparent', 'color': '#000000'});
     $('#cat1-tag-'+tagId).remove();
     $('#cat1_field').val('');
-    $('.cat2_tag').each(function(){
-      destroy(this, 2);
+    $('#tag_cat2 .bubble').each(function(){
+      destroy(this, 'cat2');
     });
     $('#cat2').slideUp();
 
-  }else if(cat == 2){
+  }else if(cat == 'cat2'){ //cat2
     $('#cat2-box-'+tagId).css({'background-color': 'transparent', 'color': '#000000'});
     $('#cat2-tag-'+tagId).remove();
     $('#cat2-input-'+tagId).remove();
+
+  }else if(cat == 'price'){ 
+    $('#price-tag-p').remove();
+    $('#price_bottom').val('');
+    $('#price_top').val('');
   }
   form_submit();
 }
 
 function clear_tag(){
-  console.log('aa');
   $('#price_bottom').val('');
-  $('#price_bottom').val('');
-  $('.cat1_tag').each(function(){
-    destroy(this, 1);
+  $('#price_top').val('');
+  $('#price-tag-p').remove();
+  $('#tag_cat1 .bubble').each(function(){
+    destroy(this, 'cat1');
   });
-  $('.cat2_tag').each(function(){
-    destroy(this, 2);
+  $('#tag_cat2 .bubble').each(function(){
+    destroy(this, 'cat2');
   });
   form_submit();
 }
@@ -121,9 +127,54 @@ function form_submit(){
   $('#search_form').submit();
 }
 
+function price(){
+  $('#price-tag-p').remove();
+  var pb = '';
+  var pt = '';
+
+  if($('#price_bottom').val() != ''){ //if有填寫
+    pb = parseInt($('#price_bottom').val());
+    if(!Number.isInteger(pb)){ //if填寫值不是int
+      pb = '';
+    }
+  }
+
+  if($('#price_top').val() != ''){
+    pt = parseInt($('#price_top').val());
+    if(!Number.isInteger(pt)){
+      pt = '';
+    }
+  }
+
+  if(Number.isInteger(pb) && Number.isInteger(pt)){ //if底>高
+    if(pb > pt){
+      temp = pb;
+      pb = pt;
+      pt = temp; 
+    }
+  }
+
+  $('#price_bottom').val(pb);
+  $('#price_top').val(pt);
+
+  if(pb != '' && pt !=''){
+    tagName = '$ '+pb+' ~ '+pt;
+  }else if(pb != ''){
+    tagName = '$ '+pb+' ↑';
+  }else if(pt != ''){
+    tagName = '$ '+pt+' ↓';
+  }else{
+    return; 
+  }
+  
+  tag_create(tagName, 'p', 'price');
+  form_submit();
+}
+
+
 
 /*
-  box/input/tag attribute
+  box/input/tag 屬性
   >>cat1-box
   id="cat1-box-0"
   data-name="電子產品" 

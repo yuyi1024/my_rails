@@ -10,23 +10,8 @@ class ProductsController < ApplicationController
     end
 
     if params[:cat2_field].present?
-      puts 'cccccccccc'
-      puts params[:cat2_field]
       @items = @items.cat2_search(params[:cat2_field])
     end
-
-
-    # sql_generator = SqlGenerator.new(column: 'status', keyword: '=', value: Talk.statuses[:showabled],boolean: 'AND')
-    # if params[:tag_ids].present? | true
-    #   talk_ids = Tagging.where(tag_id: params[:tag_ids], taggable_type: 'Talk').map(&:taggable_id)
-    #   sql_generator.add!(column: :id, keyword: 'IN', value: talk_ids, boolean: 'AND')
-    # end
-
-
-
-
-
-
 
     if params[:price_bottom].present? && params[:price_top].present?
       @items = @items.price_search(params[:price_bottom],params[:price_top])
