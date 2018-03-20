@@ -62,6 +62,7 @@ br
         .caption
           h3 
             = link_to product.name, product_path(product)
+          /img src='#{product.photo}'
           p $#{product.price}
           p #{product.description}
           

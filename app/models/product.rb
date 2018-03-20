@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
   belongs_to :category, optional: true
+  mount_uploader :photo, PhotoUploader
 
   scope :cat1_search, ->(params){ where( :categories => { :cat1 => params } ) }
   scope :cat2_search, ->(params){ where( :categories => { :id => params } ) }
