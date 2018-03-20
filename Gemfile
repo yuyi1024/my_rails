@@ -52,11 +52,11 @@ gem 'jquery-rails'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 
-# # Upload files to Google Storage
-# gem 'carrierwave', '~> 1.0'
-# gem 'carrierwave-data-uri'
-# gem 'carrierwave-imageoptimizer'
-# gem "mini_magick"
+# Upload files to Google Storage
+gem 'carrierwave', '~> 1.0'
+gem 'carrierwave-data-uri'
+gem 'carrierwave-imageoptimizer'
+gem "mini_magick"
 # gem "fog-google"
 # gem 'google-api-client'
 # gem "mime-types"

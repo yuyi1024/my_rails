@@ -1,9 +1,79 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  cat1: MyString
-  cat2: MyString
+# a:
+#   id: 1
+#   cat1: 0
+#   cat2: '電腦'
 
-two:
-  cat1: MyString
-  cat2: MyString
+# b:
+#   id: 2
+#   cat1: 0
+#   cat2: '手機'
+
+# c:
+#   id: 3
+#   cat1: 0
+#   cat2: '耳機'
+
+
+# d:
+#   id: 4
+#   cat1: 0
+#   cat2: '家電'
+
+# e:
+#   id: 5
+#   cat1: 0
+#   cat2: '燈具'
+
+# f:
+#   id: 6
+#   cat1: 1
+#   cat2: '肉品'
+
+# g:
+#   id: 7
+#   cat1: 1
+#   cat2: '蔬菜'
+
+# h:
+#   id: 8
+#   cat1: 1
+#   cat2: '海產'
+
+# i:
+#   id: 9
+#   cat1: 1
+#   cat2: '垃圾食物'
+
+# j:
+#   id: 10
+#   cat1: 1
+#   cat2: '飲品'
+
+# k:
+#   id: 11
+#   cat1: 1
+#   cat2: '水果'
+
+# l:
+#   id: 12
+#   cat1: 2
+#   cat2: '主食罐'
+
+# m:
+#   id: 13
+#   cat1: 2
+#   cat2: '副食罐'
+
+# nn:
+#   id: 14
+#   cat1: 2
+#   cat2: '零食'
+
+# o:
+#   id: 15
+#   cat1: 2
+#   cat2: '貓砂'
+
+

@@ -1,11 +1,202 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# one: {}
-  # name: zzzzMyString
-  # price: 10
-  # description: qqqMyString
 
-# two: {}
-  # name: MyStrindddg
-  # price: 100
-  # description: qqMyString
+# a:
+#   id: 1
+#   name: 'Mac'
+#   price: 800
+#   description: 
+#   category_id: 1
+
+# b:
+#   id: 2
+#   name: 'ACER'
+#   price: 500
+#   description: 
+#   category_id: 1
+
+# c:
+#   id: 3
+#   name: 'ASUS' 
+#   price: 20000
+#   description: 
+#   category_id: 1
+
+
+# d:
+#   id: 4
+#   name: 'HTC'
+#   price: 200
+#   description: 
+#   category_id: 2
+
+# e:
+#   id: 5
+#   name: 'SONY'
+#   price: 4000
+#   description: 
+#   category_id: 2
+
+# f:
+#   id: 6
+#   name: '鐵三角'
+#   price: 20
+#   description: 
+#   category_id: 3
+
+# g:
+#   id: 7
+#   name: 'UBENEARS'
+#   price: 500
+#   description: 
+#   category_id: 3
+
+# h:
+#   id: 8
+#   name: '冰箱'
+#   price: 9999
+#   description: 
+#   category_id: 4
+
+# i:
+#   id: 9
+#   name: '電鍋'
+#   price: 4500
+#   description: 
+#   category_id: 4
+
+# j:
+#   id: 10
+#   name: 'Disco球'
+#   price: 50
+#   description: 
+#   category_id: 5
+
+# k:
+#   id: 11
+#   name: '羊肋排'
+#   price: 900
+#   description: 
+#   category_id: 6
+
+# l:
+#   id: 12
+#   name: '牛小排'
+#   price: 4
+#   description: 
+#   category_id: 6
+
+# m:
+#   id: 13
+#   name: '高麗菜'
+#   price: 12
+#   description: 
+#   category_id: 7
+
+# nn:
+#   id: 14
+#   name: '章魚'
+#   price: 80
+#   description: 
+#   category_id: 8
+
+# o:
+#   id: 15
+#   name: '鮭魚肚'
+#   price: 250
+#   description: 
+#   category_id: 8
+
+# q:
+#   id: 16
+#   name: '炸雞'
+#   price: 45
+#   description: 
+#   category_id: 9
+
+# r:
+#   id: 17
+#   name: '寶喀喀'
+#   price: 23
+#   description: 
+#   category_id: 9
+
+# s:
+#   id: 18
+#   name: '泡麵'
+#   price: 16
+#   description: 
+#   category_id: 9
+
+# t:
+#   id: 19
+#   name: '康青龍'
+#   price: 50
+#   description: 
+#   category_id: 10
+
+# u:
+#   id: 20
+#   name: '榴蓮'
+#   price: 60
+#   description: 
+#   category_id: 11
+
+
+# v:
+#   id: 21
+#   name: '波羅蜜'
+#   price: 530
+#   description: 
+#   category_id: 11
+
+# w:
+#   id: 22
+#   name: '巔峰'
+#   price: 700
+#   description: 
+#   category_id: 12
+
+# x:
+#   id: 23
+#   name: '維美味'
+#   price: 70
+#   description: 
+#   category_id: 12
+
+# yy:
+#   id: 24
+#   name: '吉維士'
+#   price: 560
+#   description: 
+#   category_id: 12
+
+# zz:
+#   id: 25
+#   name: '愛普士'
+#   price: 800
+#   description: 
+#   category_id: 13
+
+# aa:
+#   id: 26
+#   name: 'Axia'
+#   price: 99
+#   description: 
+#   category_id: 13
+
+# bb:
+#   id: 27
+#   name: '水晶砂'
+#   price: 380
+#   description: 
+#   category_id: 15
+
+# p:
+#   id: 28
+#   name: '比目魚'
+#   price: 390
+#   description: 
+#   category_id: 8
+
+

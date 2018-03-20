@@ -10,6 +10,7 @@ class ProductsController < ApplicationController
     end
 
     if params[:cat2_field].present?
+      puts 'zzzzzz'
       @items = @items.cat2_search(params[:cat2_field])
     end
 
