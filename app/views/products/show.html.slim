@@ -6,6 +6,13 @@ p
   = @product.description
 p 
 
+
+/ p
+/ 	= @image
+/ p
+/ 	= @image.path
+/ img src='#{ @image.path }'
+
 = form_for @product do |f|
 
 	= f.file_field :photo

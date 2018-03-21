@@ -74,17 +74,10 @@ GEM
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
-    carrierwave-data-uri (0.2.0)
-      carrierwave
-      data_uri
-    carrierwave-imageoptimizer (1.4.0)
-      carrierwave (>= 0.8, < 2.0)
-      image_optimizer (~> 1.6)
     childprocess (0.8.0)
       ffi (~> 1.0, >= 1.0.11)
     concurrent-ruby (1.0.5)
     crass (1.0.3)
-    data_uri (0.1.0)
     erubi (1.7.0)
     execjs (2.7.0)
     faker (1.8.4)
@@ -94,7 +87,6 @@ GEM
       activesupport (>= 4.2.0)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
-    image_optimizer (1.7.0)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
@@ -230,8 +222,6 @@ DEPENDENCIES
   capistrano-rails
   capybara (~> 2.13)
   carrierwave (~> 1.0)
-  carrierwave-data-uri
-  carrierwave-imageoptimizer
   faker
   jbuilder (~> 2.5)
   jquery-rails
