@@ -38,18 +38,21 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
-    require "mini_magick"
-    @image = MiniMagick::Image.open("https://i.imgur.com/4agoaKk.jpg")
-    @image.contrast
-    @image.resize "300x300"
-    @image.write "output22.png"
+    # @image = MiniMagick::Image.open("https://i.imgur.com/4agoaKk.jpg")
+    # @image.contrast
+    # @image.resize "300x300"
+    # @image.write "output22.png"
   end
 
   def update
     @product = Product.find(params[:id])
     @product.update(p_params)
-    redirect_to products_path
-    
+
+    if params[:product][:photo].present?
+      render :crop
+    else
+      redirect_to products_path
+    end
   end
 
 

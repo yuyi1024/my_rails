@@ -56,7 +56,8 @@ gem 'bootstrap-sass', '~> 3.3.6'
 gem 'carrierwave', '~> 1.0'
 # gem 'carrierwave-data-uri'
 # gem 'carrierwave-imageoptimizer'
-gem "mini_magick"
+gem "mini_magick", '~> 3.3' 
+#gem "papercrop"
 # gem "fog-google"
 # gem 'google-api-client'
 # gem "mime-types"
