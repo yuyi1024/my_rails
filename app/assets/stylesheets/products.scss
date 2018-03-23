@@ -110,9 +110,14 @@
 	margin: 10px;
 }
 
+#item{
+	img{
+		margin-top: 10px;
+		box-shadow: 5px 5px rgba(0,0,0,0.1);
+		border: 2px #555 solid;
+	}
+}
 
-
-/*margin: 0 auto;
+/*
 display: block;
-box-shadow: 5px 5px rgba(0,0,0,0.1);
-border: 2px #000000 solid;*/
+*/

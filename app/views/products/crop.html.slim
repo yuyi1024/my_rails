@@ -1,6 +1,6 @@
 h1 CROP
 
-img src='#{ @product.photo_url(:large) }' id='cropbox'
+img src='#{ @product.photo_url }' id='cropbox' 
 
 = form_for @product do |f|
 	- %w[x y w h].each do |attribute|

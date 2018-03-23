@@ -2,7 +2,7 @@
   - @items.each do |product|
 	  .col-sm-2
 	    .thumbnail
-	      / img src="..." alt="..."
+	      img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
 	      .caption
 	        h3 
 	          = link_to product.name, product_path(product)

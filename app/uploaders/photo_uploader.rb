@@ -37,13 +37,9 @@ class PhotoUploader < CarrierWave::Uploader::Base
     resize_to_fit(150, 150)
   end
 
-  version :large do
-    resize_to_limit(600, 600)
-  end
-
   def crop
     if model.crop_x.present?
-      resize_to_limit(600, 600)
+      #resize_to_limit(600, 600)
       manipulate! do |img|
         x = model.crop_x.to_i
         y = model.crop_y.to_i
@@ -54,6 +50,10 @@ class PhotoUploader < CarrierWave::Uploader::Base
         img
       end
     end
+  end
+
+  def filename
+    "#{model.class.to_s.underscore}-#{model.id}.jpg"
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
