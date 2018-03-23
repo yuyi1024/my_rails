@@ -57,6 +57,7 @@ gem 'carrierwave', '~> 1.0'
 # gem 'carrierwave-data-uri'
 # gem 'carrierwave-imageoptimizer'
 gem "mini_magick", '~> 3.3' 
+gem 'rails-assets-jcrop', source: 'https://rails-assets.org'
 #gem "papercrop"
 # gem "fog-google"
 # gem 'google-api-client'

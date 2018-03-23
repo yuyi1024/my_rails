@@ -34,24 +34,24 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # Create different versions of your uploaded files:
   version :thumb do
     process :crop
-    process resize_to_fit: [100, 100]
+    resize_to_fit(150, 150)
   end
 
   version :large do
-    process resize_to_limit: [600, 600]
+    resize_to_limit(600, 600)
   end
 
   def crop
     if model.crop_x.present?
+      resize_to_limit(600, 600)
       manipulate! do |img|
         x = model.crop_x.to_i
         y = model.crop_y.to_i
         w = model.crop_w.to_i
         h = model.crop_h.to_i
-        img.crop( 20,40,200,100 )
-        img = yield(img) if block_given?
+        img.crop([[w, h].join('x'),[x, y].join('+')].join('+'))
+        # => W x H + X + Y ( Mininagick Doc )
         img
-        #xxx
       end
     end
   end

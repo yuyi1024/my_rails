@@ -11,7 +11,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.Jcrop
+//= require jcrop
 
 //= require rails-ujs
 //= require turbolinks

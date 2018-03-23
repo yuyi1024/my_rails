@@ -11,7 +11,7 @@ class Product < ApplicationRecord
   scope :keyword, ->(params){ where("name LIKE ?", "%#{params}%") }
 
   def crop_photo
-  	photo.recreate_versions!(:thumb) if crop_x.present?
+  	photo.recreate_versions! if crop_x.present?
 	end
 
 
