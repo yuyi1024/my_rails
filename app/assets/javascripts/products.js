@@ -17,7 +17,24 @@ $(document).on('turbolinks:load', function() {
     
   });
 
+  $('#cropbox').Jcrop({
+    aspectRatio: 1,
+    setSelect: [ 0, 0, 200, 200 ],
+    onSelect: showCoords,
+    onChange: showCoords,
+  });
+
 });
+
+
+function showCoords(c){
+  $('#product_crop_x').val(c.x);
+  $('#product_crop_y').val(c.y);
+  $('#product_crop_w').val(c.w);
+  $('#product_crop_h').val(c.h);
+}
+
+
 
 //click cat1_box
 function cat1(object){

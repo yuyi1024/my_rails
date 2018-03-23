@@ -10,6 +10,7 @@ class ProductsController < ApplicationController
     end
 
     if params[:cat2_field].present?
+      puts 'zzzzzz'
       @items = @items.cat2_search(params[:cat2_field])
     end
 
@@ -37,8 +38,26 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
+
   end
 
+  def update
+    @product = Product.find(params[:id])
+    @product.update(p_params)
+
+    if params[:product][:photo].present?
+      render :crop
+    else
+      redirect_to products_path
+    end
+  end
+
+
+
   private
+
+  def p_params
+    params.require(:product).permit!
+  end
 
 end
