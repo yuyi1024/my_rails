@@ -37,6 +37,11 @@ class PhotoUploader < CarrierWave::Uploader::Base
     resize_to_fit(150, 150)
   end
 
+  version :large do
+    process :crop
+    resize_to_fit(350, 350)
+  end
+
   def crop
     if model.crop_x.present?
       #resize_to_limit(600, 600)
