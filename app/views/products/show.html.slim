@@ -1,6 +1,6 @@
 #product_show
 	.row.product_detail
-		p #{ @product.category.cat1 } > #{ @product.category.cat2 }
+		p.col-sm-offset-2 全部商品 > #{ @product.category.cat1 } > #{ @product.category.cat2 }
 		.col-sm-2.col-sm-offset-3
 			img src='#{ @product.photo_url(:large) }'
 		.col-sm-3.col-sm-offset-1
@@ -30,6 +30,9 @@
 
 			img src='#{ @product.photo_url }'
 
+			.description 
+				= raw @product.description
+				
 
 
 
@@ -38,14 +41,10 @@
 
 
 
-
-
-
-p  
-  = @product.description
-
-
-
+br
+br
+br
+br
 = form_for @product do |f|
 
 	= f.file_field :photo
