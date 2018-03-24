@@ -32,10 +32,6 @@
 
 			.description 
 				= raw @product.description
-				
-
-
-
 
 
 
@@ -50,5 +46,22 @@ br
 	= f.file_field :photo
 	
 	= f.submit
+
+br
+br
+br
+br
+
+= form_for @product do |f| 
+  
+  .field
+    = f.label :description
+    = f.text_area :description, 'id': :summernote
+
+
+
+
+
+
 
 

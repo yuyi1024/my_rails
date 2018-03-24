@@ -19,3 +19,5 @@
 
 //= require products
 //= require bootstrap-sprockets
+
+//= require summernote

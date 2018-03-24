@@ -24,6 +24,12 @@ $(document).on('turbolinks:load', function() {
     onChange: showCoords,
   });
 
+  $('#summernote').summernote({
+    
+  });
+
+
+
 });
 
 
