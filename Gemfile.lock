@@ -77,6 +77,8 @@ GEM
       mime-types (>= 1.16)
     childprocess (0.8.0)
       ffi (~> 1.0, >= 1.0.11)
+    codemirror-rails (5.16.0)
+      railties (>= 3.0, < 6.0)
     concurrent-ruby (1.0.5)
     crass (1.0.3)
     erubi (1.7.0)
@@ -97,6 +99,9 @@ GEM
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
+    jquery-turbolinks (2.1.0)
+      railties (>= 3.1.0)
+      turbolinks
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -142,7 +147,6 @@ GEM
       railties (= 5.1.4)
       sprockets-rails (>= 2.0.0)
     rails-assets-jcrop (2.0.4)
-    rails-assets-summernote (0.8.10)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -197,6 +201,8 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     subexec (0.2.3)
+    summernote-rails (0.8.10.0)
+      railties (>= 3.1)
     temple (0.8.0)
     thor (0.20.0)
     thread_safe (0.3.6)
@@ -229,10 +235,12 @@ DEPENDENCIES
   capistrano-rails
   capybara (~> 2.13)
   carrierwave (~> 1.0)
+  codemirror-rails
   faker
   font-awesome-rails
   jbuilder (~> 2.5)
   jquery-rails
+  jquery-turbolinks
   listen (>= 3.0.5, < 3.2)
   machinist
   mini_magick (~> 3.3)
@@ -240,13 +248,13 @@ DEPENDENCIES
   puma (~> 3.7)
   rails (~> 5.1.3)
   rails-assets-jcrop!
-  rails-assets-summernote!
   sass-rails (~> 5.0)
   selenium-webdriver
   slim
   slim-rails
   spring
   spring-watcher-listen (~> 2.0.0)
+  summernote-rails
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)
