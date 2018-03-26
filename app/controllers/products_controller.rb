@@ -43,6 +43,7 @@ class ProductsController < ApplicationController
 
   def update
     @product = Product.find(params[:id])
+    @product.cache = rand(0..100) if params[:product][:photo].present?
     @product.update(p_params)
 
     if params[:product][:photo].present?

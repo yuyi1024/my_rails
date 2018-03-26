@@ -2,7 +2,7 @@
 	.row.product_detail
 		p.col-sm-offset-2 全部商品 > #{ @product.category.cat1 } > #{ @product.category.cat2 }
 		.col-sm-2.col-sm-offset-3
-			img src='#{ @product.photo_url(:large) }'
+			img src='#{ @product.photo_url(:thumb) }'
 		.col-sm-3.col-sm-offset-1
 			h3 = @product.name
 			hr
@@ -28,19 +28,15 @@
 		.col-sm-8.col-sm-offset-2	
 			h4 商品敘述
 
-			img src='#{ @product.photo_url }'
+			/img src='#{ @product.photo_url }'
 
 			.description 
 				= raw @product.description
 
 
 
+hr style='margin-top: 1000px;'
 
-
-br
-br
-br
-br
 = form_for @product do |f|
 
 	= f.file_field :photo

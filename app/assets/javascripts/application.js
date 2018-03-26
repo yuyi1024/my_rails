@@ -40,3 +40,4 @@
 //= require codemirror/modes/slim
 //= require codemirror/modes/php
 //= require summernote
+//= require summernote/lang/summernote-zh-TW

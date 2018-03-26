@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180326071628) do
+ActiveRecord::Schema.define(version: 20180326120941) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "cat1"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20180326071628) do
     t.integer "click_count"
     t.integer "picture_id"
     t.string "photo"
+    t.string "cache"
   end
 
 end

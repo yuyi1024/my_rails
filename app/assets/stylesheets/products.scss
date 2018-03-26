@@ -113,6 +113,7 @@
 
 	#item{
 		img{
+			width: 150px;
 			margin-top: 10px;
 			box-shadow: 5px 5px rgba(0,0,0,0.1);
 			border: 2px #555 solid;
@@ -165,10 +166,6 @@
 		}
 		h4{
 			margin-bottom: 50px;
-		}
-		img{
-			margin: 20px auto;
-			display: block;
 		}
 	}
 	
