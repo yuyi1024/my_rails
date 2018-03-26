@@ -17,9 +17,11 @@
  *= require summernote
 */
 
-@import "bootstrap";
+
+
+/*summernote*/
+/*@import "bootstrap";*/
 @import "font-awesome";
 @import "summernote";
 @import "codemirror";
 @import "codemirror/themes/solarized";
-body {padding-top:3em;}

@@ -66,7 +66,6 @@ gem 'rails-assets-jcrop', source: 'https://rails-assets.org'
 # This is the right gem to use summernote editor in Rails projects.
 gem 'summernote-rails'
 gem 'codemirror-rails'
-# gem 'rails-assets-summernote', source: 'https://rails-assets.org'
 gem "font-awesome-rails"
 
 # To solve the problems on the turbolinks

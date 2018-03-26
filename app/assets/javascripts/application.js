@@ -20,13 +20,8 @@
 //= require products
 //= require bootstrap-sprockets
 
-//= require summernote
-
-
-
 
 //= require jquery.turbolinks
-//= require bootstrap
 //= require codemirror
 //= require codemirror/modes/ruby
 //= require codemirror/modes/sass

@@ -25,12 +25,45 @@ $(document).on('turbolinks:load', function() {
   });
 
   $('#summernote').summernote({
-    
+    height: '500px',
+    callbacks:{
+      onImageUpload: function(files){
+        var img = sendFile(this, files[0]);
+      }
+    }
   });
 
 
-
 });
+
+
+function sendFile(that, file){
+  var data = new FormData;
+  data.append('image[image]', file);
+  $.ajax({
+    data: data,
+    type: 'POST',
+    url: '/images',
+    cache: false,
+    contentType: false,
+    processData: false,
+    success: function(data){
+      console.log(data);
+      var img = document.createElement('img');
+      // img.src = data.url;
+      // img.setAttribute('id', 'data.id');
+      img.src = data.url;
+      img.setAttribute('id', data.id);
+      $(that).summernote('insertNode', img);
+    }
+  });
+}
+
+
+
+
+
+
 
 
 function showCoords(c){
