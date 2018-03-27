@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180320145308) do
+ActiveRecord::Schema.define(version: 20180326120941) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "cat1"
@@ -19,10 +19,19 @@ ActiveRecord::Schema.define(version: 20180320145308) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "filename"
+    t.integer "size"
+    t.string "content_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "image"
+  end
+
   create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.integer "price"
-    t.string "description"
+    t.text "description"
     t.integer "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -31,6 +40,7 @@ ActiveRecord::Schema.define(version: 20180320145308) do
     t.integer "click_count"
     t.integer "picture_id"
     t.string "photo"
+    t.string "cache"
   end
 
 end

@@ -1,25 +1,21 @@
-class PhotoUploader < CarrierWave::Uploader::Base
+class ImageUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
-  include CarrierWave::MiniMagick
-
-  #MiniMagick.processor = :gm
+  # include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
   storage :file
   # storage :fog
 
-  # after :store, :unlink_original
-
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    "uploads/#{model.class.to_s.underscore}/#{model.content_type}/#{model.id}"
   end
 
   def filename
-    "#{model.class.to_s.underscore}-#{model.id}-#{model.cache}.jpg"
+    "#{model.class.to_s.underscore}-#{model.id}.jpg"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -38,33 +34,8 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # end
 
   # Create different versions of your uploaded files:
-  version :thumb do
-    process :crop
-    resize_to_fit(250, 250)    
-  end
-
-  # version :large do
-  #   process :crop
-  #   resize_to_fit(250, 250)
-  # end
-
-  def crop
-    if model.crop_x.present?
-      manipulate! do |img|
-        x = model.crop_x.to_i
-        y = model.crop_y.to_i
-        w = model.crop_w.to_i
-        h = model.crop_h.to_i
-        img.crop([[w, h].join('x'),[x, y].join('+')].join('+'))
-        # => W x H + X + Y ( Mininagick Doc )
-        img
-      end
-    end
-  end
-
-  # def unlink_original(file)
-  #   puts 'public/'+store_dir+'/'+filename
-  #   File.delete('public/'+store_dir+'/'+filename) if version_name.blank?
+  # version :thumb do
+  #   process resize_to_fit: [50, 50]
   # end
 
   # Add a white list of extensions which are allowed to be uploaded.

@@ -24,7 +24,73 @@ $(document).on('turbolinks:load', function() {
     onChange: showCoords,
   });
 
+  // $('#summernote').summernote('pasteHTML','<p>zz</p>');
+
+  $('#summernote').summernote({
+    height: '500px',
+    placeholder: '為商品新增描述...',
+    lang: 'zh-TW',
+    toolbar: [
+      ['para', ['style']],
+      ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+      ['fontsize', ['fontsize']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['insert', ['table', 'hr']],
+      ['insert', ['link', 'picture']],
+      ['misk', ['codeview']],
+    ],
+    callbacks:{
+      onImageUpload: function(files){
+        sendFile(this, files[0]);
+        //this => $('#summernote')
+        //file => FileList{ 0: File(xxxx), length: 1 }
+        //file[0] => File(xxxx){ name, size, type...... }
+      },
+      onMediaDelete: function(target, editor, editable){
+        //target => { 0:img#id, context, length }
+        
+        var image_id = target[0].id;
+        deleteFile(image_id);
+        target.remove();
+      }
+    }
+  });
 });
+
+
+function sendFile(object, file){
+  var data = new FormData;
+  data.append('image[image]', file); // => params[:image][:image]
+  data.append('image[content_type]', 'description'); // => params[:image][:content_type]
+  
+  $.ajax({
+    data: data,
+    type: 'POST',
+    url: '/images', //=> create
+    cache: false,
+    contentType: false,
+    processData: false,
+    success: function(data){
+      //data => { id, url }
+      var img = document.createElement('img');
+      img.src = data.url;
+      img.setAttribute('id', data.id);
+      $(object).summernote('insertNode', img);
+    }
+  });
+}
+
+function deleteFile(image_id){
+  $.ajax({
+    type: 'DELETE',
+    url: '/images/'+image_id,
+    cache: false,
+    contentType: false,
+    processData: false
+  });
+}
+
 
 
 function showCoords(c){

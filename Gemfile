@@ -42,8 +42,6 @@ gem "slim-rails"
 gem 'jquery-rails'
 # gem "jquery-slick-rails"
 
-# gem 'simple_form'
-
 # gem 'devise'
 # gem 'settingslogic'
 # gem 'omniauth'
@@ -51,6 +49,7 @@ gem 'jquery-rails'
 # gem 'cancancan', '~> 1.10'
 
 gem 'bootstrap-sass', '~> 3.3.6'
+gem "font-awesome-rails"
 
 # Upload files to Google Storage
 gem 'carrierwave', '~> 1.0'
@@ -63,15 +62,15 @@ gem 'rails-assets-jcrop', source: 'https://rails-assets.org'
 # gem 'google-api-client'
 # gem "mime-types"
 
-# # wysiwyg
-# # This is the right gem to use summernote editor in Rails projects.
-# gem 'summernote-rails'
-# gem 'codemirror-rails'
+# WYSIWYG
+# This is the right gem to use summernote editor in Rails projects.
+gem 'summernote-rails'
+gem 'codemirror-rails'
+gem "font-awesome-rails"
 
 # To solve the problems on the turbolinks
-# gem 'jquery-turbolinks'
+gem 'jquery-turbolinks'
 # gem 'sdoc', '~> 0.4.0', group: :doc
-
 
 gem "awesome_print"
 
