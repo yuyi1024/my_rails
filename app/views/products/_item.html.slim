@@ -1,20 +1,21 @@
 - if @items.present? 
   - @items.each do |product|
-	  .col-sm-2
-	    .thumbnail
-	      img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
-	      .caption
-	        h3 
-	          = link_to product.name, product_path(product)
-	        p $#{product.price}
-	        /p #{product.description}
-	        p
-	          a.btn.btn-primary.col-sm-8 href="#" role="button"	
-	          	span.glyphicon.glyphicon-shopping-cart
-	            
-	          a.btn.btn-default href="#" role="button"
-	          	span.glyphicon.glyphicon-heart
+    .col-sm-2
+      .thumbnail
+        = link_to product_path(product)
+          img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
+        .caption
+          h3 
+            = link_to product.name, product_path(product)
+          p.price $#{product.price}
 
+          p.tags
+            span.glyphicon.glyphicon-tags 
+            | #{ product.category.cat1 }、#{ product.category.cat2 } 
+          
+          a.btn.btn-primary href="#" role="button"
+            span.glyphicon.glyphicon-shopping-cart
+          
+          span.sold 已賣 #{ product.sold }
 
-
-
+     

@@ -12,6 +12,7 @@
  *
  *= require_tree .
  *= require_self
+ *= require shared
 
  *= require jcrop
  *= require summernote
@@ -25,3 +26,4 @@
 @import "summernote";
 @import "codemirror";
 @import "codemirror/themes/solarized";
+
