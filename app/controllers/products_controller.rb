@@ -44,8 +44,8 @@ class ProductsController < ApplicationController
   def update
     @product = Product.find(params[:id])
     @product.cache = rand(0..100) if params[:product][:photo].present?
-    @product.update(p_params)
-
+    @product.update(product_params)
+   
     if params[:product][:photo].present?
       render :crop
     else
@@ -57,8 +57,7 @@ class ProductsController < ApplicationController
 
   private
 
-  def p_params
+  def product_params
     params.require(:product).permit!
   end
-
 end

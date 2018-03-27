@@ -40,7 +40,7 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # Create different versions of your uploaded files:
   version :thumb do
     process :crop
-    resize_to_fit(250, 250)
+    resize_to_fit(250, 250)    
   end
 
   # version :large do
@@ -63,7 +63,8 @@ class PhotoUploader < CarrierWave::Uploader::Base
   end
 
   # def unlink_original(file)
-  #   File.delete(store_dir+'/'+filename) if version_name.blank?
+  #   puts 'public/'+store_dir+'/'+filename
+  #   File.delete('public/'+store_dir+'/'+filename) if version_name.blank?
   # end
 
   # Add a white list of extensions which are allowed to be uploaded.

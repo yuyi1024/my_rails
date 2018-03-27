@@ -1,8 +1,9 @@
 #product_show
 	.row.product_detail
-		p.col-sm-offset-2 全部商品 > #{ @product.category.cat1 } > #{ @product.category.cat2 }
+		p.col-sm-offset-2 
+			全部商品 > #{ @product.category.cat1 } > #{ @product.category.cat2 }
 		.col-sm-2.col-sm-offset-3
-			img src='#{ @product.photo_url(:thumb) }'
+			img src="#{ (@product.photo.present?) ? @product.photo_url(:thumb) : '/assets/no-image.png'}"
 		.col-sm-3.col-sm-offset-1
 			h3 = @product.name
 			hr
@@ -25,7 +26,7 @@
 	.row.product_description
 
 		hr
-		.col-sm-8.col-sm-offset-2	
+		.col-sm-6.col-sm-offset-3	
 			h4 商品敘述
 
 			/img src='#{ @product.photo_url }'
