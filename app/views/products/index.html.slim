@@ -2,18 +2,21 @@
   = form_tag products_path, method: :get, remote: :true, id: 'search_form' do 
     
     #selector.row
-      .col-sm-4.cat data-target='#cat_box' 商品分類 ▾
+      .col-sm-4.cat data-target='#cat_box' 
+        | 商品分類 
+        span.glyphicon.glyphicon-chevron-left
+      
       / .col-sm-3 data-target='#arr_box' 排序
-      .col-sm-4 
+      .col-sm-4
         span 價錢 
         = text_field_tag :price_bottom
         span  ~ 
         = text_field_tag :price_top
-        span.label.label-warning onclick='price();' Search
+        button.label.btn onclick='price();' Search
       .col-sm-4 
         span 關鍵字搜尋 
         = text_field_tag :keyword
-        span.label.label-warning onclick='form_submit();' Search
+        button.label.btn onclick='form_submit();' Search
 
       = hidden_field_tag :cat1_field
 
@@ -22,54 +25,60 @@
     br
     br
 
-  /分類的box
-  #boxes.row
-    #cat_box.row
-      /分類1按鈕
-      #cat1.row 
-        - @cat1s.each_with_index do |cat1,index|
-          .col-sm-1 data-target='#cat2' data-name='#{cat1.cat1}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
-            = cat1.cat1
+  .container
+    /分類的box
+    #boxes.row
+      #cat_box.row
+        /分類1按鈕
+        #cat1.row 
+          - @cat1s.each_with_index do |cat1,index|
+            .col-sm-1 data-target='#cat2' data-name='#{cat1.cat1}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
+              = cat1.cat1
 
-        
-      /分類2按鈕
-      #cat2.row 
+        /分類2按鈕
+        #cat2.row 
+         
+
+      / #arr_box
+      /   - ['價錢','最新','熱門','庫存數量'].each do |arr|
+      /     .col-sm-2 
+      /       = arr
+
+    br
+
+    /分類的tag
+    #tag.row
+      span.glyphicon.glyphicon-tags
+
+      #tag_cat1
+
+      #tag_cat2
        
+      #tag_price
+       
+      #tag_keyword
 
-    / #arr_box
-    /   - ['價錢','最新','熱門','庫存數量'].each do |arr|
-    /     .col-sm-2 
-    /       = arr
+      #clear_tag onclick='clear_tag();' X clear
 
-  br
-
-  /分類的tag
-  #tag.row
-    #tag_cat1
-
-    #tag_cat2
-     
-    #tag_price
-     
-    #tag_keyword
-
-  #clear_tag onclick='clear_tag();' clear
-
-  #item.row
-    - @products.each do |product|
-      .col-sm-2
-        .thumbnail
-          img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
-          .caption
-            h3 
-              = link_to product.name, product_path(product)
-            
-            p $#{product.price}
-            /p #{product.description}
-            
-            a.btn.btn-primary.col-sm-8 href="#" role="button"
-              span.glyphicon.glyphicon-shopping-cart
+    #item.row
+      - @products.each do |product|
+        .col-sm-2
+          .thumbnail
+            = link_to product_path(product)
+              img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
+            .caption
+              h3 
+                = link_to product.name, product_path(product)
               
-            a.btn.btn-default href="#" role="button" 
-              span.glyphicon.glyphicon-heart
-       
+              p.price $#{product.price}
+
+              p.tags
+                span.glyphicon.glyphicon-tags 
+                | #{ product.category.cat1 }、#{ product.category.cat2 } 
+              
+              a.btn.btn-primary href="#" role="button"
+                span.glyphicon.glyphicon-shopping-cart
+              
+              span.sold 已賣 #{ product.sold }
+
+         

@@ -22,13 +22,13 @@ pre {
 a {
   color: #000;
 
-  &:visited {
+/*  &:visited {
     color: #666;
-  }
+  }*/
 
   &:hover {
-    color: #fff;
-    background-color: #000;
+    /*color: #fff;
+    background-color: #000;*/
   }
 }
 
@@ -82,3 +82,10 @@ div {
 label {
   display: block;
 }
+
+@media (min-width: 1400px){
+  .container {
+    width: 1300px;
+  }
+}
+
