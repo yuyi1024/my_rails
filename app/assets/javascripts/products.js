@@ -10,8 +10,12 @@ $(document).on('turbolinks:load', function() {
       $('#boxes').children().each(function() {
         $(this).slideUp();
       });
+      $('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
+      $('#boxes').addClass('boxes_visible');
       $target.slideDown('slow');
     } else {
+      $('span.glyphicon-chevron-left').css('transform', 'rotate(0deg)');
+      $('#boxes').removeClass('boxes_visible');
       $target.toggle('slow');
     }
 
@@ -133,7 +137,7 @@ function cat1(object) {
   if (tagName == $('#cat1_field').val()) {
     destroy($('#cat1-tag-' + tagId), 'cat1');
   } else {
-    $('#cat1 div').css({ 'background-color': 'transparent', 'color': '#000000' }); //復原全部cat1
+    $('#cat1 div').css({ 'background-color': '#fff', 'color': '#000000' }); //復原全部cat1
     $(object).css({ 'background-color': '#403E4E', 'color': '#ffffff' });
 
     $('#cat1_field').val(tagName);
@@ -191,7 +195,7 @@ function destroy(object, cat) {
   tagId = $(object).data('id');
 
   if (cat == 'cat1') { //cat1
-    $('#cat1-box-' + tagId).css({ 'background-color': 'transparent', 'color': '#000000' });
+    $('#cat1-box-' + tagId).css({ 'background-color': '#fff', 'color': '#000000' });
     $('#cat1-tag-' + tagId).remove();
     $('#cat1_field').val('');
     $('#tag_cat2 .bubble').each(function() {
@@ -200,7 +204,7 @@ function destroy(object, cat) {
     $('#cat2').slideUp();
 
   } else if (cat == 'cat2') { //cat2
-    $('#cat2-box-' + tagId).css({ 'background-color': 'transparent', 'color': '#000000' });
+    $('#cat2-box-' + tagId).css({ 'background-color': '#fff', 'color': '#000000' });
     $('#cat2-tag-' + tagId).remove();
     $('#cat2-input-' + tagId).remove();
 

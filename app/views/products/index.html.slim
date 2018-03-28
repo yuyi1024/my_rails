@@ -2,7 +2,10 @@
   = form_tag products_path, method: :get, remote: :true, id: 'search_form' do 
     
     #selector.row
-      .col-sm-4.cat data-target='#cat_box' 商品分類 ▾
+      .col-sm-4.cat data-target='#cat_box' 
+        | 商品分類 
+        span.glyphicon.glyphicon-chevron-left
+      
       / .col-sm-3 data-target='#arr_box' 排序
       .col-sm-4
         span 價錢 
@@ -45,6 +48,8 @@
 
     /分類的tag
     #tag.row
+      span.glyphicon.glyphicon-tags
+
       #tag_cat1
 
       #tag_cat2
@@ -53,7 +58,7 @@
        
       #tag_keyword
 
-    #clear_tag onclick='clear_tag();' clear
+      #clear_tag onclick='clear_tag();' X clear
 
     #item.row
       - @products.each do |product|
