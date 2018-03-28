@@ -42,7 +42,7 @@ gem "slim-rails"
 gem 'jquery-rails'
 # gem "jquery-slick-rails"
 
-# gem 'devise'
+gem 'devise'
 # gem 'settingslogic'
 # gem 'omniauth'
 # gem 'omniauth-facebook'

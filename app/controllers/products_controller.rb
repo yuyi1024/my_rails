@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  # before_action :authenticate_user!
+
   def index
     @products = Product.all
     @cat1s = Category.select(:cat1).distinct
@@ -10,7 +12,6 @@ class ProductsController < ApplicationController
     end
 
     if params[:cat2_field].present?
-      puts 'zzzzzz'
       @items = @items.cat2_search(params[:cat2_field])
     end
 
