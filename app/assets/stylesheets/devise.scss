@@ -1,0 +1,71 @@
+@import 'app';
+
+.user_form{
+  background-color: #eceeec;
+  border-top: 1px #aaa solid;
+  border-bottom: 1px #aaa solid;
+  h2{
+   text-align: center;
+  }
+  #new_user{
+    margin-top: 50px;
+    .field{
+      input{
+        margin: 10px auto 40px;
+        &[type=email], &[type=password], &[type=submit]{
+          width: 80%;
+          height: 40px;
+          display: block;
+        }
+        &[type=email], &[type=password]{
+          border: 1px #aaa solid;
+          font-size: 16px;
+          padding: 0 15px;
+        }
+        &[type=submit]{
+          background: #000;
+          color: #fff;
+          font-size: 18px;
+          border: none;
+        }
+      }
+    }
+    .rm{
+      text-align: center;
+      margin: -20px auto 50px;
+    }
+    label{
+      font-size: 18px;
+      text-align: center;
+      &[for=user_remember_me]{
+        display: inline;
+        font-size: 14px;
+      }
+    } 
+  }
+  .shared{
+    font-size: 18px;
+    margin-top: 50px;
+    .sign_up{
+      left: 200px;
+      position: absolute;
+      bottom: 20px;
+    }
+    .forget_pw{
+      right: 200px;
+      position: absolute;
+      bottom: 20px;
+    }
+  }
+}
+.border_b{
+  height: 600px;
+  border-right: 1px #aaa solid;
+  border-top: 1px #aaa solid;
+}
+.border_a{
+  height: 600px;
+  border-left: 1px #aaa solid;
+  top: -105px;
+  border-bottom: 1px #aaa solid;
+}
