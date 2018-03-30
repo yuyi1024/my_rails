@@ -1,3 +1,5 @@
+@import 'variable';
+
 .navbar{
 	position: fixed;
   top: 5px;
@@ -17,4 +19,11 @@
     	background-color: rgba(50, 50, 50, 0.1);
     }
 	}
+}
+
+.notice{
+  color: $color_dark_blue;
+  font-size: 18px;
+  position: absolute;
+  top: 20px;
 }

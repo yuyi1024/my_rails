@@ -1,0 +1,16 @@
+#user_form.col-sm-6.col-sm-offset-3
+  h2 忘記密碼
+  hr
+
+  = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+    = devise_error_messages!
+
+    .field
+      = f.label :email, '信箱'
+      = f.email_field :email, autofocus: true
+
+    .actions.field
+      = f.submit "傳送重設密碼說明到信箱"
+
+  .shared.col-sm-12
+      = render "devise/shared/links"

@@ -10,8 +10,10 @@ html
 
   body
 
-    p.notice notice
-    p.alert alert
+  	.notice
+	    - if current_user
+	    	| 您好， #{current_user.name} ！
+  	/ .alert
 
     = render 'shared/header'
     = yield 

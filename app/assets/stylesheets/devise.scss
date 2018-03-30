@@ -1,23 +1,31 @@
 @import 'app';
 
-.user_form{
-  background-color: #eceeec;
-  border-top: 1px #aaa solid;
-  border-bottom: 1px #aaa solid;
-  h2{
-   text-align: center;
+h2, em, label, a, .rm{
+  text-align: center;
+}
+
+#user_form{
+  background-color: #f8f8f8;
+  border-top: 1px #ddd solid;
+  border-bottom: 1px #ddd solid;
+  margin-top: 80px;
+  margin-bottom: 150px;
+  hr{
+    margin-top: -5px;
+    border-top: 2px solid #aaa;
+    width: 30%;
   }
   #new_user{
     margin-top: 50px;
     .field{
       input{
         margin: 10px auto 40px;
-        &[type=email], &[type=password], &[type=submit]{
+        &[type=text], &[type=email], &[type=password], &[type=submit]{
           width: 80%;
           height: 40px;
           display: block;
         }
-        &[type=email], &[type=password]{
+        &[type=text], &[type=email], &[type=password]{
           border: 1px #aaa solid;
           font-size: 16px;
           padding: 0 15px;
@@ -29,14 +37,16 @@
           border: none;
         }
       }
+      em{
+        display: block;
+        margin-bottom: -20px;
+      }
     }
     .rm{
-      text-align: center;
       margin: -20px auto 50px;
     }
     label{
       font-size: 18px;
-      text-align: center;
       &[for=user_remember_me]{
         display: inline;
         font-size: 14px;
@@ -45,27 +55,10 @@
   }
   .shared{
     font-size: 18px;
-    margin-top: 50px;
-    .sign_up{
-      left: 200px;
-      position: absolute;
-      bottom: 20px;
-    }
-    .forget_pw{
-      right: 200px;
-      position: absolute;
-      bottom: 20px;
+    margin: 20px auto;
+    display: inline-flex;
+    a{
+      margin-top: 10px;
     }
   }
-}
-.border_b{
-  height: 600px;
-  border-right: 1px #aaa solid;
-  border-top: 1px #aaa solid;
-}
-.border_a{
-  height: 600px;
-  border-left: 1px #aaa solid;
-  top: -105px;
-  border-bottom: 1px #aaa solid;
 }
