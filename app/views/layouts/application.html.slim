@@ -9,11 +9,12 @@ html
 
 
   body
-
-  	.notice
-	    - if current_user
-	    	| 您好， #{current_user.name} ！
-  	/ .alert
+    .ccc
+      .hello
+        - if current_user
+          | 您好， #{current_user.name} ！
+      .notice #{ notice }
+      .alert #{ alert }
 
     = render 'shared/header'
     = yield 

@@ -21,9 +21,12 @@
 	}
 }
 
-.notice{
-  color: $color_dark_blue;
-  font-size: 18px;
+.ccc{
   position: absolute;
   top: 20px;
+  .hello, .notice, .alert{
+    color: $color_dark_blue;
+    font-size: 18px;
+    line-height: 20px;
+  }
 }

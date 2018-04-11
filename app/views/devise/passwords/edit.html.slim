@@ -1,0 +1,26 @@
+#user_form.col-sm-6.col-sm-offset-3
+  h2 重新設置密碼
+  hr
+
+  = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| 
+    = devise_error_messages!
+    = f.hidden_field :reset_password_token
+
+    .field
+      = f.label :password, "新密碼"
+      - if @minimum_password_length
+        em 密碼不得少於 #{@minimum_password_length} 個字元
+      br
+      = f.password_field :password, autofocus: true, autocomplete: "off"
+
+
+    .field
+      = f.label :password_confirmation, "再次確認新密碼"
+      = f.password_field :password_confirmation, autocomplete: "off"
+
+
+    .actions.field
+      = f.submit "變更密碼"
+
+    .shared
+      = render "devise/shared/links"

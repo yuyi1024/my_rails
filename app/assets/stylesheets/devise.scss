@@ -55,10 +55,10 @@ h2, em, label, a, .rm{
   }
   .shared{
     font-size: 18px;
-    margin: 20px auto;
-    display: inline-flex;
+    margin-bottom: 20px;
+    display: grid;
     a{
-      margin-top: 10px;
+      line-height: 15px;
     }
   }
 }

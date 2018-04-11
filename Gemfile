@@ -33,7 +33,8 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 
-
+# using ENV
+gem "figaro"
 
 gem 'slim'
 gem "slim-rails"
