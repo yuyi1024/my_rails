@@ -54,6 +54,7 @@ GEM
       sass (>= 3.3.4)
     builder (3.2.3)
     byebug (9.1.0)
+    cancancan (2.1.4)
     capistrano (3.10.1)
       airbrussh (>= 1.0.0)
       i18n
@@ -247,6 +248,7 @@ DEPENDENCIES
   awesome_print
   bootstrap-sass (~> 3.3.6)
   byebug
+  cancancan (~> 2.0)
   capistrano-rails
   capybara (~> 2.13)
   carrierwave (~> 1.0)

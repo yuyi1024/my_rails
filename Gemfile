@@ -47,7 +47,7 @@ gem 'devise'
 # gem 'settingslogic'
 # gem 'omniauth'
 # gem 'omniauth-facebook'
-# gem 'cancancan', '~> 1.10'
+gem 'cancancan', '~> 2.0'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 gem "font-awesome-rails"
