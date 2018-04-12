@@ -1,9 +1,9 @@
 @import 'app';
 
 #product_index {
-	#search_form{
-		height: 60px;
-	}
+  #search_form {
+    height: 60px;
+  }
   #selector {
     background-color: #E1E7EB;
     border: 1px #888 solid;
@@ -13,8 +13,8 @@
       line-height: 58px;
       font-size: 20px;
       text-align: center;
-      &:nth-child(1){
-      	background: #C8D3DA;
+      &:nth-child(1) {
+        background: #C8D3DA;
       }
       #price_bottom,
       #price_top {
@@ -30,25 +30,25 @@
         padding: 6px 10px;
         background: $color_bright_gray;
         font-weight: normal;
-        &:hover{
-        	color: #fff;
-        	background-color: $color_santas_gray;
+        &:hover {
+          color: #fff;
+          background-color: $color_santas_gray;
         }
-        &:focus{
-        	color: #fff;
+        &:focus {
+          color: #fff;
         }
       }
     }
   }
 
-  .boxes_visible{
-  	padding: 20px;
+  .boxes_visible {
+    padding: 20px;
     border: 1px #000 solid;
   }
 
   #boxes {
     margin: 20px 0;
-    background: rgba(150,150,150,0.1);
+    background: rgba(150, 150, 150, 0.1);
 
     #cat_box {
       display: none;
@@ -60,7 +60,7 @@
       }
 
       #cat1 {
-      	margin: 0 20px;
+        margin: 0 20px;
         div {
           border: 2px #100a1a solid;
           height: 45px;
@@ -72,7 +72,7 @@
         }
       }
       #cat2 {
-      	margin: 0 20px;
+        margin: 0 20px;
         div {
           border: 2px #8086A3 solid;
           height: 40px;
@@ -101,8 +101,8 @@
     cursor: pointer;
     margin-bottom: 30px;
     display: -webkit-inline-box;
-    span{
-    	margin: 5px 10px 0 20px;
+    span {
+      margin: 5px 10px 0 20px;
     }
     #tag_cat1 {
       div {
@@ -133,10 +133,10 @@
     }
 
     #clear_tag {
-	    color: $color_price_red;
-	    font-size: 15px;
-	    margin-left: 10px;
-	  }
+      color: $color_price_red;
+      font-size: 15px;
+      margin-left: 10px;
+    }
   }
 
 
@@ -147,33 +147,32 @@
       box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
       border: 2px #555 solid;
     }
-    .caption{
-    	.btn-primary{
-	    	width: 60%;
-	    	color: #eee;
-	    	&:hover{
-	    		color: #fff;
-	    	}
-	    }
-	    .price{
-	    	color: $color_price_red;
-	    	font-size: 16px;
-	    }
-	    .tags{
-	    	span{
-	    		margin-right: 8px;
-	    		top: 2px;
-	    	}
-	    }
-	    .btn{
-	    	background-color: $color_dark_blue;
-	    }
-	    .sold{
-	    	margin-left: 10px;
-	    	color: #777;
-	    }
+    .caption {
+      .btn-primary {
+        width: 60%;
+        color: #eee;
+        &:hover {
+          color: #fff;
+        }
+      }
+      .price {
+        color: $color_price_red;
+        font-size: 16px;
+      }
+      .tags {
+        span {
+          margin-right: 8px;
+          top: 2px;
+        }
+      }
+      .btn {
+        background-color: $color_dark_blue;
+      }
+      .sold {
+        margin-left: 10px;
+        color: #777;
+      }
     }
-    
   }
 }
 
