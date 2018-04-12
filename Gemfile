@@ -33,7 +33,8 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 
-
+# using ENV
+gem "figaro"
 
 gem 'slim'
 gem "slim-rails"
@@ -42,11 +43,11 @@ gem "slim-rails"
 gem 'jquery-rails'
 # gem "jquery-slick-rails"
 
-# gem 'devise'
+gem 'devise'
 # gem 'settingslogic'
 # gem 'omniauth'
 # gem 'omniauth-facebook'
-# gem 'cancancan', '~> 1.10'
+gem 'cancancan', '~> 2.0'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 gem "font-awesome-rails"

@@ -6,10 +6,18 @@ nav
         span.glyphicon.glyphicon-th-large
         |  所有商品
 		
-    = link_to products_path
+    
+    - if current_user
+      /= link_to new_session_path(:user)
       .button
         span.glyphicon.glyphicon-user
-        |  登入/會員
+        |  會員中心
+    - else
+      = link_to new_session_path(:user)
+        .button
+          span.glyphicon.glyphicon-user
+          |  會員登入
+      
 			
     = link_to products_path
       .button
@@ -20,3 +28,17 @@ nav
       .button
         span.glyphicon.glyphicon-comment
         |  Q & A
+
+    - if current_user
+      = link_to destroy_user_session_path, :method => :delete 
+        .button
+          span.glyphicon.glyphicon-log-out
+          |  登出
+
+
+/ - if current_user 
+/   = link_to('登出', destroy_user_session_path, :method => :delete) 
+/   = link_to('修改密碼', edit_registration_path(:user)) 
+/ - else
+/   = link_to('註冊', new_registration_path(:user)) 
+/   = link_to('登入', new_session_path(:user))

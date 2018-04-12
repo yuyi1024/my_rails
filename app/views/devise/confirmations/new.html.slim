@@ -1,0 +1,18 @@
+#user_form.col-sm-6.col-sm-offset-3
+  h2 重新寄送認證信
+  hr
+
+  = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
+    = devise_error_messages!
+
+    .field
+      = f.label :email, '信箱'
+      = f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email)
+
+
+    .actions.field
+      = f.submit "重新寄送認證信到信箱"
+
+
+  .shared
+    = render "devise/shared/links"

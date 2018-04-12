@@ -46,36 +46,38 @@ div {
   }
 }
 
-#notice {
+/*#notice {
   color: green;
-}
+}*/
 
 .field_with_errors {
-  padding: 2px;
+  /*padding: 2px;
   background-color: red;
-  display: table;
+  display: table;*/
+  input{
+    border: 1px red solid !important;
+  }
 }
 
 #error_explanation {
   width: 450px;
-  border: 2px solid red;
-  padding: 7px 7px 0;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-
+  margin: -20px auto 40px;
   h2 {
-    text-align: left;
+    text-align: center;
     font-weight: bold;
     padding: 5px 5px 5px 15px;
     font-size: 12px;
     margin: -7px -7px 0;
-    background-color: #c00;
-    color: #fff;
+    color: #c00;
   }
-
-  ul li {
-    font-size: 12px;
-    list-style: square;
+  ul{
+    padding: 0;
+    li {
+      font-size: 12px;
+      list-style: square;
+      text-align: center;
+      list-style-type:none;
+    }
   }
 }
 
