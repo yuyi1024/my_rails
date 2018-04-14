@@ -1,4 +1,4 @@
-class Cart < ApplicationRecord
+class Cart
 
   #自動產生getter
   attr_reader :items
@@ -12,7 +12,7 @@ class Cart < ApplicationRecord
   # end
 
   def initialize(items = [])
-    @items = item
+    @items = items
   end
 
   def add_item(product_id, quantity)

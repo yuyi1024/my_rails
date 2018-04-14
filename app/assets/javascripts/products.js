@@ -23,6 +23,7 @@ $(document).on('turbolinks:load', function() {
 
 
   $('.input-quantity span').click(function(){
+    event.preventDefault(); 
     var q = $('.input-quantity input').val();
     if($(this).hasClass('plus')){
       q++;
@@ -32,13 +33,6 @@ $(document).on('turbolinks:load', function() {
     $('.input-quantity input').val(q);
   });
 
-
-
-  // $('.input-quantity .plus').click(function(){
-  //   var q = $('.input-quantity input').val();
-  //   q++;
-  //   $('.input-quantity input').val(q);
-  // });
 
   $('#cropbox').Jcrop({
     aspectRatio: 1,

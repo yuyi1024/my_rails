@@ -1,4 +1,4 @@
-class CartItem < ApplicationRecord
+class CartItem
 
   attr_reader :product_id, :quantity
 

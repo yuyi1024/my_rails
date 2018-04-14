@@ -1,0 +1,24 @@
+#sidebar_cart
+  h3 購物車
+
+  .items
+    /= form_tag carts_path, method: :get, remote: :true, id: 'cart_form' do 
+    
+    - @cart_items.each do |cart_item|
+      .item
+        img src="#{ cart_item[0].photo.present? ? cart_item[0].photo_url(:thumb) : '/assets/no-image.png' }"
+
+        .word
+          h4 #{ cart_item[0].name }
+          input type='number' value='#{ cart_item[1] }'
+          |  x $#{ cart_item[0].price } = $
+          span#price #{ cart_item[0].price * cart_item[1] }
+          br
+          = link_to '刪除', carts_path(cart_item[0]), method: :delete
+          = link_to '++', add_carts_path(cart_item[0]), method: :post
+      hr
+
+  p 總計 $NT#{ @total_price }
+
+  = link_to '訂單結帳', class: ''
+

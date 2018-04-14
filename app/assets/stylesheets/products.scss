@@ -223,3 +223,47 @@
     }
   }
 }
+
+
+#sidebar_cart{
+  height: 100%;
+  width: 350px;
+  background-color: rgba(150,150,150,1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  /*left: -350px;*/
+  padding: 0 25px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  z-index: 999;
+  h3{
+    text-align: center;
+  }
+  .items{
+    *{
+      font-size: 16px;
+    }
+    .item{
+      display: -webkit-inline-box;
+      img{
+        width: 70px;
+        border: 1px #000 solid;
+      }
+      .word{
+        margin-left: 15px;
+        h4{
+          margin: 0;
+        }
+        input{
+          width: 35px;
+          font-size: 16px;
+          border: 0;
+          margin: 10px 0;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
