@@ -241,6 +241,7 @@
     text-align: center;
   }
   .items{
+    margin-top: 40px;
     *{
       font-size: 16px;
     }
@@ -264,6 +265,29 @@
         }
       }
     }
+    .total_price{
+      font-size: 16px;
+      text-align: right;
+      span{
+        font-size: 24px;
+        color: $color_price_red;
+      }
+    }
+  }
+  .btn{
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+    margin: 20px auto 50px;
   }
 }
+
+
+
+
+
+
+
+
+
 

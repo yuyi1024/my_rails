@@ -76,7 +76,7 @@
                 span.glyphicon.glyphicon-tags 
                 | #{ product.category.cat1 }、#{ product.category.cat2 } 
               
-              = link_to(add_carts_path(product), method: :post, class: 'btn btn-primary')
+              = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
                 span.glyphicon.glyphicon-shopping-cart
               
               span.sold 已賣 #{ product.sold }

@@ -27,7 +27,7 @@ $(document).on('turbolinks:load', function() {
     var q = $('.input-quantity input').val();
     if($(this).hasClass('plus')){
       q++;
-    }else if($(this).hasClass('minus') && q>0){
+    }else if($(this).hasClass('minus') && q>1){
       q--;
     }
     $('.input-quantity input').val(q);

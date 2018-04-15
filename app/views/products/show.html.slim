@@ -11,15 +11,14 @@
       p 已賣數量： #{ @product.sold }
 
 
-      = form_for @product, :url => add_carts_path(@product), method: 'post' do |f|
+      = form_for @product, :url => add_carts_path(@product), method: 'post', remote: :true do |f|
         .input-group.col-sm-10.input-quantity
           span.input-group-btn.minus
             button.btn.btn-default -
-          = f.text_field :quantity, class: 'form-control', value: '0'
+          = f.text_field :quantity, class: 'form-control', value: '1'
           span.input-group-btn.plus
             button.btn.btn-default +
         = f.submit '加入購物車', class: 'col-sm-5 btn add-to-cart'
-
 
       p.col-sm-12.freight 全館滿2000元免運費
 
