@@ -1,4 +1,5 @@
 class Cart
+  SessionKey = :my_cart666999
 
   #自動產生getter
   attr_reader :items
@@ -19,10 +20,16 @@ class Cart
     found_item = @items.find{ |item| item.product_id == product_id } 
 
     if found_item
-      found_item.increment(quantity)
+      product_quantity = Product.find(found_item.product_id).quantity
+      found_item.quantity + quantity > product_quantity ? found_item.change(product_quantity) : found_item.increment(quantity)
     else
       @items << CartItem.new(product_id, quantity)
     end
+  end
+
+  def change_quantity(product_id, quantity)
+    found_item = @items.find{ |item| item.product_id == product_id }
+    found_item.change(quantity)
   end
 
   def total_price
@@ -37,13 +44,6 @@ class Cart
 
   # class method 類別方法
   def self.from_hash(hash)
-    # @items = Cart.new
-    # if !hash.nil?
-    #   hash['items'].each do |item|
-    #     @items << CartItem.new( item['product_id'], item['quantity'] )
-    #   end
-    # end  
-
     if hash.nil?
       new []   #new([]) => initialize([])
     else

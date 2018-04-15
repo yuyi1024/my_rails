@@ -7,7 +7,7 @@
         .caption
           h3 
             = link_to product.name, product_path(product)
-          p.price $#{product.price}
+          p.price $#{number_with_delimiter(product.price)}
 
           p.tags
             span.glyphicon.glyphicon-tags 

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resource :carts, only: [:show, :destroy] do
   	collection do
   		post :add, path: 'add/:id'
+  		post :change, path: 'change/:id'
 		end
 	end
 end

@@ -271,8 +271,6 @@ function price() {
   form_submit();
 }
 
-
-
 /*
   box/input/tag 屬性
   >>cat1-box

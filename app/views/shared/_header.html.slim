@@ -19,10 +19,11 @@ nav
           |  會員登入
       
 			
-    = link_to carts_path
-      .button
-        span.glyphicon.glyphicon-shopping-cart
-        |  購物車
+    /= link_to carts_path
+    .button onclick='openCart();'
+      span.glyphicon.glyphicon-shopping-cart
+      |  購物車 
+      span.cart_number #{ @cart_length }
 		
     = link_to products_path
       .button

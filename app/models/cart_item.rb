@@ -11,6 +11,10 @@ class CartItem
     @quantity += quantity
   end
 
+  def change(quantity)
+    @quantity = quantity
+  end
+
   def product
     Product.find(@product_id)
   end

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def cart_show
-    @carts = Cart.from_hash(session[:my_cart6699])
+    @carts = Cart.from_hash(session[Cart::SessionKey])
     
     @cart_items = []
     @total_price = 0
@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
       @cart_items << [ product, item.quantity ]
       @total_price += (product.price*item.quantity)
     end
+
+    @cart_length = @carts.items.length
   end
 
   protected

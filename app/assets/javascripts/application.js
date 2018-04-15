@@ -18,6 +18,7 @@
 //= require_tree .
 
 //= require products
+//= require shared
 //= require bootstrap-sprockets
 
 

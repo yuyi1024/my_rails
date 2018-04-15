@@ -14,5 +14,7 @@ class Product < ApplicationRecord
   	photo.recreate_versions! if crop_x.present?
 	end
 
+  
+
 end
 

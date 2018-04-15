@@ -6,7 +6,7 @@
     .col-sm-3.col-sm-offset-1
       h3 = @product.name
       hr
-      p.price NT$ #{ @product.price }
+      p.price NT$ #{ number_with_delimiter(@product.price) }
       p 庫存： #{ @product.quantity }
       p 已賣數量： #{ @product.sold }
 
@@ -20,7 +20,7 @@
             button.btn.btn-default +
         = f.submit '加入購物車', class: 'col-sm-5 btn add-to-cart'
 
-      p.col-sm-12.freight 全館滿2000元免運費
+      p.col-sm-12.freight 全館滿2,000元免運費
 
 
   .row.product_description
