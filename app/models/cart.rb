@@ -1,5 +1,6 @@
 class Cart
-  SessionKey = :my_cart666999
+  SessionKey_cart = :my_cart_sr0cywr
+  SessionKey_order = :my_order_aTpk2wr
 
   #自動產生getter
   attr_reader :items
@@ -48,11 +49,16 @@ class Cart
       new []   #new([]) => initialize([])
     else
       new hash['items'].map{ |item|
-        CartItem.new(item['product_id'], item['quantity']) 
+        CartItem.new(item['product_id'], item['quantity'] ) 
       }
     end  
   end
 
+  def self.new_order_hash(hash)
+    new []
+  end
+
+  
 
 
   # def empty?

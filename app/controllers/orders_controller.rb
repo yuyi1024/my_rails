@@ -2,21 +2,37 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def new
+
+    # 按下結帳後將 cart session 中的資料存入新產生的 order session，以防結帳後再更動 cart
+    @order_session = Cart.new_order_hash(session[Cart::SessionKey_order])
+    @cart = Cart.from_hash(session[Cart::SessionKey_cart])
+    @order_session = @cart
+    session[Cart::SessionKey_order] = @order_session.to_hash
+
     @order = Order.new
     @order.order_items.build
-
-    @cart = Cart.from_hash(session[Cart::SessionKey])
-    @total_price = @cart.items.reduce(0){ |sum, item| 
-      sum + Product.find(item.product_id).price*item.quantity 
-    }
   end
 
   def create
+    @cart = Cart.from_hash(session[Cart::SessionKey_cart])
+    @order_session = Cart.from_hash(session[Cart::SessionKey_order])
+
     @order = Order.create(order_params)
     @order.user = current_user
+    @order.order_items.map{ |order_item| order_item = @order_session }
 
+    @cart = @cart.to_hash
+    @order_session = @order_session.to_hash
 
     if @order.save
+
+      # 刪除購物車session中已結帳的物品
+      @order_session['items'].each do |item|
+        @cart['items'] = @cart['items'].dup.delete_if{|k,_| k['product_id'] == item['product_id'].to_s}
+      end
+
+      session[Cart::SessionKey_cart] = @cart
+      session[Cart::SessionKey_order] = Cart.new
       redirect_to products_path
     else
       redirect_to new_order_path

@@ -3,17 +3,17 @@ class CartsController < ApplicationController
   #show 在 application_controller
 
   def add
-    @carts = Cart.from_hash(session[Cart::SessionKey])
+    @carts = Cart.from_hash(session[Cart::SessionKey_cart])
     params[:product].nil? ? quantity = 1 : quantity = params[:product][:quantity].to_i
     @carts.add_item(params[:id] ,quantity)
-    session[Cart::SessionKey] = @carts.to_hash
+    session[Cart::SessionKey_cart] = @carts.to_hash
 
     @add_item = Product.find(params[:id]).name
     cart_to_array
   end
 
   def change
-    @carts = Cart.from_hash(session[Cart::SessionKey])
+    @carts = Cart.from_hash(session[Cart::SessionKey_cart])
     cart_quantity = params[:quantity].to_i
     product_quantity = Product.find(params[:id]).quantity
 
@@ -25,18 +25,18 @@ class CartsController < ApplicationController
 
     @carts.change_quantity(params[:id], cart_quantity)
     puts @carts.items
-    session[Cart::SessionKey] = @carts.to_hash
+    session[Cart::SessionKey_cart] = @carts.to_hash
     cart_to_array
   end
 
   def destroy
-    @carts = Cart.from_hash(session[Cart::SessionKey])
+    @carts = Cart.from_hash(session[Cart::SessionKey_cart])
 
     @carts.items.map{ |item| 
       @carts.items.delete(item) if item.product_id == params[:format] 
     }
 
-    session[Cart::SessionKey] = @carts.to_hash
+    session[Cart::SessionKey_cart] = @carts.to_hash
     cart_to_array
   end
 
