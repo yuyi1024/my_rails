@@ -7,11 +7,10 @@
     p $#{ product.price } x #{ item.quantity } 
     p 總計#{ product.price*item.quantity }
 
-    / = f.fields_for :order_items do |order_item|
+    /= f.fields_for :order_items do |order_item|
       = order_item.hidden_field :product_id, value: item.product_id
       = order_item.hidden_field :quantity, value: item.quantity
-      = order_item.hidden_field :price, value: product.price
-      = order_item.text_field :order, value: item.order
+
     br
     hr
 

@@ -10,7 +10,6 @@ class OrdersController < ApplicationController
     session[Cart::SessionKey_order] = @order_session.to_hash
 
     @order = Order.new
-    @order.order_items.build
   end
 
   def create
@@ -19,7 +18,13 @@ class OrdersController < ApplicationController
 
     @order = Order.create(order_params)
     @order.user = current_user
-    @order.order_items.map{ |order_item| order_item = @order_session }
+
+    @order_session.items.length.times{@order.order_items.build}
+
+    @order_session.items.each_with_index do |item,index|
+      @order.order_items[index].product_id = item.product_id
+      @order.order_items[index].quantity = item.quantity
+    end
 
     @cart = @cart.to_hash
     @order_session = @order_session.to_hash
@@ -28,7 +33,7 @@ class OrdersController < ApplicationController
 
       # 刪除購物車session中已結帳的物品
       @order_session['items'].each do |item|
-        @cart['items'] = @cart['items'].dup.delete_if{|k,_| k['product_id'] == item['product_id'].to_s}
+        @cart['items'] = @cart['items'].dup.delete_if{|key,_| key['product_id'] == item['product_id'].to_s}
       end
 
       session[Cart::SessionKey_cart] = @cart
