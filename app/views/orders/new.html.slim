@@ -1,0 +1,47 @@
+= form_for @order, :url => orders_path, method: 'post' do |f|
+
+  - @cart.items.each do |item|
+    - product = Product.find(item.product_id)
+    
+    p #{ product.name } 
+    p $#{ product.price } x #{ item.quantity } 
+    p 總計#{ product.price*item.quantity }
+
+    = f.fields_for :order_items do |order_item|
+      = order_item.hidden_field :product_id, value: item.product_id
+      = order_item.hidden_field :quantity, value: item.quantity
+      = order_item.hidden_field :price, value: product.price
+    br
+    hr
+
+  = @total_price
+
+
+  hr
+
+  = f.label :true_name, '收件人'
+  = f.text_field :true_name
+
+  = f.label :address, '收件地址'
+  = f.text_field :address
+
+  = f.label :phone, '手機'
+  = f.text_field :phone
+
+  h3 付款方式
+  = f.radio_button :pay_method, 'pay_before'
+  = f.label :pay_method, '先匯款在寄貨'
+
+  = f.radio_button :pay_method, 'pay_after'
+  = f.label :pay_method, '貨到付款'
+
+  h3 收貨方式
+  = f.radio_button :ship_method, 'to_address'
+  = f.label :pay_method, '寄到地址 $100'
+
+  = f.radio_button :ship_method, 'in_store'
+  = f.label :pay_method, '超商取貨 $60'
+
+
+  br
+  = f.submit

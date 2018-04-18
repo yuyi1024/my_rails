@@ -12,4 +12,6 @@ Rails.application.routes.draw do
   		post :change, path: 'change/:id'
 		end
 	end
+
+  resources :orders
 end
