@@ -1,5 +1,6 @@
-class OrdersController < ApplicationController
+ class OrdersController < ApplicationController
   before_action :authenticate_user!
+  protect_from_forgery with: :null_session, only: [:new]
 
   def new
 
@@ -10,6 +11,10 @@ class OrdersController < ApplicationController
     session[Cart::SessionKey_order] = @order_session.to_hash
 
     @order = Order.new
+
+    if !params[:stName].nil?
+      @stName = params[:stName]
+    end
   end
 
   def create

@@ -13,5 +13,9 @@ Rails.application.routes.draw do
 		end
 	end
 
-  resources :orders
+  resources :orders do
+    collection do
+      post :new, path: 'new', as: 'new'
+    end
+  end
 end

@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 	before_action :cart_show
   protect_from_forgery with: :exception
+  
 
   def cart_show
     @carts = Cart.from_hash(session[Cart::SessionKey_cart])
@@ -23,3 +24,6 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :role])
   end
 end
+
+
+
