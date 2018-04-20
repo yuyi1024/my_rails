@@ -1,0 +1,53 @@
+@import 'app';
+
+#order_new{
+  h1{
+    text-align: center;
+  }
+  .row{
+    h3{
+      margin: 0;
+      /*text-align: center;*/
+    }
+    margin-top: 50px;
+  }
+  .product_detail{
+
+  }
+  .send{
+    label{
+      text-align: left;
+      display: inline;
+      line-height: 40px;
+    }
+    .price{
+      text-align: right;
+      font-size: 16px;
+      font-weight: bold;
+      span{
+        font-size: 24px;
+        color: $color_price_red;
+      }
+    }
+  }
+  .data{
+    .row{
+      margin: 30px 0;
+      line-height: 35px;
+      label{
+        font-size: 16px;
+      }
+    }
+    .btn{
+      background: #000;
+      color: #fff;
+      margin: 50px auto;
+      display: block;
+      width: 50%;
+    }
+  }
+  
+
+}
+
+

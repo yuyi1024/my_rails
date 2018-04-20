@@ -58,6 +58,13 @@ class Cart
     new []
   end
 
+  def session_to_order_items(order)
+    @items.each_with_index do |item,index|
+      order.order_items[index].product_id = item.product_id
+      order.order_items[index].quantity = item.quantity
+    end
+  end
+
   
 
 

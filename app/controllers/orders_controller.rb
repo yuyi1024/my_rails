@@ -13,30 +13,27 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @cart = Cart.from_hash(session[Cart::SessionKey_cart])
+    @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
     @order_session = Cart.from_hash(session[Cart::SessionKey_order])
 
     @order = Order.create(order_params)
     @order.user = current_user
 
+    # 將 order session 的東西存入 new 的 OrderItem 中
     @order_session.items.length.times{@order.order_items.build}
+    @order_session.session_to_order_items(@order) 
 
-    @order_session.items.each_with_index do |item,index|
-      @order.order_items[index].product_id = item.product_id
-      @order.order_items[index].quantity = item.quantity
-    end
-
-    @cart = @cart.to_hash
+    @cart_session = @cart_session.to_hash
     @order_session = @order_session.to_hash
 
     if @order.save
 
-      # 刪除購物車session中已結帳的物品
+      # 刪除 cart session 中已結帳的物品，未結帳的不動
       @order_session['items'].each do |item|
-        @cart['items'] = @cart['items'].dup.delete_if{|key,_| key['product_id'] == item['product_id'].to_s}
+        @cart_session['items'] = @cart_session['items'].delete_if{|key,_| key['product_id'] == item['product_id'].to_s}
       end
 
-      session[Cart::SessionKey_cart] = @cart
+      session[Cart::SessionKey_cart] = @cart_session
       session[Cart::SessionKey_order] = Cart.new
       redirect_to products_path
     else
