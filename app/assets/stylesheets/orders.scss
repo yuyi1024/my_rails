@@ -7,7 +7,6 @@
   .row{
     h3{
       margin: 0;
-      /*text-align: center;*/
     }
     margin-top: 50px;
   }
@@ -28,6 +27,16 @@
         font-size: 24px;
         color: $color_price_red;
       }
+    }
+    a{
+      font-size: 16px;
+      color: blue;
+      margin-left: 10px; 
+    }
+    .stName{
+      font-size: 16px;
+      font-weight: bold;
+      margin-left: 15px;
     }
   }
   .data{

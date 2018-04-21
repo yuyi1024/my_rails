@@ -10,15 +10,35 @@
     @order_session = @cart
     session[Cart::SessionKey_order] = @order_session.to_hash
 
-    @order = Order.new
-
     if !params[:stName].nil?
       @processID = params[:processID]
       @stName = params[:stName]
       @stCate = params[:stCate]
       @webPara = params[:webPara]
+    else
+      @stName = '未選擇'
     end
 
+  end
+
+  def ship_method #選擇寄送方式並改變 total_price、收件資料 form
+    @order = Order.new
+    @cart = Cart.from_hash(session[Cart::SessionKey_cart])
+    @total_price_with_ship = @cart.total_price
+    
+    if params[:ship_method] == 'in_store'
+      @total_price_with_ship += 60
+    elsif params[:ship_method] == 'to_address'
+      @total_price_with_ship += 100
+    end
+    
+    @ship_method = params[:ship_method]
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+    
   end
 
   def ezship

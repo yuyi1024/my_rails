@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :orders do
     collection do
       post :ezship, path: 'ezship', as: 'ezship'
+      get :ship_method, path: 'ship_method', as: 'ship_method'
     end
   end
 end

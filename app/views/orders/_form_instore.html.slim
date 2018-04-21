@@ -1,0 +1,12 @@
+= form_for @order, :url => orders_path, method: 'post' do |f|
+	.row
+	  = f.label :true_name, '取件人姓名', class: 'col-sm-2'
+	  = f.text_field :true_name, class: 'col-sm-8'
+	.row
+	  = f.label :email, '取件人 Email', class: 'col-sm-2'
+	  = f.text_field :email, class: 'col-sm-8'
+	.row
+	  = f.label :phone, '取件人手機', class: 'col-sm-2'
+	  = f.text_field :phone, class: 'col-sm-8'
+
+	= f.submit '訂單建立', class:'btn'

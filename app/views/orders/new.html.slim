@@ -1,112 +1,85 @@
 #order_new.container
   h1 訂單結帳
-  = form_for @order, :url => orders_path, method: 'post' do |f|
-    .row
-      .product_detail.col-sm-8.col-sm-offset-2
-        .panel.panel-default
-          .panel-heading 
-            h3 購買清單
+  
+  .row
+    .product_detail.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 購買清單
 
-          table.table
+        table.table
+          tr
+            th 
+            th 
+            th 商品名稱
+            th 單價
+            th 數量
+            th 小計
+          tbody
+
+            - @cart.items.each_with_index do |item, index|
+              - product = Product.find(item.product_id)
+              tr
+                th #{ index+1 }
+                td
+                  img src="/assets/no-image.png" width="50px"
+                td #{ product.name }
+                td $#{ number_with_delimiter(product.price) }
+                td #{ item.quantity }
+                td $#{ number_with_delimiter(product.price*item.quantity) }
+
             tr
               th 
               th 
-              th 商品名稱
-              th 單價
-              th 數量
-              th 小計
-            tbody
+              th 
+              th 
+              th 小計：
+              th $ #{ number_with_delimiter(@cart.total_price) }
+  .row
+    .send.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 送貨 / 付款方式
 
-              - @cart.items.each_with_index do |item, index|
-                - product = Product.find(item.product_id)
-                tr
-                  th #{ index+1 }
-                  td
-                    img src="/assets/no-image.png" width="50px"
-                  td #{ product.name }
-                  td $#{ number_with_delimiter(product.price) }
-                  td #{ item.quantity }
-                  td $#{ number_with_delimiter(product.price*item.quantity) }
-
-              tr
-                th 
-                th 
-                th 
-                th 
-                th 小計：
-                th $ #{ number_with_delimiter(@cart.total_price) }
-    .row
-      .send.col-sm-8.col-sm-offset-2
-        .panel.panel-default
-          .panel-heading 
-            h3 送貨 / 付款方式
-
-          table.table.cc
+        = form_tag ship_method_orders_path, method: :get, remote: :true, id: 'ship_form' do 
+          table.table
             tr
               th 送貨方式
               th 付款方式
             tr
               td
-                input type='radio' name='www' value='yyy'
-                = f.radio_button :ship_method, 'in_store'
-                = f.label :ship_method, ' 超商取貨 $60'
-                br
-                = f.radio_button :ship_method, 'to_address'
-                = f.label :ship_method, ' 宅配 $100'
+                input type='radio' name='ship_method' value='in_store' onchange='selectShip()' id='in_store'
+                label  超商取貨 $60
+                
+                a onclick='selectStore();' [＋選擇超商]
+                p.stName 門市名稱： #{ @stName } 
+                
+                input type='radio' name='ship_method' value='to_address' onchange='selectShip()'
+                label  宅配 $100
               td
-                = f.radio_button :pay_method, 'pay_before'
-                = f.label :pay_method, ' 先匯款在寄貨'
+                input type='radio' name='pay_method' value='pay_after'
+                label  貨到付款
                 br
-                = f.radio_button :pay_method, 'pay_after'
-                = f.label :pay_method, ' 貨到付款'
-            
-        p.price 
-          | 總計 $
-          span #{ number_with_delimiter(@cart.total_price) }
+                input type='radio' name='pay_method' value='pay_before'
+                label  先匯款在寄貨
 
 
-    .row
-      .data.col-sm-8.col-sm-offset-2
-        .panel.panel-default
-          .panel-heading 
-            h3 收件資料
+        = form_tag('http://map.ezship.com.tw/ezship_map_web.jsp', authenticity_token: false, id: 'ezship_form')
 
-          .row
-            = f.label :true_name, '收件人', class: 'col-sm-2'
-            = f.text_field :true_name, class: 'col-sm-8'
-          .row
-            = f.label :address, '收件地址', class: 'col-sm-2'
-            = f.text_field :address, class: 'col-sm-8'
-          .row
-            = f.label :phone, '手機', class: 'col-sm-2'
-            = f.text_field :phone, class: 'col-sm-8'
-
-        = f.submit '訂單建立', class:'btn'
-
-= @o
-= @s
-
-p #{ @processID }
-p #{ @stName }
-p #{ @stCate }
-p #{ @webPara }
-
-= form_tag('http://map.ezship.com.tw/ezship_map_web.jsp', authenticity_token: false)
-
-  | ezShip帳號
-  = text_field_tag 'suID', 'bonnie831024@gmail.com'
-  br
-  | 訂單編號
-  = text_field_tag 'processID', '00020180420001'
-  br
-  | 回傳路徑及程式名稱
-  = text_field_tag 'rtURL', 'http://localhost:3000/orders/ezship'
-  br
-  | 額外判別資料
-  = text_field_tag 'webPara', 'qwqwqwqw'
-
-  = submit_tag 'Save'
+          = hidden_field_tag 'suID', 'bonnie831024@gmail.com'
+          = hidden_field_tag 'processID', '00020180420001'
+          = hidden_field_tag 'rtURL', 'http://localhost:3000/orders/ezship'
+          = hidden_field_tag 'webPara', 'qwqwqwqw'
+                    
+      p.price 
+        | 總計 $
+        span #{ number_with_delimiter(@cart.total_price) }
 
 
-
+  .row
+    .data.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 收件資料
+        #new_order
 
