@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   resources :orders do
     collection do
-      post :new, path: 'new', as: 'new'
+      post :ezship, path: 'ezship', as: 'ezship'
     end
   end
 end

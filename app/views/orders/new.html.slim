@@ -47,6 +47,7 @@
               th 付款方式
             tr
               td
+                input type='radio' name='www' value='yyy'
                 = f.radio_button :ship_method, 'in_store'
                 = f.label :ship_method, ' 超商取貨 $60'
                 br
@@ -82,8 +83,14 @@
 
         = f.submit '訂單建立', class:'btn'
 
+= @o
+= @s
 
+p #{ @processID }
 p #{ @stName }
+p #{ @stCate }
+p #{ @webPara }
+
 = form_tag('http://map.ezship.com.tw/ezship_map_web.jsp', authenticity_token: false)
 
   | ezShip帳號
@@ -93,21 +100,13 @@ p #{ @stName }
   = text_field_tag 'processID', '00020180420001'
   br
   | 回傳路徑及程式名稱
-  = text_field_tag 'rtURL', 'http://localhost:3000/orders/new'
+  = text_field_tag 'rtURL', 'http://localhost:3000/orders/ezship'
   br
-  / | 取件人姓名
-  / = text_field_tag 'stCode', '李瓜嘎'
-  / br
-  / | 取件人電子郵件
-  / = text_field_tag 'rtURL', 'bonnie841024@gmail.com'
-  / br
-  / | 取件人行動電話
-  / = text_field_tag 'webPara', '0933221345'
-  / br
-  / | 請參見備註
-  / = text_field_tag 'rv_amount', '0'
-  / br
   | 額外判別資料
   = text_field_tag 'webPara', 'qwqwqwqw'
 
   = submit_tag 'Save'
+
+
+
+

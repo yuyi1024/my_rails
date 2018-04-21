@@ -13,8 +13,25 @@
     @order = Order.new
 
     if !params[:stName].nil?
+      @processID = params[:processID]
       @stName = params[:stName]
+      @stCate = params[:stCate]
+      @webPara = params[:webPara]
     end
+
+  end
+
+  def ezship
+
+    if !params[:stName].nil?
+      @processID = params[:processID]
+      @stName = params[:stName]
+      @stCate = params[:stCate]
+      @webPara = params[:webPara]
+    end
+
+    redirect_to new_order_path(:processID => params[:processID], :stName=> params[:stName], :stCate=> params[:stCate], :webPara=> params[:webPara])
+
   end
 
   def create
