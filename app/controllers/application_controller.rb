@@ -12,10 +12,11 @@ class ApplicationController < ActionController::Base
     
     @carts.items.each do |item|
       product = Product.find(item.product_id)
-      @cart_items << [ product, item.quantity ]
-      @total_price += (product.price*item.quantity)
+      @cart_items << [ product, item.quantity, item.price ]
+      puts @total_price
+      puts item.price
+      @total_price += item.unit_price
     end
-
     @cart_length = @carts.items.length
   end
 

@@ -1,6 +1,6 @@
  class OrdersController < ApplicationController
   before_action :authenticate_user!
-  protect_from_forgery with: :null_session, only: [:new]
+  protect_from_forgery with: :null_session, only: [:ezship]
 
   def new
 
@@ -11,29 +11,25 @@
     session[Cart::SessionKey_order] = @order_session.to_hash
 
     if !params[:stName].nil?
-      @processID = params[:processID]
       @stName = params[:stName]
-      @stCate = params[:stCate]
-      @webPara = params[:webPara]
+      @stCode = params[:stCode]
     else
-      @stName = '未選擇'
+      # @stName = '未選擇'
     end
-
   end
 
   def ship_method #選擇寄送方式並改變 total_price、收件資料 form
     @order = Order.new
-    @cart = Cart.from_hash(session[Cart::SessionKey_cart])
-    @total_price_with_ship = @cart.total_price
+    @total_price_with_ship = Cart.from_hash(session[Cart::SessionKey_cart]).total_price
     
     if params[:ship_method] == 'in_store'
-      @total_price_with_ship += 60
+      @total_price_with_ship += Order::Freight_in_store
     elsif params[:ship_method] == 'to_address'
-      @total_price_with_ship += 100
+      @total_price_with_ship += Order::Freight_to_address
     end
     
     @ship_method = params[:ship_method]
-
+    
     respond_to do |format|
       format.html
       format.js
@@ -44,13 +40,11 @@
   def ezship
 
     if !params[:stName].nil?
-      @processID = params[:processID]
       @stName = params[:stName]
-      @stCate = params[:stCate]
-      @webPara = params[:webPara]
+      @stCode = params[:stCode]
     end
 
-    redirect_to new_order_path(:processID => params[:processID], :stName=> params[:stName], :stCate=> params[:stCate], :webPara=> params[:webPara])
+    redirect_to new_order_path(:stName=> params[:stName], :stCode=> params[:stCode])
 
   end
 
@@ -58,8 +52,17 @@
     @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
     @order_session = Cart.from_hash(session[Cart::SessionKey_order])
 
+
+
+
     @order = Order.create(order_params)
     @order.user = current_user
+    @order.price = @order_session.total_price #不含運
+    if order_params[:ship_method] == 'in_store'
+      @order.freight = Order::Freight_in_store
+    elsif order_params[:ship_method] == 'to_address'
+      @order.freight = Order::Freight_to_address
+    end
 
     # 將 order session 的東西存入 new 的 OrderItem 中
     @order_session.items.length.times{@order.order_items.build}

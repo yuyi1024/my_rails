@@ -3,6 +3,9 @@ class Order < ApplicationRecord
   belongs_to :user
   accepts_nested_attributes_for :order_items
 
+  Freight_in_store = 60
+  Freight_to_address = 100
+
   include AASM
 
   aasm column: :status do

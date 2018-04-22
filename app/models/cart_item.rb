@@ -1,10 +1,11 @@
 class CartItem
 
-  attr_accessor :product_id, :quantity
+  attr_accessor :product_id, :quantity, :price
 
-  def initialize(product_id, quantity = 1)
+  def initialize(product_id, quantity = 1, price)
     @product_id = product_id
     @quantity = quantity
+    @price = price
   end
 
   def increment(quantity = 1)
@@ -15,12 +16,12 @@ class CartItem
     @quantity = quantity
   end
 
-  def product
-    Product.find(@product_id)
-  end
+  # def product
+  #   Product.find(@product_id)
+  # end
 
-  def price
-    product.price * @quantity
+  def unit_price
+    @price * @quantity
   end
 
 end

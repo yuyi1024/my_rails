@@ -19,6 +19,9 @@
       display: inline;
       line-height: 40px;
     }
+    #store_value{
+      display: none;
+    }
     .price{
       text-align: right;
       font-size: 16px;
@@ -37,6 +40,7 @@
       font-size: 16px;
       font-weight: bold;
       margin-left: 15px;
+      color: $color_dark_blue;
     }
   }
   .data{
@@ -53,6 +57,9 @@
       margin: 50px auto;
       display: block;
       width: 50%;
+    }
+    #order_note{
+      resize: none;
     }
   }
   

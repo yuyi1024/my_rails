@@ -5,7 +5,7 @@ class CartsController < ApplicationController
   def add
     @carts = Cart.from_hash(session[Cart::SessionKey_cart])
     params[:product].nil? ? quantity = 1 : quantity = params[:product][:quantity].to_i
-    @carts.add_item(params[:id] ,quantity)
+    @carts.add_item(params[:id] ,quantity, Product.find(params[:id]).price)
     session[Cart::SessionKey_cart] = @carts.to_hash
 
     @add_item = Product.find(params[:id]).name
@@ -47,8 +47,8 @@ class CartsController < ApplicationController
     
     @carts.items.each do |item|
       product = Product.find(item.product_id)
-      @cart_items << [ product, item.quantity ]
-      @total_price += (product.price*item.quantity)
+      @cart_items << [ product, item.quantity, item.price ]
+      @total_price += item.unit_price
     end
   end
 end

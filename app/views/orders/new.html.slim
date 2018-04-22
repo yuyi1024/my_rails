@@ -48,33 +48,32 @@
               th 付款方式
             tr
               td
-                input type='radio' name='ship_method' value='in_store' onchange='selectShip()' id='in_store'
-                label  超商取貨 $60
+                input#in_store type='radio' name='ship_method' value='in_store' onchange='selectShip()'
+                label for='in_store'  超商取貨 $#{Order::Freight_in_store}
                 
                 a onclick='selectStore();' [＋選擇超商]
-                p.stName 門市名稱： #{ @stName } 
+                p.stName #{ @stName.nil? ? '未選擇' : @stName }
+                #store_value #{ @stCode }#{ @stName }
                 
-                input type='radio' name='ship_method' value='to_address' onchange='selectShip()'
-                label  宅配 $100
+                input#to_address type='radio' name='ship_method' value='to_address' onchange='selectShip()'
+                label for='to_address'  宅配 $#{Order::Freight_to_address}
               td
-                input type='radio' name='pay_method' value='pay_after'
-                label  貨到付款
+                input#pay_after type='radio' name='pay_method' value='pay_after'
+                label for='pay_after'  貨到付款
                 br
-                input type='radio' name='pay_method' value='pay_before'
-                label  先匯款在寄貨
+                input#pay_before type='radio' name='pay_method' value='pay_before'
+                label for='pay_before'  先匯款再寄貨
 
 
         = form_tag('http://map.ezship.com.tw/ezship_map_web.jsp', authenticity_token: false, id: 'ezship_form')
 
           = hidden_field_tag 'suID', 'bonnie831024@gmail.com'
-          = hidden_field_tag 'processID', '00020180420001'
+          = hidden_field_tag 'processID', ''
           = hidden_field_tag 'rtURL', 'http://localhost:3000/orders/ezship'
-          = hidden_field_tag 'webPara', 'qwqwqwqw'
                     
       p.price 
         | 總計 $
         span #{ number_with_delimiter(@cart.total_price) }
-
 
   .row
     .data.col-sm-8.col-sm-offset-2

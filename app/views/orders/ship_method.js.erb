@@ -1,7 +1,7 @@
 $('.price').replaceWith("<%= j render partial: 'price' %>");
 
 <% if @ship_method == 'in_store' %>
-	$('#new_order').replaceWith("<%= j render partial: 'form_instore', locals: { order: @order } %>");
+	$('#new_order').replaceWith("<%= j render partial: 'form_instore', locals: { order: @order, stCode: @stCode } %>");
 <% elsif @ship_method == 'to_address' %>
 	$('#new_order').replaceWith("<%= j render partial: 'form_toaddress', locals: { order: @order } %>");
 
