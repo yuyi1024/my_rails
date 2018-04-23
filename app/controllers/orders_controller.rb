@@ -13,8 +13,6 @@
     if !params[:stName].nil?
       @stName = params[:stName]
       @stCode = params[:stCode]
-    else
-      # @stName = '未選擇'
     end
   end
 
@@ -28,13 +26,7 @@
       @total_price_with_ship += Order::Freight_to_address
     end
     
-    @ship_method = params[:ship_method]
-    
-    respond_to do |format|
-      format.html
-      format.js
-    end
-    
+    @ship_method = params[:ship_method]    
   end
 
   def ezship
@@ -52,12 +44,11 @@
     @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
     @order_session = Cart.from_hash(session[Cart::SessionKey_order])
 
-
-
-
     @order = Order.create(order_params)
     @order.user = current_user
     @order.price = @order_session.total_price #不含運
+    @order.process_id = @order.g_process_id(current_user.id, current_user.orders.length + 1)
+
     if order_params[:ship_method] == 'in_store'
       @order.freight = Order::Freight_in_store
     elsif order_params[:ship_method] == 'to_address'

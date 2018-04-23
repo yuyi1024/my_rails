@@ -55,7 +55,7 @@
                 p.stName #{ @stName.nil? ? '未選擇' : @stName }
                 #store_value #{ @stCode }#{ @stName }
                 
-                input#to_address type='radio' name='ship_method' value='to_address' onchange='selectShip()'
+                input#to_address type='radio' name='ship_method' value='to_address' onchange='selectShip();'
                 label for='to_address'  宅配 $#{Order::Freight_to_address}
               td
                 input#pay_after type='radio' name='pay_method' value='pay_after'
@@ -80,5 +80,5 @@
       .panel.panel-default
         .panel-heading 
           h3 收件資料
-        #new_order
+        #new_order_form
 

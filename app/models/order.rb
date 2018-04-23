@@ -8,6 +8,11 @@ class Order < ApplicationRecord
 
   include AASM
 
+  def g_process_id(user, order)
+    t = Time.now
+    process_id = t.year.to_s[2,3] + "%02d" % t.mon + "%02d" % t.mday + "%03d" % user + rand(0..9).to_s + "%02d" % order + "%02d" % rand(0..99)
+  end
+
   aasm column: :status do
     state :pending, initial: true
     state :paid, :shipping, :delivered, :returned, :refunded, :canceled, :deliverd_store, :picked_up, :finished
