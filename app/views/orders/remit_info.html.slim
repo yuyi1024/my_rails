@@ -25,17 +25,17 @@
               tr
                 th #
                 th 銀行名稱
-                td 玉山商業銀行
+                td #{ ENV['BANK_NAME'] }
 
               tr
                 th #
                 th 銀行代碼
-                td 808
+                td #{ ENV['BANK_CODE'] }
 
               tr
                 th #
                 th 銀行帳號
-                td 0123456789012345
+                td #{ ENV['BANK_ACCOUNT'] }
 
   - else
     .row
