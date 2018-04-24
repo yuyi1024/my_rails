@@ -241,7 +241,6 @@ function price() {
 
   if ($('#price_top').val() != '') {
     pt = parseInt($('#price_top').val());
-    console.log(pt);
     if (!Number.isInteger(pt)) {
       pt = '';
     }

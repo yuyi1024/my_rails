@@ -10,9 +10,6 @@
     }
     margin-top: 50px;
   }
-  .product_detail{
-
-  }
   .send{
     label{
       text-align: left;
@@ -61,9 +58,31 @@
     #order_note{
       resize: none;
     }
+    .same_user_block{
+      display: inline-block;
+      margin-top: 20px;
+      label{
+        margin-left: 10px;
+      }
+    }
   }
-  
-
 }
 
+#remit_info{
+  h1{
+    text-align: center;
+  }
+  .row{
+    h3{
+      margin: 0;
+    }
+    margin-top: 50px;
+  }
+  p{
+    line-height: 50px;
+    margin: 0;
+    padding: 0 10px;
+    color: #555;
+  }
+}
 

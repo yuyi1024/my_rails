@@ -13,6 +13,10 @@ function selectStore(){ //選擇超商
 }
 
 function selectShip(){ //選擇送貨方式
+	$user_data_chk = document.getElementById("user_data_chk");
+	if($user_data_chk != null){
+		$('#user_data').val($user_data_chk.checked);
+	}
 	$('#ship_form').submit();
 }
 
@@ -29,13 +33,28 @@ function order_submit(){ //確認下單
 				alert('未選擇超商');
 			}else{
 				$('#order_address').val($('#store_value').text());
-				$('#new_order').submit();
+				if (form_required()){
+					$('#new_order').submit();
+				}
 			}
 		}else if(ship_method.value == 'to_address'){
-			$('#new_order').submit();
+			if (form_required()){
+				$('#new_order').submit();
+			}
 		}		
 
 	}else{
 		alert('送貨或付款方式未填寫');
 	}
+}
+
+function form_required(){
+	var required = true;
+	$('#new_order .row input').each(function(){
+		if($(this).val() == ''){
+			required = false;
+			alert($(this).prev().text()+'尚未填寫');
+		}
+	});
+	return required;
 }

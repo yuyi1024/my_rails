@@ -56,6 +56,7 @@ class Cart
 
   def self.new_order_hash(hash)
     new []
+    @items = hash
   end
 
   def session_to_order_items(order)

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     collection do
       post :ezship, path: 'ezship', as: 'ezship'
       get :ship_method, path: 'ship_method', as: 'ship_method'
+      get :remit_info, path: 'remit_info/:process_id', as: 'remit_info'
     end
   end
 end
