@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
   root 'products#index'
 
-  devise_for :users
+
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
+
+  devise_scope :user do
+    get '/user/show', to: 'users/registrations#show'
+  end
 
   resources :products
   resources :images, only: [:create, :destroy]
@@ -20,4 +27,5 @@ Rails.application.routes.draw do
       get :remit_info, path: 'remit_info/:process_id', as: 'remit_info'
     end
   end
+
 end

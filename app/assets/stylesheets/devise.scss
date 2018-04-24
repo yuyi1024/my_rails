@@ -1,5 +1,4 @@
 @import 'app';
-
 h2, em, label, a, .rm{
   text-align: center;
 }
@@ -46,6 +45,7 @@ h2, em, label, a, .rm{
       margin: -20px auto 50px;
     }
     label{
+      display: block;
       font-size: 18px;
       &[for=user_remember_me]{
         display: inline;
@@ -62,3 +62,45 @@ h2, em, label, a, .rm{
     }
   }
 }
+
+
+#user_show{
+  ul{
+    border-bottom: none;
+  }
+  .panel{
+    padding: 0;
+  }
+
+  .detail{
+    .row{
+      margin: 30px 0;
+      line-height: 35px;
+      label{
+        font-size: 16px;
+      }
+      input{
+        background-color: #eee;
+        border: 1px #ccc solid;
+      }
+      .btn{
+        background-color: #000;
+        color: #fff;
+        margin: 0 auto;
+        display: block;
+        border: none;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

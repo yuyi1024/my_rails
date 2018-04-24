@@ -8,10 +8,10 @@ nav
 		
     
     - if current_user
-      /= link_to new_session_path(:user)
-      .button
-        span.glyphicon.glyphicon-user
-        |  會員中心
+      = link_to user_show_path
+        .button
+          span.glyphicon.glyphicon-user
+          |  會員中心
     - else
       = link_to new_session_path(:user)
         .button
