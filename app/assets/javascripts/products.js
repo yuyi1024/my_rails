@@ -23,22 +23,16 @@ $(document).on('turbolinks:load', function() {
 
 
   $('.input-quantity span').click(function(){
+    event.preventDefault(); 
     var q = $('.input-quantity input').val();
     if($(this).hasClass('plus')){
       q++;
-    }else if($(this).hasClass('minus') && q>0){
+    }else if($(this).hasClass('minus') && q>1){
       q--;
     }
     $('.input-quantity input').val(q);
   });
 
-
-
-  // $('.input-quantity .plus').click(function(){
-  //   var q = $('.input-quantity input').val();
-  //   q++;
-  //   $('.input-quantity input').val(q);
-  // });
 
   $('#cropbox').Jcrop({
     aspectRatio: 1,
@@ -263,6 +257,9 @@ function price() {
   $('#price_bottom').val(pb);
   $('#price_top').val(pt);
 
+  pb = pb.toLocaleString('en');
+  pt = pt.toLocaleString('en');
+
   if (pb != '' && pt != '') {
     tagName = '$ ' + pb + ' ~ ' + pt;
   } else if (pb != '') {
@@ -276,8 +273,6 @@ function price() {
   tag_create(tagName, 'p', 'price');
   form_submit();
 }
-
-
 
 /*
   box/input/tag 屬性

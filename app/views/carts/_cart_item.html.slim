@@ -1,0 +1,18 @@
+- @cart_items.each do |cart_item|
+  .item
+    = link_to(product_path(cart_item))
+      img src="#{ cart_item[0].photo.present? ? cart_item[0].photo_url(:thumb) : '/assets/no-image.png' }"
+
+    .word
+      = link_to cart_item[0].name, product_path(cart_item), class: 'title'
+      br
+      input type='number' value='#{ cart_item[1] }' onChange='change_item_quantity(this);' id='item-#{ cart_item[0].id }' min='1' max='99'
+      |  x $#{ number_with_delimiter(cart_item[0].price) } = $
+      span#price #{ number_with_delimiter(cart_item[0].price * cart_item[1]) }
+      br
+      = link_to '刪除', carts_path(cart_item[0]), method: :delete, remote: :true, class: 'delete'
+  hr
+
+p.total_price 
+  | 總計 $NT 
+  span #{ number_with_delimiter(@total_price) }

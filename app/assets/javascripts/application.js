@@ -18,7 +18,9 @@
 //= require_tree .
 
 //= require products
+//= require shared
 //= require bootstrap-sprockets
+//= require jquery_nested_form
 
 
 //= require jquery.turbolinks

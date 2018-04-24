@@ -1,0 +1,42 @@
+#remit_info.container
+  h1 付款資訊
+  
+  - if @order.present?
+    .row
+      .col-sm-6.col-sm-offset-3
+        .panel.panel-default
+          .panel-heading 
+            h3 匯款資料
+
+          table.table
+            tbody
+              tr 
+                p 請使用網路銀行或實體 ATM 將金額轉入以下帳戶。
+              tr
+                th #
+                th 訂單編號
+                td #{ @order.process_id }
+
+              tr
+                th #
+                th 金額
+                td $ #{ number_with_delimiter(@order.price+@order.freight) }
+
+              tr
+                th #
+                th 銀行名稱
+                td #{ ENV['BANK_NAME'] }
+
+              tr
+                th #
+                th 銀行代碼
+                td #{ ENV['BANK_CODE'] }
+
+              tr
+                th #
+                th 銀行帳號
+                td #{ ENV['BANK_ACCOUNT'] }
+
+  - else
+    .row
+      p 找不到訂單

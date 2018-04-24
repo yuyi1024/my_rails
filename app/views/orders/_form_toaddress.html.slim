@@ -1,0 +1,22 @@
+.same_user_block.col-sm-offset-5
+  input#user_data_chk type='checkbox' name='user_data_chk' onchange='selectShip();'
+  label for='user_data_chk' 同會員資料
+
+= form_for @order, :url => orders_path, method: 'post' do |f|
+  .row
+    = f.label :true_name, '收件人姓名*', class: 'col-sm-2'
+    = f.text_field :true_name, class: 'col-sm-8', required: "required", value: @user.nil? ? '' : @user.true_name
+  .row
+    = f.label :address, '收件地址*', class: 'col-sm-2'
+    = f.text_field :address, class: 'col-sm-8', required: "required", value: @user.nil? ? '' : @user.address
+  .row
+    = f.label :phone, '收件人手機*', class: 'col-sm-2'
+    = f.text_field :phone, class: 'col-sm-8', required: "required", value: @user.nil? ? '' : @user.phone
+  .row
+    = f.label :note, '備註', class: 'col-sm-2'
+    = f.text_area :note, class: 'col-sm-8'
+  
+  = f.hidden_field :ship_method
+  = f.hidden_field :pay_method
+
+button#new_order.btn onclick='order_submit();' 訂單建立

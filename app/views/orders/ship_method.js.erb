@@ -1,0 +1,11 @@
+$('.price').replaceWith("<%= j render partial: 'price' %>");
+
+<% if @ship_method == 'in_store' %>
+	$('#new_order_form').html("<%= j render partial: 'form_instore', locals: { order: @order, stCode: @stCode } %>");
+<% elsif @ship_method == 'to_address' %>
+	$('#new_order_form').html("<%= j render partial: 'form_toaddress', locals: { order: @order } %>");
+<% end %>
+
+<% if !@user.nil? %>
+	document.getElementById("user_data_chk").checked = true;
+<% end %>

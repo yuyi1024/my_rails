@@ -70,13 +70,13 @@
               h3 
                 = link_to product.name, product_path(product)
               
-              p.price $#{product.price}
+              p.price $#{number_with_delimiter(product.price)}
 
               p.tags
                 span.glyphicon.glyphicon-tags 
                 | #{ product.category.cat1 }、#{ product.category.cat2 } 
               
-              a.btn.btn-primary href="#" role="button"
+              = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
                 span.glyphicon.glyphicon-shopping-cart
               
               span.sold 已賣 #{ product.sold }

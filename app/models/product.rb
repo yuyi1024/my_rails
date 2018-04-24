@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
   belongs_to :category, optional: true
+  has_many :order_items
   mount_uploader :photo, PhotoUploader
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   after_update :crop_photo
@@ -13,6 +14,8 @@ class Product < ApplicationRecord
   def crop_photo
   	photo.recreate_versions! if crop_x.present?
 	end
+
+  
 
 end
 

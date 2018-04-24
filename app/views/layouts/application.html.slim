@@ -7,9 +7,11 @@ html
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
 
-
   body
-    .ccc
+
+    .mask onclick='closeCart();'
+
+    .message
       .hello
         - if current_user
           | 您好， #{current_user.name} #{'(管理者)' if current_user.role.include? 'admin'} ！
@@ -17,4 +19,5 @@ html
       .alert #{ alert }
 
     = render 'shared/header'
+    = render 'carts/show'
     = yield 
