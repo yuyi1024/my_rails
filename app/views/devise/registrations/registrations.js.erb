@@ -1,0 +1,5 @@
+<% if @action == 'update' %>
+	$('.detail_field').html("<%= j render partial: 'user_data' %>");
+<% elsif @action == 'pwd_field' %>
+	$('.pwd_field').html("<%= j render partial: 'change_pwd' %>");
+<% end %>

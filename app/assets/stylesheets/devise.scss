@@ -72,30 +72,45 @@ h2, em, label, a, .rm{
     padding: 0;
   }
 
-  .detail{
+  .user_data{
     .row{
       margin: 30px 0;
       line-height: 35px;
       label{
         font-size: 16px;
       }
-      input{
-        background-color: #eee;
-        border: 1px #ccc solid;
-      }
-      .btn{
-        background-color: #000;
-        color: #fff;
-        margin: 0 auto;
-        display: block;
-        border: none;
+    }
+    .btn{
+      background-color: #000;
+      color: #fff;
+      margin: 0 auto;
+      display: block;
+      border: none;
+    }
+    .save{
+      background-color: $color_price_red;
+    }
+
+    .detail_field{
+      .row{
+        input{
+          background-color: #eee;
+          border: 1px #ccc solid;
+        }
+      } 
+    }
+    .pwd_field{
+      h3{
+        text-align: center;
       }
     }
   }
 }
 
 
-
+.cc{
+  text-align: center;
+}
 
 
 

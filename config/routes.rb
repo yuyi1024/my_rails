@@ -3,11 +3,14 @@ Rails.application.routes.draw do
 
 
   devise_for :users, controllers: {
-    sessions: 'users/sessions'
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
   }
 
   devise_scope :user do
     get '/user/show', to: 'users/registrations#show'
+    get '/user/pwd_field', to: 'users/registrations#pwd_field'
+    patch '/user/update_field', to: 'users/registrations#update_field'
   end
 
   resources :products

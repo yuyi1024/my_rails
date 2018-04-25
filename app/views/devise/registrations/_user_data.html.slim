@@ -1,0 +1,33 @@
+.detail_field
+  = form_for @user, :url => user_update_field_path, method: 'PATCH', :remote => true do |f|
+    .row
+      = f.label :name, '暱稱', class: 'col-sm-2'
+      = f.text_field :name, class: 'col-sm-8', :disabled => true
+      .col-sm-2
+        button.btn onclick='editData(this);' 更改
+  
+  = form_for @user, :url => user_update_field_path, method: 'PATCH', :remote => true do |f|
+    .row
+      = f.label :email, '信箱', class: 'col-sm-2'
+      = f.email_field :email, class: 'col-sm-8', :disabled => true
+  
+  = form_for @user, :url => user_update_field_path, method: 'PATCH', :remote => true do |f|        
+    .row
+      = f.label :true_name, '真實姓名', class: 'col-sm-2'
+      = f.text_field :true_name, class: 'col-sm-8', :disabled => true
+      .col-sm-2
+        button.btn onclick='editData(this);' 更改
+
+  = form_for @user, :url => user_update_field_path, method: 'PATCH', :remote => true do |f|
+    .row
+      = f.label :address, '地址', class: 'col-sm-2'
+      = f.text_field :address, class: 'col-sm-8', :disabled => true
+      .col-sm-2
+        button.btn onclick='editData(this);' 更改
+
+  = form_for @user, :url => user_update_field_path, method: 'PATCH', :remote => true do |f|
+    .row
+      = f.label :phone, '手機', class: 'col-sm-2'
+      = f.text_field :phone, class: 'col-sm-8', :disabled => true
+      .col-sm-2
+        button.btn onclick='editData(this);' 更改
