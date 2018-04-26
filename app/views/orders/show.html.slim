@@ -1,0 +1,99 @@
+#order.container
+  h1 訂單詳情
+  
+  .row
+    .product_detail.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 購買清單
+
+        table.table
+          tr
+            th 
+            th 
+            th 商品名稱
+            th 單價
+            th 數量
+            th 小計
+          tbody
+            - @order.order_items.each_with_index do |item, index|
+              - product = Product.find(item.product_id)
+              tr
+                th #{ index+1 }
+                td
+                  img src="/assets/no-image.png" width="50px"
+                td #{ product.name }
+                td $#{ number_with_delimiter(product.price) }
+                td #{ item.quantity }
+                td $#{ number_with_delimiter(product.price*item.quantity) }
+
+        .panel-footer 
+          p 小計： $ #{ number_with_delimiter(@order.price) }
+          p 運費： $ #{ number_with_delimiter(@order.freight) }
+          p 
+            | 總金額： $ 
+            b #{ number_with_delimiter(@order.price + @order.freight) }
+
+  .row
+    .order_detail.col-sm-offset-2.col-sm-8
+      .panel.panel-default
+        .panel-heading
+          .panel-title 
+            h3 我的訂單
+
+        table.table
+          tr
+            th.col-sm-4 訂單資訊
+            th.col-sm-4 付款資訊
+            th.col-sm-4 送貨資訊
+
+          tbody
+            tr
+              td 
+                p 
+                  b 訂單編號： 
+                  | #{ @order.process_id }
+                p 
+                  b 訂單狀態： 
+                  | #{ @order.status }
+                p 
+                  b 下單日期： 
+                  | #{ @order.created_at.strftime("%Y/%m/%d %H:%M") }
+
+              td 
+                p 
+                  b 付款方式： 
+                  | #{ @order.pay_method }
+                p 
+                  b 付款狀態： 
+                  | #{ @order.status }
+
+              td
+                p 
+                  b 送貨方式： 
+                  | #{ @order.ship_method }
+                p 
+                  b 送貨狀態： 
+                  | #{ @order.status }
+                p 
+                  b #{ @order.ship_method == 'in_store' ? '門市名稱' : '地址' }： 
+                  | #{ @order.address }
+                p 
+                  b 收件人： 
+                  | #{ @order.true_name }
+                p 
+                  b 電話號碼： 
+                  | #{ @order.phone }
+
+        table.table.note
+          tr
+            th 備註
+          tbody
+            tr
+              td #{ @order.note.blank? ? '無' : @order.note }
+
+
+
+
+
+             

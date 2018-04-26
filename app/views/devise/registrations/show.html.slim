@@ -1,0 +1,56 @@
+#user_show.container
+  h2 會員中心
+  
+  .row
+    ul.nav.nav-tabs.col-sm-offset-2.col-sm-8
+      li.col-sm-4.active role="presentation" 
+        = link_to '會員資料'
+      li.col-sm-4 role="presentation"
+        = link_to '我的訂單', user_order_list_path, remote: 'true'
+      li.col-sm-4 role="presentation"
+        = link_to '追蹤'
+
+  #section.row
+    .user_data.panel.panel-default.col-sm-offset-2.col-sm-8
+      .panel-heading
+        h3.panel-title 會員資料
+
+      .panel-body
+        .detail_field
+          = form_for @user, :url => user_update_field_path, method: 'PATCH', :remote => true do |f|
+            .row
+              = f.label :name, '暱稱', class: 'col-sm-2'
+              = f.text_field :name, class: 'col-sm-8', :disabled => true
+              .col-sm-2
+                button.btn onclick='editData(this);' 更改
+          
+          = form_for @user, :url => user_update_field_path, method: 'PATCH', :remote => true do |f|
+            .row
+              = f.label :email, '信箱', class: 'col-sm-2'
+              = f.email_field :email, class: 'col-sm-8', :disabled => true
+          
+          = form_for @user, :url => user_update_field_path, method: 'PATCH', :remote => true do |f|        
+            .row
+              = f.label :true_name, '真實姓名', class: 'col-sm-2'
+              = f.text_field :true_name, class: 'col-sm-8', :disabled => true
+              .col-sm-2
+                button.btn onclick='editData(this);' 更改
+
+          = form_for @user, :url => user_update_field_path, method: 'PATCH', :remote => true do |f|
+            .row
+              = f.label :address, '地址', class: 'col-sm-2'
+              = f.text_field :address, class: 'col-sm-8', :disabled => true
+              .col-sm-2
+                button.btn onclick='editData(this);' 更改
+
+          = form_for @user, :url => user_update_field_path, method: 'PATCH', :remote => true do |f|
+            .row
+              = f.label :phone, '手機', class: 'col-sm-2'
+              = f.text_field :phone, class: 'col-sm-8', :disabled => true
+              .col-sm-2
+                button.btn onclick='editData(this);' 更改
+
+        .pwd_field.row
+          = link_to(user_pwd_field_path, remote: 'true')
+            button.btn 修改密碼
+
