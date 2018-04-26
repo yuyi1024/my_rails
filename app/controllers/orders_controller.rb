@@ -78,7 +78,7 @@
   end
 
   def show
-    @order = Order.find(params[:id])
+    @order = current_user.orders.find_by(process_id: params[:id])
   end
 
   def remit_info

@@ -67,12 +67,13 @@ h2, em, label, a, .rm{
 #user_show{
   ul{
     border-bottom: none;
+    margin-top: 50px;
   }
   .panel{
     padding: 0;
   }
 
-  .user_data{
+  .user_data, .order_list{
     .row{
       margin: 30px 0;
       line-height: 35px;
@@ -87,15 +88,14 @@ h2, em, label, a, .rm{
       display: block;
       border: none;
     }
-    .save{
-      background-color: $color_price_red;
-    }
-
     .detail_field{
       .row{
         input{
           background-color: #eee;
           border: 1px #ccc solid;
+        }
+        .save{
+          background-color: $color_price_red;
         }
       } 
     }
@@ -106,15 +106,6 @@ h2, em, label, a, .rm{
     }
   }
 }
-
-
-.cc{
-  text-align: center;
-}
-
-
-
-
 
 
 

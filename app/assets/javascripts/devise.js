@@ -1,4 +1,11 @@
 $(document).on('turbolinks:load', function() {
+	//會員中心
+	$('.nav-tabs li').click(function(){
+		$('.nav-tabs li').each(function(){
+			$(this).removeClass("active");	
+		});
+		$(this).addClass("active");	
+	});
 
 });
 

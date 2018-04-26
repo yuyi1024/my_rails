@@ -4,8 +4,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def show
     @user = current_user
-
-    @orders = @user.orders
   end
 
   # GET /resource/sign_up
@@ -41,6 +39,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def update #update pwd
     super
+  end
+
+  def order_list
+    @orders = current_user.orders.order('created_at DESC')
+    @action = 'order_list'
+    render :template => 'devise/registrations/registrations.js.erb'
   end
 
   # DELETE /resource

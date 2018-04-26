@@ -1,5 +1,10 @@
 <% if @action == 'update' %>
-	$('.detail_field').html("<%= j render partial: 'user_data' %>");
+	$('.detail_field').html("<%= j render partial: 'user_field' %>");
+
 <% elsif @action == 'pwd_field' %>
-	$('.pwd_field').html("<%= j render partial: 'change_pwd' %>");
+	$('.pwd_field').html("<%= j render partial: 'pwd_field' %>");
+
+<% elsif @action == 'order_list' %>
+	$('#section').html("<%= j render partial: 'order_list' %>");
+
 <% end %>
