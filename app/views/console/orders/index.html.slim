@@ -1,0 +1,36 @@
+
+= form_tag
+  label 找訂單編號
+  = text_field_tag :process_id
+  label 找用戶email
+  = text_field_tag :email
+  label 找下單日期
+  = text_field_tag :date
+  label 只顯示某status 
+  = text_field_tag :status
+
+
+.order_list.panel.panel-default.col-sm-offset-2.col-sm-8
+  table.table
+    tr
+      th.col-sm-2 訂單編號
+      th.col-sm-1 訂單狀態
+      th.col-sm-2 總金額
+      th.col-sm-1 付款方式
+      th.col-sm-1 送貨方式
+      th.col-sm-2 下單日期
+      th.col-sm-1 用戶email
+      th.col-sm-1
+    tbody
+      - @orders.each do |order|
+        tr
+          td #{ order.process_id }
+          td #{ order.status }
+          td NT $ #{ number_with_delimiter(order.price + order.freight) }
+          td #{ order.pay_method }
+          td #{ order.ship_method }
+          td #{ order.created_at.strftime("%Y/%m/%d") }
+          td #{ order.user.id }
+          td
+            = link_to(order_path(order.process_id))
+              button.btn 詳情

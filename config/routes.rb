@@ -32,4 +32,10 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :console do
+    root 'dashboards#index'
+    resources :users
+    resources :products
+    resources :orders, only: [:index, :show, :edit, :update]
+  end
 end
