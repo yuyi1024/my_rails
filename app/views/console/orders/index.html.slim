@@ -1,36 +1,112 @@
+#console_order.container
+  h1.title 訂單列表
+  
+  .filter
+    = form_tag console_orders_path, method: :get, :remote => :true, id: 'order_filter'
+      .row
+        .col-sm-2.col-sm-offset-1
+          label 依訂單編號
+          .input-group
+            = text_field_tag :process_id, nil, class:"form-control", placeholder:"依訂單編號"
+        .col-sm-2
+          label 依用戶email
+          .input-group
+            = text_field_tag :email, nil, class:"form-control", placeholder:"依用戶email"
 
-= form_tag
-  label 找訂單編號
-  = text_field_tag :process_id
-  label 找用戶email
-  = text_field_tag :email
-  label 找下單日期
-  = text_field_tag :date
-  label 只顯示某status 
-  = text_field_tag :status
+        .col-sm-2.col-sm-offset-2
+          label 依下單日期(開始)
+          .input-group
+            = date_field_tag :date_b, nil, class:"form-control"
+        .col-sm-2
+          label 依下單日期(結束)
+          .input-group
+            = date_field_tag :date_f, nil, class:"form-control"
+      .row
+        .col-sm-4.col-sm-offset-1
+          label 訂單狀態
+          br
+          = check_box_tag 'status[]', 'pending', true
+          label 準備中
+          = check_box_tag 'status[]', 'paid', true
+          label 已付款
+
+          = check_box_tag 'status[]', 'shipping', true
+          label 運送中
+
+          = check_box_tag 'status[]', 'delivered', true
+          label 已到貨
+
+          = check_box_tag 'status[]', 'returned', true
+          label 已退貨
+
+          br
+          = check_box_tag 'status[]', 'canceled', true
+          label 已取消
+
+          = check_box_tag 'status[]', 'deliverd_store', true
+          label 已到店
+
+          = check_box_tag 'status[]', 'picked_up', true
+          label 已取貨
+
+          = check_box_tag 'status[]', 'finished'
+          label 結束交易
+
+        .col-sm-2.col-sm-offset-2
+          label 付款方式
+          br
+          = check_box_tag 'pay_method[]', 'pay_before', true
+          label 先匯款
+
+          = check_box_tag 'pay_method[]', 'pay_after', true
+          label 貨到付款
+
+        .col-sm-2
+          label 送貨方式
+          br
+          = check_box_tag 'ship_method[]', 'in_store', true
+          label 超商取貨
+
+          = check_box_tag 'ship_method[]', 'to_address', true
+          label 宅配
+
+      .row
+        = hidden_field_tag 'search', 'true'
+        button.btn onclick='orderSearch();' 查詢
+
+  br
+  br
+  br
+  .filter.row
+    = form_tag
+
+      
+
+      
 
 
-.order_list.panel.panel-default.col-sm-offset-2.col-sm-8
-  table.table
-    tr
-      th.col-sm-2 訂單編號
-      th.col-sm-1 訂單狀態
-      th.col-sm-2 總金額
-      th.col-sm-1 付款方式
-      th.col-sm-1 送貨方式
-      th.col-sm-2 下單日期
-      th.col-sm-1 用戶email
-      th.col-sm-1
-    tbody
-      - @orders.each do |order|
+  .row
+    .order_list.panel.panel-default.col-sm-offset-1.col-sm-10
+      table.table
         tr
-          td #{ order.process_id }
-          td #{ order.status }
-          td NT $ #{ number_with_delimiter(order.price + order.freight) }
-          td #{ order.pay_method }
-          td #{ order.ship_method }
-          td #{ order.created_at.strftime("%Y/%m/%d") }
-          td #{ order.user.id }
-          td
-            = link_to(order_path(order.process_id))
-              button.btn 詳情
+          th 訂單編號
+          th 訂單狀態
+          th 總金額
+          th 付款方式
+          th 送貨方式
+          th 下單日期
+          th 用戶email
+          th
+        tbody
+          - @orders.each do |order|
+            tr
+              td #{ order.process_id }
+              td #{ order.status_cn }
+              td $ #{ number_with_delimiter(order.price + order.freight) }
+              td #{ order.pay_method_cn }
+              td #{ order.ship_method_cn }
+              td #{ order.created_at.strftime("%Y/%m/%d") }
+              td #{ truncate(order.user.email, length:12) }
+              td
+                = link_to(order_path(order.process_id))
+                  button.btn 詳細

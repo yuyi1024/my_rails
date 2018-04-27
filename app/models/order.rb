@@ -36,6 +36,24 @@ class Order < ApplicationRecord
     end
   end
 
+  def pay_method_cn
+    case self.pay_method
+    when 'pay_before'
+      self.pay_method = '先匯款'
+    when 'pay_after'
+      self.pay_method = '貨到付款'
+    end
+  end
+
+  def ship_method_cn
+    case self.ship_method
+    when 'in_store'
+      self.ship_method = '超商取貨'
+    when 'to_address'
+      self.ship_method = '宅配'
+    end
+  end
+
   aasm column: :status do
     state :pending, initial: true
     state :paid, :shipping, :delivered, :returned, :refunded, :canceled, :deliverd_store, :picked_up, :finished

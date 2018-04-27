@@ -1,0 +1,24 @@
+@import 'app';
+.title{
+  text-align: center;
+  margin-bottom: 40px;
+}
+#console_order{
+  .filter{
+    .row{
+      margin-top: 30px;
+      input{
+        &[type=checkbox]{
+          margin: 0 5px 0 10px
+        }
+      }
+      .btn{
+        background-color: #000;
+        color: #fff;
+        width: 10%;
+        margin: 0 auto;
+        display: block;
+      }
+    }
+  }
+}
