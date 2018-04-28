@@ -3,11 +3,11 @@ class Order < ApplicationRecord
   belongs_to :user
   accepts_nested_attributes_for :order_items
 
+  #運費
   Freight_in_store = 60
   Freight_to_address = 100
 
-  include AASM
-
+  #訂單序號
   def g_process_id(user, order)
     t = Time.now
     process_id = t.year.to_s[2,3] + "%02d" % t.mon + "%02d" % t.mday + "%03d" % user + rand(0..9).to_s + "%02d" % order + "%02d" % rand(0..99)
@@ -15,86 +15,117 @@ class Order < ApplicationRecord
 
   def status_cn
     case self.status
-    when 'pending'
-      self.status = '準備中'
+    when 'waiting_payment'
+      '待付款'
+    when 'waiting_shipment'
+      '待出貨(未付款)'
     when 'paid'
-      self.status = '已付款'
+      '待出貨(已付款)'
     when 'shipping'
-      self.status = '運送中'
+      '運送中'
     when 'delivered'
-      self.status = '已到貨'
+      '已到貨'
     when 'returned'
-      self.status = '已退貨'
+      '已退貨'
+    when 'refunded'
+      '已退款'
     when 'canceled'
-      self.status = '已取消'
+      '已取消'
     when 'deliverd_store'
-      self.status = '已到店'
+      '已到店'
     when 'picked_up'
-      self.status = '已取貨'
+      '已取貨'
     when 'finished'
-      self.status = '結束交易'
+      '結束交易'
     end
   end
 
   def pay_method_cn
     case self.pay_method
     when 'pay_before'
-      self.pay_method = '先匯款'
+      '先匯款'
     when 'pay_after'
-      self.pay_method = '貨到付款'
+      '貨到付款'
     end
   end
 
   def ship_method_cn
     case self.ship_method
     when 'in_store'
-      self.ship_method = '超商取貨'
+      '超商取貨'
     when 'to_address'
-      self.ship_method = '宅配'
+      '宅配'
     end
   end
 
+  include AASM
+
   aasm column: :status do
     state :pending, initial: true
-    state :paid, :shipping, :delivered, :returned, :refunded, :canceled, :deliverd_store, :picked_up, :finished
+    state :waiting_payment, :waiting_shipment, :paid, :shipping #準備流程
+    state :delivered, :deliverd_store, :picked_up, :finished #出貨後流程
+    state :returned, :refunded, :canceled #退貨流程
+    
+    #待付款
+    event :wait_payment do 
+      transitions from: :pending, to: :waiting_payment
+    end
 
+    #待出貨
+    event :wait_shipment do
+      transitions from: :pending, to: :waiting_shipment
+    end
+
+    #已付款, 待出貨
     event :pay do
-      transitions from: :pending, to: :paid
+      transitions from: :waiting_payment, to: :paid
     end
 
+    #已出貨
     event :ship do 
-      transitions from: [:paid, :pending], to: :shipping
+      transitions from: [:paid, :waiting_shipment], to: :shipping
     end
 
+
+    #宅配已到貨（含付款）
     event :deliver do
       transitions from: :shipping, to: :delivered
     end
 
-    event :return do
-      transitions from: [:shipping, :delivered, :delivered_store, :picked_up], to: :returned
-    end
-
-    event :refund do
-      transitions from: [:returned, :paid], to: :refunded
-    end
-
-    event :cancel do
-      transitions from: :paid, to: :canceled
-    end
-
-    #到店
+    #超商已到店
     event :deliver_store do
       transitions from: :shipping, to: :delivered_store
     end
 
-    #取貨付款
+    #超商已取貨（含付款）
     event :pick_up do
       transitions from: :delivered_store, to: :picked_up
     end
 
+    #訂單順利結束
     event :finish do
-      transitions from: [:delivered, :picked_up, :refunded, :returned], to: :finished
+      transitions from: [:delivered, :picked_up], to: :finished
     end
+
+
+    # 已退貨（訂單結束後欲退貨）
+    event :return do
+      transitions from: [:finished], to: :returned
+    end
+
+    #已退款
+    event :refund do
+      transitions from: [:returned, :paid], to: :refunded
+    end
+
+    #訂單取消
+    event :cancel do
+      transitions from: [:waiting_payment, :waiting_shipment, :refunded], to: :canceled
+    end
+
+    
+
+    
 
   end
 end

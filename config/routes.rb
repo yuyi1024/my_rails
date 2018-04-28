@@ -36,7 +36,7 @@ Rails.application.routes.draw do
     root 'dashboards#index'
     resources :users
     resources :products
-    resources :orders, only: [:index, :show, :edit, :update] do 
+    resources :orders, only: [:index, :edit, :update] do 
       collection do
         
       end

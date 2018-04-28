@@ -6,7 +6,7 @@
 #console_order{
   .filter{
     .row{
-      margin-top: 30px;
+      margin-bottom: 30px;
       input{
         &[type=checkbox]{
           margin: 0 5px 0 10px
@@ -21,4 +21,28 @@
       }
     }
   }
+  #sorting{
+    .count{
+      span{
+        color: $color_price_red;
+        font-size: 18px;
+      }
+    }
+    select{
+      margin: 0 5px;
+    }
+    .radio_sort{
+      display: none;
+    }
+    .label_sort {
+      opacity: 0.3;
+      font-size: 18px;
+      margin-left: 10px;
+    }
+    .radio_sort:checked + label {
+      opacity: 1;
+    }
+  }
 }
+
+

@@ -22,68 +22,88 @@
           .input-group
             = date_field_tag :date_f, nil, class:"form-control"
       .row
-        .col-sm-4.col-sm-offset-1
+        .col-sm-5.col-sm-offset-1
           label 訂單狀態
           br
-          = check_box_tag 'status[]', 'pending', true
-          label 準備中
-          = check_box_tag 'status[]', 'paid', true
-          label 已付款
+          = check_box_tag 'status[]', 'waiting_payment', nil, id:'status_waiting_payment'
+          label for='status_waiting_payment' 待付款
 
-          = check_box_tag 'status[]', 'shipping', true
-          label 運送中
+          = check_box_tag 'status[]', 'waiting_shipment', nil, id:'status_waiting_shipment'
+          label for='status_waiting_shipment' 待出貨(未付款)
+          
+          = check_box_tag 'status[]', 'paid', nil, id:'status_paid'
+          label for='status_paid' 待出貨(已付款)
 
-          = check_box_tag 'status[]', 'delivered', true
-          label 已到貨
-
-          = check_box_tag 'status[]', 'returned', true
-          label 已退貨
-
+          = check_box_tag 'status[]', 'shipping', nil, id:'status_shipping'
+          label for='status_shipping' 運送中
           br
-          = check_box_tag 'status[]', 'canceled', true
-          label 已取消
 
-          = check_box_tag 'status[]', 'deliverd_store', true
-          label 已到店
+          = check_box_tag 'status[]', 'delivered', nil, id:'status_delivered'
+          label for='status_delivered' 已到貨
 
-          = check_box_tag 'status[]', 'picked_up', true
-          label 已取貨
+          = check_box_tag 'status[]', 'deliverd_store', nil, id:'status_deliverd_store'
+          label for='status_deliverd_store' 已到店
 
-          = check_box_tag 'status[]', 'finished'
-          label 結束交易
+          = check_box_tag 'status[]', 'picked_up', nil, id:'status_picked_up'
+          label for='status_picked_up' 已取貨
 
-        .col-sm-2.col-sm-offset-2
+          = check_box_tag 'status[]', 'finished', nil, id:'status_finished'
+          label for='status_finished' 結束交易
+          br
+          
+          = check_box_tag 'status[]', 'returned', nil, id:'status_returned'
+          label for='status_returned' 已退貨
+
+          = check_box_tag 'status[]', 'refunded', nil, id:'status_refunded'
+          label for='status_refunded' 已退款
+
+          = check_box_tag 'status[]', 'canceled', nil, id:'status_canceled'
+          label for='status_canceled' 已取消
+
+
+        .col-sm-2.col-sm-offset-1
           label 付款方式
           br
-          = check_box_tag 'pay_method[]', 'pay_before', true
-          label 先匯款
+          = check_box_tag 'pay_method[]', 'pay_before', nil, id:'pay_method_before'
+          label for='pay_method_before' 先匯款
 
-          = check_box_tag 'pay_method[]', 'pay_after', true
-          label 貨到付款
+          = check_box_tag 'pay_method[]', 'pay_after', nil, id:'pay_method_after'
+          label for='pay_method_after' 貨到付款
 
         .col-sm-2
           label 送貨方式
           br
-          = check_box_tag 'ship_method[]', 'in_store', true
-          label 超商取貨
+          = check_box_tag 'ship_method[]', 'in_store', nil, id:'ship_method_in_store'
+          label for='ship_method_in_store' 超商取貨
 
-          = check_box_tag 'ship_method[]', 'to_address', true
-          label 宅配
+          = check_box_tag 'ship_method[]', 'to_address', nil, id:'ship_method_to_address'
+          label for='ship_method_to_address' 宅配
 
       .row
-        = hidden_field_tag 'search', 'true'
+        = hidden_field_tag :search, 'true'
+        = hidden_field_tag :sort_item, '下單日期'
+        = hidden_field_tag :sort_order, 'DESC'
         button.btn onclick='orderSearch();' 查詢
 
-  br
-  br
-  br
-  .filter.row
-    = form_tag
 
-      
+  .row#sorting
+    .count.col-sm-2.col-sm-offset-1 
+      | 共計 
+      span #{ @orders.length } 
+      |  筆訂單
 
-      
+    .col-sm-3.col-sm-offset-6
+      | 依
+      = select_tag "sort_by", options_for_select([ "下單日期", "金額" ]), onchange:'sort_by();'
+      | 排序
 
+      = radio_button_tag :sequence, 'DESC', true, class:"radio_sort", onchange:'sort_by();', id:'desc'
+      label.label_sort for="desc"
+        span.glyphicon.glyphicon-sort-by-attributes-alt
+
+      = radio_button_tag :sequence, 'ASC', nil, class:"radio_sort", onchange:'sort_by();', id:'asc'
+      label.label_sort for="asc"
+        span.glyphicon.glyphicon-sort-by-attributes
 
   .row
     .order_list.panel.panel-default.col-sm-offset-1.col-sm-10
@@ -108,5 +128,5 @@
               td #{ order.created_at.strftime("%Y/%m/%d") }
               td #{ truncate(order.user.email, length:12) }
               td
-                = link_to(order_path(order.process_id))
+                = link_to(edit_console_order_path(order.process_id))
                   button.btn 詳細
