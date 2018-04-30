@@ -31,7 +31,7 @@ class Order < ApplicationRecord
       '已退款'
     when 'canceled'
       '已取消'
-    when 'deliverd_store'
+    when 'delivered_store'
       '已到店'
     when 'picked_up'
       '已取貨'
@@ -63,7 +63,7 @@ class Order < ApplicationRecord
   aasm column: :status do
     state :pending, initial: true
     state :waiting_payment, :waiting_shipment, :paid, :shipping #準備流程
-    state :delivered, :deliverd_store, :picked_up, :finished #出貨後流程
+    state :delivered, :delivered_store, :picked_up, :finished #出貨後流程
     state :returned, :refunded, :canceled #退貨流程
     
     #待付款
@@ -123,9 +123,6 @@ class Order < ApplicationRecord
       transitions from: [:waiting_payment, :waiting_shipment, :refunded], to: :canceled
     end
 
-    
-
-    
 
   end
 end

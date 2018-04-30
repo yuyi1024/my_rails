@@ -28,7 +28,7 @@
   end
 
   def ezship #EZship 回傳
-    redirect_to new_order_path(:stName=> params[:stName], :stCode=> params[:stCode])
+    redirect_to new_order_path(:stName => params[:stName], :stCode => params[:stCode], :stCate => params[:stCate])
   end
 
   def create

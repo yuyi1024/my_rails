@@ -121,7 +121,7 @@
           - @orders.each do |order|
             tr
               td #{ order.process_id }
-              td #{ order.status_cn }
+              td class="#{order_status_color(order.status)}" #{ order.status_cn }
               td $ #{ number_with_delimiter(order.price + order.freight) }
               td #{ order.pay_method_cn }
               td #{ order.ship_method_cn }

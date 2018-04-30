@@ -1,22 +1,22 @@
 #order.container
-  h1 訂單詳情
+  h1.title 訂單詳情
 
   .row
-    .product_detail.col-sm-8.col-sm-offset-2
+    #order_edit.col-sm-8.col-sm-offset-2
       .panel.panel-default
         .panel-heading 
           h3 訂單編輯
 
         .panel-body
-          = form_for @order, url: edit_console_order_path, method: 'get' do |f|
+          = form_for @order, url: console_order_path(@order.process_id), method: 'patch' do |f|
             p 訂單狀態： #{ @order.status_cn }
             label 更改狀態
-            = f.select :status, options_for_select(@may), prompt: "未選擇"
-            = f.submit '確認更改'
+            = f.select :status, options_for_select(@may.insert(0, ["未選擇", 0]))
+            = f.submit '確認更改', class:'btn'
 
   
   .row
-    .product_detail.col-sm-8.col-sm-offset-2
+    .col-sm-8.col-sm-offset-2
       .panel.panel-default
         .panel-heading 
           h3 購買清單

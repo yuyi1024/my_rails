@@ -32,16 +32,29 @@ class Console::OrdersController < ApplicationController
 		@order = Order.find_by(process_id: params[:id])
 		@may = []
 
-		@may << ['已付款, 待出貨', 'paid'] if @order.may_pay?
-		@may << ['已出貨', 'shipping'] if @order.may_ship?
-		@may << ['取消訂單', 'canceled'] if @order.may_cancel?
-		@may << ['已退貨', 'returned'] if @order.may_return?
-		@may << ['以退款', 'refunded'] if @order.may_refund?
+		@may << ['已付款, 待出貨', 'pay'] if @order.may_pay?
+		@may << ['已出貨', 'ship'] if @order.may_ship?
+		
+		@may << ['已到貨', 'deliver'] if @order.may_deliver? && @order.ship_method == 'to_address'
+		@may << ['已到店', 'deliver_store'] if @order.may_deliver_store?  && @order.ship_method == 'in_store'
+		@may << ['已取貨', 'pick_up'] if @order.may_pick_up?
+		@may << ['結束交易', 'finish'] if @order.may_finish?
+		@may << ['取消訂單', 'cancel'] if @order.may_cancel?
+		@may << ['已退貨', 'return'] if @order.may_return?
+		@may << ['以退款', 'refund'] if @order.may_refund?
 
 	end
 
 	def update
-
+		@order = Order.find_by(process_id: params[:id])
+		if params[:order][:status] != '0'
+			@order.method(params[:order][:status]).call
+			@order.save
+			flash[:notice] = '更改成功'
+		else
+			flash[:alert] = '訂單狀態更改無效'
+		end	
+		redirect_to edit_console_order_path(@order.process_id)
 	end
 
 end
