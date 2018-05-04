@@ -1,0 +1,14 @@
+$('#freight').text('<%= @freight %>');
+$('#total').text('<%= @total %>');
+
+<% if @ship_method == 'pickup_and_cash' %>
+	$('#order_pay_method').html("<option value='pickup_and_cash'>超商取貨付款</option>");
+<% else %>
+	$('#order_pay_method').html("<option value='cash_card'>信用卡</option><option value='atm'>實體ATM</option>");
+<% end %>
+
+// if(@ship_method == 'pickup_and_cash'){
+// 	$('#order_pay_method').html("<option value='pickup_and_cash'>超商取貨付款</option>");
+// }else{
+// 	$('#order_pay_method').html("<option value='cash_card'>信用卡</option><option value='atm'>實體ATM</option>");
+// }

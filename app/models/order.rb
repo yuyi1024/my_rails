@@ -4,7 +4,7 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :order_items
 
   Freight_in_store = 60
-  Freight_to_address = 100
+  Freight_home_delivery = 100
 
   include AASM
 

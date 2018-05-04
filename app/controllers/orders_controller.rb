@@ -12,6 +12,12 @@
       @stName = params[:stName]
       @stCode = params[:stCode]
     end
+
+    # @client_token = gateway.client_token.generate(
+    #   :customer_id => a_customer_id
+    # )
+
+    @client_token = Braintree::ClientToken.generate
   end
 
   def ship_method #選擇寄送方式並改變 total_price、收件資料 form
@@ -79,6 +85,21 @@
 
   def remit_info
     @order = current_user.orders.find_by(process_id: params[:process_id])
+  end
+
+  def checkout
+
+    result = Braintree::Transaction.sale(
+      :amount => "100",
+      :payment_method_nonce => params[:payment_method_nonce],
+    )
+
+    if result
+      flash[:notice] = '付款成功'
+      redirect_to products_path
+    end
+
+
   end
 
   private

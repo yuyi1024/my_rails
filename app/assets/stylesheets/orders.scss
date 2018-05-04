@@ -10,7 +10,8 @@
     }
     margin-top: 50px;
   }
-  .send{
+
+  /*.send{
     label{
       text-align: left;
       display: inline;
@@ -39,7 +40,9 @@
       margin-left: 15px;
       color: $color_dark_blue;
     }
-  }
+  }*/
+
+
   .data{
     .row{
       margin: 30px 0;
@@ -86,3 +89,26 @@
   }
 }
 
+#cart_checkout{
+  .pay_and_ship_method{
+    p{
+      color: red;
+    }
+    select{
+      display: block;
+      width: 100%;
+      height: 30px;
+    }
+  }
+  .order_info{
+    p{
+      span{
+        float: right;
+      }
+    }
+    #in_store, #home_delivery, #subtotal{
+      display: none;
+    }
+  }
+
+}

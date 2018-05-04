@@ -84,3 +84,27 @@
           h3 收件資料
         #new_order_form
 
+
+
+
+
+= form_tag(checkout_orders_path, id:"checkout", method:"post")
+  #payment-form
+  input type="submit" value="Pay $10"
+
+script src="https://js.braintreegateway.com/js/braintree-2.32.1.min.js"
+
+javascript:
+  
+  
+  var clientToken = '#{ @client_token }';
+
+  braintree.setup(clientToken, "dropin", {
+    container: "payment-form"
+  });
+
+
+
+
+
+

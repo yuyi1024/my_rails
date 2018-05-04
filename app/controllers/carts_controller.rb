@@ -40,6 +40,25 @@ class CartsController < ApplicationController
     cart_to_array
   end
 
+  def checkout
+    @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
+    @order_session = Cart.new_order_hash(@cart_session)
+    session[Cart::SessionKey_order] = @order_session.to_hash
+    @order = Order.new
+  end
+
+  def ship_method
+    @ship_method = params[:ship_method]
+    @total = Cart.from_hash(session[Cart::SessionKey_cart]).total_price
+    if ship_method == 'home_delivery'
+      @freight = Order::Freight_home_delivery
+    else
+      @freight = Order::Freight_in_store
+    end
+    @total += @freight
+    render 'carts/carts.js.erb'
+  end
+
   def cart_to_array
     @cart_items = []
     @total_price = 0

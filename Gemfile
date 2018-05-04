@@ -67,6 +67,9 @@ gem 'rails-assets-jcrop', source: 'https://rails-assets.org'
 # gem 'google-api-client'
 # gem "mime-types"
 
+#paypal
+gem "braintree", "~> 2.88.0"
+
 # WYSIWYG
 # This is the right gem to use summernote editor in Rails projects.
 gem 'summernote-rails'
