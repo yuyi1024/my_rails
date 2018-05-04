@@ -8,8 +8,6 @@ Rails.application.routes.draw do
 
   resource :carts, only: [:show, :destroy] do
   	collection do
-      get :checkout, path: 'checkout', as: 'checkout'
-      get :ship_method, path: 'ship_method', as: 'ship_method' 
   		post :add, path: 'add/:id', as: 'add'
   		post :change, path: 'change/:id', as: 'change'
 		end
@@ -18,9 +16,12 @@ Rails.application.routes.draw do
   resources :orders do
     collection do
       post :checkout, path: 'checkout', as: 'checkout'
-      post :ezship, path: 'ezship', as: 'ezship'
+      get :to_ezship, path: 'to_ezship/:process_id', as: 'to_ezship'
+      post :from_ezship, path: 'from_ezship', as: 'from_ezship'
       get :ship_method, path: 'ship_method', as: 'ship_method'
       get :remit_info, path: 'remit_info/:process_id', as: 'remit_info'
     end
   end
 end
+
+

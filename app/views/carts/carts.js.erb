@@ -1,14 +1,19 @@
-$('#freight').text('<%= @freight %>');
-$('#total').text('<%= @total %>');
+<% if @action = 'add' %>
+	$('.items').html("<%= j render partial: 'cart_item' %>");
+	$('.notice').text('將<%= @add_item %>加入購物車！');
+	$('.cart_number').text('<%= @cart_length %>');
 
-<% if @ship_method == 'pickup_and_cash' %>
-	$('#order_pay_method').html("<option value='pickup_and_cash'>超商取貨付款</option>");
-<% else %>
-	$('#order_pay_method').html("<option value='cash_card'>信用卡</option><option value='atm'>實體ATM</option>");
+<% elsif @action = 'change' %>
+	$('.items').html("<%= j render partial: 'cart_item' %>");
+
+<% elsif @action = 'destroy' %>
+	$('.items').html("<%= j render partial: 'cart_item' %>");
+	$('.cart_number').text('<%= @cart_length %>');
+	
 <% end %>
 
-// if(@ship_method == 'pickup_and_cash'){
-// 	$('#order_pay_method').html("<option value='pickup_and_cash'>超商取貨付款</option>");
-// }else{
-// 	$('#order_pay_method').html("<option value='cash_card'>信用卡</option><option value='atm'>實體ATM</option>");
-// }
+
+
+
+
+

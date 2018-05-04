@@ -10,6 +10,9 @@ class CartsController < ApplicationController
 
     @add_item = Product.find(params[:id]).name
     cart_to_array
+
+    @action = 'add'
+    render 'carts/carts.js.erb'
   end
 
   def change
@@ -27,6 +30,9 @@ class CartsController < ApplicationController
     puts @carts.items
     session[Cart::SessionKey_cart] = @carts.to_hash
     cart_to_array
+
+    @action = 'change'
+    render 'carts/carts.js.erb'
   end
 
   def destroy
@@ -38,24 +44,8 @@ class CartsController < ApplicationController
 
     session[Cart::SessionKey_cart] = @carts.to_hash
     cart_to_array
-  end
 
-  def checkout
-    @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
-    @order_session = Cart.new_order_hash(@cart_session)
-    session[Cart::SessionKey_order] = @order_session.to_hash
-    @order = Order.new
-  end
-
-  def ship_method
-    @ship_method = params[:ship_method]
-    @total = Cart.from_hash(session[Cart::SessionKey_cart]).total_price
-    if ship_method == 'home_delivery'
-      @freight = Order::Freight_home_delivery
-    else
-      @freight = Order::Freight_in_store
-    end
-    @total += @freight
+    @action = 'destroy'
     render 'carts/carts.js.erb'
   end
 
