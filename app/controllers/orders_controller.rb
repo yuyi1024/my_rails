@@ -54,14 +54,14 @@
       session[Cart::SessionKey_cart] = @cart_session
       session[Cart::SessionKey_order] = Cart.new
 
-      redirect_to edit_order_path(@order)
+      redirect_to edit_order_path(@order.process_id)
     else
       redirect_to new_order_path
     end
   end
 
   def edit #訂單資料填寫
-    @order = Order.find(params[:id])
+    @order = Order.find_by(process_id: params[:id])
 
     if !params[:stName].nil?
       @stName = params[:stName]
@@ -81,9 +81,17 @@
     if @order.ship_method == 'pickup_and_cash' || @order.ship_method == 'only_pickup'
       @order.address = params[:stCate] + params[:stCode]
       if @order.save
-        redirect_to edit_order_path(@order, :stName=> params[:stName])
+        redirect_to edit_order_path(@order.process_id, :stName=> params[:stName])
       end
     end
+  end
+
+  def get_user_data
+    @order = Order.find_by(process_id: params[:id])
+    @chk = params[:user_data_chk]
+    @user = current_user if @chk == 'on'
+    @action = 'get_user_data'
+    render 'orders/orders.js.erb'
   end
 
   def update

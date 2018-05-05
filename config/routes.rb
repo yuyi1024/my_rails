@@ -15,11 +15,12 @@ Rails.application.routes.draw do
 
   resources :orders do
     collection do
-      post :checkout, path: 'checkout', as: 'checkout'
+      get :ship_method, path: 'ship_method', as: 'ship_method'
       get :to_ezship, path: 'to_ezship/:process_id', as: 'to_ezship'
       post :from_ezship, path: 'from_ezship', as: 'from_ezship'
-      get :ship_method, path: 'ship_method', as: 'ship_method'
+      get :get_user_data, path: 'get_user_data', as: 'get_user_data'
       get :remit_info, path: 'remit_info/:process_id', as: 'remit_info'
+      post :checkout, path: 'checkout', as: 'checkout'
     end
   end
 end

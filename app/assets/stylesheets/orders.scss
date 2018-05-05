@@ -1,16 +1,6 @@
 @import 'app';
 
 #order_new{
-  h1{
-    text-align: center;
-  }
-  .row{
-    h3{
-      margin: 0;
-    }
-    margin-top: 50px;
-  }
-
   .data{
     .row{
       margin: 30px 0;
@@ -29,13 +19,19 @@
     #order_note{
       resize: none;
     }
-    .same_user_block{
-      display: inline-block;
-      margin-top: 20px;
-      label{
-        margin-left: 10px;
-      }
+    #user_data_chk{
+      margin: 20px 5px; 
     }
+    p{
+      text-align: center;
+      color: red;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+  }
+  #payment-form{
+    width: 90%;
+    margin: 0 auto;
   }
 }
 

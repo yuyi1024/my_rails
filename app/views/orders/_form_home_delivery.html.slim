@@ -1,8 +1,10 @@
-.same_user_block.col-sm-offset-5
-  input#user_data_chk type='checkbox' name='user_data_chk' onchange='selectShip();'
-  label for='user_data_chk' 同會員資料
+.col-sm-offset-5
+  = form_tag get_user_data_orders_path, method: 'get', remote: 'true', id: 'get_user_data' 
+    input#user_data_chk type='checkbox' name='user_data_chk' onchange='getUserData();'
+    label for='user_data_chk' 同會員資料
+    = hidden_field_tag :id, @order.process_id
 
-= form_for @order, :url => orders_path, method: 'post' do |f|
+= form_for @order, :url => order_path(@order), method: 'patch' do |f|
   .row
     = f.label :true_name, '收件人姓名*', class: 'col-sm-2'
     = f.text_field :true_name, class: 'col-sm-8', required: "required", value: @user.nil? ? '' : @user.true_name
@@ -13,10 +15,13 @@
     = f.label :phone, '收件人手機*', class: 'col-sm-2'
     = f.text_field :phone, class: 'col-sm-8', required: "required", value: @user.nil? ? '' : @user.phone
   .row
+    = f.label :email, '取件人信箱*', class: 'col-sm-2'
+    = f.email_field :email, class: 'col-sm-8', required: "required", value: @user.nil? ? '' : @user.email
+  .row
     = f.label :note, '備註', class: 'col-sm-2'
     = f.text_area :note, class: 'col-sm-8'
   
   = f.hidden_field :ship_method
   = f.hidden_field :pay_method
 
-button#new_order.btn onclick='order_submit();' 訂單建立
+  = f.submit '訂單建立', class:'btn'

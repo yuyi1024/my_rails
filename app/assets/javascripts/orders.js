@@ -2,12 +2,9 @@ $(document).on('turbolinks:load', function() {
 
 });
 
-function selectShip(){ //選擇送貨方式
-	$user_data_chk = document.getElementById("user_data_chk");
-	if($user_data_chk != null){
-		$('#user_data').val($user_data_chk.checked);
-	}
-	$('#ship_form').submit();
+//同會員資料
+function getUserData(){
+	$('#get_user_data').submit();
 }
 
 //new_order送貨方式選擇
