@@ -1,0 +1,19 @@
+<% if @action = 'add' %>
+	$('.items').html("<%= j render partial: 'cart_item' %>");
+	$('.notice').text('將<%= @add_item %>加入購物車！');
+	$('.cart_number').text('<%= @cart_length %>');
+
+<% elsif @action = 'change' %>
+	$('.items').html("<%= j render partial: 'cart_item' %>");
+
+<% elsif @action = 'destroy' %>
+	$('.items').html("<%= j render partial: 'cart_item' %>");
+	$('.cart_number').text('<%= @cart_length %>');
+	
+<% end %>
+
+
+
+
+
+

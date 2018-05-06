@@ -5,7 +5,7 @@ class Order < ApplicationRecord
 
   #運費
   Freight_in_store = 60
-  Freight_to_address = 100
+  Freight_home_delivery = 100
 
   #訂單序號
   def g_process_id(user, order)

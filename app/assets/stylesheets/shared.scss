@@ -1,13 +1,23 @@
 @import 'variable';
 
-.navbar{
-	position: fixed;
+
+/*每page標題*/
+
+.title {
+  text-align: center;
+  margin: 60px auto 30px;
+}
+
+/*導覽列*/
+
+.navbar {
+  position: fixed;
   top: 5px;
   right: 10px;
-	z-index: 997;
-	.button{
-		color: #666;
-		display: inline-block;
+  z-index: 997;
+  .button {
+    color: #666;
+    display: inline-block;
     width: 110px;
     margin: 0 3px;
     border-radius: 5px;
@@ -15,34 +25,42 @@
     text-align: center;
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.6);
-    &:hover{
-    	background-color: $color_bright_gray;
+    &:hover {
+      background-color: $color_bright_gray;
       color: #eee;
     }
-    .cart_number{
+    .cart_number {
       background-color: $color_price_red;
       color: #fff;
       border-radius: 50px;
       padding: 1px 5px;
       border: 1px #F38181 solid;
     }
-	}
+  }
 }
 
-.message{
+
+/*提示訊息*/
+
+.message {
   position: absolute;
   top: 20px;
-  .hello, .notice, .alert{
+  .hello,
+  .notice,
+  .alert {
     color: $color_dark_blue;
     font-size: 18px;
     line-height: 20px;
   }
 }
 
-#sidebar_cart{
+
+/*購物車*/
+
+#sidebar_cart {
   height: 100%;
   width: 350px;
-  background-color: rgba(150,150,150,1);
+  background-color: rgba(150, 150, 150, 1);
   position: fixed;
   top: 0;
   left: -350px;
@@ -50,55 +68,54 @@
   overflow-x: hidden;
   overflow-y: scroll;
   z-index: 999;
-  h3{
+  h3 {
     text-align: center;
   }
-  .items{
+  .items {
     margin-top: 40px;
-    *{
+    * {
       font-size: 16px;
     }
-    .item{
+    .item {
       display: -webkit-inline-box;
-      img{
+      img {
         width: 70px;
         border: 1px #000 solid;
       }
-      .word{
+      .word {
         margin-left: 15px;
-        .title{
+        .title {
           margin: 0;
           font-size: 18px;
-
         }
-        input{
+        input {
           width: 35px;
           font-size: 16px;
           border: 0;
           margin: 10px 0;
           text-align: right;
         }
-        a{
-          &:hover{
+        a {
+          &:hover {
             color: #000;
             text-decoration: none;
           }
         }
-        .delete{
+        .delete {
           color: $color_dark_blue;
         }
       }
     }
-    .total_price{
+    .total_price {
       font-size: 16px;
       text-align: right;
-      span{
+      span {
         font-size: 24px;
         color: $color_price_red;
       }
     }
   }
-  .btn{
+  .btn {
     width: 100%;
     background-color: #000;
     color: #fff;
@@ -106,13 +123,22 @@
   }
 }
 
-.mask{
+.mask {
   width: 100%;
   height: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 998;
   display: none;
+}
+
+
+/*訂單list*/
+
+.panel-heading {
+  h3 {
+    margin: 0;
+  }
 }

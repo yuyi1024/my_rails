@@ -1,6 +1,6 @@
-#remit_info.container
-  h1 付款資訊
-  
+h1.title 匯款資訊
+
+#remit_info.all_orders_page.container
   - if @order.present?
     .row
       .col-sm-6.col-sm-offset-3
@@ -36,6 +36,11 @@
                 th #
                 th 銀行帳號
                 td #{ ENV['BANK_ACCOUNT'] }
+
+          .panel-footer
+            | *匯款完成後請至會員中心填寫匯款資料
+
+    = link_to '前往會員中心', products_path, class: 'btn'
 
   - else
     .row

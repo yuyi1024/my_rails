@@ -1,11 +1,12 @@
-#order.container
-  h1 訂單結帳
-  
+h1.title 訂單結帳
+
+#cart_checkout.container  
+
   .row
-    .product_detail.col-sm-8.col-sm-offset-2
+    .product_list.col-sm-8.col-sm-offset-2
       .panel.panel-default
         .panel-heading 
-          h3 購買清單
+          h3 購物車
 
         table.table
           tr
@@ -35,52 +36,40 @@
               th 
               th 小計：
               th $ #{ number_with_delimiter(@cart_session.total_price) }
-  .row
-    .send.col-sm-8.col-sm-offset-2
-      .panel.panel-default
-        .panel-heading 
-          h3 送貨 / 付款方式
 
-        = form_tag ship_method_orders_path, method: :get, remote: :true, id: 'ship_form' do 
-          table.table
-            tr
-              th 送貨方式
-              th 付款方式
-            tr
-              td
-                input#in_store type='radio' name='ship_method' value='in_store' onchange='selectShip()'
-                label for='in_store'  超商取貨 $#{Order::Freight_in_store}
-                
-                a onclick='selectStore();' [＋選擇超商]
-                p.stName #{ @stName.nil? ? '未選擇' : @stName }
-                #store_value #{ @stCode }#{ @stName }
-                
-                input#to_address type='radio' name='ship_method' value='to_address' onchange='selectShip();'
-                label for='to_address'  宅配 $#{Order::Freight_to_address}
-              td
-                input#pay_after type='radio' name='pay_method' value='pay_after'
-                label for='pay_after'  貨到付款
-                br
-                input#pay_before type='radio' name='pay_method' value='pay_before'
-                label for='pay_before'  先匯款再寄貨
+  = form_for @order, :url => orders_path, :method => 'post' do |f|
+    .row
+      .pay_and_ship_method.col-sm-4.col-sm-offset-2
+        .panel.panel-default
+          .panel-heading 
+            h3 選擇送貨及付款方式
 
-          = hidden_field_tag 'user_data'
+          .panel-body
+            p 
+              | *超商取貨限
+              b 全家、OK、萊爾富
+            
+            = f.label :ship_method, '送貨方式'
+            = f.select :ship_method, options_for_select([['超商取貨付款', 'pickup_and_cash'], ['超商取貨不付款', 'only_pickup'], ['宅配', 'home_delivery']]), {}, onChange:'selectShipMethod();'
+            br
+            = f.label :ship_method, '付款方式'
+            = f.select :pay_method, options_for_select([['超商取貨付款', 'pickup_and_cash']])
 
+      .order_info.col-sm-4
+        .panel.panel-default
+          .panel-heading 
+            h3 訂單資訊
+          .panel-body
+            p
+              | 小計： 
+              span $ #{ number_with_delimiter(@cart_session.total_price) }
+            p#freight 
+              | 運費：
+              span $ #{ Order::Freight_in_store }
+            hr
+            p#total
+              | 合計：
+              span $ #{ number_with_delimiter(@cart_session.total_price+Order::Freight_in_store) }
+            = f.submit '前往結帳', class:'btn'
 
-        = form_tag('http://map.ezship.com.tw/ezship_map_web.jsp', authenticity_token: false, id: 'ezship_form')
-
-          = hidden_field_tag 'suID', 'bonnie831024@gmail.com'
-          = hidden_field_tag 'processID', ''
-          = hidden_field_tag 'rtURL', 'http://localhost:3000/orders/ezship'
-                    
-      p.price 
-        | 總計 $
-        span #{ number_with_delimiter(@cart_session.total_price) }
-
-  .row
-    .data.col-sm-8.col-sm-offset-2
-      .panel.panel-default
-        .panel-heading 
-          h3 收件資料
-        #new_order_form
-
+       
