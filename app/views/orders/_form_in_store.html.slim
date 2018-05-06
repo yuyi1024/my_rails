@@ -7,16 +7,16 @@
 = form_for @order, :url => order_path(@order), method: 'patch' do |f|
   .row
     = f.label :true_name, '取件人姓名*', class: 'col-sm-2'
-    = f.text_field :true_name, class: 'col-sm-8', required: "required", value: @user.nil? ? '' : @user.true_name
+    = f.text_field :true_name, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.true_name : @user.true_name
   .row
     = f.label :email, '取件人信箱*', class: 'col-sm-2'
-    = f.email_field :email, class: 'col-sm-8', required: "required", value: @user.nil? ? '' : @user.email
+    = f.email_field :email, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.email : @user.email
   .row
     = f.label :phone, '取件人手機*', class: 'col-sm-2'
-    = f.text_field :phone, class: 'col-sm-8', required: "required", value: @user.nil? ? '' : @user.phone
+    = f.text_field :phone, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.phone : @user.phone
   .row
     = f.label :note, '備註', class: 'col-sm-2'
-    = f.text_area :note, class: 'col-sm-8'
+    = f.text_area :note, class: 'col-sm-8', value: @order.note
 
   - if @order.address.blank?
     p 請先選擇預送貨之超商

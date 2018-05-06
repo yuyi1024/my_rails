@@ -1,6 +1,6 @@
 h1.title 訂單結帳
 
-#order_new.container  
+#order_new.all_orders_page.container  
   .row
     .product_list.col-sm-8.col-sm-offset-2
       .panel.panel-default
@@ -44,36 +44,21 @@ h1.title 訂單結帳
 
   - if @order.ship_method != 'home_delivery'
     .row
-      .send.col-sm-8.col-sm-offset-2
+      .select_store.col-sm-8.col-sm-offset-2
         .panel.panel-default
           .panel-heading 
             h3 選擇超商
 
           .panel-body
-            = link_to '[＋選擇超商]', to_ezship_orders_path(@order.process_id)
-            p.stName #{ @stName.nil? ? '未選擇' : @stName }
+            = link_to(to_ezship_orders_path(@order.process_id))
+              p.select
+                span.glyphicon.glyphicon-search
+                | 選擇超商
+            p.stName 
+              span.glyphicon.glyphicon-home
+              | #{ @stName.nil? ? '未選擇' : @stName }
 
-  - if @order.pay_method == 'cash_card'
-    .row
-      .cash_card.col-sm-8.col-sm-offset-2
-        .panel.panel-default
-          .panel-heading 
-            h3 信用卡付款
-          
-
-          .panel-body
-            - if @order.paid == 'true'
-              h3
-                span.glyphicon.glyphicon-check
-                | 刷卡成功
-            
-            - else
-              = form_tag(cash_card_orders_path(@order.process_id), id:"cash_card", method:"post")
-                #payment-form
-                input#pay_card.btn type="submit" value="確認付款"
-
-
-
+  
   .row
     .data.col-sm-8.col-sm-offset-2
       .panel.panel-default
@@ -88,11 +73,3 @@ h1.title 訂單結帳
           - elsif @order.ship_method == 'home_delivery'
             = render partial: 'form_home_delivery'
 
-script src="https://js.braintreegateway.com/js/braintree-2.32.1.min.js"
-
-javascript:
-  var clientToken = '#{ @client_token }';
-
-  braintree.setup(clientToken, "dropin", {
-    container: "payment-form"
-  });

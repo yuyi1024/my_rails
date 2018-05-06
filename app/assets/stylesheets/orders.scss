@@ -20,17 +20,21 @@
       background-color: #fff;
     }
   }
-  .cash_card{
-    .panel-body{
-      h3{
-        text-align: center;
-        span{
-          color: green;
-          margin: 0 5px;
-        }
+  .select_store{
+    p{
+      font-size: 18px;
+      span{
+        margin: 0 5px;
       }
     }
+    a{
+      text-align: left;
+    }
+    .select{
+      color: #0000A1;
+    }
   }
+  
   .data{
     .row{
       margin: 30px 0;
@@ -52,9 +56,22 @@
       margin-bottom: 20px;
     }
   }
+}
+#cash_card_page{
+  .cash_card{
+    .panel-body{
+      h3{
+        text-align: center;
+        span{
+          color: green;
+          margin: 0 5px;
+        }
+      }
+    }
+  }
   #payment-form{
     width: 90%;
-    margin: 0 auto;
+    margin: 20px auto 0;
   }
   .btn{
     background: #000;
@@ -64,22 +81,17 @@
     width: 50%;
   }
 }
-
 #remit_info{
-  h1{
-    text-align: center;
-  }
-  .row{
-    h3{
-      margin: 0;
-    }
-    margin-top: 50px;
-  }
   p{
     line-height: 50px;
     margin: 0;
     padding: 0 10px;
     color: #555;
+  }
+  .panel-footer{
+    color: $color_price_red;
+    font-weight: bold;
+    font-size: 16px;
   }
 }
 
@@ -107,12 +119,18 @@
         font-size: 18px;
       }
     }
-    .btn{
-      width: 100%;
-      background-color: #4cae4c;
-      color: #fff;
-      margin-top: 20px; 
-    }
   }
 
+}
+.all_orders_page{
+  .btn{
+    background: #000;
+    color: #fff;
+    margin: 50px auto;
+    display: block;
+    width: 50%;
+    &:hover{
+      color: $color_mystic_gray;
+    }
+  }
 }

@@ -62,12 +62,9 @@
 
   def edit #訂單資料填寫
     @order = Order.find_by(process_id: params[:id])
-
     if !params[:stName].nil?
       @stName = params[:stName]
     end
-
-    @client_token = Braintree::ClientToken.generate
   end
 
   def to_ezship #傳至 EZship
@@ -97,11 +94,15 @@
   def update
     @order = Order.find(params[:id])
     @order.update(order_params)
+    
     if @order.save
-      flash[:notice] = '訂單建立'
-      if @order.pay_method == 'atm'
+      if @order.pay_method == 'cash_card'
+        redirect_to cash_card_orders_path(@order.process_id)
+      elsif @order.pay_method == 'atm'
+        flash[:notice] = '訂單建立'
         redirect_to remit_info_orders_path(@order.process_id)
-      else
+      elsif @order.pay_method == 'pickup_and_cash'
+        flash[:notice] = '訂單建立'
         redirect_to products_path
       end
     else
@@ -116,6 +117,11 @@
 
   def cash_card
     @order = Order.find_by(process_id: params[:process_id])
+    @client_token = Braintree::ClientToken.generate
+  end
+
+  def paid
+    @order = Order.find_by(process_id: params[:process_id])
     result = Braintree::Transaction.create(
       :amount => @order.price + @order.freight,
       :payment_method_nonce => params[:payment_method_nonce],
@@ -129,10 +135,9 @@
       @order.paid = 'true'
       if @order.save
         flash[:notice] = '付款成功'
-        @action = 'cash_card'
-        render 'orders/orders.js.erb'
       end
     end
+    redirect_to cash_card_orders_path(@order.process_id)
   end
 
   private
