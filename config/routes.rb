@@ -19,17 +19,23 @@ Rails.application.routes.draw do
 
   resource :carts, only: [:show, :destroy] do
   	collection do
-  		post :add, path: 'add/:id'
-  		post :change, path: 'change/:id'
+  		post :add, path: 'add/:id', as: 'add'
+  		post :change, path: 'change/:id', as: 'change'
 		end
 	end
 
   resources :orders do
     collection do
-      post :ezship, path: 'ezship', as: 'ezship'
       get :ship_method, path: 'ship_method', as: 'ship_method'
+      get :to_ezship, path: 'to_ezship/:process_id', as: 'to_ezship'
+      post :from_ezship, path: 'from_ezship', as: 'from_ezship'
+      get :get_user_data, path: 'get_user_data', as: 'get_user_data'
       get :remit_info, path: 'remit_info/:process_id', as: 'remit_info'
+      get :cash_card, path: 'cash_card/:process_id', as: 'cash_card'
+      post :paid, path: 'paid/:process_id', as: 'paid'
     end
   end
 
 end
+
+
