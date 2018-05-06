@@ -111,6 +111,11 @@
 
   end
 
+  def show
+    @order = current_user.orders.find_by(process_id: params[:id])
+    @order.status_cn
+  end
+
   def remit_info
     @order = current_user.orders.find_by(process_id: params[:process_id])
   end

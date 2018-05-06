@@ -23,14 +23,14 @@
                 #payment-form
                 input#pay_card.btn type="submit" value="確認付款"
 
-- if @order.paid == 'true'
-  = link_to '前往會員中心', products_path, class: 'btn'
+    - if @order.paid == 'true'
+      = link_to '前往會員中心', products_path, class: 'btn'
 
 script src="https://js.braintreegateway.com/js/braintree-2.32.1.min.js"
 
 javascript:
-var clientToken = '#{ @client_token }';
+  var clientToken = '#{ @client_token }';
 
-braintree.setup(clientToken, "dropin", {
-  container: "payment-form"
-});
+  braintree.setup(clientToken, "dropin", {
+    container: "payment-form"
+  });

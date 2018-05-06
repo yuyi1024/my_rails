@@ -1,0 +1,19 @@
+hr
+h3 修改密碼
+
+= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+  .row
+    = f.label :password, '新密碼', class: 'col-sm-2'
+    = f.password_field :password, class: 'col-sm-8'
+
+  .row
+    = f.label :password_confirmation, '密碼認證', class: 'col-sm-2'
+    = f.password_field :password_confirmation, class: 'col-sm-8'
+
+  .row
+    = f.label :current_password, '現在的密碼', class: 'col-sm-2'
+    = f.password_field :current_password, class: 'col-sm-8'
+
+  = f.submit '確認修改密碼', class: 'btn'
+
+

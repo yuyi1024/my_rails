@@ -56,6 +56,16 @@
       margin-bottom: 20px;
     }
   }
+  .order_detail{
+    .note{
+      th{
+        border-top: 1px #ddd solid;
+      }
+      td{
+        padding: 15px;
+      }
+    }
+  }
 }
 #cash_card_page{
   .cash_card{
@@ -63,7 +73,7 @@
       h3{
         text-align: center;
         span{
-          color: green;
+          color: $color_checked_green;
           margin: 0 5px;
         }
       }
@@ -112,6 +122,13 @@
         float: right;
       }
     }
+    .btn{
+      background: $color_checked_green;
+      color: #fff;
+      margin: 20px auto 0;
+      display: block;
+      width: 100%;
+  }
     #total{
       span{
         font-weight: bold;

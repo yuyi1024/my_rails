@@ -13,6 +13,29 @@ class Order < ApplicationRecord
     process_id = t.year.to_s[2,3] + "%02d" % t.mon + "%02d" % t.mday + "%03d" % user + rand(0..9).to_s + "%02d" % order + "%02d" % rand(0..99)
   end
 
+  def status_cn
+    case self.status
+    when 'pending'
+      self.status = '準備中'
+    when 'paid'
+      self.status = '已付款'
+    when 'shipping'
+      self.status = '運送中'
+    when 'delivered'
+      self.status = '已到貨'
+    when 'returned'
+      self.status = '已退貨'
+    when 'canceled'
+      self.status = '已取消'
+    when 'deliverd_store'
+      self.status = '已到店'
+    when 'picked_up'
+      self.status = '已取貨'
+    when 'finished'
+      self.status = '結束交易'
+    end
+  end
+
   aasm column: :status do
     state :pending, initial: true
     state :paid, :shipping, :delivered, :returned, :refunded, :canceled, :deliverd_store, :picked_up, :finished
