@@ -1,5 +1,20 @@
 $(document).on('turbolinks:load', function() {
 
+	// $('#pay_card').click(function(){
+	// 	$('#checkout').submit();
+	// });
+
+	$('.product_list h3').click(function(){
+		$list = $('.product_list .table')
+		if(!$list.is(':visible')){
+			$list.slideDown();
+			$('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
+		}else{
+			$list.slideUp();
+			$('span.glyphicon-chevron-left').css('transform', 'rotate(0deg)');
+		}
+		
+	});
 });
 
 //同會員資料

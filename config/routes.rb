@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       post :from_ezship, path: 'from_ezship', as: 'from_ezship'
       get :get_user_data, path: 'get_user_data', as: 'get_user_data'
       get :remit_info, path: 'remit_info/:process_id', as: 'remit_info'
-      post :checkout, path: 'checkout', as: 'checkout'
+      post :cash_card, path: 'cash_card/:process_id', as: 'cash_card'
     end
   end
 end

@@ -20,8 +20,15 @@
   .row
     = f.label :note, '備註', class: 'col-sm-2'
     = f.text_area :note, class: 'col-sm-8'
-  
-  = f.hidden_field :ship_method
-  = f.hidden_field :pay_method
 
-  = f.submit '訂單建立', class:'btn'
+  - if @order.pay_method == 'cash_card'
+    = f.submit '信用卡付款', class:'btn'
+  - elsif @order.pay_method == 'atm'
+    = f.submit '訂單建立', class:'btn'
+  
+
+  /#form_submit
+    - if @order.paid == 'true'
+      = f.submit '訂單建立', class:'btn'
+    - else
+      p 請先使用信用卡付款

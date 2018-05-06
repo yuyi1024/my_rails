@@ -114,19 +114,25 @@
     @order = current_user.orders.find_by(process_id: params[:process_id])
   end
 
-  def checkout
-
-    result = Braintree::Transaction.sale(
-      :amount => "100",
+  def cash_card
+    @order = Order.find_by(process_id: params[:process_id])
+    result = Braintree::Transaction.create(
+      :amount => @order.price + @order.freight,
       :payment_method_nonce => params[:payment_method_nonce],
+      :customer_id => @order.user.id,
+      :custom_fields => {
+        :process_id => @order.process_id
+      }
     )
 
     if result
-      flash[:notice] = '付款成功'
-      redirect_to products_path
+      @order.paid = 'true'
+      if @order.save
+        flash[:notice] = '付款成功'
+        @action = 'cash_card'
+        render 'orders/orders.js.erb'
+      end
     end
-
-
   end
 
   private

@@ -19,4 +19,10 @@
 		document.getElementById("user_data_chk").checked = true;
 	<% end %>
 
+<% elsif @action == 'cash_card' %>
+	$('#cash_card').html("<h3><span class='glyphicon glyphicon-check'></span>刷卡成功</h3>");
+  <% if @order.paid == 'true' %>
+    $('#form_submit').html("<input type='submit' name='commit' value='訂單建立'' class='btn' data-disable-with='訂單建立'>");
+  <% end %>
 <% end %>
+
