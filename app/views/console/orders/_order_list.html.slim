@@ -6,18 +6,22 @@
       th 總金額
       th 付款方式
       th 送貨方式
-      th 下單日期
       th 用戶email
       th
     tbody
       - @orders.each do |order|
         tr
-          td #{ order.process_id }
+          td 
+            p #{ order.process_id }
+            p #{ order.created_at.strftime("%Y/%m/%d") }
           td class="#{order_status_color(order.status)}" #{ order.status_cn }
           td $ #{ number_with_delimiter(order.price + order.freight) }
-          td #{ order.pay_method_cn }
-          td #{ order.ship_method_cn }
-          td #{ order.created_at.strftime("%Y/%m/%d") }
+          td 
+            p #{ order.pay_method_cn }
+            p #{ order.paid == 'true' ? '(已付款)' : '(未付款)' }
+          td
+            p #{ order.ship_method_cn }
+            p #{ order.delivered == 'true' ? '(已收貨)' : '(未收貨)' }
           td #{ truncate(order.user.email, length:12) }
           td
             = link_to(edit_console_order_path(order.process_id))

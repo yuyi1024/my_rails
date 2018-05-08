@@ -22,7 +22,7 @@
           .input-group
             = date_field_tag :date_f, nil, class:"form-control"
       .row
-        .col-sm-5.col-sm-offset-1
+        .col-sm-4.col-sm-offset-1
           label 訂單狀態
           br
           = check_box_tag 'status[]', 'waiting_payment', nil, id:'status_waiting_payment'
@@ -39,13 +39,15 @@
           br
 
           = check_box_tag 'status[]', 'delivered', nil, id:'status_delivered'
-          label for='status_delivered' 已到貨
+          label for='status_delivered' 宅配已到貨
+          
 
           = check_box_tag 'status[]', 'deliverd_store', nil, id:'status_deliverd_store'
-          label for='status_deliverd_store' 已到店
+          label for='status_deliverd_store' 超商已到店
 
           = check_box_tag 'status[]', 'picked_up', nil, id:'status_picked_up'
-          label for='status_picked_up' 已取貨
+          label for='status_picked_up' 超商已取貨
+          br
 
           = check_box_tag 'status[]', 'finished', nil, id:'status_finished'
           label for='status_finished' 結束交易
@@ -60,29 +62,60 @@
           = check_box_tag 'status[]', 'canceled', nil, id:'status_canceled'
           label for='status_canceled' 已取消
 
+          = check_box_tag 'status[]', 'pending', nil, id:'status_pending'
+          label for='status_pending' 結帳未完成
 
-        .col-sm-2.col-sm-offset-1
+        .col-sm-2
           label 付款方式
           br
-          = check_box_tag 'pay_method[]', 'pay_before', nil, id:'pay_method_before'
-          label for='pay_method_before' 先匯款
+          = check_box_tag 'pay_method[]', 'pickup_and_cash', nil, id:'pay_method_pickup_and_cash'
+          label for='pay_method_pickup_and_cash' 取貨付款
+          br
 
-          = check_box_tag 'pay_method[]', 'pay_after', nil, id:'pay_method_after'
-          label for='pay_method_after' 貨到付款
+          = check_box_tag 'pay_method[]', 'cash_card', nil, id:'pay_method_cash_card'
+          label for='pay_method_cash_card' 信用卡
+
+          = check_box_tag 'pay_method[]', 'atm', nil, id:'pay_method_atm'
+          label for='pay_method_atm' 實體ATM
 
         .col-sm-2
           label 送貨方式
           br
-          = check_box_tag 'ship_method[]', 'in_store', nil, id:'ship_method_in_store'
-          label for='ship_method_in_store' 超商取貨
+          = check_box_tag 'ship_method[]', 'pickup_and_cash', nil, id:'ship_method_pickup_and_cash'
+          label for='ship_method_pickup_and_cash' 取貨付款
 
-          = check_box_tag 'ship_method[]', 'to_address', nil, id:'ship_method_to_address'
-          label for='ship_method_to_address' 宅配
+          = check_box_tag 'ship_method[]', 'only_pickup', nil, id:'ship_method_only_pickup'
+          label for='ship_method_only_pickup' 純取貨
+          br
+
+          = check_box_tag 'ship_method[]', 'home_delivery', nil, id:'ship_method_home_delivery'
+          label for='ship_method_home_delivery' 宅配
+
+        .col-sm-2
+          label 有無付款
+          br
+          = check_box_tag 'paid[]', 'false', nil, id:'paid_false'
+          label for='paid_false' 未付款
+
+          = check_box_tag 'paid[]', 'true', nil, id:'paid_true'
+          label for='paid_true' 已付款
+          br
+          br
+
+          label 有無收貨
+          br
+          = check_box_tag 'delivered[]', 'false', nil, id:'delivered_false'
+          label for='delivered_false' 未收貨
+
+          = check_box_tag 'delivered[]', 'true', nil, id:'delivered_true'
+          label for='delivered_true' 已收貨
 
       .row
         = hidden_field_tag :search, 'true'
-        = hidden_field_tag :sort_item, '下單日期'
+        = hidden_field_tag :sort_item, 'created_at'
         = hidden_field_tag :sort_order, 'DESC'
+        button.btn onclick='clearField();' 清除
+        br
         button.btn onclick='orderSearch();' 查詢
 
 
@@ -94,7 +127,7 @@
 
     .col-sm-3.col-sm-offset-6
       | 依
-      = select_tag "sort_by", options_for_select([ "下單日期", "金額" ]), onchange:'sort_by();'
+      = select_tag "sort_by", options_for_select([ ["下單日期", 'created_at'], ["金額", 'price'] ]), onchange:'sort_by();'
       | 排序
 
       = radio_button_tag :sequence, 'DESC', true, class:"radio_sort", onchange:'sort_by();', id:'desc'
@@ -114,18 +147,22 @@
           th 總金額
           th 付款方式
           th 送貨方式
-          th 下單日期
           th 用戶email
           th
         tbody
           - @orders.each do |order|
             tr
-              td #{ order.process_id }
+              td 
+                p #{ order.process_id }
+                p #{ order.created_at.strftime("%Y/%m/%d") }
               td class="#{order_status_color(order.status)}" #{ order.status_cn }
               td $ #{ number_with_delimiter(order.price + order.freight) }
-              td #{ order.pay_method_cn }
-              td #{ order.ship_method_cn }
-              td #{ order.created_at.strftime("%Y/%m/%d") }
+              td 
+                p #{ order.pay_method_cn }
+                p #{ order.paid == 'true' ? '(已付款)' : '(未付款)' }
+              td
+                p #{ order.ship_method_cn }
+                p #{ order.delivered == 'true' ? '(已收貨)' : '(未收貨)' }
               td #{ truncate(order.user.email, length:12) }
               td
                 = link_to(edit_console_order_path(order.process_id))

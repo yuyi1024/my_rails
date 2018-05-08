@@ -15,6 +15,8 @@ class Order < ApplicationRecord
 
   def status_cn
     case self.status
+    when 'pending'
+      '結帳未完成'
     when 'waiting_payment'
       '待付款'
     when 'waiting_shipment'
@@ -42,18 +44,22 @@ class Order < ApplicationRecord
 
   def pay_method_cn
     case self.pay_method
-    when 'pay_before'
-      '先匯款'
-    when 'pay_after'
-      '貨到付款'
+    when 'pickup_and_cash'
+      '取貨付款'
+    when 'cash_card'
+      '信用卡'
+    when 'atm'
+      '實體ATM'
     end
   end
 
   def ship_method_cn
     case self.ship_method
-    when 'in_store'
-      '超商取貨'
-    when 'to_address'
+    when 'pickup_and_cash'
+      '取貨付款'
+    when 'only_pickup'
+      '純取貨'
+    when 'home_delivery'
       '宅配'
     end
   end

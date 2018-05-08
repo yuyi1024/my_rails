@@ -9,8 +9,16 @@ function orderSearch(){
   $('#order_filter').submit();
 }
 
+function clearField(){
+	event.preventDefault();
+  $("#order_filter input").each(function(){
+  	$(this).val('');
+  });
+
+}
+
 function sort_by(){
-  $('#sort_item').val($("#sort_by").val());
+	$('#sort_item').val($("#sort_by").val());
   $('#sort_order').val($("input[name=sequence]:checked").val());
   $('#order_filter').submit();
 }
