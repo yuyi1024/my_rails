@@ -4,6 +4,15 @@
   .filter{
     .row{
       margin-bottom: 30px;
+      &:last-child{
+        text-align: center;
+        button{
+          &:last-child{
+            background-color: #eee;
+            color: #000;
+          }
+        }
+      }
       input{
         &[type=checkbox]{
           margin: 0 5px 0 10px
@@ -12,13 +21,13 @@
       .btn{
         background-color: #000;
         color: #fff;
-        width: 10%;
-        margin: 0 auto;
-        display: block;
+        width: 8%;
+        margin: 0 10px;
       }
     }
   }
   #sorting{
+    margin-bottom: 10px; 
     .count{
       span{
         color: $color_price_red;

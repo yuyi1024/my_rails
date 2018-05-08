@@ -142,3 +142,16 @@
     margin: 0;
   }
 }
+.product_list{
+  p{
+    text-align: right;
+    span{
+      color: $color_price_red;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+  .panel-footer{
+    background-color: #fff;
+  }
+}

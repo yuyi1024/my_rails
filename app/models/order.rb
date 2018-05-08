@@ -20,9 +20,9 @@ class Order < ApplicationRecord
     when 'waiting_payment'
       '待付款'
     when 'waiting_shipment'
-      '待出貨(未付款)'
+      '待出貨'
     when 'paid'
-      '待出貨(已付款)'
+      '待出貨'
     when 'shipping'
       '運送中'
     when 'delivered'
@@ -64,6 +64,14 @@ class Order < ApplicationRecord
     end
   end
 
+  def paid_cn
+    self.paid == 'true' ? '已付款' : '未付款'
+  end
+
+  def delivered_cn
+    self.delivered == 'true' ? '已收貨' : '未收貨'
+  end
+
   def may_status
     @may = []
     @may << ['已付款, 待出貨', 'pay'] if self.may_pay?
@@ -76,6 +84,10 @@ class Order < ApplicationRecord
     @may << ['已退貨', 'return'] if self.may_return?
     @may << ['以退款', 'refund'] if self.may_refund?
     @may
+  end
+
+  def zzz
+    puts 'qqqqqqqqqq'
   end
 
   include AASM

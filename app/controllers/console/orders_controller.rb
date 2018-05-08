@@ -2,6 +2,8 @@ class Console::OrdersController < ApplicationController
   
   def index
     @orders = Order.includes(:user)
+    # @orders = Order.all
+    # @orders.zzz
 
     if params[:search].present?
       @orders = @orders.where(process_id: params[:process_id]) if params[:process_id].present?
@@ -11,42 +13,34 @@ class Console::OrdersController < ApplicationController
         params[:date_b] = Date.new(2018, 1, 1) if !params[:date_b].present?
         @orders = @orders.where(:created_at => params[:date_b].to_date..params[:date_f].to_date+1.days)
       end
-      @orders = @orders.where(status: params[:status]) if params[:status].present?
+
+      if params[:status].present?
+        params[:status] << 'paid' if params[:status].include?('waiting_shipment')
+        @orders = @orders.where(status: params[:status]) 
+      end
+
       @orders = @orders.where(pay_method: params[:pay_method]) if params[:pay_method].present?
       @orders = @orders.where(ship_method: params[:ship_method]) if params[:ship_method].present?
 
       if params[:paid].present?
         paid = []
-        if params[:paid].include?('true')
-          paid << 'true'
-        end
-        if params[:paid].include?('false')
-          paid << 'false'
-          paid << nil
-        end
-          @orders = @orders.where(paid: paid)
+        paid << 'true' if params[:paid].include?('true')
+        paid += ['false', nil] if params[:paid].include?('false')
+        @orders = @orders.where(paid: paid)
       end
 
       if params[:delivered].present?
         delivered = []
-        if params[:delivered].include?('true')
-          delivered << 'true'
-        end
-        if params[:delivered].include?('false')
-          delivered << 'false'
-          delivered << nil
-        end
-          @orders = @orders.where(delivered: delivered)
+        delivered << 'true' if params[:delivered].include?('true')
+        delivered += ['false', nil] if params[:delivered].include?('false')
+        @orders = @orders.where(delivered: delivered)
       end
 
-      puts params[:sort_item]
-      puts params[:sort_order]
       if params[:sort_item].present? && params[:sort_order].present?
-        @orders = @orders.order(params[:sort_item] + ' ' + params[:sort_order])
-        puts @orders
+        @orders = @orders.order('orders.' + params[:sort_item] + ' ' + params[:sort_order])
       end
 
-      render 'console/orders/index.js.erb' 
+      render 'console/orders/orders.js.erb' 
     else
       @orders = @orders.order("created_at DESC")
     end

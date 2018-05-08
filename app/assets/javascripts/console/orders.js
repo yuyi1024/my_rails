@@ -12,9 +12,14 @@ function orderSearch(){
 function clearField(){
 	event.preventDefault();
   $("#order_filter input").each(function(){
-  	$(this).val('');
+  	$type = $(this).attr('type');
+  	if($type == 'checkbox'){
+  		$(this).prop("checked", false);
+  	}else if($type == 'text' || $type == 'date'){
+  		$(this).val('');
+  	}
   });
-
+  $('#order_filter').submit();
 }
 
 function sort_by(){
@@ -23,3 +28,4 @@ function sort_by(){
   $('#order_filter').submit();
 }
 
+$("input[name=status]:checked") == false;

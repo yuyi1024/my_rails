@@ -29,10 +29,7 @@
           label for='status_waiting_payment' 待付款
 
           = check_box_tag 'status[]', 'waiting_shipment', nil, id:'status_waiting_shipment'
-          label for='status_waiting_shipment' 待出貨(未付款)
-          
-          = check_box_tag 'status[]', 'paid', nil, id:'status_paid'
-          label for='status_paid' 待出貨(已付款)
+          label for='status_waiting_shipment' 待出貨
 
           = check_box_tag 'status[]', 'shipping', nil, id:'status_shipping'
           label for='status_shipping' 運送中
@@ -114,9 +111,9 @@
         = hidden_field_tag :search, 'true'
         = hidden_field_tag :sort_item, 'created_at'
         = hidden_field_tag :sort_order, 'DESC'
-        button.btn onclick='clearField();' 清除
-        br
+
         button.btn onclick='orderSearch();' 查詢
+        button.btn onclick='clearField();' 清除
 
 
   .row#sorting

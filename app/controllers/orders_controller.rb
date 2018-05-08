@@ -100,6 +100,14 @@
     @order = Order.find(params[:id])
     @order.update(order_params)
     
+    if @order.pay_method == 'pickup_and_cash'
+      @order.wait_shipment
+    elsif @order.pay_method == 'cash_card'
+      @order.paid == 'true' ? @order.wait_shipment : @order.wait_payment
+    elsif @order.pay_method == 'atm'
+      @order.wait_payment
+    end
+
     if @order.save
       if @order.pay_method == 'cash_card'
         redirect_to cash_card_orders_path(@order.process_id)
@@ -137,11 +145,12 @@
       :payment_method_nonce => params[:payment_method_nonce],
       :customer_id => @order.user.id,
       :custom_fields => {
-        :process_id => @order.process_id
+      :process_id => @order.process_id
       }
     )
 
     if result
+      @order.pay
       @order.paid = 'true'
       if @order.save
         flash[:notice] = '付款成功'

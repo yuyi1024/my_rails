@@ -5,19 +5,8 @@
     h3{
       cursor: pointer;
     }
-    p{
-      text-align: right;
-      span{
-        color: $color_price_red;
-        font-size: 18px;
-        font-weight: bold;
-      }
-    }
     .table{
       display: none;
-    }
-    .panel-footer{
-      background-color: #fff;
     }
   }
   .select_store{
@@ -54,16 +43,6 @@
       color: red;
       font-size: 16px;
       margin-bottom: 20px;
-    }
-  }
-  .order_detail{
-    .note{
-      th{
-        border-top: 1px #ddd solid;
-      }
-      td{
-        padding: 15px;
-      }
     }
   }
 }
