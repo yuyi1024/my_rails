@@ -121,7 +121,7 @@
     }
     #tag_keyword {
       div {
-        background-color: green;
+        background-color: #6abe83;
       }
     }
 
@@ -173,9 +173,17 @@
         color: #777;
       }
     }
+    .glyphicon-heart{
+      font-size: 20px;
+      margin-left: 25px;
+      vertical-align: middle;
+      color: #ccc;
+    }
+  }
+  .pages{
+    text-align: center;
   }
 }
-
 
 #product_show {
   .product_detail {

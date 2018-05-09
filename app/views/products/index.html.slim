@@ -16,7 +16,7 @@
       .col-sm-4 
         span 關鍵字搜尋 
         = text_field_tag :keyword
-        button.label.btn onclick='form_submit();' Search
+        button.label.btn onclick='keywords();' Search
 
       = hidden_field_tag :cat1_field
 
@@ -79,6 +79,8 @@
               = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
                 span.glyphicon.glyphicon-shopping-cart
               
-              span.sold 已賣 #{ product.sold }
+              span.glyphicon.glyphicon-heart
+      
+    /.pages.row
+      = paginate @products, window: 2
 
-         

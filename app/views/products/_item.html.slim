@@ -1,5 +1,5 @@
-- if @items.present? 
-  - @items.each do |product|
+- if @products.present? 
+  - @products.each do |product|
     .col-sm-2
       .thumbnail
         = link_to product_path(product)
@@ -16,6 +16,8 @@
           = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
             span.glyphicon.glyphicon-shopping-cart
           
-          span.sold 已賣 #{ product.sold }
+          span.glyphicon.glyphicon-heart
+      
+    /.pages.row
+      = paginate @products, window: 2
 
-     

@@ -2,29 +2,31 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!, only: [:update]
 
   def index
-    @products = Product.all
+    @products = Product.all.page(params[:page]).per(6)
     @cat1s = Category.all
-    
-    @items = Product.all
-    
+        
     if params[:cat1_field].present?
-      @cat2s = Category.find_by(name: params[:cat1_field]).subcategory
-      @items = Category.find_by(name: params[:cat1_field]).product
+      cat1 = Category.find_by(name: params[:cat1_field])
+      @cat2s = cat1.subcategory
+      @products = cat1.product
     end
 
     if params[:cat2_field].present?
-      @items = @items.where(:subcategory => params[:cat2_field])
+      @products = @products.where(:subcategory => params[:cat2_field])
     end
 
     if params[:price_top].present?
       params[:price_bottom] = 0 if !params[:price_bottom].present?
-      @items = @items.price_search(params[:price_bottom],params[:price_top])
+      @products = @products.price_search(params[:price_bottom],params[:price_top])
     elsif params[:price_bottom].present?
-      @items = @items.price_top(params[:price_bottom])
+      @products = @products.price_top(params[:price_bottom])
     end
 
     if params[:keyword].present?
-      @items = @items.keyword(params[:keyword])
+      keyword = params[:keyword].split(' ')
+      keyword = keyword.reduce(''){ |memo, obj| memo += "name LIKE '%"+ obj + "%' AND " }
+      keyword = keyword.chomp(' AND ')
+      @products = @products.keyword(keyword)
     end
 
     @cat2_click = params[:cat2_click]

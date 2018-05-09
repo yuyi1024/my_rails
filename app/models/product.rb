@@ -10,7 +10,7 @@ class Product < ApplicationRecord
   # scope :cat2_search, ->(params){ where( :categories => { :id => params } ) }
   scope :price_search, ->(params1, params2){ where("price between ? and ?", params1, params2) }
   scope :price_top, ->(params){ where("price >= ? ", params ) }
-  scope :keyword, ->(params){ where("name LIKE ?", "%#{params}%") }
+  scope :keyword, ->(params){ where("#{params}") }
 
   def crop_photo
   	photo.recreate_versions! if crop_x.present?
