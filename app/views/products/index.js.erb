@@ -1,5 +1,5 @@
 <% if @cat2s.present? && !@cat2_click.present? %>
-  $('#cat2').html("<%= j render partial: 'result', locals: { cat2s: @cat2s, aaa: @aaa } %>");
+  $('#cat2').html("<%= j render partial: 'result', locals: { cat2s: @cat2s } %>");
 <% end %>
 
 

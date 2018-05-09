@@ -32,8 +32,8 @@
         /分類1按鈕
         #cat1.row 
           - @cat1s.each_with_index do |cat1,index|
-            .col-sm-1 data-target='#cat2' data-name='#{cat1.cat1}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
-              = cat1.cat1
+            .col-sm-1 data-target='#cat2' data-name='#{cat1.name}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
+              = cat1.name
 
         /分類2按鈕
         #cat2.row 
@@ -74,7 +74,7 @@
 
               p.tags
                 span.glyphicon.glyphicon-tags 
-                | #{ product.category.cat1 }、#{ product.category.cat2 } 
+                | #{ product.category.name }、#{ product.subcategory.name } 
               
               = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
                 span.glyphicon.glyphicon-shopping-cart

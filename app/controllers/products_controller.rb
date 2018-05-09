@@ -3,25 +3,24 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.all
-    @cat1s = Category.select(:cat1).distinct
-    @items = Product.includes(:category)
+    @cat1s = Category.all
+    
+    @items = Product.all
     
     if params[:cat1_field].present?
-      @cat2s = Category.where(cat1: params[:cat1_field])
-      @items = @items.cat1_search(params[:cat1_field])
+      @cat2s = Category.find_by(name: params[:cat1_field]).subcategory
+      @items = Category.find_by(name: params[:cat1_field]).product
     end
 
     if params[:cat2_field].present?
-      @items = @items.cat2_search(params[:cat2_field])
+      @items = @items.where(:subcategory => params[:cat2_field])
     end
 
-    if params[:price_bottom].present? && params[:price_top].present?
+    if params[:price_top].present?
+      params[:price_bottom] = 0 if !params[:price_bottom].present?
       @items = @items.price_search(params[:price_bottom],params[:price_top])
     elsif params[:price_bottom].present?
       @items = @items.price_top(params[:price_bottom])
-    elsif params[:price_top].present?
-      params[:price_bottom] = 0
-      @items = @items.price_search(params[:price_bottom],params[:price_top])  
     end
 
     if params[:keyword].present?
