@@ -27,5 +27,3 @@ function sort_by(){
   $('#sort_order').val($("input[name=sequence]:checked").val());
   $('#order_filter').submit();
 }
-
-$("input[name=status]:checked") == false;

@@ -1,6 +1,53 @@
 @import 'app';
 
 #console_order{
+  .order_list{
+    .btn{
+      background-color: #eee;
+    }
+    .status_red{
+      color: red;
+    }
+    .status_blue{
+      color: blue;
+    }
+  }
+}
+
+#order_edit{
+  select{
+    margin: 0 10px;
+    line-height: 20px;
+    width: 20%;
+  }
+  .btn{
+    background-color: #000;
+    color: #fff;
+  }
+}
+
+#console_product{
+  .new{
+    text-align: center;
+    margin: 0 0 20px;
+    .btn{
+      width: 10%;
+      background: $color_checked_green;
+      color: #fff;
+    }
+  }
+  .product_list{
+    .off_shelf{
+      background-color: #ddd;
+    }
+    .btn{
+      background-color: #eee;
+    }
+  }
+  
+}
+
+.console_page{
   .filter{
     .row{
       margin-bottom: 30px;
@@ -17,6 +64,9 @@
         &[type=checkbox]{
           margin: 0 5px 0 10px
         }
+      }
+      select{
+        height: 35px;
       }
       .btn{
         background-color: #000;
@@ -48,28 +98,5 @@
     .radio_sort:checked + label {
       opacity: 1;
     }
-  }
-  .order_list{
-    .btn{
-      background-color: #eee;
-    }
-    .status_red{
-      color: red;
-    }
-    .status_blue{
-      color: blue;
-    }
-  }
-}
-
-#order_edit{
-  select{
-    margin: 0 10px;
-    line-height: 20px;
-    width: 20%;
-  }
-  .btn{
-    background-color: #000;
-    color: #fff;
   }
 }

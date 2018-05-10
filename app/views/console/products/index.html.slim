@@ -1,116 +1,87 @@
 h1.title 商品列表
 
-#console_product.container 
-	= form_tag console_orders_path, method: :get, :remote => :true, id: 'order_filter'
-    .row
-      .col-sm-2.col-sm-offset-1
-        label 依訂單編號
-        .input-group
-          = text_field_tag :process_id, nil, class:"form-control", placeholder:"依訂單編號"
-      .col-sm-2
-        label 依用戶email
-        .input-group
-          = text_field_tag :email, nil, class:"form-control", placeholder:"依用戶email"
+#console_product.console_page.container
+  .row.new
+    = link_to '新增商品', new_console_product_path, class: 'btn'
+  .filter
+    = form_tag console_products_path, method: :get, :remote => :true, id: 'product_filter'
+      .row
+        .col-sm-3.col-sm-offset-1
+          label 主分類
+          br
+          = select_tag "cat_box", options_for_select(@categories.insert(0, ["所有主分類", 'all'])), onchange:'cat_select();', class: 'col-sm-10'
 
-      .col-sm-2.col-sm-offset-2
-        label 依下單日期(開始)
-        .input-group
-          = date_field_tag :date_b, nil, class:"form-control"
-      .col-sm-2
-        label 依下單日期(結束)
-        .input-group
-          = date_field_tag :date_f, nil, class:"form-control"
-    .row
-      .col-sm-4.col-sm-offset-1
-        label 訂單狀態
-        br
-        = check_box_tag 'status[]', 'waiting_payment', nil, id:'status_waiting_payment'
-        label for='status_waiting_payment' 待付款
+        .col-sm-3
+          label 次分類
+          br
+          = select_tag "subcat_box", options_for_select([['所有次分類', 'all']]), class: 'col-sm-10'
 
-        = check_box_tag 'status[]', 'waiting_shipment', nil, id:'status_waiting_shipment'
-        label for='status_waiting_shipment' 待出貨
+        .col-sm-3
+          label 關鍵字
+          .input-group.col-sm-10
+            = text_field_tag :keyword, nil, class:"form-control", placeholder:"輸入關鍵字"
 
-        = check_box_tag 'status[]', 'shipping', nil, id:'status_shipping'
-        label for='status_shipping' 運送中
-        br
+        .col-sm-2
+          label 商品狀態
+          br
+          = check_box_tag 'status[]', 'on_shelf', nil, id:'status_on_shelf'
+          label for='status_on_shelf' 上架
 
-        = check_box_tag 'status[]', 'delivered', nil, id:'status_delivered'
-        label for='status_delivered' 宅配已到貨
-        
+          = check_box_tag 'status[]', 'off_shelf', nil, id:'status_off_shelf'
+          label for='status_off_shelf' 下架
+         
 
-        = check_box_tag 'status[]', 'deliverd_store', nil, id:'status_deliverd_store'
-        label for='status_deliverd_store' 超商已到店
 
-        = check_box_tag 'status[]', 'picked_up', nil, id:'status_picked_up'
-        label for='status_picked_up' 超商已取貨
-        br
+      .row
+        = hidden_field_tag :search, 'true'
+        = hidden_field_tag :sort_item, 'id'
+        = hidden_field_tag :sort_order, 'ASC'
 
-        = check_box_tag 'status[]', 'finished', nil, id:'status_finished'
-        label for='status_finished' 結束交易
-        br
-        
-        = check_box_tag 'status[]', 'returned', nil, id:'status_returned'
-        label for='status_returned' 已退貨
+        button.btn 查詢
+        button.btn onclick='clearField();' 清除
 
-        = check_box_tag 'status[]', 'refunded', nil, id:'status_refunded'
-        label for='status_refunded' 已退款
+  .row#sorting
+    .count.col-sm-2.col-sm-offset-1 
+      | 共計 
+      span #{ @products.length } 
+      |  件商品
 
-        = check_box_tag 'status[]', 'canceled', nil, id:'status_canceled'
-        label for='status_canceled' 已取消
+    .col-sm-3.col-sm-offset-6
+      | 依
+      = select_tag "sort_by", options_for_select([ ["預設", 'id'], ["價錢", 'price'], ["庫存數量", 'quantity'], ["已賣數量", 'sold'] ]), onchange:'sort_by();'
+      | 排序
 
-        = check_box_tag 'status[]', 'pending', nil, id:'status_pending'
-        label for='status_pending' 結帳未完成
+      = radio_button_tag :sequence, 'DESC', nil, class:"radio_sort", onchange:'sort_by();', id:'desc'
+      label.label_sort for="desc"
+        span.glyphicon.glyphicon-sort-by-attributes-alt
 
-      .col-sm-2
-        label 付款方式
-        br
-        = check_box_tag 'pay_method[]', 'pickup_and_cash', nil, id:'pay_method_pickup_and_cash'
-        label for='pay_method_pickup_and_cash' 取貨付款
-        br
+      = radio_button_tag :sequence, 'ASC', true, class:"radio_sort", onchange:'sort_by();', id:'asc'
+      label.label_sort for="asc"
+        span.glyphicon.glyphicon-sort-by-attributes
 
-        = check_box_tag 'pay_method[]', 'cash_card', nil, id:'pay_method_cash_card'
-        label for='pay_method_cash_card' 信用卡
-
-        = check_box_tag 'pay_method[]', 'atm', nil, id:'pay_method_atm'
-        label for='pay_method_atm' 實體ATM
-
-      .col-sm-2
-        label 送貨方式
-        br
-        = check_box_tag 'ship_method[]', 'pickup_and_cash', nil, id:'ship_method_pickup_and_cash'
-        label for='ship_method_pickup_and_cash' 取貨付款
-
-        = check_box_tag 'ship_method[]', 'only_pickup', nil, id:'ship_method_only_pickup'
-        label for='ship_method_only_pickup' 純取貨
-        br
-
-        = check_box_tag 'ship_method[]', 'home_delivery', nil, id:'ship_method_home_delivery'
-        label for='ship_method_home_delivery' 宅配
-
-      .col-sm-2
-        label 有無付款
-        br
-        = check_box_tag 'paid[]', 'false', nil, id:'paid_false'
-        label for='paid_false' 未付款
-
-        = check_box_tag 'paid[]', 'true', nil, id:'paid_true'
-        label for='paid_true' 已付款
-        br
-        br
-
-        label 有無收貨
-        br
-        = check_box_tag 'delivered[]', 'false', nil, id:'delivered_false'
-        label for='delivered_false' 未收貨
-
-        = check_box_tag 'delivered[]', 'true', nil, id:'delivered_true'
-        label for='delivered_true' 已收貨
-
-    .row
-      = hidden_field_tag :search, 'true'
-      = hidden_field_tag :sort_item, 'created_at'
-      = hidden_field_tag :sort_order, 'DESC'
-
-      button.btn onclick='orderSearch();' 查詢
-      button.btn onclick='clearField();' 清除
-
+  .row
+    .product_list.panel.panel-default.col-sm-offset-1.col-sm-10
+      table.table
+        tr
+          th 
+          th 商品名稱
+          th 價錢
+          th 分類
+          th 庫存
+          th 已賣
+          th 商品狀態
+          th
+        tbody
+          - @products.each do |product|
+            tr class="#{ 'off_shelf' if product.status == 'off_shelf' }"
+              td
+                img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}" style='width:45px;'
+              td #{ product.name }
+              td $ #{ number_with_delimiter(product.price) }
+              td #{ product.category.name } > #{ product.subcategory.name }
+              td #{ product.quantity }
+              td #{ product.sold }
+              td #{ product.status_cn }
+              td
+                = link_to(edit_console_product_path(product.id))
+                  button.btn 編輯
