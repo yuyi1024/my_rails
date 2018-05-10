@@ -1,0 +1,125 @@
+h1.title 訂單詳情
+
+#order.container
+  .row
+    #order_edit.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 訂單編輯
+
+        .panel-body
+          = form_for @order, url: console_order_path(@order.process_id), method: 'patch' do |f|
+            p 訂單狀態： #{ @order.status_cn }
+            label 更改狀態
+            = f.select :status, options_for_select(@may_status.insert(0, ["未選擇", 0]))
+            = f.submit '確認更改', class:'btn'
+
+  
+  .row
+    .product_list.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 購買清單
+
+        table.table
+          tr
+            th 
+            th 商品名稱
+            th 單價
+            th 數量
+            th 小計
+          tbody
+            - @order.order_items.each_with_index do |item, index|
+              - product = Product.find(item.product_id)
+              tr
+                th #{ index+1 }
+                td 
+                  = link_to product.name, product_path(product)
+                td $#{ number_with_delimiter(product.price) }
+                td #{ item.quantity }
+                td $#{ number_with_delimiter(product.price*item.quantity) }
+
+        .panel-footer 
+          p 
+            | 小計： 
+            b $ #{ number_with_delimiter(@order.price) }
+          p 
+            |運費： 
+            b $ #{ number_with_delimiter(@order.freight) }
+          p 
+            | 總計： 
+            span $ #{ number_with_delimiter(@order.price + @order.freight) }
+
+  .row
+    .order_detail.col-sm-offset-2.col-sm-8
+      .panel.panel-default
+        .panel-heading
+          .panel-title 
+            h3 訂單資料
+
+        .panel-body
+          table.table
+            tr
+              th.col-sm-4 訂單資訊
+              th.col-sm-4 付款資訊
+              th.col-sm-4 送貨資訊
+
+            tbody
+              tr
+                td 
+                  p 
+                    b 訂單編號： 
+                    | #{ @order.process_id }
+                  p 
+                    b 訂單狀態： 
+                    | #{ @order.status_cn }
+                  p 
+                    b 下單日期： 
+                    | #{ @order.created_at.strftime("%Y/%m/%d") }
+                  p 
+                    b 會員 ID： 
+                    | #{ @order.user.id }
+                  p 
+                    b 會員信箱： 
+                    | #{ truncate(@order.user.email, length: 25) }
+
+                td 
+                  p 
+                    b 付款方式： 
+                    | #{ @order.pay_method_cn }
+                  p 
+                    b 付款狀態： 
+                    | #{ @order.paid_cn }
+
+                td
+                  p 
+                    b 送貨方式： 
+                    | #{ @order.ship_method_cn }
+                  p 
+                    b 送貨狀態： 
+                    | #{ @order.delivered_cn }
+                  p 
+                    b #{ @order.ship_method == 'home_delivery' ? '地址' : '門市名稱' }： 
+                    | #{ @order.address }
+                  p 
+                    b 收件人： 
+                    | #{ @order.true_name }
+                  p 
+                    b 電話號碼： 
+                    | #{ @order.phone }
+                  p 
+                    b 信箱： 
+                    | #{ truncate(@order.email, length: 25) }
+
+          table.table.note
+            tr
+              th 備註
+            tbody
+              tr
+                td #{ @order.note.blank? ? '無' : @order.note }
+
+
+
+
+
+             

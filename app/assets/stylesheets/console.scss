@@ -1,0 +1,75 @@
+@import 'app';
+
+#console_order{
+  .filter{
+    .row{
+      margin-bottom: 30px;
+      &:last-child{
+        text-align: center;
+        button{
+          &:last-child{
+            background-color: #eee;
+            color: #000;
+          }
+        }
+      }
+      input{
+        &[type=checkbox]{
+          margin: 0 5px 0 10px
+        }
+      }
+      .btn{
+        background-color: #000;
+        color: #fff;
+        width: 8%;
+        margin: 0 10px;
+      }
+    }
+  }
+  #sorting{
+    margin-bottom: 10px; 
+    .count{
+      span{
+        color: $color_price_red;
+        font-size: 18px;
+      }
+    }
+    select{
+      margin: 0 5px;
+    }
+    .radio_sort{
+      display: none;
+    }
+    .label_sort {
+      opacity: 0.3;
+      font-size: 18px;
+      margin-left: 10px;
+    }
+    .radio_sort:checked + label {
+      opacity: 1;
+    }
+  }
+  .order_list{
+    .btn{
+      background-color: #eee;
+    }
+    .status_red{
+      color: red;
+    }
+    .status_blue{
+      color: blue;
+    }
+  }
+}
+
+#order_edit{
+  select{
+    margin: 0 10px;
+    line-height: 20px;
+    width: 20%;
+  }
+  .btn{
+    background-color: #000;
+    color: #fff;
+  }
+}

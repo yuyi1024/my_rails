@@ -1,0 +1,2 @@
+$('.order_list').replaceWith("<%= j render partial: 'order_list', locals: { orders: @orders } %>");
+$('.count span').text('<%= @orders.length %>');

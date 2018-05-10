@@ -36,6 +36,16 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :console do
+    root 'dashboards#index'
+    resources :users
+    resources :products
+    resources :orders, only: [:index, :edit, :update] do 
+      collection do
+
+      end
+    end
+  end
 end
 
 
