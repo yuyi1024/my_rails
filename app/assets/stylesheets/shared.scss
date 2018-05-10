@@ -54,6 +54,15 @@
   }
 }
 
+#to_top{
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  text-align: center;
+  font-size: 40px;
+  cursor: pointer;
+  color: rgba(0,0,0,0.4);
+}
 
 /*購物車*/
 

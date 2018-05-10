@@ -1,5 +1,7 @@
 $(document).on('turbolinks:load', function() {
-
+  $('#to_top').click(function(){
+    $(window).scrollTop(0);
+  });
 });
 
 function openCart(){
