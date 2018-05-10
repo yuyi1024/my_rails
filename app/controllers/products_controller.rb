@@ -2,7 +2,8 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!, only: [:update]
 
   def index
-    @products = Product.all.page(params[:page]).per(6)
+    
+    @products = Product.all
     @cat1s = Category.all
         
     if params[:cat1_field].present?
@@ -30,6 +31,9 @@ class ProductsController < ApplicationController
     end
 
     @cat2_click = params[:cat2_click]
+
+    params[:page] = 1 if !params[:page].present?
+    @products = @products.page(params[:page]).per(24)
     
     respond_to do |format|
       format.html

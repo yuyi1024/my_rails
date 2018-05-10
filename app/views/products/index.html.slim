@@ -60,27 +60,28 @@
 
       #clear_tag onclick='clear_tag();' X clear
 
-    #item.row
-      - @products.each do |product|
-        .col-sm-2
-          .thumbnail
-            = link_to product_path(product)
-              img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
-            .caption
-              h3 
-                = link_to product.name, product_path(product)
-              
-              p.price $#{number_with_delimiter(product.price)}
+    #item
+      .row
+        - @products.each do |product|
+          .col-sm-2
+            .thumbnail
+              = link_to product_path(product)
+                img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
+              .caption
+                h3 
+                  = link_to product.name, product_path(product)
+                
+                p.price $#{number_with_delimiter(product.price)}
 
-              p.tags
-                span.glyphicon.glyphicon-tags 
-                | #{ product.category.name }、#{ product.subcategory.name } 
-              
-              = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
-                span.glyphicon.glyphicon-shopping-cart
-              
-              span.glyphicon.glyphicon-heart
-      
-    /.pages.row
-      = paginate @products, window: 2
+                p.tags
+                  span.glyphicon.glyphicon-tags 
+                  | #{ product.category.name }、#{ product.subcategory.name } 
+                
+                = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
+                  span.glyphicon.glyphicon-shopping-cart
+                
+                span.glyphicon.glyphicon-heart
+        
+      .pages.row
+        = paginate @products, window: 2, remote: true
 
