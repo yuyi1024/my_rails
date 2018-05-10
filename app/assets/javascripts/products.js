@@ -206,6 +206,10 @@ function destroy(object, cat) {
     $('#price-tag-p').remove();
     $('#price_bottom').val('');
     $('#price_top').val('');
+  
+  } else if (cat == 'keyword') {
+    $('#keyword-tag-k').remove();
+    $('#keyword').val('');
   }
   form_submit();
 }
@@ -214,6 +218,8 @@ function clear_tag() {
   $('#price_bottom').val('');
   $('#price_top').val('');
   $('#price-tag-p').remove();
+  $('#keyword').val('');
+  $('#keyword-tag-k').remove();
   $('#tag_cat1 .bubble').each(function() {
     destroy(this, 'cat1');
   });
@@ -225,6 +231,13 @@ function clear_tag() {
 
 function form_submit() {
   $('#search_form').submit();
+}
+
+function keywords(){
+  $('#keyword-tag-k').remove();
+  tagName = $('#keyword').val();
+  tag_create(tagName, 'k', 'keyword');
+  form_submit();
 }
 
 function price() {

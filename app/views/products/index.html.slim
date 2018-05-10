@@ -16,7 +16,7 @@
       .col-sm-4 
         span 關鍵字搜尋 
         = text_field_tag :keyword
-        button.label.btn onclick='form_submit();' Search
+        button.label.btn onclick='keywords();' Search
 
       = hidden_field_tag :cat1_field
 
@@ -32,8 +32,8 @@
         /分類1按鈕
         #cat1.row 
           - @cat1s.each_with_index do |cat1,index|
-            .col-sm-1 data-target='#cat2' data-name='#{cat1.cat1}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
-              = cat1.cat1
+            .col-sm-1 data-target='#cat2' data-name='#{cat1.name}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
+              = cat1.name
 
         /分類2按鈕
         #cat2.row 
@@ -60,25 +60,28 @@
 
       #clear_tag onclick='clear_tag();' X clear
 
-    #item.row
-      - @products.each do |product|
-        .col-sm-2
-          .thumbnail
-            = link_to product_path(product)
-              img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
-            .caption
-              h3 
-                = link_to product.name, product_path(product)
-              
-              p.price $#{number_with_delimiter(product.price)}
+    #item
+      .row
+        - @products.each do |product|
+          .col-sm-2
+            .thumbnail
+              = link_to product_path(product)
+                img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
+              .caption
+                h3 
+                  = link_to product.name, product_path(product)
+                
+                p.price $#{number_with_delimiter(product.price)}
 
-              p.tags
-                span.glyphicon.glyphicon-tags 
-                | #{ product.category.cat1 }、#{ product.category.cat2 } 
-              
-              = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
-                span.glyphicon.glyphicon-shopping-cart
-              
-              span.sold 已賣 #{ product.sold }
+                p.tags
+                  span.glyphicon.glyphicon-tags 
+                  | #{ product.category.name }、#{ product.subcategory.name } 
+                
+                = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
+                  span.glyphicon.glyphicon-shopping-cart
+                
+                span.glyphicon.glyphicon-heart
+        
+      .pages.row
+        = paginate @products, window: 2, remote: true
 
-         
