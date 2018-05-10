@@ -2,8 +2,6 @@ class Console::OrdersController < ApplicationController
   
   def index
     @orders = Order.includes(:user)
-    # @orders = Order.all
-    # @orders.zzz
 
     if params[:search].present?
       @orders = @orders.where(process_id: params[:process_id]) if params[:process_id].present?

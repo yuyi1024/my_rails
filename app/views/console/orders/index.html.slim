@@ -1,6 +1,6 @@
-#console_order.container
-  h1.title 訂單列表
-  
+h1.title 訂單列表
+
+#console_order.container  
   .filter
     = form_tag console_orders_path, method: :get, :remote => :true, id: 'order_filter'
       .row
