@@ -1,1 +1,5 @@
-= select_tag "subcat_box", options_for_select(@subcategories.insert(0, ['所有次分類', 'all'])), class: 'col-sm-10'
+- if @method == 'index'
+	= select_tag "subcat_box", options_for_select(@subcategories.insert(0, ['所有次分類', 'all'])), class: 'col-sm-10'
+
+- elsif @method == 'edit'
+	= select_tag "subcat_box", options_for_select(@subcategories), onchange:"subcat_select();", class: 'col-sm-8'

@@ -44,7 +44,12 @@
       background-color: #eee;
     }
   }
-  
+  .photo_form{
+    .btn{
+      background-color: #000;
+      color: #fff;
+    }
+  }
 }
 
 .console_page{
@@ -98,5 +103,15 @@
     .radio_sort:checked + label {
       opacity: 1;
     }
+  }
+  .pages{
+    text-align: center;
+  }
+}
+
+#photo_crop{
+  .btn{
+    background-color: #000;
+    color: #fff;
   }
 }

@@ -1,4 +1,4 @@
-.product_list.panel.panel-default.col-sm-offset-1.col-sm-10
+.panel.panel-default.col-sm-offset-1.col-sm-10
   table.table
     tr
       th 
@@ -23,3 +23,6 @@
           td
             = link_to(edit_console_product_path(product.id))
               button.btn 編輯
+
+.pages.row
+  = paginate @products, window: 2, remote: 'true'

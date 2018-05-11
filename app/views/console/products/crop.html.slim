@@ -1,0 +1,18 @@
+h1.title 裁剪商品照
+
+#photo_crop.container
+  .row
+    .col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 新商品照
+        .panel-body
+					img src='#{ @product.photo_url }' id='cropbox' 
+
+					= form_for @product, url: update_photo_console_products_path, method: 'post' do |f|
+						- %w[x y w h].each do |attribute|
+							= f.hidden_field "crop_#{attribute}"
+						br
+						= f.submit '上傳', class: 'btn col-sm-2'
+
+	

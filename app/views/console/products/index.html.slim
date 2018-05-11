@@ -9,7 +9,7 @@ h1.title 商品列表
         .col-sm-3.col-sm-offset-1
           label 主分類
           br
-          = select_tag "cat_box", options_for_select(@categories.insert(0, ["所有主分類", 'all'])), onchange:'cat_select();', class: 'col-sm-10'
+          = select_tag "cat_box", options_for_select(@categories.insert(0, ["所有主分類", 'all'])), onchange:"cat_select('index');", class: 'col-sm-10'
 
         .col-sm-3
           label 次分類
@@ -43,7 +43,7 @@ h1.title 商品列表
   .row#sorting
     .count.col-sm-2.col-sm-offset-1 
       | 共計 
-      span #{ @products.length } 
+      span #{ @rows } 
       |  件商品
 
     .col-sm-3.col-sm-offset-6
@@ -59,8 +59,8 @@ h1.title 商品列表
       label.label_sort for="asc"
         span.glyphicon.glyphicon-sort-by-attributes
 
-  .row
-    .product_list.panel.panel-default.col-sm-offset-1.col-sm-10
+  .product_list.row
+    .panel.panel-default.col-sm-offset-1.col-sm-10
       table.table
         tr
           th 
@@ -85,3 +85,6 @@ h1.title 商品列表
               td
                 = link_to(edit_console_product_path(product.id))
                   button.btn 編輯
+
+    .pages.row
+      = paginate @products, window: 2

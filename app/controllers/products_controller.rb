@@ -46,24 +46,4 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
 
   end
-
-  def update
-    @product = Product.find(params[:id])
-    @product.cache = rand(0..100) if params[:product][:photo].present?
-    @product.update(product_params)
-   
-    if params[:product][:photo].present?
-      render :crop
-    else
-      redirect_to products_path
-    end
-  end
-
-
-
-  private
-
-  def product_params
-    params.require(:product).permit!
-  end
 end
