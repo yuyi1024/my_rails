@@ -31,6 +31,26 @@ class Console::ProductsController < ApplicationController
     
   end
 
+  def new
+    @product = Product.new
+    @categories = Category.all
+    @subcategories = Subcategory.where(category_id: @categories.first.id)
+    
+    @categories = @categories.map{ |cat| [cat.name, cat.id] }
+    @subcategories =  @subcategories.map{ |subcat| [subcat.name, subcat.id] }
+  end
+
+  def create
+    @product = Product.create(product_params)
+    @product.status = 'off_shelf'
+    if @product.save
+      flash[:notice] = '新增成功' 
+    else
+      flash[:notice] = '新增失敗'
+    end
+    redirect_to edit_console_product_path(@product)
+  end
+
   def edit
     @product = Product.find(params[:id])
     @categories = Category.all
@@ -51,6 +71,20 @@ class Console::ProductsController < ApplicationController
     redirect_to edit_console_product_path
   end
 
+  def get_subcat
+    if params[:cat].present?
+      @action = 'subcat'
+      @method = params[:method]
+      if params[:cat] == 'all'
+        @subcategories = []
+      else
+        @subcategories = Subcategory.where(category_id: params[:cat])
+        @subcategories =  @subcategories.map{ |subcat| [subcat.name, subcat.id] }
+      end
+      render 'console/products/products.js.erb'
+    end
+  end
+
   def update_photo
     @product = Product.find(params[:id])
     @product.cache = rand(0..100) if params[:product][:photo].present?
@@ -68,21 +102,10 @@ class Console::ProductsController < ApplicationController
       end
       redirect_to edit_console_product_path
     end
-
   end
 
-  def get_subcat
-    if params[:cat].present?
-      @action = 'subcat'
-      @method = params[:method]
-      if params[:cat] == 'all'
-        @subcategories = []
-      else
-        @subcategories = Subcategory.where(category_id: params[:cat])
-        @subcategories =  @subcategories.map{ |subcat| [subcat.name, subcat.id] }
-      end
-      render 'console/products/products.js.erb'
-    end
+  def add_cat
+
   end
 
   def kaminari_page

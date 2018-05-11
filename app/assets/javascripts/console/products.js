@@ -89,3 +89,24 @@ function showCoords(c) {
   $('#product_crop_w').val(c.w);
   $('#product_crop_h').val(c.h);
 }
+
+function add_subcat_column(){
+	event.preventDefault();
+	$('.add_column').append('<input type="text" name="cat_field[]" id="cat_field_" class="col-sm-4 col-sm-offset-4" required="required">');
+}
+
+function add_cat_submit(){
+	event.preventDefault();
+	var cat;
+	var add_new = false;
+	if($('#cat_field').val() == ''){
+		cat = document.getElementById('add_cat_box').value;
+	}else{
+		add_new = true;
+		cat = $('#cat_field').val();
+	}
+}
+
+
+
+

@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       collection do
         get :get_subcat, path: 'get_subcat', as: 'get_subcat'
         post :update_photo, path: 'update_photo/:id', as: 'update_photo'
+        post :add_cat, path: 'add_cat', as: 'add_cat'
       end
     resources :orders, only: [:index, :edit, :update]
     end

@@ -16,11 +16,10 @@ h1.title 編輯商品
               = form_for @product , url: update_photo_console_products_path, method: 'post' do |f|
                 = f.label :photo, '上傳新商品照', class: 'col-sm-2'
                 = f.file_field :photo, class: 'col-sm-4', required: "required"
-
                 = f.submit '上傳', class: 'btn col-sm-2'
 
-
-
+      - if @product.status == 'off_shelf'
+        p.remark 商品尚未上架，確認資料沒問題後，可於下方更改商品狀態為【上架】，商品才會被顧客看到。
 
       .panel.panel-default
         .panel-heading 
@@ -30,13 +29,13 @@ h1.title 編輯商品
           = form_for @product, url: console_product_path, method: 'patch' do |f|
             .row
               = f.label :name, '商品名稱', class: 'col-sm-2'
-              = f.text_field :name, class: 'col-sm-8'
+              = f.text_field :name, class: 'col-sm-8', required: "required"
             .row
               = f.label :price, '價錢', class: 'col-sm-2'
-              = f.number_field :price, class: 'col-sm-8'
+              = f.number_field :price, class: 'col-sm-8', required: "required"
             .row
               = f.label :quantity, '庫存數量', class: 'col-sm-2'
-              = f.number_field :quantity, class: 'col-sm-8'
+              = f.number_field :quantity, class: 'col-sm-8', required: "required"
             .row
               = f.label :category, '主分類', class: 'col-sm-2'
               = select_tag "cat_box", options_for_select(@categories, @product.category_id), onchange:"cat_select('edit');", class: 'col-sm-8'

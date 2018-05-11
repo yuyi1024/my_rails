@@ -3,3 +3,6 @@
 
 - elsif @method == 'edit'
 	= select_tag "subcat_box", options_for_select(@subcategories), onchange:"subcat_select();", class: 'col-sm-8'
+
+- elsif @method == 'new'
+	= select_tag "subcat_box", options_for_select(@subcategories), onchange:"subcat_select();", class: 'col-sm-8'

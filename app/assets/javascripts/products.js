@@ -33,46 +33,6 @@ $(document).on('turbolinks:load', function() {
       }
       $('.input-quantity input').val(q);
     });
-
-
-    // $('#cropbox').Jcrop({
-    //   aspectRatio: 1,
-    //   setSelect: [0, 0, 200, 200],
-    //   onSelect: showCoords,
-    //   onChange: showCoords,
-    // });
-
-
-    // $('#summernote').summernote({
-    //   height: '500px',
-    //   placeholder: '為商品新增描述...',
-    //   lang: 'zh-TW',
-    //   toolbar: [
-    //     ['para', ['style']],
-    //     ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-    //     ['fontsize', ['fontsize']],
-    //     ['color', ['color']],
-    //     ['para', ['ul', 'ol', 'paragraph']],
-    //     ['insert', ['table', 'hr']],
-    //     ['insert', ['link', 'picture']],
-    //     ['misk', ['codeview']],
-    //   ],
-    //   callbacks: {
-    //     onImageUpload: function(files) {
-    //       sendFile(this, files[0]);
-    //       //this => $('#summernote')
-    //       //file => FileList{ 0: File(xxxx), length: 1 }
-    //       //file[0] => File(xxxx){ name, size, type...... }
-    //     },
-    //     onMediaDelete: function(target, editor, editable) {
-    //       //target => { 0:img#id, context, length }
-
-    //       var image_id = target[0].id;
-    //       deleteFile(image_id);
-    //       target.remove();
-    //     }
-    //   }
-    // });
   }
 });
 
@@ -109,17 +69,6 @@ function deleteFile(image_id) {
     processData: false
   });
 }
-
-
-// //Jcrop
-// function showCoords(c) {
-//   $('#product_crop_x').val(c.x);
-//   $('#product_crop_y').val(c.y);
-//   $('#product_crop_w').val(c.w);
-//   $('#product_crop_h').val(c.h);
-// }
-
-
 
 //click cat1_box
 function cat1(object) {
