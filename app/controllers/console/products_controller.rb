@@ -104,10 +104,6 @@ class Console::ProductsController < ApplicationController
     end
   end
 
-  def add_cat
-
-  end
-
   def kaminari_page
     @rows = @products.length
     params[:page] = 1 if !params[:page].present?

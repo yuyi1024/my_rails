@@ -1,8 +1,11 @@
 <% if @action == 'subcat' %>
-    $('#subcat_box').replaceWith("<%= j render partial: 'cat_selectbox',locals: { subcategories: @subcategories, method: @method } %>");
-    $('#product_subcategory_id').val('<%= @subcategories[0][1] %>');
+  $('#subcat_box').replaceWith("<%= j render partial: 'cat_selectbox',locals: { subcategories: @subcategories, method: @method } %>");
+  $('#product_subcategory_id').val('<%= @subcategories[0][1] %>');
 
 <% elsif @action == 'search' %>
   $('.product_list').html("<%= j render partial: 'item', locals: { products: @products } %>");
   $('.count span').text('<%= @rows %>');
+
+<% #elsif @action == 'add_cat' %>
+  //$('#cats_select_box').replaceWith("<%= j render partial: 'cat_selectbox',locals: { categories: @categories, subcategories: @subcategories, action: @action } %>");
 <% end %>

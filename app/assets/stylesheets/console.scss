@@ -56,32 +56,6 @@
     color: $color_price_red;
     margin-bottom: 20px;
   }
-  #add_cat{
-    input, select{
-      height: 35px;
-      margin-bottom: 5px;
-    }
-    .add_column_btn{
-      cursor: pointer;
-      color: blue;
-    }
-    .arrow{
-      font-size: 40px;
-      margin: 40px 0;
-    }
-    p{
-      text-align: center;
-    }
-    .btn{
-      background-color: #000;
-      color: #fff;
-      margin-top: 20px;
-      width: 10%;
-      &:hover{
-        color: #eee;
-      }
-    }
-  }
 }
 
 .console_page{
@@ -147,3 +121,4 @@
     color: #fff;
   }
 }
+

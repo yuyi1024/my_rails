@@ -2,36 +2,7 @@ h1.title 新增商品
 
 #console_product.console_page.container
   .row.new
-    = link_to '新增分類', new_console_product_path, class: 'btn'
-
-
-  .row
-    #add_cat.col-sm-8.col-sm-offset-2
-      .panel.panel-default
-        .panel-heading 
-          h3 新增分類
-        .panel-body
-          = form_tag console_products_path, method: 'post'
-            p.remark 選擇主分類 或 新增主分類
-            .row
-              = select_tag :add_cat_box, options_for_select(@categories), class: 'col-sm-4 col-sm-offset-1'
-              = text_field_tag :cat_field, nil, class: 'col-sm-4 col-sm-offset-2'
-
-            p.arrow
-              span.glyphicon.glyphicon-triangle-bottom
-
-            p.remark 新增次分類
-            .row.add_column
-              = text_field_tag 'subcat_field[]', nil, class: 'col-sm-4 col-sm-offset-4', required: "required"
-            
-            .row
-              p.add_column_btn onclick='add_subcat_column();'
-                | [+增加欄位] 
-            
-            p
-              button.btn onclick='add_cat_submit();'
-                | 新增
-
+    = link_to '編輯分類', new_console_category_path, class: 'btn'
 
   .row
     .data_form.col-sm-8.col-sm-offset-2
@@ -50,15 +21,17 @@ h1.title 新增商品
             .row
               = f.label :quantity, '庫存數量', class: 'col-sm-2'
               = f.number_field :quantity, class: 'col-sm-8', required: "required"
-            .row
-              = f.label :category, '主分類', class: 'col-sm-2'
-              = select_tag "cat_box", options_for_select(@categories), onchange:"cat_select('new');", class: 'col-sm-8'
-              = f.hidden_field :category_id, value: @categories[0][1]
+            
+            #cats_select_box
+              .row
+                = f.label :category, '主分類', class: 'col-sm-2'
+                = select_tag "cat_box", options_for_select(@categories), onchange:"cat_select('new');", class: 'col-sm-8'
+                = f.hidden_field :category_id, value: @categories[0][1]
 
-            .row
-              = f.label :subcategory, '次分類', class: 'col-sm-2'
-              = select_tag "subcat_box", options_for_select(@subcategories), class: 'col-sm-8'
-              = f.hidden_field :subcategory_id
+              .row
+                = f.label :subcategory, '次分類', class: 'col-sm-2'
+                = select_tag "subcat_box", options_for_select(@subcategories), class: 'col-sm-8'
+                = f.hidden_field :subcategory_id
             
             .row
               .field

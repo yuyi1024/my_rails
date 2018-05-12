@@ -1,0 +1,23 @@
+h1.title 編輯分類
+
+#console_category.console_page.container
+  .row
+    #edit_cat.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 次分類
+        .panel-body
+          = form_for @subcategory, url: subcat_update_console_categories_path, method: 'patch' do |f|
+            .row
+              = f.label :name, '次分類名', class:'col-sm-2'
+              = f.text_field :name, class:'col-sm-8', required: 'required'
+            .row
+              p
+                = f.submit '更新', class: 'btn submit_btn'
+          
+          hr
+          p.remark 刪除後該分類下的所有商品將轉移至【其他】次分類
+          p 刪除該分類？
+          p
+            = link_to subcat_destroy_console_categories_path(@subcategory), method: 'delete', data: {confirm: "確定刪除【#{@subcategory.name}】？"}
+              button.btn.delete_btn 刪除【#{@subcategory.name}】

@@ -1,6 +1,7 @@
-$(document).on('turbolinks:load', function() {
-  if (window.location.pathname.match(/products/g)){
-  	$('#summernote').summernote({
+if (window.location.pathname.match(/products/g)){
+  
+  $(document).on('turbolinks:load', function() {
+    $('#summernote').summernote({
       height: '400px',
       placeholder: '為商品新增描述...',
       lang: 'zh-TW',
@@ -38,75 +39,58 @@ $(document).on('turbolinks:load', function() {
       onSelect: showCoords,
       onChange: showCoords,
     });
+  
+  });
+
+  function cat_select(m){
+    var cat = document.getElementById('cat_box').value;
+    $('#product_category_id').val(cat);
+
+    $.ajax({
+      type: 'GET',
+      url: '/console/products/get_subcat',
+      data : { 
+        cat: cat,
+        method: m
+      },
+    });
   }
-});
 
-function cat_select(m){
-	var cat = document.getElementById('cat_box').value;
-	$('#product_category_id').val(cat);
+  function subcat_select(){
+    var subcat = document.getElementById('subcat_box').value;
+    $('#product_subcategory_id').val(subcat);
+  }
 
-	$.ajax({
-    type: 'GET',
-    url: '/console/products/get_subcat',
-    data : { 
-    	cat: cat,
-    	method: m
-    },
-  });
+
+  function clearField(){
+    event.preventDefault();
+    $("#product_filter input").each(function(){
+      $type = $(this).attr('type');
+      if($type == 'checkbox'){
+        $(this).prop("checked", false);
+      }else if($type == 'text' || $type == 'date'){
+        $(this).val('');
+      }
+    });
+    document.getElementById("cat_box").selectedIndex = "0";
+    document.getElementById("subcat_box").selectedIndex = "0";
+    $('#product_filter').submit();
+  }
+
+  function sort_by(){
+    $('#sort_item').val($("#sort_by").val());
+    $('#sort_order').val($("input[name=sequence]:checked").val());
+    $('#product_filter').submit();
+  }
+
+  //Jcrop
+  function showCoords(c) {
+    $('#product_crop_x').val(c.x);
+    $('#product_crop_y').val(c.y);
+    $('#product_crop_w').val(c.w);
+    $('#product_crop_h').val(c.h);
+  }
+
 }
-
-function subcat_select(){
-	var subcat = document.getElementById('subcat_box').value;
-	$('#product_subcategory_id').val(subcat);
-}
-
-
-function clearField(){
-	event.preventDefault();
-  $("#product_filter input").each(function(){
-  	$type = $(this).attr('type');
-  	if($type == 'checkbox'){
-  		$(this).prop("checked", false);
-  	}else if($type == 'text' || $type == 'date'){
-  		$(this).val('');
-  	}
-  });
-  document.getElementById("cat_box").selectedIndex = "0";
-  document.getElementById("subcat_box").selectedIndex = "0";
-  $('#product_filter').submit();
-}
-
-function sort_by(){
-	$('#sort_item').val($("#sort_by").val());
-  $('#sort_order').val($("input[name=sequence]:checked").val());
-  $('#product_filter').submit();
-}
-
-//Jcrop
-function showCoords(c) {
-  $('#product_crop_x').val(c.x);
-  $('#product_crop_y').val(c.y);
-  $('#product_crop_w').val(c.w);
-  $('#product_crop_h').val(c.h);
-}
-
-function add_subcat_column(){
-	event.preventDefault();
-	$('.add_column').append('<input type="text" name="cat_field[]" id="cat_field_" class="col-sm-4 col-sm-offset-4" required="required">');
-}
-
-function add_cat_submit(){
-	event.preventDefault();
-	var cat;
-	var add_new = false;
-	if($('#cat_field').val() == ''){
-		cat = document.getElementById('add_cat_box').value;
-	}else{
-		add_new = true;
-		cat = $('#cat_field').val();
-	}
-}
-
-
-
-
+//上架的product才顯示
+//有上架product的分類才顯示

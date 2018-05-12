@@ -1,0 +1,69 @@
+h1.title 編輯分類
+
+#console_category.console_page.container
+  .row.new
+    /= link_to '新增商品', new_console_product_path, class: 'btn'
+
+  .row
+    #add_cat.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 新增分類
+        .panel-body
+          = form_tag console_categories_path, method: 'post'
+            p.remark 選擇主分類 或 新增主分類
+            .row
+              = select_tag :add_cat_box, options_for_select(@categories.map{ |cat| [cat.name] }), class: 'col-sm-4 col-sm-offset-1'
+              = text_field_tag :cat_field, nil, class: 'col-sm-4 col-sm-offset-2'
+
+            p.arrow
+              span.glyphicon.glyphicon-triangle-bottom
+
+            p.remark 新增次分類
+            .row.add_column
+              = text_field_tag 'subcat_field[]', nil, class: 'col-sm-4 col-sm-offset-4', required: "required"
+            
+            .row
+              p.add_column_btn onclick='add_subcat_column();'
+                | [+增加欄位] 
+            
+            p
+              button.btn onclick='add_cat_submit();'
+                | 新增
+
+  .row
+    #show_cat.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 編輯分類
+        .panel-body
+
+          - @categories.each do |cat|
+            .row
+              span 主分類： 
+              = link_to edit_console_category_path(cat)
+                span.label.label_cat #{cat.name}
+              br
+              br
+              span 次分類： 
+              - @subcat = cat.subcategories
+              - @subcat.each_with_index do |subcat, index|
+                - if subcat.name == '其他'
+                  - @other = index
+                - else
+                  = link_to subcat_edit_console_categories_path(subcat)
+                    span.label.label_subcat #{subcat.name} (#{subcat.product.length})
+                
+                - if subcat == @subcat.last
+                  span.label.label_subcat.other #{@subcat[@other].name} (#{@subcat[@other].product.length})
+            hr
+              
+            
+
+
+
+
+
+
+
+
