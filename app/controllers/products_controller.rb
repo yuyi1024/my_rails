@@ -2,14 +2,13 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!, only: [:update]
 
   def index
-    
-    @products = Product.all
-    @cat1s = Category.all
-        
+    @products = Product.where(status: 'on_shelf')
+    @cat1s = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id')
+
     if params[:cat1_field].present?
       cat1 = Category.find_by(name: params[:cat1_field])
-      @cat2s = cat1.subcategory
-      @products = cat1.product
+      @cat2s = cat1.subcategories.joins(:product).group('subcategory_id').having('count(subcategory_id) > 0')
+      @products = cat1.product.where(status: 'on_shelf')
     end
 
     if params[:cat2_field].present?
@@ -23,12 +22,7 @@ class ProductsController < ApplicationController
       @products = @products.price_top(params[:price_bottom])
     end
 
-    if params[:keyword].present?
-      keyword = params[:keyword].split(' ')
-      keyword = keyword.reduce(''){ |memo, obj| memo += "name LIKE '%"+ obj + "%' AND " }
-      keyword = keyword.chomp(' AND ')
-      @products = @products.keyword(keyword)
-    end
+    @products = @products.keyword(ApplicationController.keyword_split(params[:keyword])) if params[:keyword].present?
 
     @cat2_click = params[:cat2_click]
 

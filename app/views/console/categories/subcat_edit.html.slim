@@ -16,8 +16,12 @@ h1.title 編輯分類
                 = f.submit '更新', class: 'btn submit_btn'
           
           hr
-          p.remark 刪除後該分類下的所有商品將轉移至【其他】次分類
           p 刪除該分類？
-          p
-            = link_to subcat_destroy_console_categories_path(@subcategory), method: 'delete', data: {confirm: "確定刪除【#{@subcategory.name}】？"}
-              button.btn.delete_btn 刪除【#{@subcategory.name}】
+          p.remark 需將該分類的所有商品清空才可刪除該次分類
+          - if @subcategory.product.length == 0
+            p
+              = link_to subcat_destroy_console_categories_path(@subcategory), method: 'delete', data: {confirm: "確定刪除【#{@subcategory.name}】？"}
+                button.btn.delete_btn 刪除【#{@subcategory.name}】
+
+          - else
+            p.remark 尚有 #{@subcategory.product.length} 個商品未清空

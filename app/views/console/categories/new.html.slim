@@ -48,14 +48,8 @@ h1.title 編輯分類
               span 次分類： 
               - @subcat = cat.subcategories
               - @subcat.each_with_index do |subcat, index|
-                - if subcat.name == '其他'
-                  - @other = index
-                - else
-                  = link_to subcat_edit_console_categories_path(subcat)
-                    span.label.label_subcat #{subcat.name} (#{subcat.product.length})
-                
-                - if subcat == @subcat.last
-                  span.label.label_subcat.other #{@subcat[@other].name} (#{@subcat[@other].product.length})
+                = link_to subcat_edit_console_categories_path(subcat)
+                  span.label.label_subcat #{subcat.name} (#{subcat.product.length})
             hr
               
             

@@ -16,12 +16,12 @@ h1.title 編輯分類
                 = f.submit '更新', class: 'btn submit_btn'
           
           hr
-          p.remark 需將除【其他】之所有次分類刪除才可刪除該主分類
           p 刪除該分類？
-          - if @category.subcategories.length == 1 && @category.subcategories.first.name == '其他'
+          p.remark 需將所有次分類刪除才可刪除該主分類
+          - if @category.subcategories.length == 0
             p
               = link_to console_category_path(@category), method: 'delete', data: {confirm: "確定刪除【#{@category.name}】？"}
                 button.btn.delete_btn 刪除【#{@category.name}】
         
           - else
-            p.remark 尚有 #{@category.subcategories.length - 1} 個次分類未刪除
+            p.remark 尚有 #{@category.subcategories.length} 個次分類未刪除

@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 	before_action :cart_show
   protect_from_forgery with: :exception
-  
 
   def cart_show
     @carts = Cart.from_hash(session[Cart::SessionKey_cart])
@@ -16,6 +15,13 @@ class ApplicationController < ActionController::Base
       @total_price += item.unit_price
     end
     @cart_length = @carts.items.length
+  end
+
+  def self.keyword_split(k) #關鍵字以' '分割
+    keyword = k.split(' ')
+    keyword = keyword.reduce(''){ |memo, obj| memo += "name LIKE '%"+ obj + "%' AND " }
+    keyword = keyword.chomp(' AND ')
+    keyword
   end
 
   protected

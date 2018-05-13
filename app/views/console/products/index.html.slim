@@ -3,6 +3,7 @@ h1.title 商品列表
 #console_product.console_page.container
   .row.new
     = link_to '新增商品', new_console_product_path, class: 'btn'
+    = link_to '編輯分類', new_console_category_path, class: 'btn'
   .filter
     = form_tag console_products_path, method: :get, :remote => :true, id: 'product_filter'
       .row
@@ -83,7 +84,7 @@ h1.title 商品列表
               td #{ product.sold }
               td #{ product.status_cn }
               td
-                = link_to(edit_console_product_path(product.id))
+                = link_to(edit_console_product_path(product.id), target: :_blank)
                   button.btn 編輯
 
     .pages.row

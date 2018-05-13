@@ -39,7 +39,19 @@ if (window.location.pathname.match(/products/g)){
       onSelect: showCoords,
       onChange: showCoords,
     });
-  
+
+    $('.delete .panel-heading').click(function(){
+      $body = $('.delete .panel-body');
+      if($body.is(':visible')){
+        $body.slideUp();
+        $('span.glyphicon-chevron-left').css('transform', 'rotate(0deg)');
+      }
+      else{
+        $body.slideDown();
+        $('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
+      }
+    });
+    
   });
 
   function cat_select(m){
@@ -92,5 +104,3 @@ if (window.location.pathname.match(/products/g)){
   }
 
 }
-//上架的product才顯示
-//有上架product的分類才顯示

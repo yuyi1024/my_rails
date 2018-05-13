@@ -44,8 +44,6 @@ Rails.application.routes.draw do
       collection do
         get :get_subcat, path: 'get_subcat', as: 'get_subcat'
         post :update_photo, path: 'update_photo/:id', as: 'update_photo'
-        get :new_cat, path: 'new_cat', as: 'new_cat'
-        post :create_cat, path: 'create_cat', as: 'create_cat'
       end
     end
     resources :categories do 

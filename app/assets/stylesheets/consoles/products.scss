@@ -1,0 +1,46 @@
+@import 'app';
+
+#console_product{
+  .new{
+    text-align: center;
+    margin: 0 0 20px;
+    .btn{
+      width: 10%;
+      background: $color_checked_green;
+      color: #fff;
+      margin: 5px;
+    }
+  }
+  .product_list{
+    .off_shelf{
+      background-color: #ddd;
+    }
+    .btn{
+      background-color: #eee;
+    }
+  }
+  .photo_form{
+    .btn{
+      background-color: #000;
+      color: #fff;
+    }
+  }
+  .remark{
+    text-align: center;
+    font-size: 18px;
+    color: $color_price_red;
+    margin-bottom: 20px;
+  }
+  .delete{
+    margin-bottom: 100px;
+    p{
+      text-align: center;
+    }
+    .panel-heading{
+      cursor: pointer;
+    }
+    .panel-body{
+      display: none;
+    }
+  }
+}

@@ -1,63 +1,5 @@
 @import 'app';
 
-#console_order{
-  .order_list{
-    .btn{
-      background-color: #eee;
-    }
-    .status_red{
-      color: red;
-    }
-    .status_blue{
-      color: blue;
-    }
-  }
-}
-
-#order_edit{
-  select{
-    margin: 0 10px;
-    line-height: 20px;
-    width: 20%;
-  }
-  .btn{
-    background-color: #000;
-    color: #fff;
-  }
-}
-
-#console_product{
-  .new{
-    text-align: center;
-    margin: 0 0 20px;
-    .btn{
-      width: 10%;
-      background: $color_checked_green;
-      color: #fff;
-    }
-  }
-  .product_list{
-    .off_shelf{
-      background-color: #ddd;
-    }
-    .btn{
-      background-color: #eee;
-    }
-  }
-  .photo_form{
-    .btn{
-      background-color: #000;
-      color: #fff;
-    }
-  }
-  .remark{
-    text-align: center;
-    font-size: 18px;
-    color: $color_price_red;
-    margin-bottom: 20px;
-  }
-}
-
 .console_page{
   .filter{
     .row{
@@ -112,6 +54,10 @@
   }
   .pages{
     text-align: center;
+  }
+  .delete_btn{
+    background-color: red;
+    color: #fff;
   }
 }
 

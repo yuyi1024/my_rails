@@ -1,43 +1,27 @@
 class Console::ProductsController < ApplicationController
   def index
     @products = Product.all
-    @categories = Category.all
-    @categories = @categories.map{ |cat| [cat.name, cat.id] }
+    cat_to_select
 
     if params[:search].present?
       @action = 'search'
       @products = @products.where(category_id: params[:cat_box]) if params[:cat_box].present? && params[:cat_box] != 'all'
       @products = @products.where(subcategory_id: params[:subcat_box]) if params[:subcat_box].present? && params[:subcat_box] != 'all'
-      
-      if params[:keyword].present?
-        keyword = params[:keyword].split(' ')
-        keyword = keyword.reduce(''){ |memo, obj| memo += "name LIKE '%"+ obj + "%' AND " }
-        keyword = keyword.chomp(' AND ')
-        @products = @products.keyword(keyword)
-      end
-
+      @products = @products.keyword(ApplicationController.keyword_split(params[:keyword])) if params[:keyword].present?
       @products = @products.where(status: params[:status]) if params[:status].present?
+      @products = @products.order(params[:sort_item] + ' ' + params[:sort_order]) if params[:sort_item].present? && params[:sort_order].present?
 
-      if params[:sort_item].present? && params[:sort_order].present?
-        @products = @products.order(params[:sort_item] + ' ' + params[:sort_order])
-      end
-      
       kaminari_page
 
       render 'console/products/products.js.erb'
     end
-
     kaminari_page
-    
   end
 
   def new
     @product = Product.new
-    @categories = Category.all
-    @subcategories = Subcategory.where(category_id: @categories.first.id)
-    
-    @categories = @categories.map{ |cat| [cat.name, cat.id] }
-    @subcategories =  @subcategories.map{ |subcat| [subcat.name, subcat.id] }
+    cat_to_select
+    subcat_to_select(Category.first.id)
   end
 
   def create
@@ -53,11 +37,8 @@ class Console::ProductsController < ApplicationController
 
   def edit
     @product = Product.find(params[:id])
-    @categories = Category.all
-    @categories = @categories.map{ |cat| [cat.name, cat.id] }
-
-    @subcategories = Subcategory.where(category_id: @product.category_id)
-    @subcategories =  @subcategories.map{ |subcat| [subcat.name, subcat.id] }
+    cat_to_select
+    subcat_to_select(@product.category_id)
   end
 
   def update
@@ -71,15 +52,14 @@ class Console::ProductsController < ApplicationController
     redirect_to edit_console_product_path
   end
 
-  def get_subcat
+  def get_subcat #選擇主分類後顯示次分類
     if params[:cat].present?
       @action = 'subcat'
       @method = params[:method]
       if params[:cat] == 'all'
         @subcategories = []
       else
-        @subcategories = Subcategory.where(category_id: params[:cat])
-        @subcategories =  @subcategories.map{ |subcat| [subcat.name, subcat.id] }
+        subcat_to_select(params[:cat])
       end
       render 'console/products/products.js.erb'
     end
@@ -89,8 +69,7 @@ class Console::ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @product.cache = rand(0..100) if params[:product][:photo].present?
     
-    #update 後會執行 crop_photo
-    @product.update(product_params)
+    @product.update(product_params) #update 後會執行 @product.crop_photo
     
     if params[:product][:photo].present?
       render :crop
@@ -104,10 +83,27 @@ class Console::ProductsController < ApplicationController
     end
   end
 
-  def kaminari_page
+  def destroy
+    @product = Product.find(params[:id])
+    @product.destroy if !@product.order_items.present?
+    flash[:notice] = '刪除成功' if @product.destroyed?
+    redirect_to console_products_path
+  end
+
+  def kaminari_page #分頁
     @rows = @products.length
     params[:page] = 1 if !params[:page].present?
     @products = @products.page(params[:page]).per(25)
+  end
+
+  def cat_to_select #主分類select_box
+    @categories = Category.all
+    @categories = @categories.map{ |cat| [cat.name, cat.id] }
+  end
+
+  def subcat_to_select(cat_id) #次分類select_box
+    @subcategories = Subcategory.where(category_id: cat_id)
+    @subcategories =  @subcategories.map{ |subcat| [subcat.name, subcat.id] }
   end
 
   private

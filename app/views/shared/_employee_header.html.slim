@@ -1,0 +1,34 @@
+nav
+  .navbar
+    
+    = link_to products_path
+      .button 
+        span.glyphicon.glyphicon-th-large
+        |  所有商品
+
+    = link_to console_orders_path
+      .button 
+        span.glyphicon.glyphicon-th-list
+        |  訂單管理
+
+    = link_to console_products_path
+      .button 
+        span.glyphicon.glyphicon-th-list
+        |  商品管理
+
+    = link_to products_path
+      .button 
+        span.glyphicon.glyphicon-th-list
+        |  用戶管理
+    
+
+    = link_to products_path
+      .button
+        span.glyphicon.glyphicon-comment
+        |  訊息管理
+
+    - if current_user
+      = link_to destroy_user_session_path, :method => :delete 
+        .button
+          span.glyphicon.glyphicon-log-out
+          |  登出
