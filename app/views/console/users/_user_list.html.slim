@@ -1,0 +1,26 @@
+.panel.panel-default.col-sm-offset-1.col-sm-10
+  table.table
+    tr
+      th
+      th Email
+      th 暱稱
+      th 類別
+      th 認證狀態
+      th 最後登入
+      th
+    tbody
+      - @users.each do |user|
+        tr
+          td
+            span.glyphicon.glyphicon-user
+          td #{ user.email }
+          td #{ user.name }
+          td #{ user.role_cn }
+          td #{ user.confirmed_at.present? ? '已認證' : '未認證' }
+          td #{ user.current_sign_in_at.strftime("%Y/%m/%d") if user.current_sign_in_at.present? }
+          td
+            = link_to(console_user_path(user.id), target: :_blank)
+              button.btn 編輯
+
+.pages.row
+  = paginate @users, window: 2, remote: 'true'

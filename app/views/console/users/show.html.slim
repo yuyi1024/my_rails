@@ -1,0 +1,108 @@
+h1.title 用戶資料
+
+#console_user.console_page.container
+
+  .row
+    .col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 詳細資料
+        table.table
+          tr
+            th
+            th 基本資料
+            th 認證狀態
+            th 登入狀態
+          tbody
+            tr
+              td
+              td
+                p 
+                  b Email： 
+                  | #{@user.email}
+                p 
+                  b 暱稱： 
+                  | #{@user.name}
+                p 
+                  b 姓名： 
+                  | #{@user.true_name}
+                p 
+                  b 地址： 
+                  | #{@user.address}
+                p 
+                  b 電話： 
+                  | #{@user.phone}
+              td
+                p 
+                  b 用戶類別： 
+                  | #{@user.role_cn}
+                p 
+                  b 認證狀態： 
+                  | #{@user.confirmed_at.present? ? '已認證' : '未認證'}
+                p 
+                  b 認證日期： 
+                  | #{@user.confirmed_at.strftime("%Y/%m/%d")}
+              td
+                p 
+                  b 最後登入： 
+                  | #{@user.current_sign_in_at.strftime("%Y/%m/%d")}
+                p 
+                  b 登入次數： 
+                  | #{@user.sign_in_count}
+                p 
+                  b 註冊日期： 
+                  | #{@user.created_at.strftime("%Y/%m/%d")}
+
+
+  .row
+    .col-sm-offset-2.col-sm-8
+      .panel.panel-default
+        .panel-heading 
+          h3 訂單列表
+        table.table
+          tr
+            th 訂單編號
+            th 訂單狀態
+            th 總金額
+            th 付款方式
+            th 送貨方式
+            th
+          tbody
+            - if @orders.present?
+              - @orders.each do |order|
+                tr
+                  td 
+                    p #{ order.process_id }
+                    p #{ order.created_at.strftime("%Y/%m/%d") }
+                  td class="#{order_status_color(order.status)}" #{ order.status_cn }
+                  td $ #{ number_with_delimiter(order.price + order.freight) }
+                  td 
+                    p #{ order.pay_method_cn }
+                    p #{ order.paid == 'true' ? '(已付款)' : '(未付款)' }
+                  td
+                    p #{ order.ship_method_cn }
+                    p #{ order.delivered == 'true' ? '(已收貨)' : '(未收貨)' }
+                  td
+                    = link_to(edit_console_order_path(order.process_id))
+                      button.btn 詳細
+            - else
+              tr
+                td
+                  p 無訂單
+  .row
+    .data_form.role_change.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 
+            | 變更用戶類別 
+            span.glyphicon.glyphicon-chevron-left
+        .panel-body
+          = form_for @user, url: console_user_path, method: 'patch' do |f|
+            .row
+              = f.label :role, '用戶類別', class: 'col-sm-2'
+              = f.select :role, options_for_select([['管理員', 'admin'],['員工', 'employee'],['一般會員', 'member']], @user.role), {}, class: 'col-sm-8'
+
+            .row.btn_row
+              = f.submit "確認更改 #{@user.name} 之用戶類別", class: 'btn delete_btn'
+
+

@@ -8,4 +8,15 @@ class User < ApplicationRecord
 
   ROLES = %i[admin employee member]
 
+  def role_cn
+  	case self.role
+  	when 'admin'
+  		'管理員'
+		when 'employee'
+  		'員工'
+		when 'member'
+  		'一般會員'
+    end
+  end
+
 end

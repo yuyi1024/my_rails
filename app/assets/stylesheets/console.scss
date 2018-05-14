@@ -1,6 +1,16 @@
 @import 'app';
 
 .console_page{
+  .new{
+    text-align: center;
+    margin: 0 0 20px;
+    .btn{
+      width: 10%;
+      background: $color_checked_green;
+      color: #fff;
+      margin: 5px;
+    }
+  }
   .filter{
     .row{
       margin-bottom: 30px;
@@ -15,6 +25,9 @@
       }
       input{
         &[type=checkbox]{
+          margin: 0 5px 0 10px
+        }
+        &[type=radio]{
           margin: 0 5px 0 10px
         }
       }

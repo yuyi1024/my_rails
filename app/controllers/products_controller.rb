@@ -22,7 +22,7 @@ class ProductsController < ApplicationController
       @products = @products.price_top(params[:price_bottom])
     end
 
-    @products = @products.keyword(ApplicationController.keyword_split(params[:keyword])) if params[:keyword].present?
+    @products = @products.keyword(ApplicationController.keyword_split(['name', 'description'] ,params[:keyword])) if params[:keyword].present?
 
     @cat2_click = params[:cat2_click]
 

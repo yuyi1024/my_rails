@@ -7,7 +7,7 @@ class Console::ProductsController < ApplicationController
       @action = 'search'
       @products = @products.where(category_id: params[:cat_box]) if params[:cat_box].present? && params[:cat_box] != 'all'
       @products = @products.where(subcategory_id: params[:subcat_box]) if params[:subcat_box].present? && params[:subcat_box] != 'all'
-      @products = @products.keyword(ApplicationController.keyword_split(params[:keyword])) if params[:keyword].present?
+      @products = @products.keyword(ApplicationController.keyword_split(['name', 'description'], params[:keyword])) if params[:keyword].present?
       @products = @products.where(status: params[:status]) if params[:status].present?
       @products = @products.order(params[:sort_item] + ' ' + params[:sort_order]) if params[:sort_item].present? && params[:sort_order].present?
 

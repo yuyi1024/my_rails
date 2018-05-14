@@ -17,11 +17,15 @@ class ApplicationController < ActionController::Base
     @cart_length = @carts.items.length
   end
 
-  def self.keyword_split(k) #關鍵字以' '分割
+  def self.keyword_split(cols, k) #關鍵字以' '分割
     keyword = k.split(' ')
-    keyword = keyword.reduce(''){ |memo, obj| memo += "name LIKE '%"+ obj + "%' AND " }
-    keyword = keyword.chomp(' AND ')
-    keyword
+    sql = ''
+    cols.each do |col|
+      m = keyword.reduce(''){ |memo, obj| memo += col + " LIKE '%"+ obj + "%' AND " }
+      sql += '(' + m.chomp(' AND ') + ')' + ' OR '
+    end
+    sql = sql.chomp(' OR ')
+    # User.where("(name LIKE '%b%' AND name LIKE '%n%') OR (email LIKE '%b%' AND email LIKE '%n%')")
   end
 
   protected

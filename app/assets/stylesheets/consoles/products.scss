@@ -1,16 +1,6 @@
 @import 'app';
 
 #console_product{
-  .new{
-    text-align: center;
-    margin: 0 0 20px;
-    .btn{
-      width: 10%;
-      background: $color_checked_green;
-      color: #fff;
-      margin: 5px;
-    }
-  }
   .product_list{
     .off_shelf{
       background-color: #ddd;

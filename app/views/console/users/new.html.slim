@@ -1,0 +1,45 @@
+h1.title 新增用戶
+
+#console_user.console_page.container
+  .row
+    .data_form.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 商品資料
+        
+        .panel-body
+          = form_for @user, url: console_users_path, method: 'post' do |f|
+            .row
+              = f.label :email, 'Email', class: 'col-sm-2'
+              = f.email_field :email, class: 'col-sm-8', required: "required"
+
+            .row
+              = f.label :password, '密碼', class: 'col-sm-2'
+              = f.password_field :password, class: 'col-sm-8', required: "required"
+
+            .row
+              = f.label :password_confirmation, '再次確認密碼', class: 'col-sm-2'
+              = f.password_field :password_confirmation, class: 'col-sm-8', required: "required"
+              
+            .row
+              = f.label :name, '暱稱', class: 'col-sm-2'
+              = f.text_field :name, class: 'col-sm-8', required: "required"
+            
+            .row
+              = f.label :true_name, '真實姓名', class: 'col-sm-2'
+              = f.text_field :true_name, class: 'col-sm-8'
+
+            .row
+              = f.label :address, '地址', class: 'col-sm-2'
+              = f.text_field :address, class: 'col-sm-8'
+
+            .row
+              = f.label :phone, '電話', class: 'col-sm-2'
+              = f.text_field :phone, class: 'col-sm-8'
+            .row
+              = f.label :role, '用戶類別', class: 'col-sm-2'
+              = f.select :role, options_for_select([['管理員', 'admin'],['員工', 'employee'],['一般會員', 'member']], @user.role), {}, class: 'col-sm-8'
+            
+           
+            = f.submit '新增', class: 'btn submit'
+

@@ -1,3 +1,53 @@
 class Console::UsersController < ApplicationController
+  def index
+    @users = User.all
 
+    if params[:search].present?
+      @users = @users.where(ApplicationController.keyword_split(['email'], params[:email])) if params[:email].present?
+      @users = @users.where(ApplicationController.keyword_split(['name', 'true_name', 'address'], params[:keyword])) if params[:keyword].present?
+      @users = @users.where(role: params[:role]) if params[:role].present?
+      if params[:confirm].present?
+        @users = (params[:confirm].include?('true') ? @users.where.not(confirmed_at: nil) : @users.where(confirmed_at: nil))
+      end
+
+      if params[:sort_item].present? && params[:sort_order].present?
+        @users = @users.reorder(params[:sort_item] + ' ' + params[:sort_order])
+      end
+
+      kaminari_page
+
+      @action = 'search'
+      render 'console/users/users.js.erb'
+    else
+      @users = @users.order('role ASC')
+    end
+
+    kaminari_page
+  end
+
+  def show
+    @user = User.find(params[:id])
+    @orders = @user.orders.order('created_at DESC')
+  end
+
+  def update
+    @user = User.find(params[:id])
+    @user.role = params[:user][:role]
+    if @user.save
+      flash[:notice] = '更新成功'
+    else
+      flash[:notice] = '更新失敗'
+    end
+    redirect_to console_user_path(@user)
+  end
+
+  def new
+    @user = User.new
+  end
+
+  def kaminari_page #分頁
+    @rows = @users.length
+    params[:page] = 1 if !params[:page].present?
+    @users = @users.page(params[:page]).per(25)
+  end
 end

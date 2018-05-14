@@ -1,0 +1,95 @@
+h1.title 用戶列表
+
+#console_user.console_page.container
+  .row.new
+    = link_to '新增用戶', new_console_user_path, class: 'btn'
+  .filter
+    = form_tag console_users_path, method: :get, remote: 'true', id: 'user_filter'
+      .row
+        .col-sm-3.col-sm-offset-1
+          label 用戶Email
+          .input-group.col-sm-10
+            = text_field_tag :email, nil, class:"form-control", placeholder:"關鍵字"
+
+        .col-sm-3
+          label 暱稱/姓名/住址
+          .input-group.col-sm-10
+            = text_field_tag :keyword, nil, class:"form-control", placeholder:"關鍵字"
+
+        .col-sm-2
+          label 用戶類別
+          br
+          = check_box_tag 'role[]', 'admin', nil, id:'role_admin'
+          label for='role_admin' 管理員
+
+          = check_box_tag 'role[]', 'employee', nil, id:'role_employee'
+          label for='role_employee' 員工
+          br
+
+          = check_box_tag 'role[]', 'member', nil, id:'role_member'
+          label for='role_member' 一般會員
+         
+        .col-sm-2
+          label 認證狀態
+          br
+          = radio_button_tag 'confirm[]', 'true', nil, id:'confirm_true'
+          label for='confirm_true' 已認證
+
+          = radio_button_tag 'confirm[]', 'false', nil, id:'confirm_false'
+          label for='confirm_false' 未認證
+
+
+      .row
+        = hidden_field_tag :search, 'true'
+        = hidden_field_tag :sort_item, 'id'
+        = hidden_field_tag :sort_order, 'ASC'
+
+        button.btn 查詢
+        button.btn onclick='clearField();' 清除
+
+  #sorting.row
+    .count.col-sm-2.col-sm-offset-1 
+      | 共計 
+      span #{ @rows } 
+      |  個用戶
+
+    .col-sm-3.col-sm-offset-6
+      | 依
+      = select_tag "sort_by", options_for_select([ ["用戶類別", 'role'], ["最後登入", 'current_sign_in_at'] ]), onchange:'sort_by();'
+      | 排序
+
+      = radio_button_tag :sequence, 'DESC', nil, class:"radio_sort", onchange:'sort_by();', id:'desc'
+      label.label_sort for="desc"
+        span.glyphicon.glyphicon-sort-by-attributes-alt
+
+      = radio_button_tag :sequence, 'ASC', true, class:"radio_sort", onchange:'sort_by();', id:'asc'
+      label.label_sort for="asc"
+        span.glyphicon.glyphicon-sort-by-attributes
+
+  #user_list.row
+    .panel.panel-default.col-sm-offset-1.col-sm-10
+      table.table
+        tr
+          th
+          th Email
+          th 暱稱
+          th 類別
+          th 認證狀態
+          th 最後登入
+          th
+        tbody
+          - @users.each do |user|
+            tr
+              td
+                span.glyphicon.glyphicon-user
+              td #{ user.email }
+              td #{ user.name }
+              td #{ user.role_cn }
+              td #{ user.confirmed_at.present? ? '已認證' : '未認證' }
+              td #{ user.current_sign_in_at.strftime("%Y/%m/%d") if user.current_sign_in_at.present? }
+              td
+                = link_to(console_user_path(user.id), target: :_blank)
+                  button.btn 編輯
+
+    .pages.row
+      = paginate @users, window: 2
