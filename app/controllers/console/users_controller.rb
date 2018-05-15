@@ -41,10 +41,6 @@ class Console::UsersController < ApplicationController
     redirect_to console_user_path(@user)
   end
 
-  def new
-    @user = User.new
-  end
-
   def kaminari_page #分頁
     @rows = @users.length
     params[:page] = 1 if !params[:page].present?

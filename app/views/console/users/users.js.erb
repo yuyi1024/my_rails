@@ -1,4 +1,4 @@
 <% if @action == 'search' %>
 	$('#user_list').html("<%= j render 'user_list', locals: { users: @users } %>");
-
+	$('.count span').text('<%= @rows %>');
 <% end %>	

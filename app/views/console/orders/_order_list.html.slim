@@ -24,5 +24,5 @@
             p #{ order.delivered == 'true' ? '(已收貨)' : '(未收貨)' }
           td #{ truncate(order.user.email, length:12) }
           td
-            = link_to(edit_console_order_path(order.process_id))
+            = link_to(edit_console_order_path(order.process_id), target: :_blank)
               button.btn 詳細

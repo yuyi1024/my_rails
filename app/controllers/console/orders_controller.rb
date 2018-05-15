@@ -6,6 +6,7 @@ class Console::OrdersController < ApplicationController
     if params[:search].present?
       @orders = @orders.where(process_id: params[:process_id]) if params[:process_id].present?
       @orders = @orders.where(:users => { :email => params[:email] }) if params[:email].present?
+      
       if params[:date_b].present? || params[:date_f].present?
         params[:date_f] = Time.now if !params[:date_f].present?
         params[:date_b] = Date.new(2018, 1, 1) if !params[:date_b].present?
