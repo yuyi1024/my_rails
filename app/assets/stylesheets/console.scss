@@ -1,6 +1,16 @@
 @import 'app';
 
-#console_order{
+.console_page{
+  .new{
+    text-align: center;
+    margin: 0 0 20px;
+    .btn{
+      width: 10%;
+      background: $color_checked_green;
+      color: #fff;
+      margin: 5px;
+    }
+  }
   .filter{
     .row{
       margin-bottom: 30px;
@@ -17,6 +27,12 @@
         &[type=checkbox]{
           margin: 0 5px 0 10px
         }
+        &[type=radio]{
+          margin: 0 5px 0 10px
+        }
+      }
+      select{
+        height: 35px;
       }
       .btn{
         background-color: #000;
@@ -49,25 +65,22 @@
       opacity: 1;
     }
   }
-  .order_list{
-    .btn{
-      background-color: #eee;
-    }
-    .status_red{
-      color: red;
-    }
-    .status_blue{
-      color: blue;
-    }
+  .pages{
+    text-align: center;
+  }
+  .delete_btn{
+    background-color: red;
+    color: #fff;
+  }
+  .remark{
+    text-align: center;
+    font-size: 18px;
+    color: $color_price_red;
+    margin-bottom: 20px;
   }
 }
 
-#order_edit{
-  select{
-    margin: 0 10px;
-    line-height: 20px;
-    width: 20%;
-  }
+#photo_crop{
   .btn{
     background-color: #000;
     color: #fff;

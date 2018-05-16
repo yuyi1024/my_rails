@@ -13,7 +13,6 @@
 //= require jquery_ujs
 //= require jcrop
 
-//= require rails-ujs
 //= require turbolinks
 //= require_tree .
 
@@ -22,6 +21,8 @@
 //= require bootstrap-sprockets
 //= require jquery_nested_form
 
+//= require Chart.bundle
+//= require chartkick
 
 //= require jquery.turbolinks
 //= require codemirror

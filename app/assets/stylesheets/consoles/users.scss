@@ -1,0 +1,27 @@
+@import 'app';
+
+#console_user{
+  #user_list{
+    .btn{
+      background-color: #eee;
+    }
+    .admin_color{
+      color: $color_price_red;
+    }
+    .employee_color{
+      color: green;
+    }
+  }
+  .role_change{
+    margin-bottom: 100px;
+    .panel-heading {
+      cursor: pointer;
+    }
+    .btn_row{
+      text-align: center;
+    }
+    .panel-body{
+      display: none;
+    } 
+  }
+}

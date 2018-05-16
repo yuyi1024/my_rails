@@ -18,8 +18,12 @@ html
       .notice #{ notice }
       .alert #{ alert }
 
-    = render 'shared/header'
-    = render 'carts/show'
+    - if request.path.start_with?('/console')
+      = render 'shared/employee_header'
+    - else
+      = render 'shared/header'
+      = render 'carts/show'
+    
     = yield 
 
     #to_top

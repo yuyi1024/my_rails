@@ -38,11 +38,19 @@ Rails.application.routes.draw do
 
   namespace :console do
     root 'dashboards#index'
-    resources :users
-    resources :products
-    resources :orders, only: [:index, :edit, :update] do 
+    resources :users, only: [:index, :show, :update]
+    resources :orders, only: [:index, :edit, :update]
+    resources :products, except: [:show] do 
       collection do
-
+        get :get_subcat, path: 'get_subcat', as: 'get_subcat'
+        post :update_photo, path: 'update_photo/:id', as: 'update_photo'
+      end
+    end
+    resources :categories, except: [:index, :show] do 
+      collection do
+        get :subcat_edit, path: 'subcat_edit/:id', as: 'subcat_edit'
+        patch :subcat_update, path: 'subcat_update/:id', as: 'subcat_update'
+        delete :subcat_destroy, path: 'subcat_destroy/:id', as: 'subcat_destroy'
       end
     end
   end

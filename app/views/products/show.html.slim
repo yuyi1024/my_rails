@@ -32,28 +32,6 @@
         = raw @product.description
 
 
-- if can? :update, @product
-
-  hr style='margin-top: 1000px;'
-
-  = form_for @product do |f|
-
-    = f.file_field :photo
-    
-    = f.submit
-
-  br
-  br
-  br
-  br
-
-  = form_for @product do |f| 
-    
-    .field.col-sm-6
-      = f.label :description
-      = f.text_area :description, 'id': :summernote
-      = f.submit
-
 
 
 

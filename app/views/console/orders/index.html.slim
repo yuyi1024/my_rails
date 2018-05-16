@@ -1,24 +1,24 @@
 h1.title 訂單列表
 
-#console_order.container  
+#console_order.console_page.container  
   .filter
     = form_tag console_orders_path, method: :get, :remote => :true, id: 'order_filter'
       .row
         .col-sm-2.col-sm-offset-1
-          label 依訂單編號
+          label 訂單編號
           .input-group
-            = text_field_tag :process_id, nil, class:"form-control", placeholder:"依訂單編號"
+            = text_field_tag :process_id, nil, class:"form-control", placeholder:"完整訂單編號"
         .col-sm-2
-          label 依用戶email
+          label 用戶email
           .input-group
-            = text_field_tag :email, nil, class:"form-control", placeholder:"依用戶email"
+            = text_field_tag :email, nil, class:"form-control", placeholder:"完整email"
 
         .col-sm-2.col-sm-offset-2
-          label 依下單日期(開始)
+          label 下單日期(開始)
           .input-group
             = date_field_tag :date_b, nil, class:"form-control"
         .col-sm-2
-          label 依下單日期(結束)
+          label 下單日期(結束)
           .input-group
             = date_field_tag :date_f, nil, class:"form-control"
       .row
@@ -89,7 +89,7 @@ h1.title 訂單列表
           label for='ship_method_home_delivery' 宅配
 
         .col-sm-2
-          label 有無付款
+          label 付款狀態
           br
           = check_box_tag 'paid[]', 'false', nil, id:'paid_false'
           label for='paid_false' 未付款
@@ -99,7 +99,7 @@ h1.title 訂單列表
           br
           br
 
-          label 有無收貨
+          label 收貨狀態
           br
           = check_box_tag 'delivered[]', 'false', nil, id:'delivered_false'
           label for='delivered_false' 未收貨
@@ -162,5 +162,5 @@ h1.title 訂單列表
                 p #{ order.delivered == 'true' ? '(已收貨)' : '(未收貨)' }
               td #{ truncate(order.user.email, length:12) }
               td
-                = link_to(edit_console_order_path(order.process_id))
+                = link_to(edit_console_order_path(order.process_id), target: :_blank)
                   button.btn 詳細

@@ -1,0 +1,68 @@
+@import 'app';
+
+#console_category{
+  p{
+    text-align: center;
+  }
+  input, select{
+    height: 35px;
+    margin-bottom: 5px;
+  }
+  
+  #add_cat{
+    .add_column_btn{
+      cursor: pointer;
+      color: blue;
+    }
+    .arrow{
+      font-size: 40px;
+      margin: 40px 0;
+    }
+    
+    .btn{
+      background-color: #000;
+      color: #fff;
+      margin-top: 20px;
+      width: 10%;
+      &:hover{
+        color: #eee;
+      }
+    }
+  }
+
+  #show_cat{
+    .panel-body{
+      padding: 20px 30px;
+      span{
+        float: left;
+      }
+      .label{
+        padding: 5px 10px;
+      }
+      .label_cat{
+        background-color: $color_santas_gray;
+      }
+      .label_subcat{
+        background-color: $color_nebula_gray;
+        margin: 0 8px 8px 0;
+      }
+    }
+  }
+  #edit_cat{
+    .btn{
+      margin-top: 20px;
+      width: 20%;
+    }
+    .submit_btn{
+      background-color: #000;
+      color: #fff;
+    }
+    hr{
+      margin-top: 50px;
+    }
+  }
+}
+
+
+
+

@@ -1,77 +1,39 @@
 $(document).on('turbolinks:load', function() {
+  if (window.location.pathname.match(/products/g)){
 
-  var price_bottom = 0;
-  var price_up = 0;
+    var price_bottom = 0;
+    var price_up = 0;
 
-  $('#selector .cat').click(function() {
-    $target = $($(this).data('target'));
+    $('#selector .cat').click(function() {
+      $target = $($(this).data('target'));
 
-    if (!$target.is(':visible')) {
-      $('#boxes').children().each(function() {
-        $(this).slideUp();
-      });
-      $('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
-      $('#boxes').addClass('boxes_visible');
-      $target.slideDown('slow');
-    } else {
-      $('span.glyphicon-chevron-left').css('transform', 'rotate(0deg)');
-      $('#boxes').removeClass('boxes_visible');
-      $target.toggle('slow');
-    }
-
-  });
-
-
-  $('.input-quantity span').click(function(){
-    event.preventDefault(); 
-    var q = $('.input-quantity input').val();
-    if($(this).hasClass('plus')){
-      q++;
-    }else if($(this).hasClass('minus') && q>1){
-      q--;
-    }
-    $('.input-quantity input').val(q);
-  });
-
-
-  $('#cropbox').Jcrop({
-    aspectRatio: 1,
-    setSelect: [0, 0, 200, 200],
-    onSelect: showCoords,
-    onChange: showCoords,
-  });
-
-
-  $('#summernote').summernote({
-    height: '500px',
-    placeholder: '為商品新增描述...',
-    lang: 'zh-TW',
-    toolbar: [
-      ['para', ['style']],
-      ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-      ['fontsize', ['fontsize']],
-      ['color', ['color']],
-      ['para', ['ul', 'ol', 'paragraph']],
-      ['insert', ['table', 'hr']],
-      ['insert', ['link', 'picture']],
-      ['misk', ['codeview']],
-    ],
-    callbacks: {
-      onImageUpload: function(files) {
-        sendFile(this, files[0]);
-        //this => $('#summernote')
-        //file => FileList{ 0: File(xxxx), length: 1 }
-        //file[0] => File(xxxx){ name, size, type...... }
-      },
-      onMediaDelete: function(target, editor, editable) {
-        //target => { 0:img#id, context, length }
-
-        var image_id = target[0].id;
-        deleteFile(image_id);
-        target.remove();
+      if (!$target.is(':visible')) {
+        $('#boxes').children().each(function() {
+          $(this).slideUp();
+        });
+        $('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
+        $('#boxes').addClass('boxes_visible');
+        $target.slideDown('slow');
+      } else {
+        $('span.glyphicon-chevron-left').css('transform', 'rotate(0deg)');
+        $('#boxes').removeClass('boxes_visible');
+        $target.toggle('slow');
       }
-    }
-  });
+
+    });
+
+
+    $('.input-quantity span').click(function(){
+      event.preventDefault(); 
+      var q = $('.input-quantity input').val();
+      if($(this).hasClass('plus')){
+        q++;
+      }else if($(this).hasClass('minus') && q>1){
+        q--;
+      }
+      $('.input-quantity input').val(q);
+    });
+  }
 });
 
 //summernote function
@@ -107,17 +69,6 @@ function deleteFile(image_id) {
     processData: false
   });
 }
-
-
-//Jcrop
-function showCoords(c) {
-  $('#product_crop_x').val(c.x);
-  $('#product_crop_y').val(c.y);
-  $('#product_crop_w').val(c.w);
-  $('#product_crop_h').val(c.h);
-}
-
-
 
 //click cat1_box
 function cat1(object) {

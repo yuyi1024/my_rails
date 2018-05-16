@@ -1,0 +1,82 @@
+h1.title 編輯商品
+
+#console_product.console_page.container
+  .row
+    .data_form.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 上傳新照片
+        .panel-body
+            .row
+              label.col-sm-2 現在商品照
+              
+              img.col-sm-3 src="#{ (@product.photo.present?) ? @product.photo_url(:thumb) : '/assets/no-image.png'}"  
+            br
+            .photo_form.row
+              = form_for @product , url: update_photo_console_products_path, method: 'post' do |f|
+                = f.label :photo, '上傳新商品照', class: 'col-sm-2'
+                = f.file_field :photo, class: 'col-sm-4', required: "required"
+                = f.submit '上傳', class: 'btn col-sm-2'
+
+      - if @product.status == 'off_shelf'
+        p.remark 商品尚未上架，確認資料沒問題後，可於下方更改商品狀態為【上架】，商品才會被顧客看到。
+
+  .row
+    .data_form.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 修改商品資料
+
+        = form_for @product, url: console_product_path, method: 'patch' do |f|
+          .row
+            = f.label :name, '商品名稱', class: 'col-sm-2'
+            = f.text_field :name, class: 'col-sm-8', required: "required"
+          .row
+            = f.label :price, '價錢', class: 'col-sm-2'
+            = f.number_field :price, class: 'col-sm-8', required: "required"
+          .row
+            = f.label :quantity, '庫存數量', class: 'col-sm-2'
+            = f.number_field :quantity, class: 'col-sm-8', required: "required"
+          .row
+            = f.label :category, '主分類', class: 'col-sm-2'
+            = select_tag "cat_box", options_for_select(@categories, @product.category_id), onchange:"cat_select('edit');", class: 'col-sm-8'
+            = f.hidden_field :category_id
+
+
+          .row
+            = f.label :subcategory, '次分類', class: 'col-sm-2'
+            = select_tag "subcat_box", options_for_select(@subcategories, @product.subcategory_id), onchange:"subcat_select();", class: 'col-sm-8'
+            = f.hidden_field :subcategory_id
+          .row
+            = f.label :status, '商品狀態', class: 'col-sm-2'
+            = f.radio_button :status, 'on_shelf', checked: (true if @product.status == 'on_shelf')
+            = f.label :status_on_shelf, '上架'
+            = f.radio_button :status, 'off_shelf', checked: (true if @product.status == 'off_shelf')
+            = f.label :status_off_shelf, '下架'
+          
+          .row
+            .field
+              = f.label :description, '商品敘述'
+              = f.text_area :description, 'id': :summernote
+         
+          = f.submit '更新', class: 'btn submit'
+
+  .row
+    .delete.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 
+            | 刪除商品
+            span.glyphicon.glyphicon-chevron-left
+
+        .panel-body
+          p 刪除該商品？
+          - if @product.order_items.present?
+            p.remark 無法刪除已被購買過之商品，請使用下架功能
+          - else
+            p
+              = link_to console_product_path(@product), method: 'delete', data: {confirm: "確定刪除【#{@product.name}】？"}
+                button.btn.delete_btn 刪除【#{@product.name}】
+
+        
+  /- if can? :update, @product

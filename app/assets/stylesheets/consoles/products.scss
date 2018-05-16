@@ -1,0 +1,30 @@
+@import 'app';
+
+#console_product{
+  .product_list{
+    .off_shelf{
+      background-color: #ddd;
+    }
+    .btn{
+      background-color: #eee;
+    }
+  }
+  .photo_form{
+    .btn{
+      background-color: #000;
+      color: #fff;
+    }
+  }
+  .delete{
+    margin-bottom: 100px;
+    p{
+      text-align: center;
+    }
+    .panel-heading{
+      cursor: pointer;
+    }
+    .panel-body{
+      display: none;
+    }
+  }
+}

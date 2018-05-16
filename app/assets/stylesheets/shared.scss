@@ -56,7 +56,7 @@
 
 #to_top{
   position: fixed;
-  bottom: 30px;
+  bottom: 20px;
   right: 30px;
   text-align: center;
   font-size: 40px;
@@ -162,5 +162,48 @@
   }
   .panel-footer{
     background-color: #fff;
+  }
+}
+
+/*表單form*/
+
+.data_form{
+  .row{
+    margin: 30px 0;
+    line-height: 35px;
+    label{
+      font-size: 16px;
+    }
+    .field{
+      width: 90%;
+      margin: 0 auto;
+    }
+    select{
+      height: 35px;
+    }
+    input{
+      &[type=radio]{
+        margin: 0 5px 0 10px
+      }
+    }
+  }
+  .submit{
+    background: #000;
+    color: #fff;
+    margin: 50px auto;
+    display: block;
+    width: 50%;
+  }
+  #order_note{
+    resize: none;
+  }
+  #user_data_chk{
+    margin: 20px 5px; 
+  }
+  p{
+    text-align: center;
+    color: red;
+    font-size: 16px;
+    margin-bottom: 20px;
   }
 }
