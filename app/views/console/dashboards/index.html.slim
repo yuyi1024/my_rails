@@ -1,3 +1,8 @@
+/ script src="//code.jquery.com/jquery-1.9.1.js"
+link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"
+script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"
+/ link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css"
+
 h1.title 後台儀表板
 
 .console_page.container
@@ -65,13 +70,13 @@ h1.title 後台儀表板
             tr
               td.col-sm-2
                 = pie_chart @w_order.group_by_day(:created_at, format: "%m/%d").sum(:price)
-                p 該週的每日收入比例
+                p 本週的每日收入比例
               td.col-sm-2
-                = pie_chart @m_order.group_by_week(:created_at, format: "%m/%d").sum(:price)
-                p 該月份的每週收入比例
+                = pie_chart @m_order.group_by_week(:created_at, format: "%m/%d(第%W週)").sum(:price)
+                p 本月的每週收入比例
               td.col-sm-2
                 = pie_chart @y_order.group_by_month(:created_at, format: "%m月").sum(:price)
-                p 該年份的每月收入比例
+                p 本年的每月收入比例
 
 
   .row
