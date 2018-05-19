@@ -1,4 +1,6 @@
 class Console::CategoriesController < ApplicationController
+  before_action :dashboard_authorize
+
   def new
     @categories = Category.all
   end
@@ -68,6 +70,10 @@ class Console::CategoriesController < ApplicationController
     @subcategory.destroy if @subcategory.product.length == 0 
     flash[:notice] = '刪除成功' if @subcategory.destroyed?
     redirect_to new_console_category_path
+  end
+
+  def dashboard_authorize
+    authorize! :dashboard, Category
   end
 
   private

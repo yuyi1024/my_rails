@@ -1,9 +1,14 @@
 nav
   .navbar
+
+    = link_to root_path
+      .button.home
+        span.glyphicon.glyphicon-home
+        |  前台
     
     = link_to console_root_path
       .button 
-        span.glyphicon.glyphicon-home
+        span.glyphicon.glyphicon-dashboard
         |  後台儀表板
 
     = link_to console_orders_path

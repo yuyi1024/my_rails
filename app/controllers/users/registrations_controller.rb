@@ -1,9 +1,11 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-
+  before_action :authenticate_user!
+  
   def show
     @user = current_user
+    authorize! :manage, @user
   end
 
   # GET /resource/sign_up
@@ -24,14 +26,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # PUT /resource
   
 
-  def update_field
+  def update_field #會員中心資料更新
     @user = current_user
     @user.update(user_params)
     @action = 'update'
     render :template => 'devise/registrations/registrations.js.erb'
   end
 
-  def pwd_field
+  def pwd_field #會員中心更改密碼
     @user = current_user
     @action = 'pwd_field'
     render :template => 'devise/registrations/registrations.js.erb'
@@ -41,7 +43,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super
   end
 
-  def order_list
+  def order_list #會員中心訂單列表
     @orders = current_user.orders.order('created_at DESC')
     @action = 'order_list'
     render :template => 'devise/registrations/registrations.js.erb'

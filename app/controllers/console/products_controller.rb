@@ -1,4 +1,6 @@
 class Console::ProductsController < ApplicationController
+  before_action :dashboard_authorize
+
   def index
     @products = Product.all
     cat_to_select
@@ -104,6 +106,10 @@ class Console::ProductsController < ApplicationController
   def subcat_to_select(cat_id) #次分類select_box
     @subcategories = Subcategory.where(category_id: cat_id)
     @subcategories =  @subcategories.map{ |subcat| [subcat.name, subcat.id] }
+  end
+
+  def dashboard_authorize
+    authorize! :dashboard, Product
   end
 
   private

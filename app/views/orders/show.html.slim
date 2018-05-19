@@ -1,6 +1,6 @@
+h1.title 訂單詳情
+
 #order.container
-  h1 訂單詳情
-  
   .row
     .product_detail.col-sm-8.col-sm-offset-2
       .panel.panel-default
@@ -55,28 +55,28 @@
                   | #{ @order.process_id }
                 p 
                   b 訂單狀態： 
-                  | #{ @order.status }
+                  | #{ @order.status_cn }
                 p 
                   b 下單日期： 
-                  | #{ @order.created_at.strftime("%Y/%m/%d %H:%M") }
+                  | #{ @order.created_at.strftime("%Y/%m/%d") }
 
               td 
                 p 
                   b 付款方式： 
-                  | #{ @order.pay_method }
+                  | #{ @order.pay_method_cn }
                 p 
                   b 付款狀態： 
-                  | #{ @order.status }
+                  | #{ @order.paid_cn }
 
               td
                 p 
                   b 送貨方式： 
-                  | #{ @order.ship_method }
+                  | #{ @order.ship_method_cn }
                 p 
                   b 送貨狀態： 
-                  | #{ @order.status }
+                  | #{ @order.delivered_cn }
                 p 
-                  b #{ @order.ship_method == 'in_store' ? '門市名稱' : '地址' }： 
+                  b #{ @order.ship_method == 'home_delivery' ? '地址' : '門市名稱' }： 
                   | #{ @order.address }
                 p 
                   b 收件人： 

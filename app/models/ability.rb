@@ -6,15 +6,28 @@ class Ability
     #
       # user ||= User.new # guest user (not logged in)
       if user.present?
-	      if user.role.include? 'admin'
+        can :read, [Product, Category, Subcategory]
+        can :manage, [Cart, CartItem]
+
+	      if user.role.include? 'admin' #管理員
 	        can :manage, :all
-	      elsif user.role.include? 'employee'
-	       	can :new, Product
-	      elsif user.role.include? 'member'
-	       	can :read, Product
-	      else
-	        can :manage, Product
-	      end
+          can :dashboard, :all
+          can :manage_role, User
+
+	      elsif user.role.include? 'employee' #員工
+	       	can :manage, [Order, OrderItem], user_id: user.id
+          can :manage, User, id: user.id
+          
+          can :dashboard, :all
+          cannot :manage_role, User
+	      
+        elsif user.role.include? 'member' #一般會員
+	       	can :manage, [Order, OrderItem], user_id: user.id
+          can :manage, User, id: user.id
+          cannot :dashboard, :all
+          cannot :manage_role, User
+	      
+        end 
       end
 
     # can :read, :all . # permissions for every user, even if not logged in    

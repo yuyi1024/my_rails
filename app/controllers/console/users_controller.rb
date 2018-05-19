@@ -1,4 +1,7 @@
 class Console::UsersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :dashboard_authorize
+    
   def index
     @users = User.all
 
@@ -33,6 +36,8 @@ class Console::UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @user.role = params[:user][:role]
+    authorize! :manage_role, @user
+
     if @user.save
       flash[:notice] = '更新成功'
     else
@@ -46,4 +51,9 @@ class Console::UsersController < ApplicationController
     params[:page] = 1 if !params[:page].present?
     @users = @users.page(params[:page]).per(25)
   end
+
+  def dashboard_authorize
+    authorize! :dashboard, User
+  end
+
 end
