@@ -1,5 +1,12 @@
 nav
   .navbar
+
+    - if can? :dashboard, :all
+    
+      = link_to console_root_path
+        .button.dashboard
+          span.glyphicon.glyphicon-wrench
+          |  後台儀表板
 		
     = link_to products_path
       .button 

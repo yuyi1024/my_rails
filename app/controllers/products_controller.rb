@@ -1,6 +1,4 @@
 class ProductsController < ApplicationController
-  before_action :authenticate_user!, only: [:update]
-
   def index
     @products = Product.where(status: 'on_shelf')
     @cat1s = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id')

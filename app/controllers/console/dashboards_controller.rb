@@ -1,5 +1,8 @@
 class Console::DashboardsController < ApplicationController
   def index
+
+    authorize! :dashboard, :all
+
     t = Time.now
     @orders = Order.where("created_at > ?", t.days_ago(30)).order('created_at DESC')
     

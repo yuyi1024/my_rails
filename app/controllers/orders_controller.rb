@@ -26,7 +26,6 @@
 
   def ezship #EZship 回傳
     redirect_to new_order_path(:stName => params[:stName], :stCode => params[:stCode], :stCate => params[:stCate])
-
   end
 
   def create #前往結帳
@@ -88,7 +87,7 @@
     end
   end
 
-  def get_user_data
+  def get_user_data #勾選同會員資料
     @order = Order.find_by(process_id: params[:id])
     @chk = params[:user_data_chk]
     @user = current_user if @chk == 'on'
@@ -125,20 +124,20 @@
   end
 
   def show
-    @order = current_user.orders.find_by(process_id: params[:id])
-    @order.status_cn
+    @order = Order.find_by(process_id: params[:id])
+    authorize! :read, @order
   end
 
-  def remit_info
+  def remit_info #匯款資訊
     @order = current_user.orders.find_by(process_id: params[:process_id])
   end
 
-  def cash_card
+  def cash_card #信用卡付款頁面
     @order = Order.find_by(process_id: params[:process_id])
     @client_token = Braintree::ClientToken.generate
   end
 
-  def paid
+  def paid #信用卡付款認證
     @order = Order.find_by(process_id: params[:process_id])
     result = Braintree::Transaction.create(
       :amount => @order.price + @order.freight,

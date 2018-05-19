@@ -28,6 +28,11 @@ class ApplicationController < ActionController::Base
     # User.where("(name LIKE '%b%' AND name LIKE '%n%') OR (email LIKE '%b%' AND email LIKE '%n%')")
   end
 
+  #cancancan 認證沒過
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_back(fallback_location: root_path, notice: '沒有權限執行此操作')
+  end
+
   protected
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :role])

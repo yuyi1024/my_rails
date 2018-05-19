@@ -1,4 +1,5 @@
 class Console::OrdersController < ApplicationController
+  before_action :dashboard_authorize
   
   def index
     @orders = Order.includes(:user)
@@ -60,6 +61,10 @@ class Console::OrdersController < ApplicationController
       flash[:alert] = '訂單狀態更改無效'
     end  
     redirect_to edit_console_order_path(@order.process_id)
+  end
+
+  def dashboard_authorize
+    authorize! :dashboard, Order
   end
 
 end

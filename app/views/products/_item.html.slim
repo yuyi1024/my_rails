@@ -3,11 +3,11 @@
     - @products.each do |product|
       .col-sm-2
         .thumbnail
-          = link_to product_path(product)
+          = link_to(product_path(product), target: :_blank)
             img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
           .caption
             h3 
-              = link_to product.name, product_path(product)
+              = link_to(product.name, product_path(product), target: :_blank)
             p.price $#{number_with_delimiter(product.price)}
 
             p.tags
