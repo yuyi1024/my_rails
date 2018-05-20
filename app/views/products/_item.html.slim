@@ -17,7 +17,9 @@
             = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
               span.glyphicon.glyphicon-shopping-cart
             
-            span.glyphicon.glyphicon-heart
+            - if current_user
+              = link_to(heart_products_path(product.id), method: :post, remote: :true)
+                span.glyphicon.glyphicon-heart class="#{ is_favorite(@favorites, product.id) }" id='heart-#{product.id}'
         
   .pages.row
     = paginate @products, window: 2, remote: true

@@ -1,6 +1,13 @@
-<% if @cat2s.present? && !@cat2_click.present? %>
-  $('#cat2').html("<%= j render partial: 'result', locals: { cat2s: @cat2s } %>");
+<% if @action == 'index' %>
+
+	<% if @cat2s.present? && !@cat2_click.present? %>
+	  $('#cat2').html("<%= j render partial: 'result', locals: { cat2s: @cat2s } %>");
+	<% end %>
+
+
+	$('#item').html("<%= j render partial: 'item', locals: { products: @products } %>");
+
+<% elsif @action == 'heart' %>
+	$('#heart-'+'<%=@product.id%>').replaceWith("<%= j render partial: 'heart', locals: { product: @product, boolean: @boolean } %>");
+
 <% end %>
-
-
-$('#item').html("<%= j render partial: 'item', locals: { products: @products } %>");

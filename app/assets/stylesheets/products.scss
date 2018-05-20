@@ -178,6 +178,10 @@
       margin-left: 25px;
       vertical-align: middle;
       color: #ccc;
+      cursor: pointer;
+    }
+    .favorite{
+      color: $color_price_red;
     }
   }
   .pages{

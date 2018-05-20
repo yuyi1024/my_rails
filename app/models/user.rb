@@ -1,5 +1,6 @@
 class User < ApplicationRecord
 	has_many :orders
+  has_many :favorites
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

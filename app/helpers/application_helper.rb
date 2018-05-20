@@ -17,4 +17,8 @@ module ApplicationHelper
       t.strftime("%M分鐘前")
     end
   end
+
+  def is_favorite(favorite, id)
+    'favorite' if favorite.find_by(product_id: id)
+  end
 end

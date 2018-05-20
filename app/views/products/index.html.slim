@@ -14,8 +14,8 @@
         = text_field_tag :price_top
         button.label.btn onclick='price();' Search
       .col-sm-4 
-        span 關鍵字搜尋 
-        = text_field_tag :keyword
+        span 關鍵字 
+        = text_field_tag :keyword, nil, placeholder: "商品名稱/敘述"
         button.label.btn onclick='keywords();' Search
 
       = hidden_field_tag :cat1_field
@@ -80,7 +80,9 @@
                 = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
                   span.glyphicon.glyphicon-shopping-cart
                 
-                span.glyphicon.glyphicon-heart
+                - if current_user
+                    = link_to(heart_products_path(product.id), method: :post, remote: :true)
+                      span.glyphicon.glyphicon-heart class="#{ is_favorite(@favorites, product.id) }" id='heart-#{product.id}'
         
       .pages.row
         = paginate @products, window: 2, remote: true

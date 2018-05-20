@@ -1,5 +1,5 @@
 $(document).on('turbolinks:load', function() {
-  if (window.location.pathname.match(/products/g)){
+  
 
     var price_bottom = 0;
     var price_up = 0;
@@ -33,7 +33,7 @@ $(document).on('turbolinks:load', function() {
       }
       $('.input-quantity input').val(q);
     });
-  }
+  
 });
 
 //summernote function
@@ -237,6 +237,19 @@ function price() {
   tag_create(tagName, 'p', 'price');
   form_submit();
 }
+
+// function heart(object){
+//   heart = object.id;
+//   $.ajax({
+//     type: 'DELETE',
+//     url: '/images/' + image_id,
+//     cache: false,
+//     contentType: false,
+//     processData: false
+//   });
+    
+//   }
+// }
 
 /*
   box/input/tag 屬性

@@ -26,6 +26,10 @@ class ProductsController < ApplicationController
 
     params[:page] = 1 if !params[:page].present?
     @products = @products.page(params[:page]).per(24)
+
+    @favorites = current_user.favorites if current_user.present?
+    
+    @action = 'index'
     
     respond_to do |format|
       format.html
@@ -37,5 +41,25 @@ class ProductsController < ApplicationController
   def show
     @product = Product.find(params[:id])
 
+  end
+
+  def heart
+    @product = Product.find(params[:id])
+
+    favorite = current_user.favorites.find_by(product_id: @product.id)
+
+    if favorite.present?
+      favorite.destroy
+      @boolean = false
+    else
+      favorite = current_user.favorites.new(product_id: @product.id) 
+      favorite.save
+      @boolean = true
+    end
+
+    @action = 'heart'
+
+    render 'products/index.js.erb'
+   
   end
 end

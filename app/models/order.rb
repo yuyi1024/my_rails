@@ -86,10 +86,6 @@ class Order < ApplicationRecord
     @may
   end
 
-  def zzz
-    puts 'qqqqqqqqqq'
-  end
-
   include AASM
 
   aasm column: :status do

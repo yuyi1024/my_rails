@@ -14,7 +14,12 @@ Rails.application.routes.draw do
     patch '/user/update_field', to: 'users/registrations#update_field'
   end
 
-  resources :products
+  resources :products, only: [:index, :show] do
+    collection do
+      post :heart, path: 'heart/:id', as: 'heart'
+    end
+  end
+
   resources :images, only: [:create, :destroy]
 
   resource :carts, only: [:show, :destroy] do
