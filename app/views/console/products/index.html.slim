@@ -5,7 +5,7 @@ h1.title 商品列表
     = link_to '新增商品', new_console_product_path, class: 'btn'
     = link_to '編輯分類', new_console_category_path, class: 'btn'
   .filter
-    = form_tag console_products_path, method: :get, :remote => :true, id: 'product_filter'
+    = form_tag console_products_path, method: :get, :remote => :true, id: 'search_filter'
       .row
         .col-sm-3.col-sm-offset-1
           label 主分類

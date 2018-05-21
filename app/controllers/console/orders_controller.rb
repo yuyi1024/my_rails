@@ -39,7 +39,7 @@ class Console::OrdersController < ApplicationController
       if params[:sort_item].present? && params[:sort_order].present?
         @orders = @orders.order('orders.' + params[:sort_item] + ' ' + params[:sort_order])
       end
-
+      
       render 'console/orders/orders.js.erb' 
     else
       @orders = @orders.order("created_at DESC")
