@@ -10,8 +10,7 @@
       session[Cart::SessionKey_order] = @order_session.to_hash
       @order = Order.new
     else
-      flash[:notice] = '購物車內尚無商品'
-      redirect_to root_path
+      redirect_back(fallback_location: root_path, notice: '購物車內尚無商品')
     end
   end
 

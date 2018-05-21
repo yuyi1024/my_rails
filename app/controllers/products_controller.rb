@@ -22,6 +22,12 @@ class ProductsController < ApplicationController
 
     @products = @products.keyword(ApplicationController.keyword_split(['name', 'description'] ,params[:keyword])) if params[:keyword].present?
 
+    if params[:sort_item].present? && params[:sort_order].present?
+      @products = @products.order(params[:sort_item] + ' ' + params[:sort_order])
+    else
+      @products = @products.order('sold DESC')
+    end
+
     @cat2_click = params[:cat2_click]
 
     params[:page] = 1 if !params[:page].present?

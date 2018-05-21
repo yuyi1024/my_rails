@@ -2,25 +2,40 @@
   = form_tag products_path, method: :get, remote: :true, id: 'search_form' do 
     
     #selector.row
-      .col-sm-4.cat data-target='#cat_box' 
+      .col-sm-3.cat data-target='#cat_box' 
         | 商品分類 
         span.glyphicon.glyphicon-chevron-left
       
       / .col-sm-3 data-target='#arr_box' 排序
-      .col-sm-4
+      .col-sm-3
         span 價錢 
         = text_field_tag :price_bottom
         span  ～ 
         = text_field_tag :price_top
         button.label.btn onclick='price();' Search
-      .col-sm-4 
+      .col-sm-3 
         span 關鍵字 
         = text_field_tag :keyword, nil, placeholder: "商品名稱/敘述"
         button.label.btn onclick='keywords();' Search
+      
+      .col-sm-3 
+        | 依 
+        = select_tag "sort_by_item", options_for_select([ ["熱銷", 'sold'], ["價錢", 'price'], ["庫存數量", 'quantity'] ]), onchange:'sort_by();'
+        |  排序
+
+        = radio_button_tag :sequence, 'DESC', true, class:"radio_sort", onchange:'sort_by();', id:'desc'
+        label.label_sort for="desc"
+          span.glyphicon.glyphicon-sort-by-attributes-alt
+
+        = radio_button_tag :sequence, 'ASC', nil, class:"radio_sort", onchange:'sort_by();', id:'asc'
+        label.label_sort for="asc"
+          span.glyphicon.glyphicon-sort-by-attributes
 
       = hidden_field_tag :cat1_field
-
       = hidden_field_tag :cat2_click
+
+      = hidden_field_tag :sort_item, 'id'
+      = hidden_field_tag :sort_order, 'ASC'
 
     br
     br

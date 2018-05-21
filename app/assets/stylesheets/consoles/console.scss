@@ -53,17 +53,6 @@
     select{
       margin: 0 5px;
     }
-    .radio_sort{
-      display: none;
-    }
-    .label_sort {
-      opacity: 0.3;
-      font-size: 18px;
-      margin-left: 10px;
-    }
-    .radio_sort:checked + label {
-      opacity: 1;
-    }
   }
   .pages{
     text-align: center;

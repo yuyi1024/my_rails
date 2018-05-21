@@ -255,3 +255,39 @@
     color: #ddd;
   }
 }
+
+
+/*kaminari分頁*/
+
+.pagination{
+  .active{
+    a{
+      background-color: $color_santas_gray;
+      border-color: $color_santas_gray;
+      &:hover{
+        background-color: $color_santas_gray;
+        border-color: $color_santas_gray;
+      }
+    }
+  }
+  li{
+    a{
+      color: $color_bright_gray;
+    }
+  }
+}
+
+
+/*排序*/
+
+.radio_sort{
+  display: none;
+}
+.label_sort {
+  opacity: 0.3;
+  font-size: 18px;
+  margin-left: 10px;
+}
+.radio_sort:checked + label {
+  opacity: 1;
+}

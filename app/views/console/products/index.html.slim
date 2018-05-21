@@ -49,7 +49,7 @@ h1.title 商品列表
 
     .col-sm-3.col-sm-offset-6
       | 依
-      = select_tag "sort_by", options_for_select([ ["預設", 'id'], ["價錢", 'price'], ["庫存數量", 'quantity'], ["已賣數量", 'sold'] ]), onchange:'sort_by();'
+      = select_tag "sort_by", options_for_select([["價錢", 'price'], ["庫存數量", 'quantity'], ["已賣數量", 'sold'] ]), onchange:'sort_by();'
       | 排序
 
       = radio_button_tag :sequence, 'DESC', nil, class:"radio_sort", onchange:'sort_by();', id:'desc'

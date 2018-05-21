@@ -238,6 +238,12 @@ function price() {
   form_submit();
 }
 
+function sort_by(){
+  $('#sort_item').val($("#sort_by_item").val());
+  $('#sort_order').val($("input[name=sequence]:checked").val());
+  form_submit();
+}
+
 /*
   box/input/tag 屬性
   >>cat1-box
