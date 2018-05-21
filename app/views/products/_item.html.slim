@@ -14,7 +14,7 @@
               span.glyphicon.glyphicon-tags
               | #{ product.category.name }、#{ product.subcategory.name } 
             
-            = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn btn-primary')
+            = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn cart')
               span.glyphicon.glyphicon-shopping-cart
             
             - if current_user

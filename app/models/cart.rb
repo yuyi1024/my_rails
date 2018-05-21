@@ -64,6 +64,11 @@ class Cart
       order.order_items[index].product_id = item.product_id
       order.order_items[index].quantity = item.quantity
       order.order_items[index].price = item.price
+      
+      product = Product.find(item.product_id)
+      product.quantity -= item.quantity
+      product.sold += item.quantity
+      product.save
     end
   end
 

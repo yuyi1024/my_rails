@@ -238,19 +238,6 @@ function price() {
   form_submit();
 }
 
-// function heart(object){
-//   heart = object.id;
-//   $.ajax({
-//     type: 'DELETE',
-//     url: '/images/' + image_id,
-//     cache: false,
-//     contentType: false,
-//     processData: false
-//   });
-    
-//   }
-// }
-
 /*
   box/input/tag 屬性
   >>cat1-box

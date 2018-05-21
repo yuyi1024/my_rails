@@ -4,11 +4,11 @@ h1.title 會員中心
   .row
     ul.nav.nav-tabs.col-sm-offset-2.col-sm-8
       li.col-sm-4.active role="presentation" 
-        = link_to '會員資料'
+        = link_to '會員資料', user_show_path
       li.col-sm-4 role="presentation"
-        = link_to '我的訂單', user_order_list_path, remote: 'true'
+        = link_to '我的訂單', user_order_list_path
       li.col-sm-4 role="presentation"
-        = link_to '追蹤'
+        = link_to '追蹤', user_favorite_list_path
 
   #section.row
     .user_data.panel.panel-default.col-sm-offset-2.col-sm-8

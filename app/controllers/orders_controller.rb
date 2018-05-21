@@ -46,7 +46,7 @@
       @order.freight = Order::Freight_in_store
     end
 
-    #將 order session 的東西存入 new 的 OrderItem 中
+    #將 order session 的東西存入 new 的 OrderItem 中、quantity/sold 操作
     @order_session.items.length.times{@order.order_items.build}
     @order_session.session_to_order_items(@order)
 

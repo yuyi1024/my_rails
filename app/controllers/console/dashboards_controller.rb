@@ -12,12 +12,8 @@ class Console::DashboardsController < ApplicationController
     @d_order = Order.where(created_at: t.all_day)
 
     @product_click = Product.all.order('click_count DESC').limit(10)
-
-    items_count = OrderItem.group(:product_id).order('count_all desc').count
-    @product_buy = []
-    items_count.each_with_index do |item, index|
-      @product_buy << {product: Product.find(item[0]), count: item[1]}
-    end
+    @product_buy = OrderItem.select("COUNT(order_items.product_id) AS total, order_items.product_id").group('product_id').order('total DESC').limit(10)
+    @favorites = Favorite.select("COUNT(favorites.product_id) AS total, favorites.product_id").group('product_id').order('total DESC').limit(10)
 
   end
 end

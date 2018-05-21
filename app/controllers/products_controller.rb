@@ -40,22 +40,28 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
-
+    @product.increment(:click_count)
+    @product.save
   end
 
   def heart
     @product = Product.find(params[:id])
 
-    favorite = current_user.favorites.find_by(product_id: @product.id)
+    favorite = current_user.favorites
 
-    if favorite.present?
-      favorite.destroy
-      @boolean = false
+    if favorite.find_by(product_id: @product.id).present?
+      favorite.find_by(product_id: @product.id).destroy
+      @heart = 'remove'
     else
-      favorite = current_user.favorites.new(product_id: @product.id) 
-      favorite.save
-      @boolean = true
+      if favorite.length <= 10
+        favorite = current_user.favorites.new(product_id: @product.id) 
+        favorite.save
+        @heart = 'add'
+      else
+        @heart = 'full'
+      end
     end
+
 
     @action = 'heart'
 

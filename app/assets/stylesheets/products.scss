@@ -148,13 +148,6 @@
       border: 2px #555 solid;
     }
     .caption {
-      .btn-primary {
-        width: 60%;
-        color: #eee;
-        &:hover {
-          color: #fff;
-        }
-      }
       .price {
         color: $color_price_red;
         font-size: 16px;
@@ -165,24 +158,8 @@
           top: 2px;
         }
       }
-      .btn {
-        background-color: $color_dark_blue;
-      }
-      .sold {
-        margin-left: 10px;
-        color: #777;
-      }
     }
-    .glyphicon-heart{
-      font-size: 20px;
-      margin-left: 25px;
-      vertical-align: middle;
-      color: #ccc;
-      cursor: pointer;
-    }
-    .favorite{
-      color: $color_price_red;
-    }
+    
   }
   .pages{
     text-align: center;

@@ -8,6 +8,11 @@
 	$('#item').html("<%= j render partial: 'item', locals: { products: @products } %>");
 
 <% elsif @action == 'heart' %>
-	$('#heart-'+'<%=@product.id%>').replaceWith("<%= j render partial: 'heart', locals: { product: @product, boolean: @boolean } %>");
-
+	
+	<% if @heart == 'add' || @heart == 'remove' %>
+		$('#heart-'+'<%=@product.id%>').replaceWith("<%= j render partial: 'heart', locals: { product: @product, heart: @heart } %>");
+	
+	<% elsif @heart == 'full' %>
+		alert('已超過追蹤上限，請先取消部分追蹤商品。');
+	<% end %>
 <% end %>
