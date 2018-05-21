@@ -1,0 +1,47 @@
+h1.title 會員中心
+
+#user_show.container
+  .row
+    ul.nav.nav-tabs.col-sm-offset-2.col-sm-8
+      li.col-sm-4 role="presentation" 
+        = link_to '會員資料', user_show_path
+      li.col-sm-4 role="presentation"
+        = link_to '我的訂單', user_order_list_path
+      li.col-sm-4.active role="presentation"
+        = link_to '追蹤', user_favorite_list_path
+
+  #section.row
+    .favorite_list.panel.panel-default.col-sm-offset-2.col-sm-8
+      .panel-heading
+        h3.panel-title 我的追蹤
+
+      table.table
+        tr
+          th #
+          th
+          th
+          th 商品名稱
+          th 分類
+          th 金額
+          th
+        tbody
+          - @favorites.each_with_index do |favorite, index|
+            tr
+              td #{ index + 1 }
+              td
+                = link_to(heart_products_path(favorite.product), method: :post, remote: :true)
+                  span.glyphicon.glyphicon-heart.favorite id='heart-#{favorite.product.id}'
+              td
+                = link_to(product_path(favorite.product))
+                  img src="#{ (favorite.product.photo.present?) ? favorite.product.photo_url(:thumb) : '/assets/no-image.png'}" style='width: 55px;'
+              td 
+                = link_to(product_path(favorite.product))
+                 | #{ favorite.product.name }
+              td #{ favorite.product.category.name } > #{ favorite.product.subcategory.name }
+              td NT $ #{ number_with_delimiter(favorite.product.price) }
+              td
+                = link_to(add_carts_path(favorite.product), method: :post, remote: :true, class: 'btn cart')
+                      span.glyphicon.glyphicon-shopping-cart
+
+      .panel-footer
+        p.remark 追蹤商品數量上限為10筆

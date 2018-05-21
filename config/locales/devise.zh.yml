@@ -63,7 +63,7 @@ zh:
         one: "有 %{count} 個錯誤導致 %{resource} 不能被儲存："
 
 
-en:
+
   views:
     pagination:
       first: "&laquo; 第一頁"

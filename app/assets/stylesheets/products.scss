@@ -9,21 +9,33 @@
     border: 1px #888 solid;
     height: 60px;
     margin-top: 100px;
-    div {
+    .col-sm-3 {
       line-height: 58px;
       font-size: 20px;
       text-align: center;
-      &:nth-child(1) {
+      &:nth-child(1){
         background: #C8D3DA;
+        cursor: pointer;
+      }
+      &:nth-child(3){
+        background: #C8D3DA;
+      }
+      input{
+        border: none;
+        height: 30px;
+        font-size: 16px;
+        padding: 2px 5px;
+      }
+      select{
+        height: 30px;
+        font-size: 16px;
       }
       #price_bottom,
       #price_top {
         width: 20%;
-        line-height: 20px;
       }
       #keyword {
         width: 45%;
-        line-height: 20px;
       }
       .btn {
         margin-left: 20px;
@@ -148,13 +160,6 @@
       border: 2px #555 solid;
     }
     .caption {
-      .btn-primary {
-        width: 60%;
-        color: #eee;
-        &:hover {
-          color: #fff;
-        }
-      }
       .price {
         color: $color_price_red;
         font-size: 16px;
@@ -165,20 +170,8 @@
           top: 2px;
         }
       }
-      .btn {
-        background-color: $color_dark_blue;
-      }
-      .sold {
-        margin-left: 10px;
-        color: #777;
-      }
     }
-    .glyphicon-heart{
-      font-size: 20px;
-      margin-left: 25px;
-      vertical-align: middle;
-      color: #ccc;
-    }
+    
   }
   .pages{
     text-align: center;

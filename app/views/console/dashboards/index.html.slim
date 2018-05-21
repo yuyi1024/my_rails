@@ -1,8 +1,3 @@
-/ script src="//code.jquery.com/jquery-1.9.1.js"
-link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"
-script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"
-/ link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css"
-
 h1.title 後台儀表板
 
 .console_page.container
@@ -67,13 +62,13 @@ h1.title 後台儀表板
                 b #{number_with_delimiter(@m_order.sum(:price))}
             tr
               td.col-sm-2
-                = pie_chart @w_order.group_by_day(:created_at, format: "%m/%d").sum(:price)
+                = pie_chart @w_order.group_by_day(:created_at, format: "%m/%d").sum(:price), width: "90%"
                 p 本週的每日收入比例
               td.col-sm-2
-                = pie_chart @m_order.group_by_week(:created_at, format: "%m/%d(第%W週)").sum(:price)
+                = pie_chart @m_order.group_by_week(:created_at, format: "%m/%d(第%W週)").sum(:price), width: "90%"
                 p 本月的每週收入比例
               td.col-sm-2
-                = pie_chart @y_order.group_by_month(:created_at, format: "%m月").sum(:price)
+                = pie_chart @y_order.group_by_month(:created_at, format: "%m月").sum(:price), width: "90%"
                 p 本年的每月收入比例
 
 
@@ -84,19 +79,36 @@ h1.title 後台儀表板
           h3 熱門商品
         table.table
           tr
-            th 購買次數
-            th
-            th 追蹤次數
-            th
-            th 點擊次數
-            th
+            th.col-sm-3 購買次數
+            th.col-sm-1
+            th.col-sm-3 追蹤次數
+            th.col-sm-1
+            th.col-sm-3 點擊次數
+            th.col-sm-1
           tbody
-            - 10.times do |t|
+            - 10.times do |index|
               tr
-                td #{@product_buy[t][:product].name} 
-                td #{@product_buy[t][:count]}
-                td OWO
-                td 0
-                td #{@product_click[t].name} 
-                td #{@product_click[t].click_count}
+                td 
+                  - if @product_buy[index].present?
+                    | #{@product_buy[index].product.name}
+                    = king(index)
+                td 
+                  - if @product_buy[index].present?
+                    | #{@product_buy[index].total}
+
+                td 
+                  - if @favorites[index].present?
+                    | #{@favorites[index].product.name}
+                    = king(index)
+                td 
+                  - if @favorites[index].present?
+                    | #{@favorites[index].total}
+                
+                td 
+                  - if @product_click[index].present?
+                    | #{@product_click[index].name}
+                    = king(index)
+                td 
+                  - if @product_click[index].present?
+                    | #{@product_click[index].click_count}
 

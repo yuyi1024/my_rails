@@ -53,17 +53,6 @@
     select{
       margin: 0 5px;
     }
-    .radio_sort{
-      display: none;
-    }
-    .label_sort {
-      opacity: 0.3;
-      font-size: 18px;
-      margin-left: 10px;
-    }
-    .radio_sort:checked + label {
-      opacity: 1;
-    }
   }
   .pages{
     text-align: center;
@@ -72,11 +61,9 @@
     background-color: red;
     color: #fff;
   }
-  .remark{
-    text-align: center;
-    font-size: 18px;
-    color: $color_price_red;
-    margin-bottom: 20px;
+  .glyphicon-king{
+    float: right;
+    color: #F7B32D;
   }
 }
 

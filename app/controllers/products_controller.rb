@@ -22,10 +22,20 @@ class ProductsController < ApplicationController
 
     @products = @products.keyword(ApplicationController.keyword_split(['name', 'description'] ,params[:keyword])) if params[:keyword].present?
 
+    if params[:sort_item].present? && params[:sort_order].present?
+      @products = @products.order(params[:sort_item] + ' ' + params[:sort_order])
+    else
+      @products = @products.order('sold DESC')
+    end
+
     @cat2_click = params[:cat2_click]
 
     params[:page] = 1 if !params[:page].present?
     @products = @products.page(params[:page]).per(24)
+
+    @favorites = current_user.favorites if current_user.present?
+    
+    @action = 'index'
     
     respond_to do |format|
       format.html
@@ -36,6 +46,32 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
+    @product.increment(:click_count)
+    @product.save
+  end
 
+  def heart
+    @product = Product.find(params[:id])
+
+    favorite = current_user.favorites
+
+    if favorite.find_by(product_id: @product.id).present?
+      favorite.find_by(product_id: @product.id).destroy
+      @heart = 'remove'
+    else
+      if favorite.length <= 10
+        favorite = current_user.favorites.new(product_id: @product.id) 
+        favorite.save
+        @heart = 'add'
+      else
+        @heart = 'full'
+      end
+    end
+
+
+    @action = 'heart'
+
+    render 'products/index.js.erb'
+   
   end
 end

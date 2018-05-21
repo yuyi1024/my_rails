@@ -46,7 +46,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def order_list #會員中心訂單列表
     @orders = current_user.orders.order('created_at DESC')
     @action = 'order_list'
-    render :template => 'devise/registrations/registrations.js.erb'
+    # render :template => 'devise/registrations/registrations.js.erb'
+  end
+
+  def favorite_list #會員中心追蹤列表
+    @favorites = current_user.favorites
+
+    @action = 'favorite_list'
+    # render :template => 'devise/registrations/registrations.js.erb'
   end
 
   # DELETE /resource

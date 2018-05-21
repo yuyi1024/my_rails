@@ -8,6 +8,13 @@
   margin: 80px auto 30px;
 }
 
+.remark{
+  text-align: center;
+  font-size: 18px;
+  color: $color_price_red;
+  margin-bottom: 20px;
+}
+
 /*導覽列*/
 
 .navbar {
@@ -36,6 +43,11 @@
       padding: 1px 5px;
       border: 1px #F38181 solid;
     }
+  }
+  .change{
+    position: absolute;
+    right: 0;
+    top: 45px;
   }
   .dashboard{
     color: $color_price_red;
@@ -220,4 +232,62 @@
     font-size: 16px;
     margin-bottom: 20px;
   }
+}
+
+
+/*愛心&購物車*/
+
+.glyphicon-heart{
+  font-size: 20px;
+  margin-left: 25px;
+  vertical-align: middle;
+  color: #ccc;
+  cursor: pointer;
+}
+.favorite{
+  color: $color_price_red;
+}
+.cart {
+  background-color: $color_dark_blue;
+  width: 60%;
+  color: #eee;
+  &:hover, &:focus {
+    color: #ddd;
+  }
+}
+
+
+/*kaminari分頁*/
+
+.pagination{
+  .active{
+    a{
+      background-color: $color_santas_gray;
+      border-color: $color_santas_gray;
+      &:hover{
+        background-color: $color_santas_gray;
+        border-color: $color_santas_gray;
+      }
+    }
+  }
+  li{
+    a{
+      color: $color_bright_gray;
+    }
+  }
+}
+
+
+/*排序*/
+
+.radio_sort{
+  display: none;
+}
+.label_sort {
+  opacity: 0.3;
+  font-size: 18px;
+  margin-left: 10px;
+}
+.radio_sort:checked + label {
+  opacity: 1;
 }

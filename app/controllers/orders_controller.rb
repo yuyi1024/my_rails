@@ -4,10 +4,14 @@
 
   def new #購物車頁面
     #將 cart session 中的資料存入新產生的 order session，以防結帳後再更動 cart
-    @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
-    @order_session = Cart.new_order_hash(@cart_session)
-    session[Cart::SessionKey_order] = @order_session.to_hash
-    @order = Order.new
+    if session[Cart::SessionKey_cart]["items"].length > 0
+      @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
+      @order_session = Cart.new_order_hash(@cart_session)
+      session[Cart::SessionKey_order] = @order_session.to_hash
+      @order = Order.new
+    else
+      redirect_back(fallback_location: root_path, notice: '購物車內尚無商品')
+    end
   end
 
   def ship_method #選擇送貨方式
@@ -41,7 +45,7 @@
       @order.freight = Order::Freight_in_store
     end
 
-    #將 order session 的東西存入 new 的 OrderItem 中
+    #將 order session 的東西存入 new 的 OrderItem 中、quantity/sold 操作
     @order_session.items.length.times{@order.order_items.build}
     @order_session.session_to_order_items(@order)
 

@@ -17,4 +17,15 @@ module ApplicationHelper
       t.strftime("%M分鐘前")
     end
   end
+
+  def is_favorite(favorite, id)
+    'favorite' if favorite.find_by(product_id: id)
+  end
+
+  def king(index)
+    if index < 3
+      content_tag(:span, nil, class: 'glyphicon glyphicon-king')
+    end
+   
+  end
 end

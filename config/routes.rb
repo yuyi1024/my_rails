@@ -10,11 +10,17 @@ Rails.application.routes.draw do
   devise_scope :user do
     get '/user/show', to: 'users/registrations#show'
     get '/user/order_list', to: 'users/registrations#order_list'
+    get '/user/favorite_list', to: 'users/registrations#favorite_list'
     get '/user/pwd_field', to: 'users/registrations#pwd_field'
     patch '/user/update_field', to: 'users/registrations#update_field'
   end
 
-  resources :products
+  resources :products, only: [:index, :show] do
+    collection do
+      post :heart, path: 'heart/:id', as: 'heart'
+    end
+  end
+
   resources :images, only: [:create, :destroy]
 
   resource :carts, only: [:show, :destroy] do
