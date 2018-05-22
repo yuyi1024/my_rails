@@ -1,2 +1,32 @@
-$('.order_list').replaceWith("<%= j render partial: 'order_list', locals: { orders: @orders } %>");
-$('.count span').text('<%= @orders.length %>');
+<% if @action == 'index' %>
+	$('.order_list').replaceWith("<%= j render partial: 'order_list', locals: { orders: @orders } %>");
+	$('.count span').text('<%= @orders.length %>');
+
+<% elsif @action == 'update_success' %>
+  $.notify({
+		icon: 'glyphicon glyphicon-ok',
+		message: '更改成功',
+	},{
+		type: 'success',
+		delay: 3000,
+	});
+
+	setTimeout(function() {
+	  window.location.href = "<%= edit_console_order_path(@order.process_id) %>";
+	}, 800);
+	
+
+<% elsif @action == 'update_failded' %>
+	$.notify({
+		icon: 'glyphicon glyphicon-remove',
+		message: '更改失敗',
+	},{
+		type: 'danger',
+		delay: 3000,
+	});
+
+	setTimeout(function() {
+	  window.location.href = "<%= edit_console_order_path(@order.process_id) %>";
+	}, 800);
+	
+<% end %>

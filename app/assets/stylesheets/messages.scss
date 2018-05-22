@@ -1,0 +1,15 @@
+@import 'app';
+
+#message{
+  .question{
+    font-weight: bold;
+    margin: 5px 0 10px;
+    cursor: pointer;
+    .label{
+      line-height: 30px;
+    }
+  }
+  .answer{
+    display: none;
+  }
+}

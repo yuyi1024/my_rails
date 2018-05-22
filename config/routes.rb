@@ -23,6 +23,8 @@ Rails.application.routes.draw do
 
   resources :images, only: [:create, :destroy]
 
+  resources :messages, only: [:index]
+
   resource :carts, only: [:show, :destroy] do
   	collection do
   		post :add, path: 'add/:id', as: 'add'

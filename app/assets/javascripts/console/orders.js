@@ -6,3 +6,4 @@ function orderSearch(){
   event.preventDefault();
   $('#search_filter').submit();
 }
+

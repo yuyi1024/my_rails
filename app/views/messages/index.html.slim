@@ -1,0 +1,60 @@
+h1.title 聯絡我們
+
+#message.container  
+
+  .row
+    .data_form.col-sm-5.col-sm-offset-1
+      .panel.panel-default
+        .panel-heading 
+          h3 發送訊息
+        .panel-body
+          .row
+            = form_tag
+              .row
+                label Email
+                = text_field_tag :email
+              .row
+                label 訊息
+                textarea
+
+
+      .panel.panel-default
+        .panel-heading 
+          h3 我的訊息
+        .panel-body
+          table.table
+            tbody
+              - @user_messages.each do |message|
+                tr
+                  td
+                    .question
+                      - if message.answer.blank?
+                        span.label.label-danger 回答中
+                        br
+                      - else
+                        span.label.label-success 已回答
+                        br
+                        span.glyphicon.glyphicon-triangle-right
+                      | #{message.question} 
+
+                      
+
+                    .answer #{message.answer}
+
+    .col-sm-5
+      .panel.panel-default
+        .panel-heading 
+          h3 常見 Q&A
+        .panel-body
+          table.table
+            tbody
+              - @messages.each_with_index do |message, index|
+                tr
+                  td
+                    .question 
+                      | Q#{index+1}. #{message.question} 
+                      span.glyphicon.glyphicon-triangle-left
+                    .answer #{message.answer}
+
+
+

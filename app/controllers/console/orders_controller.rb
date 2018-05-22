@@ -40,6 +40,7 @@ class Console::OrdersController < ApplicationController
         @orders = @orders.order('orders.' + params[:sort_item] + ' ' + params[:sort_order])
       end
       
+      @action = 'index'
       render 'console/orders/orders.js.erb' 
     else
       @orders = @orders.order("created_at DESC")
@@ -56,11 +57,11 @@ class Console::OrdersController < ApplicationController
     if params[:order][:status] != '0'
       @order.method(params[:order][:status]).call
       @order.save
-      flash[:notice] = '更改成功'
+      @action = 'update_success'
     else
-      flash[:alert] = '訂單狀態更改無效'
+      @action = 'update_failded'
     end  
-    redirect_to edit_console_order_path(@order.process_id)
+    render 'console/orders/orders.js.erb'
   end
 
   def dashboard_authorize
