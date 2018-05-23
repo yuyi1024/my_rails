@@ -3,20 +3,27 @@ h1.title 聯絡我們
 #message.container  
 
   .row
-    .data_form.col-sm-5.col-sm-offset-1
+    .col-sm-5.col-sm-offset-1
       .panel.panel-default
         .panel-heading 
           h3 發送訊息
         .panel-body
-          .row
-            = form_tag
-              .row
-                label Email
-                = text_field_tag :email
-              .row
-                label 訊息
-                textarea
-
+         
+          = form_for @message, method: 'post', remote: 'true' do |f|
+            .row
+              label 訊息內容
+              br
+              = f.text_area :question, class:'form-control', required: 'required'
+              br
+            .row
+              label 也將回覆以 Email 寄給我
+              .input-group
+                span.input-group-addon
+                  = f.check_box :reply_method, onchange: "userEmail('#{current_user.email}');"
+                = f.text_field :email, class: 'form-control'
+              br
+            .row
+              = f.submit '發送訊息', class: 'btn'
 
       .panel.panel-default
         .panel-heading 
@@ -28,14 +35,18 @@ h1.title 聯絡我們
                 tr
                   td
                     .question
+                      
                       - if message.answer.blank?
                         span.label.label-danger 回答中
+                        span.date  #{message.created_at.strftime("%Y/%m/%d")} 發送訊息，請耐心等候回答
                         br
+
                       - else
                         span.label.label-success 已回答
                         br
                         span.glyphicon.glyphicon-triangle-right
-                      | #{message.question} 
+                      
+                      span.context  #{message.question} 
 
                       
 
@@ -52,7 +63,7 @@ h1.title 聯絡我們
                 tr
                   td
                     .question 
-                      | Q#{index+1}. #{message.question} 
+                      span.context Q#{index+1}. #{message.question} 
                       span.glyphicon.glyphicon-triangle-left
                     .answer #{message.answer}
 

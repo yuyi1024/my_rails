@@ -1,15 +1,42 @@
 @import 'app';
 
 #message{
+  #new_message{
+    .row{
+      margin: 0 auto 10px;
+      textarea{
+        width: 100%;
+        height: 100px;
+        resize: vertical;
+      }
+      .btn{
+        background-color: #000;
+        color: #fff;
+        width: 100%;
+      }
+    }
+  }
+  .table{
+    margin-bottom: 0;
+  }
   .question{
-    font-weight: bold;
     margin: 5px 0 10px;
     cursor: pointer;
+    .date{
+      margin: 0;
+      color: $color_price_red;
+    }
+    .context{
+      font-weight: bold;
+    }
     .label{
       line-height: 30px;
     }
   }
   .answer{
     display: none;
+    background: #e9f2f7;
+    padding: 5px;
   }
 }
+

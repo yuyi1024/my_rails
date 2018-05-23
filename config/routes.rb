@@ -23,7 +23,7 @@ Rails.application.routes.draw do
 
   resources :images, only: [:create, :destroy]
 
-  resources :messages, only: [:index]
+  resources :messages, only: [:index, :create]
 
   resource :carts, only: [:show, :destroy] do
   	collection do
@@ -61,6 +61,7 @@ Rails.application.routes.draw do
         delete :subcat_destroy, path: 'subcat_destroy/:id', as: 'subcat_destroy'
       end
     end
+    resources :messages, only: [:index, :edit, :update]
   end
 end
 

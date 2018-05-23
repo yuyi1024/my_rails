@@ -6,10 +6,21 @@ $(document).on('turbolinks:load', function() {
       if(!$answer.is(':visible')){
         $answer.slideDown();
         $(this).children('.glyphicon-triangle-left').css('transform', 'rotate(-90deg)');
+        $(this).children('.glyphicon-triangle-right').css('transform', 'rotate(90deg)');
       }else{
         $answer.slideUp();
-        $(this).children('.glyphicon-triangle-left').css('transform', 'rotate(0deg)');
+        $(this).children('.glyphicon').css('transform', 'rotate(0deg)');
       }
     });
+
   }
 });
+
+function userEmail(email){
+  if($('#message_reply_method').is(':checked')){
+    $('#message_email').val(email);
+  }else{
+    $('#message_email').val('');
+  }
+}
+

@@ -1,0 +1,4 @@
+<% if @action == 'index' %>
+  $('.message_list').replaceWith("<%= j render 'message_list', locals:{ messages: @messages } %>");
+  $('.count span').text('<%= @messages.length %>');
+<% end %>
