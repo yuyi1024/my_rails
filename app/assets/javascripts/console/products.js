@@ -40,17 +40,6 @@ $(document).on('turbolinks:load', function() {
       onChange: showCoords,
     });
 
-    $('.delete .panel-heading').click(function(){
-      $body = $('.delete .panel-body');
-      if($body.is(':visible')){
-        $body.slideUp();
-        $('span.glyphicon-chevron-left').css('transform', 'rotate(0deg)');
-      }
-      else{
-        $body.slideDown();
-        $('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
-      }
-    });
   }
 });
 

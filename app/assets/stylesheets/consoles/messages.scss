@@ -1,0 +1,23 @@
+@import 'app';
+
+#console_message{
+  #message_question{
+    .form-control{
+      background-color: $color_yrtena_gray;
+      min-height: 100px;
+    }
+  }
+  #message_answer{
+    .form-control{
+      height: 100px;
+      resize: vertical;
+    }
+    .btn{
+      background-color: #000;
+      color: #fff;
+      width: 90%;
+      margin: 20px auto;
+      display: block;
+    }
+  }
+}

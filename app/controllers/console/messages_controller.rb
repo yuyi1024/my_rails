@@ -33,6 +33,37 @@ class Console::MessagesController < ApplicationController
     @messages = @messages.order('created_at DESC')
 
   end
+
+  def edit
+    @message = Message.find(params[:id])
+  end
+
+  def update
+    @message = Message.find(params[:id])
+    @message.update(message_params)
+    
+    if @message.save
+      if @message.reply_method == 'email'
+        UserMailer.message_email(@message).deliver_now
+      end
+      flash[:notice] = '訊息已發送'
+    else
+      flash[:notice] = '訊息發送失敗'
+    end
+    redirect_to edit_console_message_path(@message)
+
+  end
+
+  def destroy
+    @message = Message.find(params[:id])
+    @message.destroy
+    redirect_to console_messages_path
+  end
+
+  private
+  def message_params
+    params.require(:message).permit(:answer)
+  end
 end
 
 

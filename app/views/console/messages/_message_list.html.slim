@@ -14,7 +14,7 @@
           td #{ truncate(message.question, length: 18) }
           td #{ message.answer.blank? ? '(未回覆)' : truncate(message.answer, length: 18) }
           td #{ message.created_at.strftime("%Y/%m/%d") }
-          td #{ message.reply_method }
+          td #{ message.reply_method_cn }
           td
             = link_to(edit_console_message_path(message), target: :_blank)
               button.btn 詳細

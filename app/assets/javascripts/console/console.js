@@ -1,5 +1,18 @@
 $(document).on('turbolinks:load', function() {
+  if (window.location.pathname.match(/console/g)){
 
+    $('.delete .panel-heading').click(function(){
+      $body = $('.delete .panel-body');
+      if($body.is(':visible')){
+        $body.slideUp();
+        $('span.glyphicon-chevron-left').css('transform', 'rotate(0deg)');
+      }
+      else{
+        $body.slideDown();
+        $('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
+      }
+    });
+  }
 });
 
 function load_path_console_js(path, str){
