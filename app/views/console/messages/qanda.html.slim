@@ -1,0 +1,58 @@
+script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+
+h1.title Q&A 管理
+
+#console_message.console_page.container
+
+  .row
+    .col-sm-5.col-sm-offset-1
+      .panel.panel-default
+        .panel-heading 
+          h3 新增 Q&A 問題
+        .panel-body
+
+           = form_for @message, url: console_messages_path , method: 'post' do |f|
+            .row
+              label 問題
+              br
+              = f.text_area :question, class:'form-control', required: 'required'
+              br
+            .row
+              label 回答
+              br
+              = f.text_area :answer, class:'form-control', required: 'required'
+              br
+
+            .row
+              = f.submit '新增', class: 'btn'
+
+
+    #sortable_block.col-sm-5
+      .panel.panel-default
+        .panel-heading 
+          h3 排序
+        .panel-body
+
+          p.remark 拖曳並排序 Q&A 之順序
+
+          ul#drag_box
+            - @qusetions.each do |qusetion|
+              li.draggable.list-group-item.list-group-item-danger data-id='#{qusetion.id}'
+                span.index
+                |  #{qusetion.question}
+                span.x
+
+          p.arrow
+            span.glyphicon.glyphicon-chevron-down
+          
+
+          ul#sortable
+            - @qandas.each_with_index do |qanda, index|
+              li.list-group-item.list-group-item-success data-id='#{qanda.id}' onclick='dragAnswer();'
+                span.index #{index+1}. 
+                |  #{qanda.question}
+                span.x X
+
+
+          button.btn onclick='sortable();'
+            | 更新 Q&A

@@ -33,11 +33,18 @@ h1.title 後台儀表板
           h3 新訊息
         table.table
           tr
-            th 訂單編號
-            th 訂單狀態
-            th 總金額
-            th 下單時間
+            th 訊息內容
+            th 回覆內容
+            th 發問時間
           tbody
+            - @messages.each do |message|
+              tr
+                td #{ truncate(message.question, length: 15) }
+                td #{ message.answer.blank? ? '(未回覆)' : truncate(message.answer, length: 15) }
+                td #{ time_ago(message.created_at) }
+        .panel-footer
+          = link_to '訊息管理', console_messages_path, class: 'btn'
+
            
   .row
     .col-sm-offset-1.col-sm-10

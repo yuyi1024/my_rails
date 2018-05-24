@@ -2,7 +2,7 @@ h1.title 訊息列表
 
 #console_message.console_page.container
   .row.new
-    = link_to 'Q&A 管理', new_console_product_path, class: 'btn'
+    = link_to 'Q&A 管理', qanda_console_messages_path, class: 'btn'
   
   .filter
     = form_tag console_messages_path, method: :get, remote: 'true', id: 'search_filter'
@@ -47,6 +47,16 @@ h1.title 訊息列表
           = check_box_tag 'reply_method[]', 'email', nil, id:'reply_method_email'
           label for='reply_method_email' Email 回覆
 
+        .col-sm-2
+          label 問題類型
+          br
+
+          = check_box_tag 'qanda[]', 'true', nil, id:'qanda_true'
+          label for='qanda_true' Q&A
+
+          = check_box_tag 'qanda[]', 'false', nil, id:'qanda_false'
+          label for='qanda_false' 用戶訊息
+
 
       .row
         = hidden_field_tag :search, 'true'
@@ -81,8 +91,8 @@ h1.title 訊息列表
       table.table
         tr
           th 用戶 Email
-          th 問題
-          th 回覆
+          th 訊息內容
+          th 回覆內容
           th 發問日期
           th 回覆方式
           th 

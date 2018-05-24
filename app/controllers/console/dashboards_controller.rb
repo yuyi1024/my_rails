@@ -5,6 +5,7 @@ class Console::DashboardsController < ApplicationController
 
     t = Time.now
     @orders = Order.where("created_at > ?", t.days_ago(30)).order('created_at DESC')
+    @messages = Message.all
     
     @y_order = Order.where(created_at: t.all_year)
     @m_order = Order.where(created_at: t.all_month)

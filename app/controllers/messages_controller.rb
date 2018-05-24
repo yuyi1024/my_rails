@@ -8,7 +8,6 @@ class MessagesController < ApplicationController
 	def create
 		@message = Message.create(question: message_params[:question])
 		@message.user = current_user
-		@message.qanda = 0
 
 		if message_params[:reply_method] == '1'
 			@message.reply_method = 'email'

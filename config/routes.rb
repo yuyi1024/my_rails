@@ -61,7 +61,12 @@ Rails.application.routes.draw do
         delete :subcat_destroy, path: 'subcat_destroy/:id', as: 'subcat_destroy'
       end
     end
-    resources :messages, only: [:index, :edit, :update, :destroy]
+    resources :messages do
+      collection do
+        get :qanda, path: 'qanda', as: 'qanda'
+        post :sort_qanda, path: 'sort_qanda', as: 'sort_qanda'
+      end
+    end
   end
 end
 
