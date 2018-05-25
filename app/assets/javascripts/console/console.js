@@ -12,6 +12,8 @@ $(document).on('turbolinks:load', function() {
         $('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
       }
     });
+
+    ShowTime();
   }
 });
 
@@ -45,4 +47,9 @@ function clearField(){
   	document.getElementById("subcat_box").selectedIndex = "0";
   }
   $('#search_filter').submit();
+}
+
+function ShowTime(){
+　document.getElementById('showbox').innerHTML = new Date().toLocaleString("ja-JP");
+  setTimeout('ShowTime()',1000);
 }

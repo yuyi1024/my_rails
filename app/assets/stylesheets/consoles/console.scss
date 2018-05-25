@@ -86,3 +86,18 @@
     color: #fff;
   }
 }
+
+.dashboard{
+  #showbox{
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 20px;
+    color: #EC7700;
+  }
+  .panel-footer{
+    text-align: right;
+    .btn{
+      border: 1px #000 solid;
+    }
+  }
+}

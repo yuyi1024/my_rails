@@ -3,11 +3,13 @@
 #console_message{
   #message_question{
     .form-control{
-      background-color: $color_yrtena_gray;
       min-height: 100px;
     }
+    .edit_false{
+      background-color: $color_yrtena_gray;
+    }
   }
-  #message_answer{
+  #message_question, #message_answer{
     .form-control{
       height: 100px;
       resize: vertical;
@@ -15,7 +17,7 @@
     .btn{
       background-color: #000;
       color: #fff;
-      width: 90%;
+      width: 100%;
       margin: 20px auto;
       display: block;
     }

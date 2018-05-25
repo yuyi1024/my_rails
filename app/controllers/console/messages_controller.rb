@@ -56,9 +56,9 @@ class Console::MessagesController < ApplicationController
       if @message.reply_method == 'email'
         UserMailer.message_email(@message).deliver_now
       end
-      flash[:notice] = '訊息已發送'
+      flash[:notice] = '訊息已回覆'
     else
-      flash[:notice] = '訊息發送失敗'
+      flash[:notice] = '訊息回覆失敗'
     end
     redirect_to edit_console_message_path(@message)
 
@@ -105,7 +105,7 @@ class Console::MessagesController < ApplicationController
         qanda.save
       end
     end
-
+    flash[:notice] = '更新成功'
     redirect_to qanda_console_messages_path
   end
 
@@ -115,7 +115,7 @@ class Console::MessagesController < ApplicationController
   private
 
   def message_params
-    params.require(:message).permit(:answer)
+    params.require(:message).permit(:question, :answer)
   end
 
   def qanda_params

@@ -1,6 +1,11 @@
 h1.title 訊息回覆
 
-#console_message.console_page.container
+ul.pager
+  li.previous
+    = link_to console_messages_path
+      span &larr; 回訊息列表
+
+#console_message.console_page.container  
   .row
     #message_question.col-sm-6.col-sm-offset-3
       .panel.panel-default
@@ -9,21 +14,35 @@ h1.title 訊息回覆
 
         .panel-body
           .question 
-            p
-            	b 發問者： 
-            	| #{@message.user.email} （#{@message.user.name}）
-            p
-            	b 發問日期： 
-            	| #{@message.created_at.strftime("%Y/%m/%d")}
-            p
-            	b 回覆方式： 
-            	| #{@message.reply_method_cn} #{ '（本系統除站內回覆將會自動再以 Email 方式寄出回覆）' if @message.reply_method == 'email'}
-            p
-            	b 回覆 Email： 
-            	| #{@message.email.blank? ? '無' : @message.email}
-            p
-            	b 訊息：
-            .form-control #{@message.question}
+            - if @message.qanda.blank?
+              p
+              	b 發問者： 
+              	| #{@message.user.email} （#{@message.user.name}）
+              p
+              	b 發問日期： 
+              	| #{@message.created_at.strftime("%Y/%m/%d")}
+              p
+              	b 回覆方式： 
+              	| #{@message.reply_method_cn} #{ '（本系統除站內回覆將會自動再以 Email 方式寄出回覆）' if @message.reply_method == 'email'}
+              p
+              	b 回覆 Email： 
+              	| #{@message.email.blank? ? '無' : @message.email}
+              p
+              	b 訊息：
+              .form-control.edit_false #{@message.question}
+            
+            - else
+              p
+                b 問題類型： 
+                | Q&A
+              p
+                b 狀態：
+                |  #{'未' if @message.qanda == 0}公開
+              = form_for @message, url: console_message_path, method: 'patch' do |f|
+                p
+                  b 問題：
+                = f.text_area :question, class:'form-control', required: 'required'
+                = f.submit "修改問題", class:'btn'
 
   .row
     #message_answer.col-sm-6.col-sm-offset-3
@@ -41,7 +60,7 @@ h1.title 訊息回覆
             	p
             		b 回覆：
             	= f.text_area :answer, class:'form-control', required: 'required'
-            	= f.submit "#{@message.email.blank? ? '回覆' : '修改回覆'}", class:'btn'
+            	= f.submit "#{@message.answer.blank? ? '回覆' : '修改回覆'}", class:'btn'
 
 
   .row
@@ -54,6 +73,12 @@ h1.title 訊息回覆
 
         .panel-body
           p 刪除該訊息？
-          p
-            = link_to console_message_path(@message), method: 'delete', data: {confirm: "確定刪除該訊息？"}
-              button.btn.delete_btn 刪除
+          - if @message.qanda > 0
+            p.remark
+              | 此為公開 Q&A ，請先至
+              = link_to '【Q&A 管理】', qanda_console_messages_path
+              | 將該問題設為非公開
+          - else
+            p
+              = link_to console_message_path(@message), method: 'delete', data: {confirm: "確定刪除該訊息？"}
+                button.btn.delete_btn 刪除

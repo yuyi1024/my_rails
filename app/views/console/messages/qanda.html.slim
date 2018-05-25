@@ -1,9 +1,17 @@
-script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+= javascript_include_tag "https://code.jquery.com/ui/1.12.1/jquery-ui.js"
 
 h1.title Q&A 管理
 
-#console_message.console_page.container
+ul.pager
+  li.previous
+    = link_to console_messages_path
+      span &larr; 回訊息列表
 
+#console_message.console_page.container
+  p.remark
+    | 欲修改問題內容，請至
+    = link_to '【訊息管理】', console_messages_path
+    | 進行修改或刪除
   .row
     .col-sm-5.col-sm-offset-1
       .panel.panel-default
@@ -34,6 +42,7 @@ h1.title Q&A 管理
         .panel-body
 
           p.remark 拖曳並排序 Q&A 之順序
+          p 【未公開】
 
           ul#drag_box
             - @qusetions.each do |qusetion|
@@ -44,7 +53,7 @@ h1.title Q&A 管理
 
           p.arrow
             span.glyphicon.glyphicon-chevron-down
-          
+          p 【公開】
 
           ul#sortable
             - @qandas.each_with_index do |qanda, index|

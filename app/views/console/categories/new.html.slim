@@ -1,9 +1,11 @@
-h1.title 編輯分類
+h1.title 分類管理
+
+ul.pager
+  li.previous
+    = link_to console_products_path
+      span &larr; 回商品列表
 
 #console_category.console_page.container
-  .row.new
-    /= link_to '新增商品', new_console_product_path, class: 'btn'
-
   .row
     #add_cat.col-sm-8.col-sm-offset-2
       .panel.panel-default

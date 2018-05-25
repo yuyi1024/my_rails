@@ -293,7 +293,7 @@
 }
 
 
-/*訊息form*/
+/*message form*/
 
 #new_message{
   .row{
@@ -309,6 +309,14 @@
       width: 100%;
     }
   }
+}
+
+
+/*回前頁*/
+
+.pager{
+  position: absolute;
+  top: 70px;
 }
 
 
