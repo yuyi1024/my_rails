@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    meta content='text/html; charset=UTF-8' http-equiv='Content-Type'
+  body
+    h3 霸雕爆裂丸股份有限公司-訊息回覆
+    p 您好，#{@user.name}！
+    p 我們收到了您於前些日子發送的訊息，以下是針對您的訊息做出的回覆，謝謝。
+    
+    p
+      b 您的訊息：
+    div #{@message.question}
+    br
+    br
+
+    p
+      b 回覆：
+    div #{@message.answer}
+    br
+    br
+
+    p 
+      | 若還有事情想告知或詢問我們，可直接以 Email 繼續回覆，或是至本公司官網
+      a href='#{@url}' 聯絡我們
+      | 發送訊息！
+
+  

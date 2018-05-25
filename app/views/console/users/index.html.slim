@@ -3,7 +3,7 @@ h1.title 用戶列表
 #console_user.console_page.container
   p.remark 欲增加管理員或員工，請先由前台註冊後再由此改變會員權限
   .filter
-    = form_tag console_users_path, method: :get, remote: 'true', id: 'user_filter'
+    = form_tag console_users_path, method: :get, remote: 'true', id: 'search_filter'
       .row
         .col-sm-3.col-sm-offset-1
           label 用戶Email

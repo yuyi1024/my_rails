@@ -1,0 +1,27 @@
+@import 'app';
+
+#message{
+  .table{
+    margin-bottom: 0;
+  }
+  .question{
+    margin: 5px 0 10px;
+    cursor: pointer;
+    .date{
+      margin: 0;
+      color: $color_price_red;
+    }
+    .context{
+      font-weight: bold;
+    }
+    .label{
+      line-height: 30px;
+    }
+  }
+  .answer{
+    display: none;
+    background: $color_yrtena_gray;
+    padding: 5px;
+  }
+}
+

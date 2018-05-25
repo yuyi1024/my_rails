@@ -9,15 +9,6 @@ module ApplicationHelper
     status_color
   end
 
-  def time_ago(created_at)
-    t = Time.at(Time.now - created_at).utc
-    if t.strftime("%H").to_i > 0
-      t.strftime("%H小時前")
-    else
-      t.strftime("%M分鐘前")
-    end
-  end
-
   def is_favorite(favorite, id)
     'favorite' if favorite.find_by(product_id: id)
   end

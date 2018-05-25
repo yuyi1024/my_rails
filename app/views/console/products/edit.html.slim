@@ -1,5 +1,10 @@
 h1.title 編輯商品
 
+ul.pager
+  li.previous
+    = link_to console_products_path
+      span &larr; 回商品列表
+
 #console_product.console_page.container
   .row
     .data_form.col-sm-8.col-sm-offset-2
@@ -79,4 +84,3 @@ h1.title 編輯商品
                 button.btn.delete_btn 刪除【#{@product.name}】
 
         
-  /- if can? :update, @product

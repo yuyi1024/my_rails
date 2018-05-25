@@ -1,5 +1,12 @@
-<% if @action == 'update' %>
+<% if @action == 'update_field' %>
 	$('.detail_field').html("<%= j render partial: 'user_field' %>");
+
+	$.notify({
+		icon: 'glyphicon glyphicon-shopping-ok',
+		message: '更改成功',
+	},{
+		type: 'success',
+	});
 
 <% elsif @action == 'pwd_field' %>
 	$('.pwd_field').html("<%= j render partial: 'pwd_field' %>");
@@ -10,4 +17,23 @@
 <% elsif @action == 'favorite_list' %>
 	$('#section').html("<%= j render partial: 'favorite_list' %>");
 
+<% elsif @action == 'update_success' %>
+	$('.pwd_field').html("<a data-remote='true' href='/user/pwd_field'><button class='btn'>修改密碼</button></a>");
+	
+	$.notify({
+		icon: 'glyphicon glyphicon-shopping-ok',
+		message: '更改成功',
+	},{
+		type: 'success',
+		delay: 1000,
+	});
+
+<% elsif @action == 'update_failed' %>
+	$.notify({
+		icon: 'glyphicon glyphicon-remove',
+		message: '更改失敗，請重新確認輸入的密碼',
+	},{
+		type: 'danger',
+		delay: 3000,
+	});
 <% end %>

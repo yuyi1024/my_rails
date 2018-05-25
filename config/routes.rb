@@ -23,6 +23,8 @@ Rails.application.routes.draw do
 
   resources :images, only: [:create, :destroy]
 
+  resources :messages, only: [:index, :create]
+
   resource :carts, only: [:show, :destroy] do
   	collection do
   		post :add, path: 'add/:id', as: 'add'
@@ -57,6 +59,12 @@ Rails.application.routes.draw do
         get :subcat_edit, path: 'subcat_edit/:id', as: 'subcat_edit'
         patch :subcat_update, path: 'subcat_update/:id', as: 'subcat_update'
         delete :subcat_destroy, path: 'subcat_destroy/:id', as: 'subcat_destroy'
+      end
+    end
+    resources :messages do
+      collection do
+        get :qanda, path: 'qanda', as: 'qanda'
+        post :sort_qanda, path: 'sort_qanda', as: 'sort_qanda'
       end
     end
   end

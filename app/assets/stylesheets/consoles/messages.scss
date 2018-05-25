@@ -1,0 +1,48 @@
+@import 'app';
+
+#console_message{
+  #message_question{
+    .form-control{
+      min-height: 100px;
+    }
+    .edit_false{
+      background-color: $color_yrtena_gray;
+    }
+  }
+  #message_question, #message_answer{
+    .form-control{
+      height: 100px;
+      resize: vertical;
+    }
+    .btn{
+      background-color: #000;
+      color: #fff;
+      width: 100%;
+      margin: 20px auto;
+      display: block;
+    }
+  }
+  #sortable_block{
+    ul{
+      padding: 0;
+      li{
+        margin: 5px;
+      }
+    }
+    p.arrow{
+      text-align: center;
+    }
+    .x{
+      float: right;
+      cursor: pointer;
+    }
+    .btn{
+      width: 100%;
+      color: #fff;
+      background-color: $color_checked_green;
+      margin: 30px auto 10px;
+      display: block;
+    }
+  }
+
+}

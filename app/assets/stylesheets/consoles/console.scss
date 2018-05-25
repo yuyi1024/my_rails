@@ -65,11 +65,39 @@
     float: right;
     color: #F7B32D;
   }
+
+  .delete{
+    margin-bottom: 100px;
+    p{
+      text-align: center;
+    }
+    .panel-heading{
+      cursor: pointer;
+    }
+    .panel-body{
+      display: none;
+    }
+  }
 }
 
 #photo_crop{
   .btn{
     background-color: #000;
     color: #fff;
+  }
+}
+
+.dashboard{
+  #showbox{
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 20px;
+    color: #EC7700;
+  }
+  .panel-footer{
+    text-align: right;
+    .btn{
+      border: 1px #000 solid;
+    }
   }
 }

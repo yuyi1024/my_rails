@@ -1,5 +1,6 @@
 $(document).on('turbolinks:load', function() {
-  
+  var path = window.location.pathname;
+  if (path == '/' || (path.match(/products/g) && path.match(/console/g) == null)){
 
     var price_bottom = 0;
     var price_up = 0;
@@ -33,7 +34,7 @@ $(document).on('turbolinks:load', function() {
       }
       $('.input-quantity input').val(q);
     });
-  
+  }
 });
 
 //summernote function
@@ -238,7 +239,7 @@ function price() {
   form_submit();
 }
 
-function sort_by(){
+function products_sort_by(){
   $('#sort_item').val($("#sort_by_item").val());
   $('#sort_order').val($("input[name=sequence]:checked").val());
   form_submit();

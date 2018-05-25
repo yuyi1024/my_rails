@@ -4,7 +4,8 @@ class Console::DashboardsController < ApplicationController
     authorize! :dashboard, :all
 
     t = Time.now
-    @orders = Order.where("created_at > ?", t.days_ago(30)).order('created_at DESC')
+    @orders = Order.where("created_at > ?", t.days_ago(30)).order('created_at DESC').limit(10) #30天內
+    @messages = Message.where(qanda: [nil, '']).where("created_at > ?", t.days_ago(30)).order('created_at DESC').limit(10)
     
     @y_order = Order.where(created_at: t.all_year)
     @m_order = Order.where(created_at: t.all_month)

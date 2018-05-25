@@ -26,3 +26,14 @@ function change_item_quantity(object){
     data : { quantity: item_quantity },
   });
 }
+
+
+function load_path_shared_js(path, str){
+  if (path.match(new RegExp(str, 'g')) && path.match(/console/g) == null){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+//if (load_path_shared_js(path, 'products')){

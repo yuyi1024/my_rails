@@ -1,0 +1,20 @@
+.message_list.panel.panel-default.col-sm-offset-1.col-sm-10
+  table.table
+    tr
+      th 用戶 Email
+      th 問題
+      th 回覆
+      th 發問日期
+      th 問題類型
+      th 
+    tbody
+      - @messages.each do |message|
+        tr
+          td #{ truncate(message.user.email, length: 15) }
+          td #{ truncate(message.question, length: 18) }
+          td #{ message.answer.blank? ? '(未回覆)' : truncate(message.answer, length: 18) }
+          td #{ message.created_at.strftime("%Y/%m/%d") }
+          td #{ message.qanda.blank? ? '用戶訊息' : 'Q&A' }
+          td
+            = link_to(edit_console_message_path(message), target: :_blank)
+              button.btn 詳細
