@@ -50,7 +50,7 @@ h1.title 用戶列表
     .count.col-sm-2.col-sm-offset-1 
       | 共計 
       span #{ @rows } 
-      |  個用戶
+      |  位用戶
 
     .col-sm-3.col-sm-offset-6
       | 依
@@ -66,29 +66,5 @@ h1.title 用戶列表
         span.glyphicon.glyphicon-sort-by-attributes
 
   #user_list.row
-    .panel.panel-default.col-sm-offset-1.col-sm-10
-      table.table
-        tr
-          th
-          th Email
-          th 暱稱
-          th 類別
-          th 認證狀態
-          th 最後登入
-          th
-        tbody
-          - @users.each do |user|
-            tr
-              td
-                span.glyphicon.glyphicon-user class='#{user.role}_color'
-              td #{ user.email }
-              td #{ user.name }
-              td #{ user.role_cn }
-              td #{ user.confirmed_at.present? ? '已認證' : '未認證' }
-              td #{ user.current_sign_in_at.strftime("%Y/%m/%d") if user.current_sign_in_at.present? }
-              td
-                = link_to(console_user_path(user.id), target: :_blank)
-                  button.btn 詳細
-
-    .pages.row
-      = paginate @users, window: 2
+    = render 'user_list'
+    

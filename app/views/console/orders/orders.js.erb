@@ -1,6 +1,6 @@
 <% if @action == 'index' %>
-	$('.order_list').replaceWith("<%= j render partial: 'order_list', locals: { orders: @orders } %>");
-	$('.count span').text('<%= @orders.length %>');
+	$('.order_list').html("<%= j render partial: 'order_list', locals: { orders: @orders } %>");
+	$('.count span').text('<%= @rows %>');
 
 <% elsif @action == 'update_success' %>
   $.notify({

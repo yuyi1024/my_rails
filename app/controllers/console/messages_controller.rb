@@ -35,13 +35,14 @@ class Console::MessagesController < ApplicationController
 
       @messages = @messages.where(reply_method: params[:reply_method]) if params[:reply_method].present?
       @messages = @messages.order(params[:sort_item] + ' ' + params[:sort_order])
-    
+      kaminari_page
+      
       @action = 'index'
       render 'console/messages/messages.js.erb'
     end
-
+    
     @messages = @messages.order('created_at DESC')
-
+    kaminari_page
   end
 
   def edit
@@ -107,6 +108,12 @@ class Console::MessagesController < ApplicationController
     end
     flash[:notice] = '更新成功'
     redirect_to qanda_console_messages_path
+  end
+
+  def kaminari_page #分頁
+    @rows = @messages.length
+    params[:page] = 1 if !params[:page].present?
+    @messages = @messages.page(params[:page]).per(4)
   end
 
 

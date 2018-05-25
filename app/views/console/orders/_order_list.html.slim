@@ -1,4 +1,4 @@
-.order_list.panel.panel-default.col-sm-offset-1.col-sm-10
+.panel.panel-default.col-sm-offset-1.col-sm-10
   table.table
     tr
       th 訂單編號
@@ -26,3 +26,10 @@
           td
             = link_to(edit_console_order_path(order.process_id), target: :_blank)
               button.btn 詳細
+
+- if @action.present?
+  .pages.row
+    = paginate @orders, window: 2, remote: 'true'
+- else
+  .pages.row
+    = paginate @orders, window: 2

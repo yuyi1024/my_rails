@@ -1,4 +1,4 @@
 <% if @action == 'index' %>
-  $('.message_list').replaceWith("<%= j render 'message_list', locals:{ messages: @messages } %>");
-  $('.count span').text('<%= @messages.length %>');
+  $('.message_list').html("<%= j render 'message_list', locals:{ messages: @messages } %>");
+  $('.count span').text('<%= @rows %>');
 <% end %>

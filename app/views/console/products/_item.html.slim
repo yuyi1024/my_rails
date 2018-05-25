@@ -25,4 +25,7 @@
               button.btn 編輯
 
 .pages.row
-  = paginate @products, window: 2, remote: 'true'
+  - if @action.present?
+    = paginate @products, window: 2, remote: 'true'
+  - else @action.present?
+    = paginate @products, window: 2

@@ -119,7 +119,7 @@ h1.title 訂單列表
   .row#sorting
     .count.col-sm-2.col-sm-offset-1 
       | 共計 
-      span #{ @orders.length } 
+      span #{ @rows } 
       |  筆訂單
 
     .col-sm-3.col-sm-offset-6
@@ -135,32 +135,6 @@ h1.title 訂單列表
       label.label_sort for="asc"
         span.glyphicon.glyphicon-sort-by-attributes
 
-  .row
-    .order_list.panel.panel-default.col-sm-offset-1.col-sm-10
-      table.table
-        tr
-          th 訂單編號
-          th 訂單狀態
-          th 總金額
-          th 付款方式
-          th 送貨方式
-          th 用戶email
-          th
-        tbody
-          - @orders.each do |order|
-            tr
-              td 
-                p #{ order.process_id }
-                p #{ order.created_at.strftime("%Y/%m/%d") }
-              td class="#{order_status_color(order.status)}" #{ order.status_cn }
-              td $ #{ number_with_delimiter(order.price + order.freight) }
-              td 
-                p #{ order.pay_method_cn }
-                p #{ order.paid == 'true' ? '(已付款)' : '(未付款)' }
-              td
-                p #{ order.ship_method_cn }
-                p #{ order.delivered == 'true' ? '(已收貨)' : '(未收貨)' }
-              td #{ truncate(order.user.email, length:12) }
-              td
-                = link_to(edit_console_order_path(order.process_id), target: :_blank)
-                  button.btn 詳細
+  .order_list.row
+    = render 'order_list'
+    

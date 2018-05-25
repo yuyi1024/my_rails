@@ -12,7 +12,8 @@ $(document).on('turbolinks:load', function() {
         $('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
       }
     });
-
+  }
+  if (window.location.pathname == '/console'){
     ShowTime();
   }
 });

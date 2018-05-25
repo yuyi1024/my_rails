@@ -3,15 +3,3 @@
 
 - elsif @method == 'edit' || @method == 'new'
   = select_tag "subcat_box", options_for_select(@subcategories), onchange:"subcat_select();", class: 'col-sm-8'
-
-/ - elsif @action == 'add_cat'
-/   #cats_select_box
-/     .row
-/       = f.label :category, '主分類', class: 'col-sm-2'
-/       = select_tag "cat_box", options_for_select(@categories), onchange:"cat_select('new');", class: 'col-sm-8'
-/       = f.hidden_field :category_id, value: @categories[0][1]
-
-/     .row
-/       = f.label :subcategory, '次分類', class: 'col-sm-2'
-/       = select_tag "subcat_box", options_for_select(@subcategories), class: 'col-sm-8'
-/       = f.hidden_field :subcategory_id

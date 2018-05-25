@@ -35,5 +35,3 @@ function load_path_shared_js(path, str){
     return false;
   }
 }
-
-//if (load_path_shared_js(path, 'products')){
