@@ -35,57 +35,13 @@ h1.title 商品列表
 
       .row
         = hidden_field_tag :search, 'true'
-        = hidden_field_tag :sort_item, 'id'
-        = hidden_field_tag :sort_order, 'ASC'
+        = hidden_field_tag :sort_item, 'created_at'
+        = hidden_field_tag :sort_order, 'DESC'
 
         button.btn 查詢
         button.btn onclick='clearField();' 清除
 
-  .row#sorting
-    .count.col-sm-2.col-sm-offset-1 
-      | 共計 
-      span #{ @rows } 
-      |  件商品
-
-    .col-sm-3.col-sm-offset-6
-      | 依
-      = select_tag "sort_by", options_for_select([["價錢", 'price'], ["庫存數量", 'quantity'], ["已賣數量", 'sold'] ]), onchange:'sort_by();'
-      | 排序
-
-      = radio_button_tag :sequence, 'DESC', nil, class:"radio_sort", onchange:'sort_by();', id:'desc'
-      label.label_sort for="desc"
-        span.glyphicon.glyphicon-sort-by-attributes-alt
-
-      = radio_button_tag :sequence, 'ASC', true, class:"radio_sort", onchange:'sort_by();', id:'asc'
-      label.label_sort for="asc"
-        span.glyphicon.glyphicon-sort-by-attributes
+  = render 'console/dashboards/sort_by', option: [ ["新增日期", 'created_at'], ["價錢", 'price'], ["庫存數量", 'quantity'], ["已賣數量", 'sold'] ], order: 'desc'
 
   .product_list.row
-    .panel.panel-default.col-sm-offset-1.col-sm-10
-      table.table
-        tr
-          th 
-          th 商品名稱
-          th 價錢
-          th 分類
-          th 庫存
-          th 已賣
-          th 商品狀態
-          th
-        tbody
-          - @products.each do |product|
-            tr class="#{ 'off_shelf' if product.status == 'off_shelf' }"
-              td
-                img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}" style='width:45px;'
-              td #{ product.name }
-              td $ #{ number_with_delimiter(product.price) }
-              td #{ product.category.name } > #{ product.subcategory.name }
-              td #{ product.quantity }
-              td #{ product.sold }
-              td #{ product.status_cn }
-              td
-                = link_to(edit_console_product_path(product.id), target: :_blank)
-                  button.btn 編輯
-
-    .pages.row
-      = paginate @products, window: 2
+    = render 'item'

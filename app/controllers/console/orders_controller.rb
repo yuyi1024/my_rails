@@ -39,11 +39,13 @@ class Console::OrdersController < ApplicationController
       if params[:sort_item].present? && params[:sort_order].present?
         @orders = @orders.order('orders.' + params[:sort_item] + ' ' + params[:sort_order])
       end
+      kaminari_page
       
       @action = 'index'
       render 'console/orders/orders.js.erb' 
     else
       @orders = @orders.order("created_at DESC")
+      kaminari_page
     end
   end
 
@@ -66,6 +68,12 @@ class Console::OrdersController < ApplicationController
 
   def dashboard_authorize
     authorize! :dashboard, Order
+  end
+
+  def kaminari_page #分頁
+    @rows = @orders.length
+    params[:page] = 1 if !params[:page].present?
+    @orders = @orders.page(params[:page]).per(25)
   end
 
 end

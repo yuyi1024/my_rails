@@ -1,0 +1,16 @@
+#sorting.row
+  .count.col-sm-2.col-sm-offset-1 
+    | 共計 
+    span #{ @rows } 
+    |  位用戶
+
+  .col-sm-3.col-sm-offset-6
+    | 依
+    = select_tag "sort_by", options_for_select(option), onchange:'sort_by();'
+    | 排序
+
+    
+    - ['desc', 'asc'].each do |sc|
+      = radio_button_tag :sequence, "#{sc}", (order == sc ? true : nil), class:"radio_sort", onchange:'sort_by();', id:"#{sc}"
+      label.label_sort for="#{sc}"
+        span.glyphicon class="glyphicon-sort-by-attributes#{'-alt' if sc == 'desc'}"

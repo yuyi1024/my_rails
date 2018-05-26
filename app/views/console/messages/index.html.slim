@@ -1,3 +1,5 @@
+= javascript_include_tag "https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+
 h1.title 訊息列表
 
 #console_message.console_page.container
@@ -66,44 +68,8 @@ h1.title 訊息列表
         button.btn onclick='messageSearch();' 查詢
         button.btn onclick='clearField();' 清除
 
+  = render 'console/dashboards/sort_by', option: [ ["發問日期", 'created_at'] ], order: 'desc'
 
-  .row#sorting
-    .count.col-sm-2.col-sm-offset-1 
-      | 共計 
-      span #{ @messages.length } 
-      |  筆訂單
-
-    .col-sm-3.col-sm-offset-6
-      | 依
-      = select_tag "sort_by", options_for_select([ ["發問日期", 'created_at'] ]), onchange:'sort_by();'
-      | 排序
-
-      = radio_button_tag :sequence, 'DESC', true, class:"radio_sort", onchange:'sort_by();', id:'desc'
-      label.label_sort for="desc"
-        span.glyphicon.glyphicon-sort-by-attributes-alt
-
-      = radio_button_tag :sequence, 'ASC', nil, class:"radio_sort", onchange:'sort_by();', id:'asc'
-      label.label_sort for="asc"
-        span.glyphicon.glyphicon-sort-by-attributes
-
-  .row
-    .message_list.panel.panel-default.col-sm-offset-1.col-sm-10
-      table.table
-        tr
-          th 用戶 Email
-          th 訊息內容
-          th 回覆內容
-          th 發問日期
-          th 問題類型
-          th 
-        tbody
-          - @messages.each do |message|
-            tr
-              td #{ truncate(message.user.email, length: 15) }
-              td #{ truncate(message.question, length: 18) }
-              td #{ message.answer.blank? ? '(未回覆)' : truncate(message.answer, length: 18) }
-              td #{ message.created_at.strftime("%Y/%m/%d") }
-              td #{ message.qanda.blank? ? '用戶訊息' : 'Q&A' }
-              td
-                = link_to(edit_console_message_path(message), target: :_blank)
-                  button.btn 詳細
+  .message_list.row
+    = render 'message_list'
+   

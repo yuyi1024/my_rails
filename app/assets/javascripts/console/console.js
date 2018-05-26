@@ -12,7 +12,8 @@ $(document).on('turbolinks:load', function() {
         $('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
       }
     });
-
+  }
+  if (window.location.pathname == '/console'){
     ShowTime();
   }
 });
@@ -44,7 +45,7 @@ function clearField(){
   });
   if(document.getElementById("cat_box") != null){
   	document.getElementById("cat_box").selectedIndex = "0";
-  	document.getElementById("subcat_box").selectedIndex = "0";
+    $('#subcat_box').html("<option value='all'>所有次分類</option>");
   }
   $('#search_filter').submit();
 }

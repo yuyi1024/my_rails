@@ -6,7 +6,6 @@
         | 商品分類 
         span.glyphicon.glyphicon-chevron-left
       
-      / .col-sm-3 data-target='#arr_box' 排序
       .col-sm-3
         span 價錢 
         = text_field_tag :price_bottom
@@ -52,12 +51,6 @@
 
         /分類2按鈕
         #cat2.row 
-         
-
-      / #arr_box
-      /   - ['價錢','最新','熱門','庫存數量'].each do |arr|
-      /     .col-sm-2 
-      /       = arr
 
     br
 
@@ -76,29 +69,5 @@
       #clear_tag onclick='clear_tag();' X clear
 
     #item
-      .row
-        - @products.each do |product|
-          .col-sm-2
-            .thumbnail
-              = link_to(product_path(product), target: :_blank)
-                img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
-              .caption
-                h3 
-                  = link_to(product.name, product_path(product), target: :_blank)
-                
-                p.price $#{number_with_delimiter(product.price)}
-
-                p.tags
-                  span.glyphicon.glyphicon-tags 
-                  | #{ product.category.name }、#{ product.subcategory.name } 
-                
-                = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn cart')
-                  span.glyphicon.glyphicon-shopping-cart
-                
-                - if current_user
-                    = link_to(heart_products_path(product.id), method: :post, remote: :true)
-                      span.glyphicon.glyphicon-heart class="#{ is_favorite(@favorites, product.id) }" id='heart-#{product.id}'
-        
-      .pages.row
-        = paginate @products, window: 2, remote: true
-
+      = render 'item'
+      
