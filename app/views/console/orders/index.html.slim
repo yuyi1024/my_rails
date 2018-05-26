@@ -115,25 +115,7 @@ h1.title 訂單列表
         button.btn onclick='orderSearch();' 查詢
         button.btn onclick='clearField();' 清除
 
-
-  .row#sorting
-    .count.col-sm-2.col-sm-offset-1 
-      | 共計 
-      span #{ @rows } 
-      |  筆訂單
-
-    .col-sm-3.col-sm-offset-6
-      | 依
-      = select_tag "sort_by", options_for_select([ ["下單日期", 'created_at'], ["金額", 'price'] ]), onchange:'sort_by();'
-      | 排序
-
-      = radio_button_tag :sequence, 'DESC', true, class:"radio_sort", onchange:'sort_by();', id:'desc'
-      label.label_sort for="desc"
-        span.glyphicon.glyphicon-sort-by-attributes-alt
-
-      = radio_button_tag :sequence, 'ASC', nil, class:"radio_sort", onchange:'sort_by();', id:'asc'
-      label.label_sort for="asc"
-        span.glyphicon.glyphicon-sort-by-attributes
+  = render 'console/dashboards/sort_by', option: [ ["下單日期", 'created_at'], ["金額", 'price'] ], order: 'desc'
 
   .order_list.row
     = render 'order_list'

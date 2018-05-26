@@ -12,7 +12,7 @@
       - @users.each do |user|
         tr
           td
-            span.glyphicon.glyphicon-user
+            span.glyphicon.glyphicon-user class='#{role_color(user.role)}'
           td #{ user.email }
           td #{ user.name }
           td #{ user.role_cn }

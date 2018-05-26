@@ -113,7 +113,7 @@ class Console::MessagesController < ApplicationController
   def kaminari_page #分頁
     @rows = @messages.length
     params[:page] = 1 if !params[:page].present?
-    @messages = @messages.page(params[:page]).per(4)
+    @messages = @messages.page(params[:page]).per(25)
   end
 
 

@@ -35,30 +35,13 @@ h1.title 商品列表
 
       .row
         = hidden_field_tag :search, 'true'
-        = hidden_field_tag :sort_item, 'id'
-        = hidden_field_tag :sort_order, 'ASC'
+        = hidden_field_tag :sort_item, 'created_at'
+        = hidden_field_tag :sort_order, 'DESC'
 
         button.btn 查詢
         button.btn onclick='clearField();' 清除
 
-  .row#sorting
-    .count.col-sm-2.col-sm-offset-1 
-      | 共計 
-      span #{ @rows } 
-      |  件商品
-
-    .col-sm-3.col-sm-offset-6
-      | 依
-      = select_tag "sort_by", options_for_select([["價錢", 'price'], ["庫存數量", 'quantity'], ["已賣數量", 'sold'] ]), onchange:'sort_by();'
-      | 排序
-
-      = radio_button_tag :sequence, 'DESC', nil, class:"radio_sort", onchange:'sort_by();', id:'desc'
-      label.label_sort for="desc"
-        span.glyphicon.glyphicon-sort-by-attributes-alt
-
-      = radio_button_tag :sequence, 'ASC', true, class:"radio_sort", onchange:'sort_by();', id:'asc'
-      label.label_sort for="asc"
-        span.glyphicon.glyphicon-sort-by-attributes
+  = render 'console/dashboards/sort_by', option: [ ["新增日期", 'created_at'], ["價錢", 'price'], ["庫存數量", 'quantity'], ["已賣數量", 'sold'] ], order: 'desc'
 
   .product_list.row
     = render 'item'

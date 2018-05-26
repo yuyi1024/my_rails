@@ -17,6 +17,7 @@ class Console::ProductsController < ApplicationController
 
       render 'console/products/products.js.erb'
     end
+    @products = @products.order('created_at DESC')
     kaminari_page
   end
 
