@@ -29,3 +29,21 @@ function selectShipMethod(){
     data : { ship_method: ship_method },
   });
 }
+
+
+
+
+//////////////////
+
+function chooseStore(){
+  window.open('/orders/to_map');
+}
+
+function callback(data){
+  $('#st_type').text(data['stType']);
+  $('#st_id').text(data['stId']);
+  $('#st_name').text(data['stName']);
+}
+
+
+

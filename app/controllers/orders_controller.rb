@@ -162,6 +162,41 @@
     redirect_to cash_card_orders_path(@order.process_id)
   end
 
+
+
+
+  #########
+
+  def test
+    
+  end
+
+  def to_map
+    args = { 
+      MerchantID: '3076564', 
+      LogisticsType: 'CVS', 
+      LogisticsSubType: 'UNIMARTC2C',
+      IsCollection: 'N',
+      ServerReplyURL: 'http://localhost:3001/orders/from_map'
+    }
+    redirect_to 'https://logistics.ecpay.com.tw/Express/map?' + args.to_query
+  end
+
+  def from_map
+    @stType = params[:LogisticsSubType]
+    @stId = params[:CVSStoreID]
+    @stName = params[:CVSStoreName]
+  end
+
+
+
+
+
+
+
+
+
+
   private
 
   def order_params
