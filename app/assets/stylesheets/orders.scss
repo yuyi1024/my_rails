@@ -10,18 +10,21 @@
     }
   }
   .select_store{
-    p{
-      font-size: 18px;
-      span{
-        margin: 0 5px;
-      }
-    }
     a{
       text-align: left;
     }
     .select{
       color: #0000A1;
+      display: inline;
+      margin-left: 20px;
+      font-size: 16px;
+      cursor: pointer;
     }
+  }
+  .st_data{
+    color: $color_price_red;
+    text-align: left;
+    margin-left: 25px;
   }
 }
 #cash_card_page{

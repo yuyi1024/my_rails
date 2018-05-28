@@ -172,11 +172,14 @@
   end
 
   def to_map
+    order = Order.find_by(process_id: params[:process_id])
+    pay = (order.pay_method == 'pickup_and_cash' ? 'Y' : 'N')
+
     args = { 
-      MerchantID: '3076564', 
-      LogisticsType: 'CVS', 
-      LogisticsSubType: 'UNIMARTC2C',
-      IsCollection: 'N',
+      MerchantID: '3076564', #廠商編號
+      LogisticsType: 'CVS', #物流類型：超商取貨
+      LogisticsSubType: params[:st_type], #子物流類型：7-11/全家/萊爾富
+      IsCollection: pay, #是否代收
       ServerReplyURL: 'http://localhost:3001/orders/from_map'
     }
     redirect_to 'https://logistics.ecpay.com.tw/Express/map?' + args.to_query

@@ -32,18 +32,52 @@ function selectShipMethod(){
 
 
 
-
 //////////////////
 
+function chooseType(){
+  var stId = '';
+  var stType = '';
+
+  $("input[name='store[]']").each(function(){
+    $(this).next().next('.select').html('');
+    
+    if($(this).is(':checked')){
+      $(this).next().next('.select').html('<span class="glyphicon glyphicon-search"></span>選擇超商');
+      
+      $st_id = $(this).next().next().next('.st_data').children('.st_id');
+      if($st_id.text() != ''){
+        stId = $st_id.text();
+        stType = $(this).val();
+      }  
+    }
+  });
+  store_required(stId, stType);
+}
+
 function chooseStore(){
-  window.open('/orders/to_map');
+  var st_type = $("input[name='store[]']:checked").val();
+  var process_id = window.location.pathname.split('/')[2];
+  window.open('/orders/to_map?process_id=' + process_id + '&st_type=' + st_type);
 }
 
 function callback(data){
-  $('#st_type').text(data['stType']);
-  $('#st_id').text(data['stId']);
-  $('#st_name').text(data['stName']);
+  $('#store_' + data['stType']).next().next().next('.st_data').children('.st_id').text(data['stId']);
+  $('#store_' + data['stType']).next().next().next('.st_data').children('.st_name').text(data['stName']);
+  document.getElementById('store_' + data['stType']).checked = true;
+  chooseType();
+  store_required(data['stId'], data['stType']);
 }
+
+function store_required(stId, stType){
+  if(stId == ''){
+    $('#order_address').val('');
+    console.log('nooo');
+  }else{
+    $('#order_address').val(stId + '-' + stType);
+    console.log('yes');
+  }
+}
+
 
 
 
