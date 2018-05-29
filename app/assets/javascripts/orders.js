@@ -15,11 +15,6 @@ $(document).on('turbolinks:load', function() {
   }
 });
 
-//同會員資料
-function getUserData(){
-  $('#get_user_data').submit();
-}
-
 //new_order送貨方式選擇
 function selectShipMethod(){
   var ship_method = document.getElementById('order_ship_method').value;
@@ -71,10 +66,10 @@ function callback(data){
 function store_required(stId, stType){
   if(stId == ''){
     $('#order_address').val('');
-    console.log('nooo');
+    $('.submit_row').html('<p>請先選擇預送貨之超商</p>');
   }else{
     $('#order_address').val(stId + '-' + stType);
-    console.log('yes');
+    $('.submit_row').html('<input type="submit" name="commit" value="訂單建立" class="btn" data-disable-with="訂單建立">');
   }
 }
 

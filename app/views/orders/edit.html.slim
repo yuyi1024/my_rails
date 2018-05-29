@@ -42,38 +42,11 @@ h1.title 訂單結帳
             | 總計： 
             span $ #{ number_with_delimiter(@order.price + @order.freight) }
 
-  = render partial: 'form_in_store'
-  /- if @order.ship_method != 'home_delivery'
-    .row
-      .select_store.col-sm-8.col-sm-offset-2
-        .data_form.panel.panel-default
-          .panel-heading 
-            h3 選擇超商
 
-          .panel-body
-            .row
-              - store_type_cn = ['7-11', '全家', '萊爾富']
-              - store_type_en = ["UNIMARTC2C", "FAMIC2C", "HILIFEC2C"]
-              - store_type_en.each_with_index do |store_type, index|
-                = radio_button_tag 'store[]', "#{store_type}", nil , onchange: 'chooseType();', id:"store_#{store_type}"
-                label for='store_#{store_type}' #{store_type_cn[index]}
-                .select onclick='chooseStore();'
-                p.st_name
-              
-
-
+  - if @order.ship_method == 'pickup_and_cash' || @order.ship_method == 'only_pickup'
+    = render partial: 'form_in_store'
   
-  /.row
-    .data_form.col-sm-8.col-sm-offset-2
-      .panel.panel-default
-        .panel-heading 
-          h3 收件資料
-        #new_order_form
-
-
-          - if @order.ship_method == 'pickup_and_cash' || @order.ship_method == 'only_pickup'
-            = render partial: 'form_in_store'
-
-          - elsif @order.ship_method == 'home_delivery'
-            = render partial: 'form_home_delivery'
-
+  - elsif @order.ship_method == 'home_delivery'
+    = render partial: 'form_home_delivery'
+  
+  

@@ -35,16 +35,12 @@ Rails.application.routes.draw do
   resources :orders do
     collection do
       get :ship_method, path: 'ship_method', as: 'ship_method'
-      get :to_ezship, path: 'to_ezship/:process_id', as: 'to_ezship'
-      post :from_ezship, path: 'from_ezship', as: 'from_ezship'
-      get :get_user_data, path: 'get_user_data', as: 'get_user_data'
+      get :to_map, path: 'to_map', as: 'to_map'
+      post :from_map, path: 'from_map', as: 'from_map'
+      get :get_user_data, path: 'get_user_data/:process_id', as: 'get_user_data'
       get :remit_info, path: 'remit_info/:process_id', as: 'remit_info'
       get :cash_card, path: 'cash_card/:process_id', as: 'cash_card'
       post :paid, path: 'paid/:process_id', as: 'paid'
-
-      get :test, path: 'test', as: 'test'
-      get :to_map, path: 'to_map', as: 'to_map'
-      post :from_map, path: 'from_map', as: 'from_map'
     end
   end
 

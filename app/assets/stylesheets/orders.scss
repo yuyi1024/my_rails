@@ -26,6 +26,14 @@
     text-align: left;
     margin-left: 25px;
   }
+  #new_order_form{
+    .get_user_data{
+      background: $color_mystic_gray;
+      color: #000;
+      width: 15%;
+      margin: 30px auto 20px;
+    }
+  }
 }
 #cash_card_page{
   .cash_card{

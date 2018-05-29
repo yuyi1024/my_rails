@@ -24,7 +24,7 @@
                 input#pay_card.btn type="submit" value="確認付款"
 
     - if @order.paid == 'true'
-      = link_to '前往會員中心', products_path, class: 'btn'
+      = link_to '前往會員中心', user_order_list_path, class: 'btn'
 
 script src="https://js.braintreegateway.com/js/braintree-2.32.1.min.js"
 

@@ -28,10 +28,6 @@
     render 'orders/orders.js.erb'
   end
 
-  def ezship #EZship 回傳
-    redirect_to new_order_path(:stName => params[:stName], :stCode => params[:stCode], :stCate => params[:stCate])
-  end
-
   def create #前往結帳
     @order_session = Cart.from_hash(session[Cart::SessionKey_order])
 
@@ -75,26 +71,29 @@
     end
   end
 
-  def to_ezship #傳至 EZship
-    @order = Order.find_by(process_id: params[:process_id])
-    args = { suID: 'bonnie831024@gmail.com', processID: @order.process_id, rtURL: 'http://localhost:3001/orders/from_ezship' }
-    redirect_to 'http://map.ezship.com.tw/ezship_map_web.jsp?' + args.to_query
+  def to_map
+    order = Order.find_by(process_id: params[:process_id])
+    pay = (order.pay_method == 'pickup_and_cash' ? 'Y' : 'N')
+
+    args = { 
+      MerchantID: '3076564', #廠商編號
+      LogisticsType: 'CVS', #物流類型：超商取貨
+      LogisticsSubType: params[:st_type], #子物流類型：7-11/全家/萊爾富
+      IsCollection: pay, #是否代收
+      ServerReplyURL: 'http://localhost:3001/orders/from_map'
+    }
+    redirect_to 'https://logistics.ecpay.com.tw/Express/map?' + args.to_query
   end
 
-  def from_ezship #EZship 回傳
-    @order = Order.find_by(process_id: params[:processID])
-    if @order.ship_method == 'pickup_and_cash' || @order.ship_method == 'only_pickup'
-      @order.address = params[:stCate] + params[:stCode]
-      if @order.save
-        redirect_to edit_order_path(@order.process_id, :stName=> params[:stName])
-      end
-    end
+  def from_map
+    @stType = params[:LogisticsSubType]
+    @stId = params[:CVSStoreID]
+    @stName = params[:CVSStoreName]
   end
 
   def get_user_data #勾選同會員資料
-    @order = Order.find_by(process_id: params[:id])
-    @chk = params[:user_data_chk]
-    @user = current_user if @chk == 'on'
+    @order = Order.find_by(process_id: params[:process_id])
+    @user = @order.user
     @action = 'get_user_data'
     render 'orders/orders.js.erb'
   end
@@ -161,40 +160,6 @@
     end
     redirect_to cash_card_orders_path(@order.process_id)
   end
-
-
-
-
-  #########
-
-  def test
-    
-  end
-
-  def to_map
-    order = Order.find_by(process_id: params[:process_id])
-    pay = (order.pay_method == 'pickup_and_cash' ? 'Y' : 'N')
-
-    args = { 
-      MerchantID: '3076564', #廠商編號
-      LogisticsType: 'CVS', #物流類型：超商取貨
-      LogisticsSubType: params[:st_type], #子物流類型：7-11/全家/萊爾富
-      IsCollection: pay, #是否代收
-      ServerReplyURL: 'http://localhost:3001/orders/from_map'
-    }
-    redirect_to 'https://logistics.ecpay.com.tw/Express/map?' + args.to_query
-  end
-
-  def from_map
-    @stType = params[:LogisticsSubType]
-    @stId = params[:CVSStoreID]
-    @stName = params[:CVSStoreName]
-  end
-
-
-
-
-
 
 
 

@@ -9,14 +9,11 @@
 	<% end %>
 	
 <% elsif @action == 'get_user_data' %>
+	$('#order_true_name').val("<%= @user.true_name%>");
+	$('#order_email').val("<%= @user.email%>");
+	$('#order_phone').val("<%= @user.phone%>");
 	<% if @order.ship_method == 'home_delivery' %>
-		$('#new_order_form').html("<%= j render partial: 'form_home_delivery', locals: { user: @user, order: @order } %>");
-	<% else %>
-		$('#new_order_form').html("<%= j render partial: 'form_in_store', locals: { user: @user, order: @order } %>");
-	<% end %>
-
-	<% if @chk == 'on' %>
-		document.getElementById("user_data_chk").checked = true;
+		$('#order_address').val("<%= @user.address%>");
 	<% end %>
 <% end %>
 
