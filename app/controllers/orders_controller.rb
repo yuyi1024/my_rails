@@ -2,6 +2,9 @@
   before_action :authenticate_user!
   protect_from_forgery with: :null_session, only: [:ezship]
 
+  require 'ecpay_logistics'
+
+
   def new #購物車頁面
     #將 cart session 中的資料存入新產生的 order session，以防結帳後再更動 cart
     if session[Cart::SessionKey_cart]["items"].length > 0
@@ -162,7 +165,71 @@
   end
 
 
+  def testee
+    uri = URI.parse("https://logistics.ecpay.com.tw/Express/Create")
+    params = {
+      'LogisticsType' => 'CVS',
+      'LogisticsSubType' => 'UNIMARTC2C',
+      'GoodsAmount' => '800',
+      'IsCollection' => 'N',
+      'MerchantID' => '3076564',
+      'MerchantTradeDate' => '2018/05/21 15:40:18',
+      'ReceiverCellPhone' => '0912321456',
+      'ReceiverName' => '王呱呱',
+      'ReceiverStoreID' => '184531',
+      'SenderCellPhone' => '0966876543',
+      'SenderName' => '李科科',
+      'ServerReplyURL' => 'http://localhost:3001',
+      'CheckMacValue' => 'D284766276D630C36E2265C53B231ED5'
+    }
 
+
+    create = ECpayLogistics::CreatClient.new
+    res = create.create(params)
+    render :text => res
+  end
+
+  def test
+    ## 參數值為[PLEASE MODIFY]者，請在每次測試時給予獨特值
+  ## 預設參數為全帶，欄位值會因條件不同而有所不同 ##
+    b2candc2c_param = {
+      'ClientReplyURL' => 'http://localhost:3001',
+      'CollectionAmount' => '800',
+      'GoodsAmount' => '800',
+      'GoodsName' => '罐罐',
+      'IsCollection' => 'N',
+      'LogisticsC2CReplyURL' => 'http://localhost:3001',
+      'LogisticsSubType' => 'UNIMARTC2C',
+      'LogisticsType' => 'CVS',
+      # 'MerchantID' => '3076564',
+      'MerchantTradeDate' => '2018/05/21 15:40:18',
+      'ReceiverCellPhone' => '0912321456',
+      'ReceiverEmail' => 'bonnie831024@gmail.com',
+      'ReceiverName' => '王呱呱',
+      'ReceiverStoreID' => '991182',
+      'ReturnStoreID' => '991182',
+      'SenderCellPhone' => '0966876543',
+      'SenderName' => '李科科',
+      'ServerReplyURL' => 'http://localhost:3001',
+      'CheckMacValue' => '54091CC9AAABCD718CC33AE481ACE779'
+    }
+
+    create = ECpayLogistics::CreateClient.new
+    res = create.create(b2candc2c_param)
+    puts res
+    # render :text => res
+
+    # base_param = {
+    #   'LogisticsSubType' => 'FAMI',
+    # 'ClientReplyURL' => 'http://localhost:3001',
+    # 'PlatformID' => ''
+    # }
+
+    # create = ECpayLogistics::QueryClient.new
+    # res = create.createtestdata(base_param)
+    # redirect_to root_path
+    # render :text => res
+  end
 
 
   private

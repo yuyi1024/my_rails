@@ -94,6 +94,7 @@ GEM
       railties (>= 4.1.0, < 5.2)
       responders
       warden (~> 1.2.3)
+    ecpay_logistics (1.0.7)
     erubi (1.7.0)
     execjs (2.7.0)
     faker (1.8.4)
@@ -277,6 +278,7 @@ DEPENDENCIES
   chartkick
   codemirror-rails
   devise
+  ecpay_logistics
   faker
   figaro
   font-awesome-rails

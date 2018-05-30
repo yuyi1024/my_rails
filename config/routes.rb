@@ -41,6 +41,8 @@ Rails.application.routes.draw do
       get :remit_info, path: 'remit_info/:process_id', as: 'remit_info'
       get :cash_card, path: 'cash_card/:process_id', as: 'cash_card'
       post :paid, path: 'paid/:process_id', as: 'paid'
+
+      get :test, path: 'test', as: 'test'
     end
   end
 
