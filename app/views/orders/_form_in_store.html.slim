@@ -7,7 +7,7 @@
       .panel-body
         .row
           - store_type_cn = ['7-11', '全家', '萊爾富']
-          - store_type_en = ["UNIMARTC2C", "FAMIC2C", "HILIFEC2C"]
+          - store_type_en = ["UNIMART", "FAMI", "HILIFE"]
           - store_type_en.each_with_index do |store_type, index|
             = radio_button_tag 'store[]', "#{store_type}", nil , onchange: 'chooseType();', id:"store_#{store_type}"
             label for='store_#{store_type}' #{store_type_cn[index]}
@@ -28,19 +28,24 @@
 
         = form_for @order, :url => order_path(@order), method: 'patch' do |f|
           .row
-            = f.label :true_name, '取件人姓名*', class: 'col-sm-2'
-            = f.text_field :true_name, class: 'col-sm-8', required: "required", value: @order.true_name
+            = f.label :receiver_name, class: 'col-sm-2'
+              | 取件人姓名
+              span.required  *
+            = f.text_field :receiver_name, class: 'col-sm-8', required: "required", value: @order.receiver_name
           .row
-            = f.label :email, '取件人信箱*', class: 'col-sm-2'
-            = f.email_field :email, class: 'col-sm-8', required: "required", value: @order.email
+            = f.label :receiver_cellphone, class: 'col-sm-2'
+              | 取件人手機
+              span.required  *
+            = f.text_field :receiver_cellphone, class: 'col-sm-8', required: "required", value: @order.receiver_cellphone
           .row
-            = f.label :phone, '取件人手機*', class: 'col-sm-2'
-            = f.text_field :phone, class: 'col-sm-8', required: "required", value: @order.phone
+            = f.label :receiver_email, '取件人信箱', class: 'col-sm-2'
+            = f.email_field :receiver_email, class: 'col-sm-8', required: "required", value: @order.receiver_email
           .row
             = f.label :note, '備註', class: 'col-sm-2'
             = f.text_area :note, class: 'col-sm-8', value: @order.note
 
-          = f.hidden_field :address
+          = f.hidden_field :logistics_subtype
+          = f.hidden_field :receiver_store_id
 
           .submit_row
             p 請先選擇預送貨之超商

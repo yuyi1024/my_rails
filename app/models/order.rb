@@ -86,6 +86,54 @@ class Order < ApplicationRecord
     @may
   end
 
+  def ecpay_create
+
+    # b2c_param = {
+    #   'MerchantTradeNo' => @order.process_id, 
+    #   'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),
+      
+    #   'LogisticsType' => 'CVS', #CVS/Home
+    #   'LogisticsSubType' => 'UNIMART',  
+    #   'GoodsAmount' => '800',
+    #   'CollectionAmount' => '800',
+    #   'IsCollection' => 'N',
+      
+    #   'GoodsName' => 'qqq',
+    #   'TradeDesc' => 'qqqqqq',  
+
+    #   'SenderName' => 'Jones',  
+    #   'SenderPhone' => '0222335432',   
+    #   'SenderCellPhone' => '0912345678',  
+      
+    #   'ReceiverName' => 'Charie',
+    #   'ReceiverPhone' => '0286663345',
+    #   'ReceiverCellPhone' => '0912345678',
+    #   'ReceiverEmail' => 'eeeee831024@gmail.com',
+      
+    #   'ServerReplyURL' => 'http://localhost:3001',
+    #   'ClientReplyURL' => 'http://localhost:3001',  
+    #   'LogisticsC2CReplyURL' => 'http://localhost:3001',
+    #   'Remark' => '',
+    #   'PlatformID' => '',
+
+    #   #CVS
+    #   'ReceiverStoreID' => '991182',
+    #   'ReturnStoreID' => '',
+
+    #   #Home
+    #   'SenderZipCode' => '',
+    #   'SenderAddress' => '',
+    #   'ReceiverZipCode' => '',
+    #   'ReceiverAddress' => '',
+    #   'Temperature' => '',
+    #   'Distance' => '',
+    #   'Specification' => '',
+
+
+    # }
+    
+  end
+
   include AASM
 
   aasm column: :status do

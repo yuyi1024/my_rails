@@ -4,7 +4,6 @@
 
   require 'ecpay_logistics'
 
-
   def new #購物車頁面
     #將 cart session 中的資料存入新產生的 order session，以防結帳後再更動 cart
     if session[Cart::SessionKey_cart]["items"].length > 0
@@ -20,7 +19,7 @@
   def ship_method #選擇送貨方式
     @ship_method = params[:ship_method]
     @total = Cart.from_hash(session[Cart::SessionKey_order]).total_price
-    if @ship_method == 'home_delivery'
+    if @ship_method == 'Home'
       @freight = Order::Freight_home_delivery
     else
       @freight = Order::Freight_in_store
@@ -38,10 +37,10 @@
     @order.user = current_user
     @order.price = @order_session.total_price #不含運
     @order.process_id = @order.g_process_id(current_user.id, current_user.orders.length+1)
-    if order_params[:ship_method] == 'home_delivery'
-      @order.freight = Order::Freight_home_delivery
-    else
+    if order_params[:logistics_type] == 'CVS'
       @order.freight = Order::Freight_in_store
+    else
+      @order.freight = Order::Freight_home_delivery
     end
 
     #將 order session 的東西存入 new 的 OrderItem 中、quantity/sold 操作
@@ -78,14 +77,18 @@
     order = Order.find_by(process_id: params[:process_id])
     pay = (order.pay_method == 'pickup_and_cash' ? 'Y' : 'N')
 
-    args = { 
-      MerchantID: '3076564', #廠商編號
-      LogisticsType: 'CVS', #物流類型：超商取貨
-      LogisticsSubType: params[:st_type], #子物流類型：7-11/全家/萊爾富
-      IsCollection: pay, #是否代收
-      ServerReplyURL: 'http://localhost:3001/orders/from_map'
+    args = {
+      'MerchantTradeNo' => order.process_id,
+      'ServerReplyURL' => 'http://localhost:3001/orders/from_map',
+      'LogisticsType' => 'CVS',
+      'LogisticsSubType' => params[:st_type],
+      'IsCollection' => pay,  
+      'ExtraData' => '',
+      'Device' => ''
     }
-    redirect_to 'https://logistics.ecpay.com.tw/Express/map?' + args.to_query
+
+    create = ECpayLogistics::QueryClient.new
+    @map = create.expressmap(args)
   end
 
   def from_map
@@ -105,27 +108,95 @@
     @order = Order.find(params[:id])
     @order.update(order_params)
     
-    if @order.pay_method == 'pickup_and_cash'
-      @order.wait_shipment
-    elsif @order.pay_method == 'cash_card'
-      @order.paid == 'true' ? @order.wait_shipment : @order.wait_payment
-    elsif @order.pay_method == 'atm'
-      @order.wait_payment
-    end
+    # if @order.pay_method == 'pickup_and_cash'
+    #   @order.wait_shipment
+    # elsif @order.pay_method == 'cash_card'
+    #   @order.paid == 'true' ? @order.wait_shipment : @order.wait_payment
+    # elsif @order.pay_method == 'atm'
+    #   @order.wait_payment
+    # end
 
     if @order.save
-      if @order.pay_method == 'cash_card'
-        redirect_to cash_card_orders_path(@order.process_id)
-      elsif @order.pay_method == 'atm'
-        flash[:notice] = '訂單建立'
-        redirect_to remit_info_orders_path(@order.process_id)
-      elsif @order.pay_method == 'pickup_and_cash'
-        flash[:notice] = '訂單建立'
-        redirect_to products_path
-      end
-    else
-      redirect_to edit_order_path(@order)
+
+      total_price = (@order.price + @order.freight).to_s
+      is_collection = ( @order.pay_method == 'pickup_and_cash' ? 'Y' : 'N' )
+
+      b2c_param = {
+        'MerchantTradeNo' => @order.process_id, 
+        'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),
+        
+        'LogisticsType' => @order.logistics_type, #CVS/Home
+        'LogisticsSubType' => @order.logistics_subtype,  
+        'GoodsAmount' => total_price,
+        'CollectionAmount' => ( is_collection == 'Y' ? total_price : '0' ),
+        'IsCollection' => is_collection,
+        
+        'GoodsName' => '霸雕爆裂丸商品',
+        'TradeDesc' => '',  
+
+        'SenderName' => '李霸丸',  
+        'SenderPhone' => '0222888800',   
+        'SenderCellPhone' => '0988123456',  
+        
+        'ReceiverName' => @order.receiver_name,
+        'ReceiverCellPhone' => @order.receiver_cellphone, #CVS不可空
+        'ReceiverPhone' => (@order.receiver_phone.blank? ? '' : @order.receiver_phone), #Home與手機擇一
+        'ReceiverEmail' => (@order.receiver_email.blank? ? '' : @order.receiver_email), 
+        
+        'ServerReplyURL' => 'http://localhost:3001',
+        'ClientReplyURL' => '',  
+        'LogisticsC2CReplyURL' => '',
+        'Remark' => '',
+        'PlatformID' => '',
+      }
+
+      cvs_params = {
+        'ReceiverStoreID' => @order.receiver_store_id,
+        'ReturnStoreID' => '',
+      }
+
+      home_params = {
+        'SenderZipCode' => '',
+        'SenderAddress' => '',
+        'ReceiverZipCode' => '',
+        'ReceiverAddress' => '',
+        'Temperature' => '',
+        'Distance' => '',
+        'Specification' => '',
+      }
+
+      receive_params = (@order.logistics_type == 'CVS' ? cvs_params : home_params)
+      receive_params.map{ |key, value| b2c_param[key] = value }
+
+      create = ECpayLogistics::CreateClient.new
+      res = create.create(b2c_param)
+      res = res.tr('1|', '')
+      hash = CGI::parse(res) 
+      @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
+      @order.save
+
+      puts res
+
     end
+
+
+
+
+
+    if @order.pay_method == 'cash_card'
+      redirect_to cash_card_orders_path(@order.process_id)
+    elsif @order.pay_method == 'atm'
+      flash[:notice] = '訂單建立'
+      redirect_to remit_info_orders_path(@order.process_id)
+    elsif @order.pay_method == 'pickup_and_cash'
+      flash[:notice] = '訂單建立'
+      redirect_to products_path
+    end
+
+    # redirect_to edit_order_path(@order)
+    
+
+   
 
   end
 
@@ -165,70 +236,70 @@
   end
 
 
-  def testee
-    uri = URI.parse("https://logistics.ecpay.com.tw/Express/Create")
-    params = {
-      'LogisticsType' => 'CVS',
-      'LogisticsSubType' => 'UNIMARTC2C',
-      'GoodsAmount' => '800',
-      'IsCollection' => 'N',
-      'MerchantID' => '3076564',
-      'MerchantTradeDate' => '2018/05/21 15:40:18',
-      'ReceiverCellPhone' => '0912321456',
-      'ReceiverName' => '王呱呱',
-      'ReceiverStoreID' => '184531',
-      'SenderCellPhone' => '0966876543',
-      'SenderName' => '李科科',
-      'ServerReplyURL' => 'http://localhost:3001',
-      'CheckMacValue' => 'D284766276D630C36E2265C53B231ED5'
+  def test
+    base_param = {
+    'AllPayLogisticsID' => '117473', 
+    'PlatformID' => ''
     }
 
-
-    create = ECpayLogistics::CreatClient.new
-    res = create.create(params)
-    render :text => res
+    create = ECpayLogistics::QueryClient.new
+    res = create.querylogisticstradeinfo(base_param)
+    puts res
+    hash = CGI::parse(res) 
+    puts hash['AllPayLogisticsID']
   end
 
-  def test
-    ## 參數值為[PLEASE MODIFY]者，請在每次測試時給予獨特值
-  ## 預設參數為全帶，欄位值會因條件不同而有所不同 ##
+  def test_post
+
     b2candc2c_param = {
-      'ClientReplyURL' => 'http://localhost:3001',
-      'CollectionAmount' => '800',
-      'GoodsAmount' => '800',
-      'GoodsName' => '罐罐',
-      'IsCollection' => 'N',
-      'LogisticsC2CReplyURL' => 'http://localhost:3001',
-      'LogisticsSubType' => 'UNIMARTC2C',
+      'MerchantTradeNo' => 'f0a0d7e9fae1bb72bc93', 
+      'MerchantTradeDate' => '2018/05/17 16:23:45',
       'LogisticsType' => 'CVS',
-      # 'MerchantID' => '3076564',
-      'MerchantTradeDate' => '2018/05/21 15:40:18',
-      'ReceiverCellPhone' => '0912321456',
-      'ReceiverEmail' => 'bonnie831024@gmail.com',
-      'ReceiverName' => '王呱呱',
-      'ReceiverStoreID' => '991182',
-      'ReturnStoreID' => '991182',
-      'SenderCellPhone' => '0966876543',
-      'SenderName' => '李科科',
+      'LogisticsSubType' => 'UNIMARTC2C',  
+      'GoodsAmount' => '800',
+      'CollectionAmount' => '800',
+      'IsCollection' => 'N',
+      'GoodsName' => 'qqq',
+      'SenderName' => 'Jones',  
+      'SenderPhone' => '0222335432',   
+      'SenderCellPhone' => '0912345678',  
+      'ReceiverName' => 'Charie',
+      'ReceiverPhone' => '0286663345',
+      'ReceiverCellPhone' => '0912345678',
+      'ReceiverEmail' => 'eeeee831024@gmail.com',
+      'TradeDesc' => 'qqqqqq',  
       'ServerReplyURL' => 'http://localhost:3001',
-      'CheckMacValue' => '54091CC9AAABCD718CC33AE481ACE779'
+      'ClientReplyURL' => 'http://localhost:3001',  
+      'LogisticsC2CReplyURL' => 'http://localhost:3001',
+      'Remark' => '',
+      'PlatformID' => '',
+      'ReceiverStoreID' => '991182',
+      'ReturnStoreID' => '947635',
     }
 
+    args = {
+      'GoodsAmount' => '1000',
+      'IsCollection' => 'N',
+      'LogisticsSubType' => 'FAMI',
+      'LogisticsType' => 'CVS',
+      'MerchantTradeDate' => '2018/06/01 16:22:23',
+      'MerchantTradeNo' => 'W20130312153023',
+      'ReceiverCellPhone' => '0912321456',
+      'ReceiverName' => '王呱呱',
+      'ReceiverStoreID' => '012258',
+      'SenderName' => '李科科',
+      'ServerReplyURL' => 'http://localhost:3001',
+      'ReturnStoreID' => ''
+    }
+
+
     create = ECpayLogistics::CreateClient.new
-    res = create.create(b2candc2c_param)
+    res = create.create(args)
+
     puts res
     # render :text => res
-
-    # base_param = {
-    #   'LogisticsSubType' => 'FAMI',
-    # 'ClientReplyURL' => 'http://localhost:3001',
-    # 'PlatformID' => ''
-    # }
-
-    # create = ECpayLogistics::QueryClient.new
-    # res = create.createtestdata(base_param)
     # redirect_to root_path
-    # render :text => res
+   
   end
 
 

@@ -43,10 +43,9 @@ h1.title 訂單結帳
             span $ #{ number_with_delimiter(@order.price + @order.freight) }
 
 
-  - if @order.ship_method == 'pickup_and_cash' || @order.ship_method == 'only_pickup'
+  - if @order.logistics_type == 'CVS'
     = render partial: 'form_in_store'
   
-  - elsif @order.ship_method == 'home_delivery'
+  - elsif @order.logistics_type == 'Home'
     = render partial: 'form_home_delivery'
-  
   

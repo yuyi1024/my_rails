@@ -49,11 +49,11 @@ h1.title 訂單結帳
               | *超商取貨限
               b 全家、OK、萊爾富
             
-            = f.label :ship_method, '送貨方式'
-            = f.select :ship_method, options_for_select([['超商取貨付款', 'pickup_and_cash'], ['超商取貨不付款', 'only_pickup'], ['宅配', 'home_delivery']]), {}, onChange:'selectShipMethod();'
+            = f.label :logistics_type, '送貨方式'
+            = f.select :logistics_type, options_for_select([['超商取貨', 'CVS'], ['宅配', 'Home']]), {}, onChange:'selectShipMethod();'
             br
-            = f.label :ship_method, '付款方式'
-            = f.select :pay_method, options_for_select([['超商取貨付款', 'pickup_and_cash']])
+            = f.label :pay_method, '付款方式'
+            = f.select :pay_method, options_for_select([['超商取貨付款', 'pickup_and_cash'], ['信用卡', 'cash_card'], ['實體 ATM', 'atm']])
 
       .order_info.col-sm-4
         .panel.panel-default

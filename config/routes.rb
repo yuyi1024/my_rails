@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       post :paid, path: 'paid/:process_id', as: 'paid'
 
       get :test, path: 'test', as: 'test'
+      post :test_post, path: 'test_post', as: 'test_post'
     end
   end
 
