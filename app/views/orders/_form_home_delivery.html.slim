@@ -8,17 +8,31 @@
 
         = form_for @order, :url => order_path(@order), method: 'patch' do |f|
           .row
-            = f.label :true_name, '收件人姓名*', class: 'col-sm-2'
-            = f.text_field :true_name, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.true_name : @user.true_name
+            = f.label :receiver_name, class: 'col-sm-2'
+              | 取件人姓名
+              span.required  *
+            = f.text_field :receiver_name, class: 'col-sm-8', required: "required", value: @order.receiver_name
           .row
-            = f.label :address, '收件地址*', class: 'col-sm-2'
-            = f.text_field :address, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.address : @user.address
+            = f.label :receiver_cellphone, class: 'col-sm-2'
+              | 取件人手機
+              span.required  *
+            = f.text_field :receiver_cellphone, class: 'col-sm-8', required: "required", value: @order.receiver_cellphone
           .row
-            = f.label :phone, '收件人手機*', class: 'col-sm-2'
-            = f.text_field :phone, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.phone : @user.phone
+            = f.label :receiver_address, class: 'col-sm-2'
+              | 收件地址
+              span.required  *
+            = f.text_field :receiver_address, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.receiver_address : @user.address
           .row
-            = f.label :email, '取件人信箱*', class: 'col-sm-2'
-            = f.email_field :email, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.email : @user.email
+            = f.label :receiver_zipcode, class: 'col-sm-2'
+              | 郵遞區號
+              span.required  *
+            = f.text_field :receiver_zipcode, class: 'col-sm-8', required: "required", value: @order.receiver_address
+          .row
+            = f.label :receiver_email, '取件人信箱', class: 'col-sm-2'
+            = f.email_field :receiver_email, class: 'col-sm-8', value: @user.nil? ? @order.receiver_email : @user.email
+          .row
+            = f.label :receiver_phone, '取件人家電', class: 'col-sm-2'
+            = f.text_field :receiver_phone, class: 'col-sm-8', value: @order.receiver_phone
           .row
             = f.label :note, '備註', class: 'col-sm-2'
             = f.text_area :note, class: 'col-sm-8', value: @order.note

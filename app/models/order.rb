@@ -88,49 +88,84 @@ class Order < ApplicationRecord
 
   def ecpay_create
 
-    # b2c_param = {
-    #   'MerchantTradeNo' => @order.process_id, 
-    #   'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),
+    total_price = (self.price + self.freight).to_s
+    is_collection = ( self.pay_method == 'pickup_and_cash' ? 'Y' : 'N' )
+
+    if !self.receiver_zipcode.blank?
+      zipcode = self.receiver_zipcode[0..2].to_i
       
-    #   'LogisticsType' => 'CVS', #CVS/Home
-    #   'LogisticsSubType' => 'UNIMART',  
-    #   'GoodsAmount' => '800',
-    #   'CollectionAmount' => '800',
-    #   'IsCollection' => 'N',
+      if zipcode >= 207 && zipcode <= 253
+        distance = '00'
+      elsif zipcode >= 880 && zipcode <= 896
+        distance = '02'
+      else
+        distance = '01'
+      end
+    end
       
-    #   'GoodsName' => 'qqq',
-    #   'TradeDesc' => 'qqqqqq',  
 
-    #   'SenderName' => 'Jones',  
-    #   'SenderPhone' => '0222335432',   
-    #   'SenderCellPhone' => '0912345678',  
+    b2c_param = {
+      'MerchantTradeNo' => self.process_id, 
+      'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),
       
-    #   'ReceiverName' => 'Charie',
-    #   'ReceiverPhone' => '0286663345',
-    #   'ReceiverCellPhone' => '0912345678',
-    #   'ReceiverEmail' => 'eeeee831024@gmail.com',
+      'LogisticsType' => self.logistics_type, #CVS/Home
+      'LogisticsSubType' => self.logistics_subtype,  
+      'GoodsAmount' => total_price,
+      'CollectionAmount' => ( is_collection == 'Y' ? total_price : '0' ),
+      'IsCollection' => is_collection,
       
-    #   'ServerReplyURL' => 'http://localhost:3001',
-    #   'ClientReplyURL' => 'http://localhost:3001',  
-    #   'LogisticsC2CReplyURL' => 'http://localhost:3001',
-    #   'Remark' => '',
-    #   'PlatformID' => '',
+      'GoodsName' => '霸雕爆裂丸商品',
+      'TradeDesc' => '',  
 
-    #   #CVS
-    #   'ReceiverStoreID' => '991182',
-    #   'ReturnStoreID' => '',
+      'SenderName' => '李霸丸',  
+      'SenderPhone' => '0222888800',   
+      'SenderCellPhone' => '0988123456',  
+      
+      'ReceiverName' => self.receiver_name,
+      'ReceiverCellPhone' => self.receiver_cellphone, #CVS不可空
+      'ReceiverPhone' => (self.receiver_phone.blank? ? '' : self.receiver_phone), #Home與手機擇一
+      'ReceiverEmail' => (self.receiver_email.blank? ? '' : self.receiver_email), 
+      
+      'ServerReplyURL' => 'http://localhost:3001',
+      'ClientReplyURL' => '',  
+      'LogisticsC2CReplyURL' => '',
+      'Remark' => '',
+      'PlatformID' => '',
+    }
 
-    #   #Home
-    #   'SenderZipCode' => '',
-    #   'SenderAddress' => '',
-    #   'ReceiverZipCode' => '',
-    #   'ReceiverAddress' => '',
-    #   'Temperature' => '',
-    #   'Distance' => '',
-    #   'Specification' => '',
+    cvs_params = {
+      'ReceiverStoreID' => self.receiver_store_id,
+      'ReturnStoreID' => '',
+    }
 
+    home_params = {
+      'SenderZipCode' => '23159',
+      'SenderAddress' => '新北市霸丸街12號9樓',
+      
+      'ReceiverZipCode' => self.receiver_zipcode,
+      'ReceiverAddress' => self.receiver_address,
+      
+      'Temperature' => '0001',
+      'Distance' => distance,
+      'Specification' => '0001',
 
-    # }
+      'ScheduledPickupTime' => '2',
+      'ScheduledDeliveryTime' => '',
+      'ScheduledDeliveryDate' => '',
+      'PackageCount' => '',
+    }
+
+    receive_params = (self.logistics_type == 'CVS' ? cvs_params : home_params)
+    receive_params.map{ |key, value| b2c_param[key] = value }
+
+    create = ECpayLogistics::CreateClient.new
+    res = create.create(b2c_param)
+
+    puts res
+    res = res.sub('1|', '')
+
+    hash = CGI::parse(res)
+    return hash
     
   end
 
