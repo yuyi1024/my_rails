@@ -2,7 +2,7 @@
   before_action :authenticate_user!
   protect_from_forgery with: :null_session, only: [:ezship]
 
-  require 'ecpay_logistics'
+  require 'ecpay_logistics'  
 
   def new #購物車頁面
     #將 cart session 中的資料存入新產生的 order session，以防結帳後再更動 cart
@@ -142,6 +142,24 @@
 
   def show
     @order = Order.find_by(process_id: params[:id])
+
+
+    if @order.ecpay_logistics_id.present?
+      param = {
+      'AllPayLogisticsID' => @order.ecpay_logistics_id,
+      'PlatformID' => ''
+      }
+      create = ECpayLogistics::QueryClient.new
+      res = create.querylogisticstradeinfo(param)
+      res = res.sub('1|', '')
+      hash = CGI::parse(res)
+
+      @logistics_status = LogisticsStatus.find_by(logistics_subtype: @order.logistics_subtype, code: hash['LogisticsStatus'][0]).message
+
+    else
+      @logistics_status = '未出貨'
+    end
+
     authorize! :read, @order
   end
 
@@ -149,8 +167,17 @@
     @order = current_user.orders.find_by(process_id: params[:process_id])
   end
 
+  def remit_finish #通知已付款
+    @order = current_user.orders.find_by(process_id: params[:process_id])
+    info = params[:name] + '/' + params[:time] + '/' + params[:price]
+    @order.remit_data = info
+    @order.save
+    redirect_to order_path(@order.process_id)
+  end
+
   def cash_card #信用卡付款頁面
     @order = Order.find_by(process_id: params[:process_id])
+    total_price = (@order.price + @order.freight).to_s
     @client_token = Braintree::ClientToken.generate
   end
 
@@ -183,20 +210,6 @@
       end
     end
     redirect_to cash_card_orders_path(@order.process_id)
-  end
-
-
-  def test
-    base_param = {
-    'AllPayLogisticsID' => '117550', 
-    'PlatformID' => ''
-    }
-
-    create = ECpayLogistics::QueryClient.new
-    res = create.querylogisticstradeinfo(base_param)
-    puts res
-    hash = CGI::parse(res) 
-    puts hash['AllPayLogisticsID']
   end
 
   private

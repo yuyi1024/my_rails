@@ -1,7 +1,7 @@
 $(document).on('turbolinks:load', function() {
   if (load_path_shared_js(window.location.pathname, 'orders')){
 
-    $('.product_list h3').click(function(){
+    $('h3.toggle').click(function(){
       $list = $('.product_list .table')
       if(!$list.is(':visible')){
         $list.slideDown();

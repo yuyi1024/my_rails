@@ -54,12 +54,10 @@ class Order < ApplicationRecord
   end
 
   def ship_method_cn
-    case self.ship_method
-    when 'pickup_and_cash'
-      '取貨付款'
-    when 'only_pickup'
-      '純取貨'
-    when 'home_delivery'
+    case self.logistics_type
+    when 'CVS'
+      '超商取貨'
+    when 'Home'
       '宅配'
     end
   end

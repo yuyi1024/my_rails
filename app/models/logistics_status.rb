@@ -1,0 +1,2 @@
+class LogisticsStatus < ApplicationRecord
+end

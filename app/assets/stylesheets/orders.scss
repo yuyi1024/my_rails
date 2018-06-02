@@ -119,3 +119,12 @@
     }
   }
 }
+.remit_btn{
+  text-align: center;
+  .btn{
+    background-color: $color_price_red;
+    color: #fff;
+    width: 25%;
+    margin-bottom: 25px;
+  }
+}
