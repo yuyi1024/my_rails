@@ -63,7 +63,15 @@ class Order < ApplicationRecord
   end
 
   def paid_cn
-    self.paid == 'true' ? '已付款' : '未付款'
+    if self.pay_method == 'atm'
+      if self.remit_data.blank?
+        '未付款'
+      else
+        self.paid == 'true' ? '已付款' : '已通知付款'
+      end
+    else
+      self.paid == 'true' ? '已付款' : '未付款'
+    end
   end
 
   def delivered_cn

@@ -66,8 +66,8 @@ ul.pager
           table.table
             tr
               th.col-sm-4 訂單資訊
-              th.col-sm-4 付款資訊
-              th.col-sm-4 送貨資訊
+              th.col-sm-4 付款/物流狀態
+              th.col-sm-4 出貨資訊
 
             tbody
               tr
@@ -82,9 +82,6 @@ ul.pager
                     b 下單日期： 
                     | #{ @order.created_at.strftime("%Y/%m/%d") }
                   p 
-                    b 會員 ID： 
-                    | #{ @order.user.id }
-                  p 
                     b 會員信箱： 
                     | #{ truncate(@order.user.email, length: 25) }
 
@@ -96,25 +93,40 @@ ul.pager
                     b 付款狀態： 
                     | #{ @order.paid_cn }
 
-                td
                   p 
-                    b 送貨方式： 
+                    b 物流方式： 
                     | #{ @order.ship_method_cn }
                   p 
-                    b 送貨狀態： 
-                    | #{ @order.delivered_cn }
-                  p 
-                    b #{ @order.ship_method == 'home_delivery' ? '地址' : '門市名稱' }： 
-                    | #{ @order.address }
+                    b 物流狀態： 
+                    | #{ @logistics_status }
+
+                td
                   p 
                     b 收件人： 
-                    | #{ @order.true_name }
+                    | #{ @order.receiver_name }
                   p 
-                    b 電話號碼： 
-                    | #{ @order.phone }
+                    b 手機： 
+                    | #{ @order.receiver_cellphone }
+                  
+                  - if @order.logistics_subtype == 'CVS'
+                    p 
+                      b 門市名稱： 
+                      | #{ @order.receiver_store_id }
+                  
+                  - else @order.logistics_subtype == 'Home'
+                    p 
+                      b 地址： 
+                      | #{ @order.receiver_address }
+                    p 
+                      b 家電： 
+                      | #{ @order.receiver_phone }
+                  
                   p 
-                    b 信箱： 
-                    | #{ truncate(@order.email, length: 25) }
+                    b Email： 
+                    | #{ @order.receiver_email }
+
+
+          
 
           table.table.note
             tr
@@ -124,7 +136,3 @@ ul.pager
                 td #{ @order.note.blank? ? '無' : @order.note }
 
 
-
-
-
-             

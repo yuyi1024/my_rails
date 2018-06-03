@@ -41,7 +41,7 @@ h1.title 商品列表
         button.btn 查詢
         button.btn onclick='clearField();' 清除
 
-  = render 'console/dashboards/sort_by', option: [ ["新增日期", 'created_at'], ["價錢", 'price'], ["庫存數量", 'quantity'], ["已賣數量", 'sold'] ], order: 'desc'
+  = render 'console/dashboards/sort_by', option: [ ["新增日期", 'created_at'], ["價錢", 'price'], ["庫存數量", 'quantity'], ["已賣數量", 'sold'] ], order: 'desc', var: '件商品'
 
   .product_list.row
     = render 'item'

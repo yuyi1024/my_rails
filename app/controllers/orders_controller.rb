@@ -109,13 +109,13 @@
     @order = Order.find(params[:id])
     @order.update(order_params)
     
-    # if @order.pay_method == 'pickup_and_cash'
-    #   @order.wait_shipment
-    # elsif @order.pay_method == 'cash_card'
-    #   @order.paid == 'true' ? @order.wait_shipment : @order.wait_payment
-    # elsif @order.pay_method == 'atm'
-    #   @order.wait_payment
-    # end
+    if @order.pay_method == 'pickup_and_cash'
+      @order.wait_shipment
+    elsif @order.pay_method == 'cash_card'
+      @order.paid == 'true' ? @order.wait_shipment : @order.wait_payment
+    elsif @order.pay_method == 'atm'
+      @order.wait_payment
+    end
 
     if @order.save
       if @order.pay_method == 'cash_card'
@@ -172,7 +172,9 @@
     info = params[:name] + '/' + params[:time] + '/' + params[:price]
     @order.remit_data = info
     @order.save
-    redirect_to order_path(@order.process_id)
+
+    @action = 'remit_finish'
+    render 'orders/orders.js.erb'
   end
 
   def cash_card #信用卡付款頁面
@@ -193,7 +195,7 @@
     )
 
     if result
-      # @order.pay
+      @order.pay
       @order.paid = 'true'
 
       hash = @order.ecpay_create

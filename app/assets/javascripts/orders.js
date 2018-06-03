@@ -75,6 +75,8 @@ function store_required(stId, stType){
   }
 }
 
-
-
+function remit_submit(){
+  event.preventDefault();
+  $('#remit_data_form').submit();
+}
 

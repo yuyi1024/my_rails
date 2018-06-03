@@ -13,5 +13,15 @@
 	$('#order_receiver_cellphone').val("<%= @user.phone%>");
 	$('#order_receiver_email').val("<%= @user.email%>");
 	$('#order_receiver_address').val("<%= @user.address%>");
+
+<% elsif @action == 'remit_finish' %>
+	$('#remit_finish').remove();
+	$.notify({
+		icon: 'glyphicon glyphicon-shopping-cart',
+		message: '已通知付款！',
+	},{
+		type: 'success',
+		timer: 2000,
+	});
 <% end %>
 

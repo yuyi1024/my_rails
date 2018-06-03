@@ -115,7 +115,7 @@ h1.title 訂單列表
         button.btn onclick='orderSearch();' 查詢
         button.btn onclick='clearField();' 清除
 
-  = render 'console/dashboards/sort_by', option: [ ["下單日期", 'created_at'], ["金額", 'price'] ], order: 'desc'
+  = render 'console/dashboards/sort_by', option: [ ["下單日期", 'created_at'], ["金額", 'price'] ], order: 'desc', var: '筆訂單'
 
   .order_list.row
     = render 'order_list'
