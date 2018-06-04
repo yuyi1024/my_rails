@@ -30,5 +30,18 @@ h1.title 會員中心
               td NT $ #{ number_with_delimiter(order.price + order.freight) }
               td #{ order.created_at.strftime("%Y/%m/%d") }
               td
-                = link_to(order_path(order.process_id))
-                  button.btn 查看訂單詳情
+                - if order.status == 'pending'
+                  = link_to(edit_order_path(order.process_id), target: :_blank)
+                    button.btn.notice 結帳未完成
+                
+                - elsif order.status == 'waiting_payment' && order.pay_method == 'cash_card'
+                  = link_to(cash_card_orders_path(order.process_id), target: :_blank)
+                    button.btn.notice 信用卡付款
+
+                - elsif order.status == 'waiting_payment' && order.pay_method == 'atm' && order.paid != 'remit'
+                  = link_to(order_path(order.process_id), target: :_blank)
+                    button.btn.notice 通知已付款
+                
+                - else
+                  = link_to(order_path(order.process_id), target: :_blank)
+                    button.btn 查看訂單詳情

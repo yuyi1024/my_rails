@@ -142,20 +142,9 @@
 
   def show
     @order = Order.find_by(process_id: params[:id])
-
-
     if @order.ecpay_logistics_id.present?
-      param = {
-      'AllPayLogisticsID' => @order.ecpay_logistics_id,
-      'PlatformID' => ''
-      }
-      create = ECpayLogistics::QueryClient.new
-      res = create.querylogisticstradeinfo(param)
-      res = res.sub('1|', '')
-      hash = CGI::parse(res)
-
-      @logistics_status = LogisticsStatus.find_by(logistics_subtype: @order.logistics_subtype, code: hash['LogisticsStatus'][0]).message
-
+      @logistics_status = @order.ecpay_trade_info
+      @logistics_status = @logistics_status.message
     else
       @logistics_status = '未出貨'
     end
@@ -169,9 +158,11 @@
 
   def remit_finish #通知已付款
     @order = current_user.orders.find_by(process_id: params[:process_id])
-    info = params[:name] + '/' + params[:time] + '/' + params[:price]
+    info = params[:name] + '/' + params[:time].to_datetime.strftime("%Y-%m-%d %T") + '/' + params[:price]
     @order.remit_data = info
+    @order.paid = 'remit'
     @order.save
+    @logistics_status = '未出貨'
 
     @action = 'remit_finish'
     render 'orders/orders.js.erb'

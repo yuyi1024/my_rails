@@ -2,7 +2,8 @@ h1.title 訂單結帳
 
 #order_new.all_orders_page.container  
   
-  = render 'order_show', order: @order, toggle: 'Y'
+  .row
+  	= render 'product_list', order: @order, toggle: 'Y'
 
   - if @order.logistics_type == 'CVS'
     = render partial: 'form_in_store'

@@ -33,84 +33,9 @@ h1.title 訂單詳情
                 button.btn.submit onclick='remit_submit();'
                   | 送出匯款通知
 
-  /product list
-  = render 'order_show', order: @order, toggle: 'N'
 
   .row
-    .order_detail.col-sm-offset-2.col-sm-8
-      .panel.panel-default
-        .panel-heading
-          .panel-title 
-            h3 我的訂單
-
-        .panel-body
-          table.table
-            tr
-              th.col-sm-4 訂單資訊
-              th.col-sm-4 付款/物流狀態
-              th.col-sm-4 出貨資訊
-
-            tbody
-              tr
-                td 
-                  p 
-                    b 訂單編號： 
-                    | #{ @order.process_id }
-                  p 
-                    b 訂單狀態： 
-                    | #{ @order.status_cn }
-                  
-                  p 
-                    b 下單日期： 
-                    | #{ @order.created_at.strftime("%Y/%m/%d") }
-
-                td 
-                  p 
-                    b 付款方式： 
-                    | #{ @order.pay_method_cn }
-                  p 
-                    b 付款狀態： 
-                    | #{ @order.paid_cn }
-
-                  p 
-                    b 物流方式： 
-                    | #{ @order.ship_method_cn }
-                  p 
-                    b 物流狀態： 
-                    | #{ @logistics_status }
-
-                td
-                  p 
-                    b 收件人： 
-                    | #{ @order.receiver_name }
-                  p 
-                    b 手機： 
-                    | #{ @order.receiver_cellphone }
-                  
-                  - if @order.logistics_subtype == 'CVS'
-                    p 
-                      b 門市名稱： 
-                      | #{ @order.receiver_store_id }
-                  
-                  - else @order.logistics_subtype == 'Home'
-                    p 
-                      b 地址： 
-                      | #{ @order.receiver_address }
-                    p 
-                      b 家電： 
-                      | #{ @order.receiver_phone }
-                  
-                  p 
-                    b Email： 
-                    | #{ @order.receiver_email }
-
-
-          
-
-          table.table.note
-            tr
-              th 備註
-            tbody
-              tr
-                td #{ @order.note.blank? ? '無' : @order.note }
-
+    = render 'product_list', toggle: 'N'
+  
+  .row
+    = render 'order_detail', console: 'N'

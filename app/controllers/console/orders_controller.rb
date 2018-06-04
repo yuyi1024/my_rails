@@ -2,6 +2,7 @@ class Console::OrdersController < ApplicationController
   before_action :dashboard_authorize
   
   def index
+
     @orders = Order.includes(:user)
 
     if params[:search].present?
@@ -26,6 +27,7 @@ class Console::OrdersController < ApplicationController
         paid = []
         paid << 'true' if params[:paid].include?('true')
         paid += ['false', nil] if params[:paid].include?('false')
+        paid << 'remit' if params[:paid].include?('remit')
         @orders = @orders.where(paid: paid)
       end
 
@@ -45,25 +47,52 @@ class Console::OrdersController < ApplicationController
       render 'console/orders/orders.js.erb' 
     else
       @orders = @orders.order("created_at DESC")
+      @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
       kaminari_page
     end
   end
 
   def edit
     @order = Order.find_by(process_id: params[:id])
+    
+    if @order.ecpay_logistics_id.present?
+      @logistics_status = @order.ecpay_trade_info
+      @logistics_status = @logistics_status.message
+    else
+      @logistics_status = '未出貨'
+    end
     @may_status = @order.may_status
+    @remit_data = @order.remit_data.split('/') if !@order.remit_data.blank?
   end
 
   def update
     @order = Order.find_by(process_id: params[:id])
     if params[:order][:status] != '0'
       @order.method(params[:order][:status]).call
+      if params[:order][:status] == 'pay'
+        @order.paid = 'true'
+        hash = @order.ecpay_create
+        @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
+      end
       @order.save
+
       @action = 'update_success'
     else
       @action = 'update_failded'
     end  
     render 'console/orders/orders.js.erb'
+  end
+
+  def remit_check
+    @order = Order.find_by(process_id: params[:process_id])
+    @order.paid = 'false'
+    @order.status = 'waiting_payment'
+    @order.remit_data = ''
+    
+    if @order.save
+      flash[:notice] == '取消付款通知'
+      redirect_to edit_console_order_path(@order.process_id)
+    end
   end
 
   def dashboard_authorize

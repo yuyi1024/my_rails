@@ -16,6 +16,8 @@
 
 <% elsif @action == 'remit_finish' %>
 	$('#remit_finish').remove();
+	$('.order_detail').replaceWith("<%= j render partial: 'order_detail', locals: { order: @order } %>");
+
 	$.notify({
 		icon: 'glyphicon glyphicon-shopping-cart',
 		message: '已通知付款！',

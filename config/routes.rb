@@ -48,7 +48,11 @@ Rails.application.routes.draw do
   namespace :console do
     root 'dashboards#index'
     resources :users, only: [:index, :show, :update]
-    resources :orders, only: [:index, :edit, :update]
+    resources :orders, only: [:index, :edit, :update] do
+      collection do
+        post :remit_check, path: 'remit_check/:process_id', as: 'remit_check'
+      end
+    end
     resources :products, except: [:show] do 
       collection do
         get :get_subcat, path: 'get_subcat', as: 'get_subcat'

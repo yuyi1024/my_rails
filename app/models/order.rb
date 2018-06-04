@@ -63,14 +63,13 @@ class Order < ApplicationRecord
   end
 
   def paid_cn
-    if self.pay_method == 'atm'
-      if self.remit_data.blank?
-        '未付款'
-      else
-        self.paid == 'true' ? '已付款' : '已通知付款'
-      end
-    else
-      self.paid == 'true' ? '已付款' : '未付款'
+    case self.paid
+    when 'true'
+      '已付款'
+    when 'false'
+      '未付款'
+    when 'remit'
+      '已通知付款'
     end
   end
 
@@ -81,10 +80,10 @@ class Order < ApplicationRecord
   def may_status
     @may = []
     @may << ['已付款, 待出貨', 'pay'] if self.may_pay?
-    @may << ['已出貨', 'ship'] if self.may_ship?
-    @may << ['已到貨', 'deliver'] if self.may_deliver? && self.ship_method == 'to_address'
-    @may << ['已到店', 'deliver_store'] if self.may_deliver_store?  && self.ship_method == 'in_store'
-    @may << ['已取貨', 'pick_up'] if self.may_pick_up?
+    # @may << ['已出貨', 'ship'] if self.may_ship?
+    # @may << ['已到貨', 'deliver'] if self.may_deliver? && self.logistics_subtype == 'Home'
+    # @may << ['已到店', 'deliver_store'] if self.may_deliver_store?  && self.logistics_subtype == 'CVS'
+    # @may << ['已取貨', 'pick_up'] if self.may_pick_up?
     @may << ['結束交易', 'finish'] if self.may_finish?
     @may << ['取消訂單', 'cancel'] if self.may_cancel?
     @may << ['已退貨', 'return'] if self.may_return?
@@ -173,6 +172,27 @@ class Order < ApplicationRecord
     hash = CGI::parse(res)
     return hash
     
+  end
+
+  def ecpay_trade_info
+    
+    param = {
+    'AllPayLogisticsID' => self.ecpay_logistics_id,
+    'PlatformID' => ''
+    }
+    create = ECpayLogistics::QueryClient.new
+    res = create.querylogisticstradeinfo(param)
+    res = res.sub('1|', '')
+    hash = CGI::parse(res)
+    logistics = LogisticsStatus.find_by(logistics_subtype: self.logistics_subtype, code: hash['LogisticsStatus'][0])
+
+    if !logistics.status.blank?
+      self.send(logistics.status) if self.send('may_' + logistics.status + '?')
+      self.save
+    end
+
+    logistics
+   
   end
 
   include AASM

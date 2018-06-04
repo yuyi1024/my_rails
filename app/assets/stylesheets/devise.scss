@@ -88,6 +88,9 @@ h2, em, label, a, .rm{
       display: block;
       border: none;
     }
+    .notice{
+      background-color: $color_price_red;
+    }
     .detail_field{
       .row{
         input{
