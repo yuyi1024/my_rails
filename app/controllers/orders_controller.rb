@@ -128,6 +128,7 @@
       elsif @order.pay_method == 'pickup_and_cash'
         hash = @order.ecpay_create
         @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
+
         @order.save
         flash[:notice] = '訂單建立'
         redirect_to user_order_list_path

@@ -87,7 +87,7 @@ class Order < ApplicationRecord
     @may << ['結束交易', 'finish'] if self.may_finish?
     @may << ['取消訂單', 'cancel'] if self.may_cancel?
     @may << ['已退貨', 'return'] if self.may_return?
-    @may << ['以退款', 'refund'] if self.may_refund?
+    @may << ['已退款', 'refund'] if self.may_refund?
     @may
   end
 
@@ -184,10 +184,16 @@ class Order < ApplicationRecord
     res = create.querylogisticstradeinfo(param)
     res = res.sub('1|', '')
     hash = CGI::parse(res)
+    
     logistics = LogisticsStatus.find_by(logistics_subtype: self.logistics_subtype, code: hash['LogisticsStatus'][0])
 
     if !logistics.status.blank?
       self.send(logistics.status) if self.send('may_' + logistics.status + '?')
+      self.save
+    end
+
+    if self.shipment_no.blank?
+      self.shipment_no = hash['ShipmentNo'][0]
       self.save
     end
 
