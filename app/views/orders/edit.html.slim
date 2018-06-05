@@ -1,75 +1,13 @@
 h1.title 訂單結帳
 
 #order_new.all_orders_page.container  
-  .row
-    .product_list.col-sm-8.col-sm-offset-2
-      .panel.panel-default
-        .panel-heading 
-          h3 
-            | 購買清單 
-            span.glyphicon.glyphicon-chevron-left
-
-        table.table
-          tr
-            th 
-            th 
-            th 商品名稱
-            th 單價
-            th 數量
-            th 小計
-          tbody
-
-            - @order.order_items.each_with_index do |item, index|
-              - product = Product.find(item.product_id)
-              tr
-                th #{ index+1 }
-                td
-                  img src="/assets/no-image.png" width="50px"
-                td #{ product.name }
-                td $#{ number_with_delimiter(product.price) }
-                td #{ item.quantity }
-                td $#{ number_with_delimiter(product.price*item.quantity) }
-
-        .panel-footer
-          
-          p 
-            | 小計： 
-            b $ #{ number_with_delimiter(@order.price) }
-          p 
-            |運費： 
-            b $ #{ number_with_delimiter(@order.freight) }
-          p 
-            | 總計： 
-            span $ #{ number_with_delimiter(@order.price + @order.freight) }
-
-  - if @order.ship_method != 'home_delivery'
-    .row
-      .select_store.col-sm-8.col-sm-offset-2
-        .panel.panel-default
-          .panel-heading 
-            h3 選擇超商
-
-          .panel-body
-            = link_to(to_ezship_orders_path(@order.process_id))
-              p.select
-                span.glyphicon.glyphicon-search
-                | 選擇超商
-            p.stName 
-              span.glyphicon.glyphicon-home
-              | #{ @stName.nil? ? '未選擇' : @stName }
-
   
   .row
-    .data_form.col-sm-8.col-sm-offset-2
-      .panel.panel-default
-        .panel-heading 
-          h3 收件資料
-        #new_order_form
+  	= render 'product_list', order: @order, toggle: 'Y'
 
-
-          - if @order.ship_method == 'pickup_and_cash' || @order.ship_method == 'only_pickup'
-            = render partial: 'form_in_store'
-
-          - elsif @order.ship_method == 'home_delivery'
-            = render partial: 'form_home_delivery'
-
+  - if @order.logistics_type == 'CVS'
+    = render partial: 'form_in_store'
+  
+  - elsif @order.logistics_type == 'Home'
+    = render partial: 'form_home_delivery'
+  

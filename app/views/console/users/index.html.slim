@@ -46,7 +46,7 @@ h1.title 用戶列表
         button.btn 查詢
         button.btn onclick='clearField();' 清除
 
-  = render 'console/dashboards/sort_by', option: [ ["用戶類別", 'role'], ["最後登入", 'current_sign_in_at'] ], order: 'asc'
+  = render 'console/dashboards/sort_by', option: [ ["用戶類別", 'role'], ["最後登入", 'current_sign_in_at'] ], order: 'asc', var: '位用戶'
 
   #user_list.row
     = render 'user_list'

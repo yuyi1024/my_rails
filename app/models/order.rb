@@ -54,18 +54,23 @@ class Order < ApplicationRecord
   end
 
   def ship_method_cn
-    case self.ship_method
-    when 'pickup_and_cash'
-      '取貨付款'
-    when 'only_pickup'
-      '純取貨'
-    when 'home_delivery'
+    case self.logistics_type
+    when 'CVS'
+      '超商取貨'
+    when 'Home'
       '宅配'
     end
   end
 
   def paid_cn
-    self.paid == 'true' ? '已付款' : '未付款'
+    case self.paid
+    when 'true'
+      '已付款'
+    when 'false'
+      '未付款'
+    when 'remit'
+      '已通知付款'
+    end
   end
 
   def delivered_cn
@@ -75,15 +80,125 @@ class Order < ApplicationRecord
   def may_status
     @may = []
     @may << ['已付款, 待出貨', 'pay'] if self.may_pay?
-    @may << ['已出貨', 'ship'] if self.may_ship?
-    @may << ['已到貨', 'deliver'] if self.may_deliver? && self.ship_method == 'to_address'
-    @may << ['已到店', 'deliver_store'] if self.may_deliver_store?  && self.ship_method == 'in_store'
-    @may << ['已取貨', 'pick_up'] if self.may_pick_up?
+    # @may << ['已出貨', 'ship'] if self.may_ship?
+    # @may << ['已到貨', 'deliver'] if self.may_deliver? && self.logistics_subtype == 'Home'
+    # @may << ['已到店', 'deliver_store'] if self.may_deliver_store?  && self.logistics_subtype == 'CVS'
+    # @may << ['已取貨', 'pick_up'] if self.may_pick_up?
     @may << ['結束交易', 'finish'] if self.may_finish?
     @may << ['取消訂單', 'cancel'] if self.may_cancel?
     @may << ['已退貨', 'return'] if self.may_return?
-    @may << ['以退款', 'refund'] if self.may_refund?
+    @may << ['已退款', 'refund'] if self.may_refund?
     @may
+  end
+
+  def ecpay_create
+
+    total_price = (self.price + self.freight).to_s
+    is_collection = ( self.pay_method == 'pickup_and_cash' ? 'Y' : 'N' )
+
+    if !self.receiver_zipcode.blank?
+      zipcode = self.receiver_zipcode[0..2].to_i
+      
+      if zipcode >= 207 && zipcode <= 253
+        distance = '00'
+      elsif zipcode >= 880 && zipcode <= 896
+        distance = '02'
+      else
+        distance = '01'
+      end
+    end
+      
+
+    b2c_param = {
+      'MerchantTradeNo' => self.process_id, 
+      'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),
+      
+      'LogisticsType' => self.logistics_type, #CVS/Home
+      'LogisticsSubType' => self.logistics_subtype,  
+      'GoodsAmount' => total_price,
+      'CollectionAmount' => ( is_collection == 'Y' ? total_price : '0' ),
+      'IsCollection' => is_collection,
+      
+      'GoodsName' => '霸雕爆裂丸商品',
+      'TradeDesc' => '',  
+
+      'SenderName' => '李霸丸',  
+      'SenderPhone' => '0222888800',   
+      'SenderCellPhone' => '0988123456',  
+      
+      'ReceiverName' => self.receiver_name,
+      'ReceiverCellPhone' => self.receiver_cellphone, #CVS不可空
+      'ReceiverPhone' => (self.receiver_phone.blank? ? '' : self.receiver_phone), #Home與手機擇一
+      'ReceiverEmail' => (self.receiver_email.blank? ? '' : self.receiver_email), 
+      
+      'ServerReplyURL' => 'http://localhost:3001',
+      'ClientReplyURL' => '',  
+      'LogisticsC2CReplyURL' => '',
+      'Remark' => '',
+      'PlatformID' => '',
+    }
+
+    cvs_params = {
+      'ReceiverStoreID' => self.receiver_store_id,
+      'ReturnStoreID' => '',
+    }
+
+    home_params = {
+      'SenderZipCode' => '23159',
+      'SenderAddress' => '新北市霸丸街12號9樓',
+      
+      'ReceiverZipCode' => self.receiver_zipcode,
+      'ReceiverAddress' => self.receiver_address,
+      
+      'Temperature' => '0001',
+      'Distance' => distance,
+      'Specification' => '0001',
+
+      'ScheduledPickupTime' => '2',
+      'ScheduledDeliveryTime' => '',
+      'ScheduledDeliveryDate' => '',
+      'PackageCount' => '',
+    }
+
+    receive_params = (self.logistics_type == 'CVS' ? cvs_params : home_params)
+    receive_params.map{ |key, value| b2c_param[key] = value }
+
+    create = ECpayLogistics::CreateClient.new
+    res = create.create(b2c_param)
+
+    puts res
+    res = res.sub('1|', '')
+
+    hash = CGI::parse(res)
+    return hash
+    
+  end
+
+  def ecpay_trade_info
+    
+    param = {
+    'AllPayLogisticsID' => self.ecpay_logistics_id,
+    'PlatformID' => ''
+    }
+    create = ECpayLogistics::QueryClient.new
+    res = create.querylogisticstradeinfo(param)
+    res = res.sub('1|', '')
+    hash = CGI::parse(res)
+    
+    logistics = LogisticsStatus.find_by(logistics_subtype: self.logistics_subtype, code: hash['LogisticsStatus'][0])
+
+    if !logistics.status.blank?
+      self.send(logistics.status) if self.send('may_' + logistics.status + '?')
+      self.save
+    end
+
+    if self.shipment_no.blank?
+      self.shipment_no = hash['ShipmentNo'][0]
+      self.save
+    end
+
+    logistics
+   
   end
 
   include AASM

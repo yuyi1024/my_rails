@@ -88,7 +88,7 @@ h1.title 訂單列表
           = check_box_tag 'ship_method[]', 'home_delivery', nil, id:'ship_method_home_delivery'
           label for='ship_method_home_delivery' 宅配
 
-        .col-sm-2
+        .col-sm-3
           label 付款狀態
           br
           = check_box_tag 'paid[]', 'false', nil, id:'paid_false'
@@ -96,6 +96,9 @@ h1.title 訂單列表
 
           = check_box_tag 'paid[]', 'true', nil, id:'paid_true'
           label for='paid_true' 已付款
+          
+          = check_box_tag 'paid[]', 'remit', nil, id:'paid_remit'
+          label for='paid_remit' 已通知付款
           br
           br
 
@@ -112,10 +115,10 @@ h1.title 訂單列表
         = hidden_field_tag :sort_item, 'created_at'
         = hidden_field_tag :sort_order, 'DESC'
 
-        button.btn onclick='orderSearch();' 查詢
+        button.btn 查詢
         button.btn onclick='clearField();' 清除
 
-  = render 'console/dashboards/sort_by', option: [ ["下單日期", 'created_at'], ["金額", 'price'] ], order: 'desc'
+  = render 'console/dashboards/sort_by', option: [ ["下單日期", 'created_at'], ["金額", 'price'] ], order: 'desc', var: '筆訂單'
 
   .order_list.row
     = render 'order_list'

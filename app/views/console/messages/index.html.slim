@@ -68,7 +68,7 @@ h1.title 訊息列表
         button.btn onclick='messageSearch();' 查詢
         button.btn onclick='clearField();' 清除
 
-  = render 'console/dashboards/sort_by', option: [ ["發問日期", 'created_at'] ], order: 'desc'
+  = render 'console/dashboards/sort_by', option: [ ["發問日期", 'created_at'] ], order: 'desc', var: '則訊息'
 
   .message_list.row
     = render 'message_list'

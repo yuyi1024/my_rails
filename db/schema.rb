@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180522173249) do
+ActiveRecord::Schema.define(version: 20180604085008) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -32,6 +32,16 @@ ActiveRecord::Schema.define(version: 20180522173249) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image"
+  end
+
+  create_table "logistics_statuses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "logistics_type"
+    t.string "logistics_subtype"
+    t.string "code"
+    t.string "message"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -56,19 +66,26 @@ ActiveRecord::Schema.define(version: 20180522173249) do
 
   create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "user_id"
+    t.string "logistics_type"
+    t.string "logistics_subtype"
     t.string "pay_method"
-    t.string "ship_method"
-    t.string "address"
     t.string "status"
     t.integer "price"
     t.integer "freight"
-    t.string "true_name"
-    t.string "phone"
-    t.string "email"
+    t.string "process_id"
+    t.string "ecpay_logistics_id"
+    t.string "shipment_no"
+    t.string "receiver_name"
+    t.string "receiver_cellphone"
+    t.string "receiver_phone"
+    t.string "receiver_email"
+    t.string "receiver_store_id"
+    t.string "receiver_address"
+    t.string "receiver_zipcode"
     t.text "note"
+    t.string "remit_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "process_id"
     t.string "paid", default: "false"
     t.string "delivered", default: "false"
   end

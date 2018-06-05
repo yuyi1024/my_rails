@@ -1,25 +1,52 @@
-.col-sm-offset-5
-  = form_tag get_user_data_orders_path, method: 'get', remote: 'true', id: 'get_user_data' 
-    input#user_data_chk type='checkbox' name='user_data_chk' onchange='getUserData();'
-    label for='user_data_chk' 同會員資料
-    = hidden_field_tag :id, @order.process_id
+.row
+  .select_store.col-sm-8.col-sm-offset-2
+    .data_form.panel.panel-default
+      .panel-heading 
+        h3 選擇超商
 
-= form_for @order, :url => order_path(@order), method: 'patch' do |f|
-  .row
-    = f.label :true_name, '取件人姓名*', class: 'col-sm-2'
-    = f.text_field :true_name, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.true_name : @user.true_name
-  .row
-    = f.label :email, '取件人信箱*', class: 'col-sm-2'
-    = f.email_field :email, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.email : @user.email
-  .row
-    = f.label :phone, '取件人手機*', class: 'col-sm-2'
-    = f.text_field :phone, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.phone : @user.phone
-  .row
-    = f.label :note, '備註', class: 'col-sm-2'
-    = f.text_area :note, class: 'col-sm-8', value: @order.note
+      .panel-body
+        .row
+          - store_type_cn = ['7-11', '全家', '萊爾富']
+          - store_type_en = ["UNIMART", "FAMI", "HILIFE"]
+          - store_type_en.each_with_index do |store_type, index|
+            = radio_button_tag 'store[]', "#{store_type}", nil , onchange: 'chooseType();', id:"store_#{store_type}"
+            label for='store_#{store_type}' #{store_type_cn[index]}
+            .select onclick='chooseStore();'
+            p.st_data
+              span.st_id
+              |  
+              span.st_name
+              
 
-  - if @order.address.blank?
-    p 請先選擇預送貨之超商
-  - else
-    = f.submit '訂單建立', class:'btn'
+.row
+  .data_form.col-sm-8.col-sm-offset-2
+    .panel.panel-default
+      .panel-heading 
+        h3 收件資料
+      #new_order_form
+        = link_to '同會員資料', get_user_data_orders_path(@order.process_id), remote: 'true', class: 'btn get_user_data'
+
+        = form_for @order, :url => order_path(@order), method: 'patch' do |f|
+          .row
+            = f.label :receiver_name, class: 'col-sm-2'
+              | 取件人姓名
+              span.required  *
+            = f.text_field :receiver_name, class: 'col-sm-8', required: "required", value: @order.receiver_name
+          .row
+            = f.label :receiver_cellphone, class: 'col-sm-2'
+              | 取件人手機
+              span.required  *
+            = f.text_field :receiver_cellphone, class: 'col-sm-8', required: "required", value: @order.receiver_cellphone
+          .row
+            = f.label :receiver_email, '取件人信箱', class: 'col-sm-2'
+            = f.email_field :receiver_email, class: 'col-sm-8', required: "required", value: @order.receiver_email
+          .row
+            = f.label :note, '備註', class: 'col-sm-2'
+            = f.text_area :note, class: 'col-sm-8', value: @order.note
+
+          = f.hidden_field :logistics_subtype
+          = f.hidden_field :receiver_store_id
+
+          .submit_row
+            p 請先選擇預送貨之超商
 

@@ -76,6 +76,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def order_list #會員中心訂單列表
     @orders = current_user.orders.order('created_at DESC')
+    @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
   end
 
   def favorite_list #會員中心追蹤列表
