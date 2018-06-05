@@ -1,0 +1,60 @@
+h1.title 優惠方案設定
+
+#console_offer.console_page.container
+  .row
+    .col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 新增優惠
+        .panel-body
+
+          = form_for @offer, url: console_offers_path, method: 'post' do |f|
+            label 作用範圍： 
+            = f.select :range, options_for_select([['全館', 'all'], ['訂單滿固定金額', 'price'], ['指定商品', 'product']]), {}, onchange:'select_range();'
+
+            #range_condition
+
+            hr
+
+            label 優惠內容： 
+            = f.select :offer, options_for_select([['免運費', 'freight'], ['折固定金額', 'price'], ['打折', 'discount']]), {}, onchange:'select_offer();'
+
+            #offer_condition
+              = check_box_tag 'freight[]', 'CVS', true, id:'freight_CVS'
+              label for='freight_CVS' 超商取貨
+              br
+              = check_box_tag 'freight[]', 'Home', true, id:'freight_Home'
+              label for='freight_Home' 宅配
+
+            = f.hidden_field :offer_freight, value: 'all'
+
+            hr
+
+            br
+
+            = f.submit '新增優惠'
+
+
+  .row
+    .col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 選擇優惠
+        .panel-body
+          table.table
+            tr
+              th 全館優惠（該區只能選擇一項）
+            tbody
+              - @offers_all.each do |offer|
+                tr
+                  td #{offer.message}
+
+          table.table
+            tr
+              th 特定商品優惠
+            tbody
+              - @offers_products.each do |offer|
+                tr
+                  td #{offer.message}
+
+

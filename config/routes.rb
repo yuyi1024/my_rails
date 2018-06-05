@@ -72,6 +72,7 @@ Rails.application.routes.draw do
         post :sort_qanda, path: 'sort_qanda', as: 'sort_qanda'
       end
     end
+    resources :offers, only: [:index, :create]
   end
 end
 

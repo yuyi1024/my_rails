@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180604085008) do
+ActiveRecord::Schema.define(version: 20180605141512) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -51,6 +51,20 @@ ActiveRecord::Schema.define(version: 20180604085008) do
     t.string "reply_method"
     t.string "email"
     t.integer "qanda"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "offers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "range"
+    t.integer "range_price"
+    t.integer "range_quantity"
+    t.string "offer"
+    t.string "offer_freight"
+    t.integer "offer_price"
+    t.integer "offer_discount"
+    t.string "message"
+    t.string "implement"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
