@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   belongs_to :subcategory
   has_many :order_items
   has_many :favorites
+  belongs_to :offer
   mount_uploader :photo, PhotoUploader
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   after_update :crop_photo

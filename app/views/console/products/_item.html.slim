@@ -1,7 +1,8 @@
 .panel.panel-default.col-sm-offset-1.col-sm-10
   table.table
     tr
-      th 
+      th 編號
+      th
       th 商品名稱
       th 價錢
       th 分類
@@ -12,6 +13,7 @@
     tbody
       - @products.each do |product|
         tr class="#{ 'off_shelf' if product.status == 'off_shelf' }"
+          td #{ product.id }
           td
             img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}" style='width:45px;'
           td #{ product.name }

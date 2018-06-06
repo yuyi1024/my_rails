@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180605141512) do
+ActiveRecord::Schema.define(version: 20180606120534) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 20180605141512) do
     t.string "range"
     t.integer "range_price"
     t.integer "range_quantity"
+    t.string "range_subcats"
+    t.string "range_products"
     t.string "offer"
     t.string "offer_freight"
     t.integer "offer_price"
@@ -119,6 +121,7 @@ ActiveRecord::Schema.define(version: 20180605141512) do
     t.string "photo"
     t.string "cache"
     t.string "status"
+    t.integer "offer_id"
   end
 
   create_table "subcategories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

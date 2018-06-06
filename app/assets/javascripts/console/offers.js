@@ -21,13 +21,11 @@ $(document).on('turbolinks:load', function() {
 
 function select_range(){
   var range = $('#offer_range').val();
-  if(range == 'all'){
-    $('#range_condition').html("");
-  }else if(range == 'price'){
-    $('#range_condition').html("滿<input value='2000' type='number' name='offer[range_price]' id='offer_range_price'>元");
-  }else if(range == 'product'){
-    $('#range_condition').html("滿<input value='1' type='number' name='offer[range_quantity]' id='offer_range_quantity'>件");
-  }
+  $.ajax({
+    type: 'GET',
+    url: '/console/offers/select_range',
+    data : { range: range },
+  });
 }
 
 function select_offer(){
@@ -44,6 +42,27 @@ function select_offer(){
     $('#offer_condition').html("打<input value='85' type='number' name='offer[offer_discount]' id='offer_offer_discount'>折");
   }
 }
+
+function implement_product(){
+  event.preventDefault();
+  $("input[name='products[]']").each(function(){
+    if($(this).is(':checked')){
+      // console.log('作用分類：' + $(this).data('subcats'));
+      // console.log('作用商品：' + $(this).data('products'));
+      $(this).data('subcats').split(',');
+    }
+    
+  });
+}
+
+var a = ['a', 'b', 'c'];
+var b = ['t', 'c', 'd'];
+qq = a.some(v => b.includes(v));
+
+// 每個offer的subcat是否跟其的subcat重複
+// 每個offer的product是否跟其的product重複
+
+
 
 
 

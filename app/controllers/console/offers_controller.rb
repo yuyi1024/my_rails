@@ -4,6 +4,19 @@ class Console::OffersController < ApplicationController
     @offers_products = Offer.where(range: 'product')
 
     @offer = Offer.new
+
+  end
+
+  def select_range
+    @range = params[:range]
+
+    if @range == 'product'
+      @cats = Category.all
+      @products = Product.all
+    end
+
+    @action = 'select_range'
+    render 'console/offers/offers.js.erb'
   end
 
   def create
@@ -14,6 +27,14 @@ class Console::OffersController < ApplicationController
     if @offer.save
       redirect_to console_offers_path
     end
+  end
+
+  def implement_all
+    
+  end
+
+  def implement_product
+    
   end
 
   private

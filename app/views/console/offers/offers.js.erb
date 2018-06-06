@@ -1,0 +1,7 @@
+<% if @action == 'select_range' %>
+  <% if @range == 'all' %>
+    $('#range_condition').html("");
+  <% else %>
+    $('#range_condition').html("<%= j render partial: 'select_pro_offer' %>");
+  <% end %>
+<% end %>

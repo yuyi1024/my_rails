@@ -1,3 +1,6 @@
+= javascript_include_tag 'multiple-select'
+= stylesheet_link_tag 'multiple-select'
+
 h1.title 優惠方案設定
 
 #console_offer.console_page.container
@@ -11,8 +14,8 @@ h1.title 優惠方案設定
           = form_for @offer, url: console_offers_path, method: 'post' do |f|
             label 作用範圍： 
             = f.select :range, options_for_select([['全館', 'all'], ['訂單滿固定金額', 'price'], ['指定商品', 'product']]), {}, onchange:'select_range();'
-
             #range_condition
+
 
             hr
 
@@ -42,19 +45,66 @@ h1.title 優惠方案設定
           h3 選擇優惠
         .panel-body
           table.table
-            tr
-              th 全館優惠（該區只能選擇一項）
-            tbody
-              - @offers_all.each do |offer|
+            = form_tag implement_all_console_offers_path, method: 'post'
+              tr
+                th 全館優惠（該區只能選擇一項）
+              tbody
+                - @offers_all.each do |offer|
+                  tr
+                    td 
+                      = radio_button_tag 'all[]', offer.id, nil, id:"offer_#{offer.id}"
+                      label for="offer_#{offer.id}" #{offer.message}
                 tr
-                  td #{offer.message}
-
+                  td 
+                    = radio_button_tag 'all[]', 'N', nil, id:"offer_N"
+                    label for="offer_N" 無
+                tr
+                  td
+                    button.btn 選擇優惠
+          
           table.table
-            tr
-              th 特定商品優惠
-            tbody
-              - @offers_products.each do |offer|
+            = form_tag implement_product_console_offers_path, method: 'post'
+              tr
+                th 特定商品優惠
+              tbody
                 tr
-                  td #{offer.message}
+                  td
+                    .remark 
+                      p 一件商品只能有一項特定商品優惠
+                      p 若商品同時屬於多個特定商品優惠，判定順序為【該商品之優惠】>【該分類之優惠】
+                - @offers_products.each do |offer|
+                  tr
+                    td
+                      = check_box_tag 'products[]', offer.id, nil, id:"offer_#{offer.id}", :data => {:'subcats' => "#{offer.range_subcats}", :'products' => "#{offer.range_products}"}
+                      label for="offer_#{offer.id}" #{offer.message}
+                      
+                      br
+                      - if !offer.range_subcats.blank?
+                        #subcat_label
+                          span 
+                            b
+                              | 作用分類：
+                          - arr = offer.range_subcats.split(',')
+                          - arr.each do |a|
+                            .offer-label #{Subcategory.find(a).category.name} > #{Subcategory.find(a).name} 
+                      
+                      - if !offer.range_products.blank?
+                        #product_label
+                          span 
+                            b
+                              | 作用商品：
+                            - arr = offer.range_products.split(',')
+                            - arr.each do |a|
+                              .offer-label #{Product.find(a).name}
+                      
+
+                tr
+                  td
+                    button.btn onclick='implement_product();' 
+                      | 選擇優惠
+
+
+
+
 
 
