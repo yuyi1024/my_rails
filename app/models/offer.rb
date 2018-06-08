@@ -1,5 +1,5 @@
 class Offer < ApplicationRecord
-  has_many :products
+  has_many :products, dependent: :nullify
 
   # attr_accessor :subcats
   # attr_accessor :products
@@ -34,4 +34,37 @@ class Offer < ApplicationRecord
 
     msg1 + msg2
 	end
+
+
+  def check_repeat_offer
+    a = ['subcats', 'products']
+
+    arrs = []
+
+    self.map{|offer| arrs << offer.send('range_' + a[0]).split(',')}
+
+    length = arrs.length
+    repeat = false
+
+    arrs.each_with_index do |arr, index|
+      (index+1..length-1).to_a.each do |i|
+        l = arr - arrs[i] 
+        repeat = true if l.length != arr.length
+        break if repeat == true
+      end
+      break if repeat == true
+    end
+    repeat
+  end
+
+
 end
+
+
+
+
+
+
+
+
+

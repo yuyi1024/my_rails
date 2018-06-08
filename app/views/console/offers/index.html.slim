@@ -63,7 +63,7 @@ h1.title 優惠方案設定
                     button.btn 選擇優惠
           
           table.table
-            = form_tag implement_product_console_offers_path, method: 'post'
+            = form_tag implement_product_console_offers_path, method: 'post', remote: 'true'
               tr
                 th 特定商品優惠
               tbody
@@ -96,11 +96,10 @@ h1.title 優惠方案設定
                             - arr = offer.range_products.split(',')
                             - arr.each do |a|
                               .offer-label #{Product.find(a).name}
-                      
 
                 tr
                   td
-                    button.btn onclick='implement_product();' 
+                    button.btn
                       | 選擇優惠
 
 
@@ -108,3 +107,4 @@ h1.title 優惠方案設定
 
 
 
+= link_to 'qqqq', implement_product_console_offers_path, method: 'post'

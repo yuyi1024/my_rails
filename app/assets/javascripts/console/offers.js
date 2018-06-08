@@ -43,27 +43,5 @@ function select_offer(){
   }
 }
 
-function implement_product(){
-  event.preventDefault();
-  $("input[name='products[]']").each(function(){
-    if($(this).is(':checked')){
-      // console.log('作用分類：' + $(this).data('subcats'));
-      // console.log('作用商品：' + $(this).data('products'));
-      $(this).data('subcats').split(',');
-    }
-    
-  });
-}
-
-var a = ['a', 'b', 'c'];
-var b = ['t', 'c', 'd'];
-qq = a.some(v => b.includes(v));
-
-// 每個offer的subcat是否跟其的subcat重複
-// 每個offer的product是否跟其的product重複
-
-
-
-
 
 
