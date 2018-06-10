@@ -72,7 +72,7 @@ Rails.application.routes.draw do
         post :sort_qanda, path: 'sort_qanda', as: 'sort_qanda'
       end
     end
-    resources :offers, only: [:index, :create] do
+    resources :offers, only: [:index, :create, :destroy] do
       collection do 
         get :select_range, path: 'select_range', as: 'select_range'
         post :implement_all, path: 'implement_all', as: 'implement_all'

@@ -9,6 +9,7 @@ h1.title 商品詳細
       h3 = @product.name
       hr
       p.price NT$ #{ number_with_delimiter(@product.price) }
+        | NT$ 5,000
       p 庫存： #{ @product.quantity }
       p 已賣數量： #{ @product.sold }
 
@@ -22,8 +23,11 @@ h1.title 商品詳細
             button.btn.btn-default +
         = f.submit '加入購物車', class: 'col-sm-5 btn add-to-cart'
 
-      p.col-sm-12.freight 全館滿2,000元免運費
-
+      .col-sm-12.offer
+        - if @offer.present?
+          p #{@offer.message}
+        - if !@product.offer_id.nil?
+          p #{@product.offer.message}
 
   .row.product_description
 

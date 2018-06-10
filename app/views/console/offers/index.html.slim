@@ -5,62 +5,67 @@ h1.title 優惠方案設定
 
 #console_offer.console_page.container
   .row
-    .col-sm-8.col-sm-offset-2
+    .data_form.col-sm-8.col-sm-offset-2
       .panel.panel-default
         .panel-heading 
           h3 新增優惠
         .panel-body
 
           = form_for @offer, url: console_offers_path, method: 'post' do |f|
-            label 作用範圍： 
-            = f.select :range, options_for_select([['全館', 'all'], ['訂單滿固定金額', 'price'], ['指定商品', 'product']]), {}, onchange:'select_range();'
-            #range_condition
+            .row
+              label 作用範圍： 
+              = f.select :range, options_for_select([['全館', 'all'], ['訂單滿固定金額', 'price'], ['指定商品', 'product']]), {}, onchange:'select_range();'
+              #range_condition
 
 
             hr
 
-            label 優惠內容： 
-            = f.select :offer, options_for_select([['免運費', 'freight'], ['折固定金額', 'price'], ['打折', 'discount']]), {}, onchange:'select_offer();'
+            .row
+              label 優惠內容： 
+              = f.select :offer, options_for_select([['免運費', 'freight'], ['折固定金額', 'price'], ['打折', 'discount']]), {}, onchange:'select_offer();'
 
-            #offer_condition
-              = check_box_tag 'freight[]', 'CVS', true, id:'freight_CVS'
-              label for='freight_CVS' 超商取貨
-              br
-              = check_box_tag 'freight[]', 'Home', true, id:'freight_Home'
-              label for='freight_Home' 宅配
+              #offer_condition
+                = check_box_tag 'freight[]', 'CVS', true, id:'freight_CVS'
+                label for='freight_CVS' 超商取貨
+                br
+                = check_box_tag 'freight[]', 'Home', true, id:'freight_Home'
+                label for='freight_Home' 宅配
 
-            = f.hidden_field :offer_freight, value: 'all'
+              = f.hidden_field :offer_freight, value: 'all'
 
-            hr
-
-            br
-
-            = f.submit '新增優惠'
+              = f.submit '新增優惠', class: 'btn'
 
 
   .row
-    .col-sm-8.col-sm-offset-2
+    #implement_form.data_form.col-sm-8.col-sm-offset-2
       .panel.panel-default
         .panel-heading 
           h3 選擇優惠
         .panel-body
           table.table
-            = form_tag implement_all_console_offers_path, method: 'post'
+            = form_tag implement_all_console_offers_path, method: 'post', remote: 'true'
               tr
                 th 全館優惠（該區只能選擇一項）
               tbody
+                - implement = false
                 - @offers_all.each do |offer|
                   tr
-                    td 
-                      = radio_button_tag 'all[]', offer.id, nil, id:"offer_#{offer.id}"
-                      label for="offer_#{offer.id}" #{offer.message}
-                tr
-                  td 
-                    = radio_button_tag 'all[]', 'N', nil, id:"offer_N"
-                    label for="offer_N" 無
+                    td
+                      .row
+                        - implement = true if offer.implement == 'true'
+                        = radio_button_tag 'all[]', offer.id, offer.implement == 'true' ? true : nil, id:"offer_#{offer.id}"
+                        label for="offer_#{offer.id}" #{offer.message}
+                        
+                        = link_to(console_offer_path(offer), method: 'delete', data: {confirm:'確認刪除該優惠？'})
+                          span.delete_offer 刪除
                 tr
                   td
-                    button.btn 選擇優惠
+                    .row
+                      = radio_button_tag 'all[]', 'N', implement == false ? true : nil, id:"offer_N"
+                      label for="offer_N" 無
+                tr
+                  td
+                    button.btn.implement_btn 實施選擇的全館優惠
           
           table.table
             = form_tag implement_product_console_offers_path, method: 'post', remote: 'true'
@@ -75,36 +80,36 @@ h1.title 優惠方案設定
                 - @offers_products.each do |offer|
                   tr
                     td
-                      = check_box_tag 'products[]', offer.id, nil, id:"offer_#{offer.id}", :data => {:'subcats' => "#{offer.range_subcats}", :'products' => "#{offer.range_products}"}
-                      label for="offer_#{offer.id}" #{offer.message}
-                      
-                      br
-                      - if !offer.range_subcats.blank?
-                        #subcat_label
-                          span 
-                            b
-                              | 作用分類：
-                          - arr = offer.range_subcats.split(',')
-                          - arr.each do |a|
-                            .offer-label #{Subcategory.find(a).category.name} > #{Subcategory.find(a).name} 
-                      
-                      - if !offer.range_products.blank?
-                        #product_label
-                          span 
-                            b
-                              | 作用商品：
-                            - arr = offer.range_products.split(',')
+                      .row
+                        = check_box_tag 'products[]', offer.id, offer.implement == 'true' ? true : nil, id:"offer_#{offer.id}", :data => {:'subcats' => "#{offer.range_subcats}", :'products' => "#{offer.range_products}"}
+                        label for="offer_#{offer.id}" #{offer.message}
+
+                        = link_to(console_offer_path(offer), method: 'delete', data: {confirm:'確認刪除該優惠？'})
+                          span.delete_offer 刪除
+                        
+                        br
+                        - if !offer.range_subcats.blank?
+                          #subcat_label
+                            span 
+                              b
+                                | 作用分類：
+                            - arr = offer.range_subcats.split(',')
                             - arr.each do |a|
-                              .offer-label #{Product.find(a).name}
+                              .offer-label #{Subcategory.find(a).category.name} > #{Subcategory.find(a).name} 
+                        
+                        - if !offer.range_products.blank?
+                          #product_label
+                            span 
+                              b
+                                | 作用商品：
+                              - arr = offer.range_products.split(',')
+                              - arr.each do |a|
+                                .offer-label #{Product.find(a).name}
 
                 tr
                   td
-                    button.btn
-                      | 選擇優惠
+                    button.btn.implement_btn 實施選擇的特定商品優惠
 
 
 
 
-
-
-= link_to 'qqqq', implement_product_console_offers_path, method: 'post'

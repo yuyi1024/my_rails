@@ -18,4 +18,26 @@
       background-color: $color_nebula_gray;
     }
   }
+  .btn{
+    margin: 25px auto 0;
+    display: block;
+    background-color: #000;
+    color: #fff;
+    width: 25%;
+  }
+  .implement_btn{
+    background-color: $color_price_red;
+  }
+  #implement_form{
+    .row{
+      margin: 10px 0;
+      line-height: 20px;
+    }
+    .delete_offer{
+      float: right;
+      font-size: 15px;
+      margin-right: 20px;
+    }
+
+  }
 }

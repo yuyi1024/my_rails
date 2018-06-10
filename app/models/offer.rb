@@ -1,5 +1,5 @@
 class Offer < ApplicationRecord
-  has_many :products, dependent: :nullify
+  has_many :products
 
   # attr_accessor :subcats
   # attr_accessor :products

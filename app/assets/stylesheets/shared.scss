@@ -208,7 +208,7 @@
       height: 35px;
     }
     input{
-      &[type=radio]{
+      &[type=radio], &[type=checkbox]{
         margin: 0 5px 0 10px
       }
     }
@@ -321,6 +321,15 @@
   position: absolute;
   top: 70px;
 }
+
+
+/*優惠*/
+#product_show{
+  p.price{
+    text-decoration: line-through;
+  }
+}
+
 
 
 /*animate*/

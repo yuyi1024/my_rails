@@ -4,9 +4,12 @@
   | 元
 
 - elsif @range == 'product'
+  | 該商品每
   input#offer_range_quantity value="1" type="number" name="offer[range_quantity]"
+  | 件可享優惠
 
-  p 選擇作用分類或商品：
+  br
+  label 選擇作用分類或商品：
   select#subcats_select multiple="multiple"
     - @cats.each do |cat|
       optgroup label="#{cat.name}"
