@@ -1,5 +1,16 @@
 @import 'app';
 
+.product_page{
+  .price{
+    .correct_price {
+      color: $color_price_red;
+    }
+    .original_price{
+      text-decoration: line-through;
+      color: #000;    
+    }
+  }
+}
 #product_index {
   #search_form {
     height: 60px;
@@ -153,16 +164,30 @@
 
 
   #item {
-    img {
+    .onsale_tag{
+      width: 45px;
+      position: absolute;
+      top: 5px;
+      right: 20px;
+    }
+    .product_pic {
       width: 150px;
       margin-top: 10px;
       box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
       border: 2px #555 solid;
     }
     .caption {
-      .price {
-        color: $color_price_red;
+      h3, p {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .price{
         font-size: 16px;
+      }
+      .offer_msg{
+        font-size: 8px;
+        color: #000;
       }
       .tags {
         span {
@@ -180,11 +205,15 @@
 
 #product_show {
   .product_detail {
-    img {
+    .product_pic {
       margin: 60px 0;
       width: 250px;
       box-shadow: 10px 10px rgba(0, 0, 0, 0.1);
       border: 2px #555 solid;
+    }
+    .onsale_tag{
+      width: 40px;
+      position: absolute;
     }
     hr {
       margin-bottom: 20px;
@@ -198,8 +227,6 @@
     }
     .price {
       font-size: 20px;
-      color: $color_price_red;
-      margin-bottom: 15px;
     }
     .input-quantity {
       margin: 20px 0;

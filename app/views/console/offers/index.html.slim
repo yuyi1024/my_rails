@@ -31,7 +31,7 @@ h1.title 優惠方案設定
                 = check_box_tag 'freight[]', 'Home', true, id:'freight_Home'
                 label for='freight_Home' 宅配
 
-              = f.hidden_field :offer_freight, value: 'all'
+                = f.hidden_field :offer_freight, value: 'all'
 
               = f.submit '新增優惠', class: 'btn'
 

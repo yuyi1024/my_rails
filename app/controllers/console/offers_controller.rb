@@ -21,7 +21,13 @@ class Console::OffersController < ApplicationController
     @offer = Offer.create(offer_params)
     @offer.message = @offer.get_message
     @offer.implement = 'false'
- 
+
+    if @offer.offer == 'discount'
+      if @offer.offer_discount.to_s.length == 1
+        @offer.offer_discount = (@offer.offer_discount.to_s + '0').to_i
+      end
+    end
+    
     if @offer.save
       redirect_to console_offers_path
     end

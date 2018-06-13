@@ -4,11 +4,22 @@
       .col-sm-2
         .thumbnail
           = link_to(product_path(product), target: :_blank)
-            img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
+            img.product_pic src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}"
+            - if product.offer.present?
+              = image_tag('onsale.gif', class: 'onsale_tag')
           .caption
             h3 
               = link_to(product.name, product_path(product), target: :_blank)
-            p.price $#{number_with_delimiter(product.price)}
+            p.price
+              - if product.offer.present?
+                - if product.offer.range_quantity == 1
+                  span.original_price $#{ number_with_delimiter(product.price) }
+                  span.correct_price  $#{number_with_delimiter(calc_price_offer(product.price, product.offer_id))}
+                - else
+                  span.correct_price $#{ number_with_delimiter(product.price) }
+                  span.offer_msg （#{product.offer.message}）
+              - else
+                span.correct_price $#{ number_with_delimiter(product.price) }
 
             p.tags
               span.glyphicon.glyphicon-tags

@@ -114,7 +114,7 @@
     .item {
       display: -webkit-inline-box;
       img {
-        width: 70px;
+        width: 50px;
         border: 1px #000 solid;
       }
       .word {
@@ -135,6 +135,9 @@
             color: #000;
             text-decoration: none;
           }
+        }
+        #price{
+          color: $color_price_red;
         }
         .delete {
           color: $color_dark_blue;
@@ -324,11 +327,22 @@
 
 
 /*優惠*/
-#product_show{
-  p.price{
+p.price{
+  .original_price{
     text-decoration: line-through;
+    color: #000;     
+  }
+  .onsale{
+    font-size: 14px;
+    color: $color_dark_blue;
+  }
+  img{
+    width: 40px;
+    border: 0;
+    box-shadow: none;
   }
 }
+
 
 
 
