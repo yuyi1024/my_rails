@@ -92,7 +92,7 @@ class Console::OffersController < ApplicationController
     @offer = Offer.find(params[:id])
     @offer.destroy
 
-    if @category.destroyed?
+    if @offer.destroyed?
       flash[:notice] = '刪除成功'
     else
       flash[:notice] = '刪除失敗'

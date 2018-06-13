@@ -10,16 +10,18 @@ h1.title 訂單結帳
 
         table.table
           tr
-            th 
-            th 
-            th 商品名稱
-            th 單價
-            th 數量
-            th 小計
+            th.col-sm-1 
+            th.col-sm-1 
+            th.col-sm-2 商品名稱
+            th.col-sm-2 單價
+            th.col-sm-2 數量
+            th.col-sm-4 小計
+            / th 商品優惠
           tbody
-
-            - @cart_session.items.each_with_index do |item, index|
+            - sum = 0
+            - @order_session.items.each_with_index do |item, index|
               - product = Product.find(item.product_id)
+              - sum += item.price
               tr
                 th #{ index+1 }
                 td
@@ -27,15 +29,16 @@ h1.title 訂單結帳
                 td #{ product.name }
                 td $#{ number_with_delimiter(product.price) }
                 td #{ item.quantity }
-                td $#{ number_with_delimiter(product.price*item.quantity) }
+                td $#{ number_with_delimiter(item.price) }（#{Offer.find(item.offer_id).message}）
+                
 
             tr
               th 
               th 
               th 
-              th 
+              th
               th 小計：
-              th $ #{ number_with_delimiter(@cart_session.total_price) }
+              th $ #{ number_with_delimiter(sum) }
 
   = form_for @order, :url => orders_path, :method => 'post' do |f|
     .row
@@ -62,14 +65,14 @@ h1.title 訂單結帳
           .panel-body
             p
               | 小計： 
-              span $ #{ number_with_delimiter(@cart_session.total_price) }
+              span $ #{ number_with_delimiter(sum) }
             p#freight 
               | 運費：
               span $ #{ Order::Freight_in_store }
             hr
             p#total
               | 合計：
-              span $ #{ number_with_delimiter(@cart_session.total_price+Order::Freight_in_store) }
+              span $ #{ number_with_delimiter(sum + Order::Freight_in_store) }
             = f.submit '前往結帳', class:'btn'
 
        

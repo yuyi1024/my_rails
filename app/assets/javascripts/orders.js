@@ -12,6 +12,7 @@ $(document).on('turbolinks:load', function() {
       }
       
     });
+
   }
 });
 
@@ -25,9 +26,6 @@ function selectShipMethod(){
   });
 }
 
-
-
-//////////////////
 
 function chooseType(){
   var stId = '';
@@ -79,4 +77,3 @@ function remit_submit(){
   event.preventDefault();
   $('#remit_data_form').submit();
 }
-

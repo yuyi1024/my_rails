@@ -19,7 +19,7 @@
       
       .col-sm-3 
         | 依 
-        = select_tag "sort_by_item", options_for_select([ ["熱銷", 'sold'], ["價錢", 'price'], ["庫存數量", 'quantity'], ["優惠方案", 'offer'] ]), onchange:'products_sort_by();'
+        = select_tag "sort_by_item", options_for_select([ ["熱銷", 'sold'], ["價錢", 'price'], ["庫存數量", 'quantity'], ["優惠方案", 'offer_id'] ]), onchange:'products_sort_by();'
         |  排序
 
         = radio_button_tag :sequence, 'DESC', true, class:"radio_sort", onchange:'products_sort_by();', id:'desc'

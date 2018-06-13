@@ -57,6 +57,8 @@ class Offer < ApplicationRecord
     repeat
   end
 
+  
+
 
 end
 

@@ -18,7 +18,10 @@
 
   def ship_method #選擇送貨方式
     @ship_method = params[:ship_method]
-    @total = Cart.from_hash(session[Cart::SessionKey_order]).total_price
+    # @total = Cart.from_hash(session[Cart::SessionKey_order]).total_price
+    @cart_session = Cart.from_hash(session[Cart::SessionKey_order])
+    @total = @cart_session.items.reduce(0){ |sum, item| sum + item.price }
+
     if @ship_method == 'Home'
       @freight = Order::Freight_home_delivery
     else
