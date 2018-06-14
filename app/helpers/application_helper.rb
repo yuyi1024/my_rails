@@ -67,6 +67,17 @@ module ApplicationHelper
       end
     price
   end
+
+  #判斷總價優惠前後價格是否改變（是否有全館優惠、是否符合優惠資格、是有為freight優惠）
+  def price_change_decide(sum, offer)
+    price_change = false
+    if offer.range == 'all' && offer.offer != 'freight'
+      price_change = true
+    elsif offer.range == 'price' && offer.offer != 'freight'
+      price_change = true if sum >= offer.range_price
+    end
+    price_change
+  end
 end
 
 

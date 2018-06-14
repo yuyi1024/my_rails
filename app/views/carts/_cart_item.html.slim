@@ -31,6 +31,18 @@
       = link_to '刪除', carts_path(cart_item[0]), method: :delete, remote: :true, class: 'delete'
   hr
 
-p.total_price 
-  | 總計 $NT 
-  span #{ number_with_delimiter(sum) }
+.result
+  - if @offer.present?
+    p.horn
+      span.glyphicon.glyphicon-bullhorn
+      |  #{@offer.message}
+      
+    - price_change = price_change_decide(sum, @offer)
+    - if price_change == true
+      p.original_price  $NT #{ number_with_delimiter(sum) }
+  
+  p.offer_price 
+    | 總計 $NT 
+    span #{ number_with_delimiter(price_change == true ? @offer.calc_total_price_offer(sum) : sum)}
+
+

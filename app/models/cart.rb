@@ -18,7 +18,7 @@ class Cart
   end
 
   # 將商品加入cart
-  def add_item(product_id, quantity, price, order_id)
+  def add_item(product_id, quantity, price, offer_id)
     found_item = @items.find{ |item| item.product_id == product_id } 
 
     if found_item
@@ -34,10 +34,10 @@ class Cart
     found_item.change(quantity)
   end
 
-  # def total_price
-  #   @items.reduce(0){ |sum, item| sum + item.unit_price }
-  #   #[].reduce(initial){ |memo, obj| block }
-  # end
+  def order_total_price
+    @items.reduce(0){ |sum, item| sum + item.price }
+    #[].reduce(initial){ |memo, obj| block }
+  end
 
   def to_hash
     # all_item = @items.map{ |item| {'product_id' => item.product_id, 'quantity' => item.quantity, 'price' => item.price } }
@@ -94,6 +94,7 @@ class Cart
       order.order_items[index].product_id = item.product_id
       order.order_items[index].quantity = item.quantity
       order.order_items[index].price = item.price
+      order.order_items[index].offer_id = item.offer_id
       
       product = Product.find(item.product_id)
       product.quantity -= item.quantity

@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
       # @total_price += item.unit_price
     end
     @cart_length = @carts.items.length
+    @offer = Offer.where(range: ['all', 'price'], implement: 'true').first
     
   end
 

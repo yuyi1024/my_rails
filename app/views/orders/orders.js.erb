@@ -1,6 +1,6 @@
 <% if @action == 'ship_method' %>
 	$('#freight span').text('$ <%= @freight %>');
-	$('#total span').text('$ <%= number_with_delimiter(@total) %>');
+	$('#total span').text('$ <%= number_with_delimiter(@offer_price) %>');
 
 	<% if @ship_method == 'CVS' %>
 		$('#order_pay_method').html("<option value='pickup_and_cash'>超商取貨付款</option><option value='cash_card'>信用卡</option><option value='atm'>實體ATM</option>");

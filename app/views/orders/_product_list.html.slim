@@ -10,12 +10,12 @@
 
     table.table
       tr
-        th 
-        th 
-        th 商品名稱
-        th 單價
-        th 數量
-        th 小計
+        th.col-sm-1 
+        th.col-sm-1 
+        th.col-sm-2 商品名稱
+        th.col-sm-2 單價
+        th.col-sm-2 數量
+        th.col-sm-4 小計
       tbody
 
         - @order.order_items.each_with_index do |item, index|
@@ -27,10 +27,13 @@
             td #{ product.name }
             td $#{ number_with_delimiter(product.price) }
             td #{ item.quantity }
-            td $#{ number_with_delimiter(product.price*item.quantity) }
-
+            td 
+              | $#{ number_with_delimiter(item.price) }
+              - if !item.offer_id.nil?
+                | （#{Offer.find(item.offer_id).message}）
     .panel-footer
-      
+      - if @order.offer.present?
+        p 優惠： 【#{@order.offer.message}】
       p 
         | 小計： 
         b $ #{ number_with_delimiter(@order.price) }
@@ -40,3 +43,5 @@
       p 
         | 總計： 
         span $ #{ number_with_delimiter(@order.price + @order.freight) }
+
+

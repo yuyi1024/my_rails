@@ -1,6 +1,6 @@
  class OrdersController < ApplicationController
   before_action :authenticate_user!
-  protect_from_forgery with: :null_session, only: [:ezship]
+  # protect_from_forgery with: :null_session, only: [:ezship]
 
   require 'ecpay_logistics'  
 
@@ -11,6 +11,10 @@
       @order_session = Cart.new_order_hash(@cart_session)
       session[Cart::SessionKey_order] = @order_session.to_hash
       @order = Order.new
+
+      total_and_offer_price #計算優惠前後的價錢
+      @ship_method = 'CVS'
+      freight_offer #計算運費
     else
       redirect_back(fallback_location: root_path, notice: '購物車內尚無商品')
     end
@@ -18,54 +22,93 @@
 
   def ship_method #選擇送貨方式
     @ship_method = params[:ship_method]
-    # @total = Cart.from_hash(session[Cart::SessionKey_order]).total_price
-    @cart_session = Cart.from_hash(session[Cart::SessionKey_order])
-    @total = @cart_session.items.reduce(0){ |sum, item| sum + item.price }
+    @order_session = Cart.from_hash(session[Cart::SessionKey_order])
 
-    if @ship_method == 'Home'
-      @freight = Order::Freight_home_delivery
-    else
-      @freight = Order::Freight_in_store
-    end
-    @total += @freight
+    total_and_offer_price #計算優惠前後的價錢
+    freight_offer #計算運費
+    
+    @offer_price += @freight
 
     @action = 'ship_method'
     render 'orders/orders.js.erb'
   end
 
+  def total_and_offer_price #計算優惠前後的價錢
+    @total_price = @order_session.order_total_price
+    @offer =  Offer.where(range: ['all', 'price'], implement: 'true').first
+    if @offer.present?
+      @offer_price = @offer.calc_total_price_offer(@total_price)
+    else
+      @offer_price = @total_price
+    end
+  end
+
+  def freight_offer #計算運費
+    if @offer.present?
+      if @offer.range == 'all'
+        @freight = 0 if @offer.offer_freight == 'all' || @offer.offer_freight == @ship_method
+      elsif @offer.range == 'price'
+        if @offer_price >= @offer.range_price
+          @freight = 0 if @offer.offer_freight == 'all' || @offer.offer_freight == @ship_method
+        end
+      end
+    end
+
+    if !@freight.present?
+      if @ship_method == 'Home'
+        @freight = Order::Freight_home_delivery
+      elsif @ship_method == 'CVS'
+        @freight = Order::Freight_in_store
+      end
+    end
+  end
+
   def create #前往結帳
     @order_session = Cart.from_hash(session[Cart::SessionKey_order])
 
-    @order = Order.create(order_params)
-    @order.user = current_user
-    @order.price = @order_session.total_price #不含運
-    @order.process_id = @order.g_process_id(current_user.id, current_user.orders.length+1)
-    if order_params[:logistics_type] == 'CVS'
-      @order.freight = Order::Freight_in_store
-    else
-      @order.freight = Order::Freight_home_delivery
-      @order.logistics_subtype = 'TCAT'
+    #檢查是否有商品之優惠變動
+    offer_invalid = false
+    @order_session.items.each do |item|
+      offer_invalid = true if Product.find(item.product_id).offer_id != item.offer_id
     end
 
-    #將 order session 的東西存入 new 的 OrderItem 中、quantity/sold 操作
-    @order_session.items.length.times{@order.order_items.build}
-    @order_session.session_to_order_items(@order)
+    if offer_invalid == false
+      @order = Order.create(order_params)
+      @order.user = current_user
 
-    @cart_session = session[Cart::SessionKey_cart]
-    @order_session = @order_session.to_hash
+      total_and_offer_price
+      @order.price = @offer_price #不含運
+      @order.process_id = @order.g_process_id(current_user.id, current_user.orders.length+1)
+      # @order.offer_id = nil
+      @ship_method = order_params[:logistics_type]
+      freight_offer
+      @order.freight = @freight
+      @order.logistics_subtype = 'TCAT' if @ship_method == 'Home'
 
-    if @order.save
+      #將 order session 的東西存入 new 的 OrderItem 中、quantity/sold 操作
+      @order_session.items.length.times{@order.order_items.build}
+      @order_session.session_to_order_items(@order)
 
-      # 刪除 cart session 中已結帳的物品，未結帳的不動
-      @order_session['items'].each do |item|
-        @cart_session['items'] = @cart_session['items'].delete_if{|key,_| key['product_id'] == item['product_id'].to_s}
+      @cart_session = session[Cart::SessionKey_cart]
+      @order_session = @order_session.to_hash
+
+      if @order.save
+
+        # 刪除 cart session 中已結帳的物品，未結帳的不動
+        @order_session['items'].each do |item|
+          @cart_session['items'] = @cart_session['items'].delete_if{|key,_| key['product_id'] == item['product_id'].to_s}
+        end
+
+        session[Cart::SessionKey_cart] = @cart_session
+        session[Cart::SessionKey_order] = Cart.new
+
+        redirect_to edit_order_path(@order.process_id)
+      else
+        flash[:notice] = 'nnnnnnn'
+        redirect_to new_order_path
       end
-
-      session[Cart::SessionKey_cart] = @cart_session
-      session[Cart::SessionKey_order] = Cart.new
-
-      redirect_to edit_order_path(@order.process_id)
     else
+      flash[:notice] = '部分商品之優惠已變更，請重新結帳！'
       redirect_to new_order_path
     end
   end

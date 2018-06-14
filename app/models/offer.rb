@@ -1,5 +1,7 @@
 class Offer < ApplicationRecord
   has_many :products
+  has_many :orders
+  has_many :order_items
 
   # attr_accessor :subcats
   # attr_accessor :products
@@ -55,6 +57,26 @@ class Offer < ApplicationRecord
       break if repeat == true
     end
     repeat
+  end
+
+  def calc_total_price_offer(price)
+    offer_auth = false
+    if self.range == 'all'
+      offer_auth = true
+    elsif self.range == 'price'
+      if price >= self.range_price
+        offer_auth = true
+      end
+    end
+      
+    if offer_auth == true
+      if self.offer == 'price'
+        price = price - self.offer_price
+      elsif self.offer == 'discount'
+        price = (price * (self.offer_discount / 100.0)).ceil
+      end
+    end
+    price
   end
 
   

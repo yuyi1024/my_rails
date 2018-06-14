@@ -144,12 +144,21 @@
         }
       }
     }
-    .total_price {
-      font-size: 16px;
-      text-align: right;
-      span {
-        font-size: 24px;
-        color: $color_price_red;
+    .result{
+      .horn{
+        color: $color_dark_blue;
+      }
+      .original_price{
+        text-decoration: line-through;
+        text-align: right;
+      }
+      .offer_price {
+        font-size: 16px;
+        text-align: right;
+        span {
+          font-size: 24px;
+          color: $color_price_red;
+        }
       }
     }
   }
