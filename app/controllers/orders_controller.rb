@@ -1,14 +1,19 @@
  class OrdersController < ApplicationController
   before_action :authenticate_user!
-  # protect_from_forgery with: :null_session, only: [:ezship]
+  
+  #除了from_map的方法都啟動CSRF安全性功能（預設全部方法都啟動
+  protect_from_forgery with: :null_session, except: :from_map
 
   require 'ecpay_logistics'  
 
   def new #購物車頁面
     #將 cart session 中的資料存入新產生的 order session，以防結帳後再更動 cart
     if session[Cart::SessionKey_cart]["items"].length > 0
+      @whole_offer = whole_store_offer
+      @whole_offer = @whole_offer.id if @whole_offer.present?
+
       @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
-      @order_session = Cart.new_order_hash(@cart_session)
+      @order_session = Cart.new_order_hash(@cart_session, @whole_offer)
       session[Cart::SessionKey_order] = @order_session.to_hash
       @order = Order.new
 
@@ -35,7 +40,7 @@
 
   def total_and_offer_price #計算優惠前後的價錢
     @total_price = @order_session.order_total_price
-    @offer =  Offer.where(range: ['all', 'price'], implement: 'true').first
+    @offer =  whole_store_offer
     if @offer.present?
       @offer_price = @offer.calc_total_price_offer(@total_price)
     else
@@ -71,15 +76,17 @@
     @order_session.items.each do |item|
       offer_invalid = true if Product.find(item.product_id).offer_id != item.offer_id
     end
+    offer_invalid = true if @order_session.offer_id != whole_store_offer.id
 
     if offer_invalid == false
       @order = Order.create(order_params)
       @order.user = current_user
+      @order.offer_id = @order_session.offer_id
 
       total_and_offer_price
       @order.price = @offer_price #不含運
       @order.process_id = @order.g_process_id(current_user.id, current_user.orders.length+1)
-      # @order.offer_id = nil
+
       @ship_method = order_params[:logistics_type]
       freight_offer
       @order.freight = @freight
@@ -250,6 +257,10 @@
       end
     end
     redirect_to cash_card_orders_path(@order.process_id)
+  end
+
+  def whole_store_offer #實施中的全館優惠
+    Offer.where(range: ['all', 'price'], implement: 'true').first
   end
 
   private

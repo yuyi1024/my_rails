@@ -1,6 +1,10 @@
 #product_index.product_page
-  = form_tag products_path, method: :get, remote: :true, id: 'search_form' do 
-    
+  - if @offer.present?
+    .row.horn
+      h3
+        span.glyphicon.glyphicon-bullhorn
+        |  #{@offer.message}
+  = form_tag products_path, method: :get, remote: :true, id: 'search_form' do
     #selector.row
       .col-sm-3.cat data-target='#cat_box' 
         | 商品分類 

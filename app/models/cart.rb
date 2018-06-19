@@ -2,8 +2,8 @@ class Cart
   SessionKey_cart = :my_cart_sr0cywr
   SessionKey_order = :my_order_aTpk2wr
 
-  #自動產生getter
-  attr_reader :items
+  #自動產生getter & setter
+  attr_accessor  :items, :offer_id
 
   # def items
   #   return @items
@@ -13,8 +13,10 @@ class Cart
   #   @items = new_item
   # end
 
-  def initialize(items = [])
+  def initialize(items = [], offer_id = nil)
     @items = items
+    @offer_id = offer_id
+    # <Cart:0x007f9aa15c82b0 @items=[#<CartItem:0x007f9aa15c82d8 @product_id="23", @quantity=1, @price=70, @offer_id=25>], @offer_id=nil>
   end
 
   # 將商品加入cart
@@ -25,7 +27,7 @@ class Cart
       product_quantity = Product.find(found_item.product_id).quantity
       found_item.quantity + quantity > product_quantity ? found_item.change(product_quantity) : found_item.increment(quantity)
     else
-      @items << CartItem.new(product_id, quantity, price, order_id)
+      @items << CartItem.new(product_id, quantity, price, offer_id)
     end
   end
 
@@ -43,7 +45,7 @@ class Cart
     # all_item = @items.map{ |item| {'product_id' => item.product_id, 'quantity' => item.quantity, 'price' => item.price } }
     all_item = @items.map{ |item| {'product_id' => item.product_id, 'quantity' => item.quantity, 'price' => item.price, 'offer_id' => item.offer_id } }
 
-    { "items" => all_item }
+    { "items" => all_item, 'offer_id' => @offer_id }
   end
 
   # class method 類別方法
@@ -51,19 +53,20 @@ class Cart
     if hash.nil?
       new []   #new([]) => initialize([])
     else
-      new hash['items'].map{ |item|
+      Cart.new(hash['items'].map{ |item|
         CartItem.new(item['product_id'], item['quantity'], item['price'], item['offer_id'] ) 
-      }
+      }, hash['offer_id'])
     end  
   end
 
-  def self.new_order_hash(hash)
+  def self.new_order_hash(hash, offer_id)
     new []
     @items = hash
     @items.items.map{|item|
       item.offer_id = Product.find(item.product_id).offer_id
       item.price = calc_order_price(item.product_id, item.quantity, item.offer_id)
     }
+    @items.offer_id = offer_id
     @items
   end
 
