@@ -37,7 +37,6 @@
         p 優惠： 【#{@order.offer.message}】
       p.price 
         | 小計： 
-        b.original_price $#{number_with_delimiter(sum)}
         b  $#{ number_with_delimiter(@order.price) }
       p 
         |運費： 

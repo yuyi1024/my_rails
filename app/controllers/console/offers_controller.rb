@@ -90,8 +90,8 @@ class Console::OffersController < ApplicationController
 
   def destroy
     @offer = Offer.find(params[:id])
-    @offer.destroy
-
+    @offer.destroy if @offer.implement != 'true'
+    
     if @offer.destroyed?
       flash[:notice] = '刪除成功'
     else
