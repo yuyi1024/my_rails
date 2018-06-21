@@ -30,7 +30,6 @@ class Console::ProductsController < ApplicationController
   def create
     @product = Product.create(product_params)
     @product.status = 'off_shelf'
-    vvv
     if @product.save
       flash[:notice] = '新增成功'
       redirect_to edit_console_product_path(@product)
