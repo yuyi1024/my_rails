@@ -12,13 +12,14 @@
  *
  *= require_tree .
  *= require_self
+ *= require shared
 
  *= require jcrop
- *= require summernote
 */
 
 
 /*summernote*/
 @import "font-awesome";
 @import "summernote";
+
 
