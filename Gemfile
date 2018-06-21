@@ -75,8 +75,7 @@ gem 'rails-assets-jcrop', source: 'https://rails-assets.org'
 #paypal
 gem "braintree", "~> 2.88.0"
 
-gem 'ecpay_logistics'
-# gem 'ecpay_payment'
+gem 'ecpay_logistics', path: 'vendor/gems/ecpay_logistics-1.0.7'
 
 # WYSIWYG
 # This is the right gem to use summernote editor in Rails projects.
