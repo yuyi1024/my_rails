@@ -5,13 +5,11 @@ class ProductTest < ActiveSupport::TestCase
   #   assert true
   # end
 
-
-
-  test 'find products' do
+  # test 'find products' do
   	
-    c = [Product.make!, Product.make!, Product.make!]
-    found = Product.all
-    puts found.last.name
-    assert_equal(3, found.count, ['good'])
-  end
+  #   c = [Product.make!, Product.make!, Product.make!]
+  #   found = Product.all
+  #   puts found.last.name
+  #   assert_equal(3, found.count, ['good'])
+  # end
 end
