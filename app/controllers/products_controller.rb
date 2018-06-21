@@ -48,6 +48,8 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @product.increment(:click_count)
     @product.save
+
+    @offer = Offer.where.not(range: 'product').find_by(implement: 'true')
   end
 
   def heart

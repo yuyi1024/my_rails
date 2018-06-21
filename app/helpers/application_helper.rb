@@ -33,6 +33,58 @@ module ApplicationHelper
     if index < 3
       content_tag(:span, nil, class: 'glyphicon glyphicon-king')
     end
-   
+  end
+
+  # 計算每樣商品之單價優惠後的金額
+  def calc_price_offer(price, offer_id)
+    offer = Offer.find(offer_id)
+    
+    if offer.range_quantity == 1
+      if offer.offer == 'discount'
+        price = (price * (offer.offer_discount / 100.0)).ceil
+      elsif offer.offer == 'price'
+        price = price - offer.offer_price
+      end
+    end
+    price
+  end
+
+  # 計算cart內每樣商品之小計金額
+  def calc_cart_offer(product_id, quantity)
+    product = Product.find(product_id)
+    offer = product.offer
+
+      if offer.offer == 'discount'
+        value = quantity / offer.range_quantity
+        remainder = quantity % offer.range_quantity
+        
+        price = ((product.price * offer.range_quantity * (offer.offer_discount / 100.0)) * value).ceil
+        price += (product.price * remainder)
+
+      elsif offer.offer == 'price'
+        value = quantity / offer.range_quantity
+        price = product.price * quantity - offer.offer_price * value
+      end
+    price
+  end
+
+  #判斷總價優惠前後價格是否改變（是否有全館優惠、是否符合優惠資格、是有為freight優惠）
+  def price_change_decide(sum, offer)
+    price_change = false
+    if offer.range == 'all' && offer.offer != 'freight'
+      price_change = true
+    elsif offer.range == 'price' && offer.offer != 'freight'
+      price_change = true if sum >= offer.range_price
+    end
+    price_change
   end
 end
+
+
+
+
+
+
+
+
+

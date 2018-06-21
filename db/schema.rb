@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180604085008) do
+ActiveRecord::Schema.define(version: 20180614100636) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -55,11 +55,28 @@ ActiveRecord::Schema.define(version: 20180604085008) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "offers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "range"
+    t.integer "range_price"
+    t.integer "range_quantity"
+    t.string "range_subcats"
+    t.string "range_products"
+    t.string "offer"
+    t.string "offer_freight"
+    t.integer "offer_price"
+    t.integer "offer_discount"
+    t.string "message"
+    t.string "implement"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "order_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "order_id"
     t.integer "product_id"
     t.integer "price"
     t.integer "quantity"
+    t.integer "offer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -73,6 +90,7 @@ ActiveRecord::Schema.define(version: 20180604085008) do
     t.integer "price"
     t.integer "freight"
     t.string "process_id"
+    t.integer "offer_id"
     t.string "ecpay_logistics_id"
     t.string "shipment_no"
     t.string "receiver_name"
@@ -105,6 +123,7 @@ ActiveRecord::Schema.define(version: 20180604085008) do
     t.string "photo"
     t.string "cache"
     t.string "status"
+    t.integer "offer_id"
   end
 
   create_table "subcategories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -74,6 +74,11 @@
 }
 
 #cart_checkout{
+  .horn{
+    text-align: center;
+    margin-bottom: 20px;
+    color: $color_dark_blue;
+  }
   .pay_and_ship_method{
     p{
       color: red;
@@ -105,7 +110,19 @@
       }
     }
   }
-
+  .table{
+    margin-bottom: 0;
+  }
+  .panel-footer{
+    text-align: right;
+    .original_price{
+      text-decoration: line-through;
+    }
+    .correct_price{
+      color: $color_price_red;
+      font-weight: bold;
+    }
+  }
 }
 .all_orders_page{
   .btn{

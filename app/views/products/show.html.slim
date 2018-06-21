@@ -1,14 +1,24 @@
 h1.title 商品詳細
 
-#product_show.container
+#product_show.product_page.container
   .row.product_detail
     p.col-sm-offset-2 全部商品 > #{ @product.category.name } > #{ @product.subcategory.name }
     .col-sm-2.col-sm-offset-3
-      img src="#{ (@product.photo.present?) ? @product.photo_url(:thumb) : '/assets/no-image.png'}"
+      img.product_pic src="#{ (@product.photo.present?) ? @product.photo_url(:thumb) : '/assets/no-image.png'}"
     .col-sm-3.col-sm-offset-1
       h3 = @product.name
       hr
-      p.price NT$ #{ number_with_delimiter(@product.price) }
+
+      p.price
+        - if @product.offer.present?
+          - if @product.offer.range_quantity == 1
+            span.original_price $#{ number_with_delimiter(@product.price) }
+            span.correct_price  $#{number_with_delimiter(calc_price_offer(@product.price, @product.offer_id))}
+          - else
+            span.correct_price $#{ number_with_delimiter(@product.price) }
+        - else
+          span.correct_price $#{ number_with_delimiter(@product.price) }
+
       p 庫存： #{ @product.quantity }
       p 已賣數量： #{ @product.sold }
 
@@ -22,8 +32,14 @@ h1.title 商品詳細
             button.btn.btn-default +
         = f.submit '加入購物車', class: 'col-sm-5 btn add-to-cart'
 
-      p.col-sm-12.freight 全館滿2,000元免運費
-
+      .col-sm-12.offer
+        - if @offer.present?
+          p #{@offer.message}
+        - if !@product.offer_id.nil?
+          p 
+            | #{@product.offer.message}
+            
+            = image_tag('onsale.gif', class: 'onsale_tag')
 
   .row.product_description
 

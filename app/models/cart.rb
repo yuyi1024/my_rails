@@ -2,8 +2,8 @@ class Cart
   SessionKey_cart = :my_cart_sr0cywr
   SessionKey_order = :my_order_aTpk2wr
 
-  #自動產生getter
-  attr_reader :items
+  #自動產生getter & setter
+  attr_accessor  :items, :offer_id
 
   # def items
   #   return @items
@@ -13,18 +13,21 @@ class Cart
   #   @items = new_item
   # end
 
-  def initialize(items = [])
+  def initialize(items = [], offer_id = nil)
     @items = items
+    @offer_id = offer_id
+    # <Cart:0x007f9aa15c82b0 @items=[#<CartItem:0x007f9aa15c82d8 @product_id="23", @quantity=1, @price=70, @offer_id=25>], @offer_id=nil>
   end
 
-  def add_item(product_id, quantity, price)
+  # 將商品加入cart
+  def add_item(product_id, quantity, price, offer_id)
     found_item = @items.find{ |item| item.product_id == product_id } 
 
     if found_item
       product_quantity = Product.find(found_item.product_id).quantity
       found_item.quantity + quantity > product_quantity ? found_item.change(product_quantity) : found_item.increment(quantity)
     else
-      @items << CartItem.new(product_id, quantity, price)
+      @items << CartItem.new(product_id, quantity, price, offer_id)
     end
   end
 
@@ -33,14 +36,16 @@ class Cart
     found_item.change(quantity)
   end
 
-  def total_price
-    @items.reduce(0){ |sum, item| sum + item.unit_price }
+  def order_total_price
+    @items.reduce(0){ |sum, item| sum + item.price }
     #[].reduce(initial){ |memo, obj| block }
   end
 
   def to_hash
-    all_item = @items.map{ |item| {'product_id' => item.product_id, 'quantity' => item.quantity, 'price' => item.price } }
-    { "items" => all_item }
+    # all_item = @items.map{ |item| {'product_id' => item.product_id, 'quantity' => item.quantity, 'price' => item.price } }
+    all_item = @items.map{ |item| {'product_id' => item.product_id, 'quantity' => item.quantity, 'price' => item.price, 'offer_id' => item.offer_id } }
+
+    { "items" => all_item, 'offer_id' => @offer_id }
   end
 
   # class method 類別方法
@@ -48,15 +53,43 @@ class Cart
     if hash.nil?
       new []   #new([]) => initialize([])
     else
-      new hash['items'].map{ |item|
-        CartItem.new(item['product_id'], item['quantity'], item['price'] ) 
-      }
+      Cart.new(hash['items'].map{ |item|
+        CartItem.new(item['product_id'], item['quantity'], item['price'], item['offer_id'] ) 
+      }, hash['offer_id'])
     end  
   end
 
-  def self.new_order_hash(hash)
+  def self.new_order_hash(hash, offer_id)
     new []
     @items = hash
+    @items.items.map{|item|
+      item.offer_id = Product.find(item.product_id).offer_id
+      item.price = calc_order_price(item.product_id, item.quantity, item.offer_id)
+    }
+    @items.offer_id = offer_id
+    @items
+  end
+
+  def self.calc_order_price(product_id, quantity, offer_id)
+    product = Product.find(product_id)
+    if !offer_id.nil?
+      offer = Offer.find(offer_id)
+
+      if offer.offer == 'discount'
+        value = quantity / offer.range_quantity
+        remainder = quantity % offer.range_quantity
+        
+        price = ((product.price * offer.range_quantity * (offer.offer_discount / 100.0)) * value).ceil
+        price += (product.price * remainder)
+
+      elsif offer.offer == 'price'
+        value = quantity / offer.range_quantity
+        price = product.price * quantity - offer.offer_price * value
+      end
+    else
+      price = product.price * quantity
+    end
+    price
   end
 
   def session_to_order_items(order)
@@ -64,6 +97,7 @@ class Cart
       order.order_items[index].product_id = item.product_id
       order.order_items[index].quantity = item.quantity
       order.order_items[index].price = item.price
+      order.order_items[index].offer_id = item.offer_id
       
       product = Product.find(item.product_id)
       product.quantity -= item.quantity

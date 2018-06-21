@@ -3,11 +3,10 @@ class Product < ApplicationRecord
   belongs_to :subcategory
   has_many :order_items
   has_many :favorites
+  belongs_to :offer, optional: true
   mount_uploader :photo, PhotoUploader
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   after_update :crop_photo
-
-  # attr_accessor :fff
 
   # scope :cat1_search, ->(params){ where( :categories => { :cat1 => params } ) }
   # scope :cat2_search, ->(params){ where( :categories => { :id => params } ) }

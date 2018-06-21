@@ -23,6 +23,7 @@
   right: 10px;
   z-index: 997;
   .button {
+    float: left;
     color: #666;
     display: inline-block;
     width: 110px;
@@ -61,6 +62,23 @@
     border: 1px $color_checked_green solid;
     &:hover {
       background-color: $color_checked_green;
+    }
+  }
+  .dropdown{
+    float: left;
+    .dropdown-menu{
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      min-width: 0;
+      top: 80%;
+      li{
+        margin: 5px 0;
+        display: -webkit-box;
+        a{
+          padding: 0;
+        }
+      }
     }
   }
 }
@@ -114,7 +132,7 @@
     .item {
       display: -webkit-inline-box;
       img {
-        width: 70px;
+        width: 50px;
         border: 1px #000 solid;
       }
       .word {
@@ -136,17 +154,29 @@
             text-decoration: none;
           }
         }
+        #price{
+          color: $color_price_red;
+        }
         .delete {
           color: $color_dark_blue;
         }
       }
     }
-    .total_price {
-      font-size: 16px;
-      text-align: right;
-      span {
-        font-size: 24px;
-        color: $color_price_red;
+    .result{
+      .horn{
+        color: $color_dark_blue;
+      }
+      .original_price{
+        text-decoration: line-through;
+        text-align: right;
+      }
+      .offer_price {
+        font-size: 16px;
+        text-align: right;
+        span {
+          font-size: 24px;
+          color: $color_price_red;
+        }
       }
     }
   }
@@ -208,7 +238,7 @@
       height: 35px;
     }
     input{
-      &[type=radio]{
+      &[type=radio], &[type=checkbox]{
         margin: 0 5px 0 10px
       }
     }
@@ -321,6 +351,26 @@
   position: absolute;
   top: 70px;
 }
+
+
+/*優惠*/
+p.price{
+  .original_price{
+    text-decoration: line-through;
+    color: #000;     
+  }
+  .onsale{
+    font-size: 14px;
+    color: $color_dark_blue;
+  }
+  img{
+    width: 40px;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+
 
 
 /*animate*/

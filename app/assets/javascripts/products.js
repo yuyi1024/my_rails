@@ -178,7 +178,7 @@ function clear_tag() {
   $('#tag_cat2 .bubble').each(function() {
     destroy(this, 'cat2');
   });
-  form_submit();
+  products_sort_by();
 }
 
 function form_submit() {

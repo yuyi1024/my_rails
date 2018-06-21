@@ -1,0 +1,43 @@
+@import 'app';
+
+#console_offer{
+  .offer-label{
+    margin: 4px 8px 4px 0;
+    display: inline-block;
+    padding: 2px 8px;
+    color: #fff;
+    border-radius: 4px;
+  }
+  #subcat_label{
+    .offer-label{
+      background-color: $color_santas_gray;
+    }
+  }
+  #product_label{
+    .offer-label{
+      background-color: $color_nebula_gray;
+    }
+  }
+  .btn{
+    margin: 25px auto 0;
+    display: block;
+    background-color: #000;
+    color: #fff;
+    width: 25%;
+  }
+  .implement_btn{
+    background-color: $color_price_red;
+  }
+  #implement_form{
+    .row{
+      margin: 10px 0;
+      line-height: 20px;
+    }
+    .delete_offer{
+      float: right;
+      font-size: 15px;
+      margin-right: 20px;
+    }
+
+  }
+}

@@ -42,6 +42,7 @@ class Console::ProductsController < ApplicationController
     @product = Product.find(params[:id])
     cat_to_select
     subcat_to_select(@product.category_id)
+    @product_offers = Offer.where(range: 'product')
   end
 
   def update

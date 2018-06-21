@@ -1,0 +1,51 @@
+- if @range == 'price'
+  | 滿
+  input#offer_range_price value='2000' type='number' name='offer[range_price]'
+  | 元
+
+- elsif @range == 'product'
+  | 該商品每
+  input#offer_range_quantity value="1" type="number" name="offer[range_quantity]"
+  | 件可享優惠
+
+  br
+  label 選擇作用分類或商品：
+  select#subcats_select multiple="multiple"
+    - @cats.each do |cat|
+      optgroup label="#{cat.name}"
+        - cat.subcategories.each do |subcat|
+          option value="#{subcat.id}" #{subcat.name}
+
+  select#products_select multiple="multiple"
+    - @products.each do |product|
+      option value="#{product.id}" #{product.id}-#{product.name}
+
+  input#offer_range_subcats type="hidden" name="offer[range_subcats]"
+  input#offer_range_products type="hidden" name="offer[range_products]"
+
+  javascript:
+    $('#subcats_select').multipleSelect({
+      placeholder: "選擇分類",
+      width: 200,
+      selectAll: false,
+      filter: true,
+      onClose: function() {
+        $("#offer_range_subcats").val($("#subcats_select").multipleSelect("getSelects"));
+      },
+    });
+
+    $('#products_select').multipleSelect({
+      placeholder: "選擇商品",
+      width: 400,
+      multiple: true,
+      multipleWidth: 90,
+      selectAll: false,
+      filter: true,
+      onClose: function() {
+        $("#offer_range_products").val($("#products_select").multipleSelect("getSelects"));
+      },
+    });
+
+
+
+

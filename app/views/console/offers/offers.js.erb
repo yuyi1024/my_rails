@@ -1,0 +1,43 @@
+<% if @action == 'select_range' %>
+  <% if @range == 'all' %>
+    $('#range_condition').html("");
+  <% else %>
+    $('#range_condition').html("<%= j render partial: 'select_pro_offer' %>");
+  <% end %>
+
+<% elsif @action == 'implement_all' %>
+  $.notify({
+    icon: 'glyphicon glyphicon-shopping-ok',
+    message: '更改成功',
+  },{
+    type: 'success',
+  });
+
+<% elsif @action == 'implement_product' %>
+  <% if @repeat.include? true %>
+    var msg = '';
+    
+    <% if @repeat[0] == true %>
+      msg += '【作用分類】';
+    <% end %>
+    <% if @repeat[1] == true %>
+      msg += '【作用商品】';
+    <% end %>
+
+    $.notify({
+      icon: 'glyphicon glyphicon-shopping-remove',
+      message: '更改失敗，' + msg + '重複',
+    },{
+      type: 'danger',
+      timer: '3000',
+    });
+  <% else %>
+    $.notify({
+      icon: 'glyphicon glyphicon-shopping-ok',
+      message: '更改成功',
+    },{
+      type: 'success',
+    });
+  <% end %>
+
+<% end %>

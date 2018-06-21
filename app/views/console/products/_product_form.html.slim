@@ -38,6 +38,10 @@
     = f.radio_button :status, 'off_shelf', checked: (true if @product.status == 'off_shelf')
     = f.label :status_off_shelf, '下架'
 
+  .row
+    label.col-sm-2 商品優惠
+    .col-sm-10 #{@product.offer.nil? ? '無' : @product.offer.message }
+
 .row
   .field
     = f.label :description, '商品敘述'

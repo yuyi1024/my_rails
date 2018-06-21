@@ -11,10 +11,13 @@ class ApplicationController < ActionController::Base
     
     @carts.items.each do |item|
       product = Product.find(item.product_id)
-      @cart_items << [ product, item.quantity, item.price ]
-      @total_price += item.unit_price
+      @cart_items << [ product, item.quantity]
+      # @cart_items << [ product, item.quantity, item.price ]
+      # @total_price += item.unit_price
     end
     @cart_length = @carts.items.length
+    @offer = Offer.where(range: ['all', 'price'], implement: 'true').first
+    
   end
 
   def self.keyword_split(cols, k) #關鍵字以' '分割
