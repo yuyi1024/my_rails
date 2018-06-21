@@ -17,8 +17,8 @@
 
     .row
       = f.label :subcategory, '次分類', class: 'col-sm-2'
-      = select_tag "subcat_box", options_for_select(@subcategories), class: 'col-sm-8'
-      = f.hidden_field :subcategory_id
+      = select_tag "subcat_box", options_for_select(@subcategories), onchange:"subcat_select();", class: 'col-sm-8'
+      = f.hidden_field :subcategory_id, value: @subcategories[0][1]
 
 - elsif action == 'edit'
   .row
