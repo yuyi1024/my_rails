@@ -8,8 +8,7 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.3'
-# Use mysql2 as the database for Active Record
-gem 'mysql2'
+
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -56,7 +55,6 @@ gem "nested_form"
 gem 'kaminari'
 
 gem 'bootstrap-sass', '~> 3.3.6'
-gem "font-awesome-rails"
 
 #chart
 gem "chartkick"
@@ -96,7 +94,13 @@ gem "awesome_print"
 gem "faker"
 gem "machinist"
 
+group :production do
+  gem 'pg'
+end
+
 group :development, :test do
+  # Use mysql2 as the database for Active Record
+  gem 'mysql2'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
