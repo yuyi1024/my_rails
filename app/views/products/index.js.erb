@@ -1,18 +1,21 @@
 <% if @action == 'index' %>
 
-	<% if @cat2s.present? && !@cat2_click.present? %>
-	  $('#cat2').html("<%= j render partial: 'result', locals: { cat2s: @cat2s } %>");
-	<% end %>
+  <% if @cat2s.present? && !@cat2_click.present? %>
+  	console.log("<%= @cat2s%>");
+  	console.log("<%= @cat2_click%>");
+    $('#cat2').html("<%= j render partial: 'result', locals: { cat2s: @cat2s } %>");
+    console.log("vvvvvvv");
+  <% end %>
 
 
-	$('#item').html("<%= j render partial: 'item', locals: { products: @products } %>");
+  $('#item').html("<%= j render partial: 'item', locals: { products: @products } %>");
 
 <% elsif @action == 'heart' %>
-	
-	<% if @heart == 'add' || @heart == 'remove' %>
-		$('#heart-'+'<%=@product.id%>').replaceWith("<%= j render partial: 'heart', locals: { product: @product, heart: @heart } %>");
-	
-	<% elsif @heart == 'full' %>
-		alert('已超過追蹤上限，請先取消部分追蹤商品。');
-	<% end %>
+  
+  <% if @heart == 'add' || @heart == 'remove' %>
+    $('#heart-'+'<%=@product.id%>').replaceWith("<%= j render partial: 'heart', locals: { product: @product, heart: @heart } %>");
+  
+  <% elsif @heart == 'full' %>
+    alert('已超過追蹤上限，請先取消部分追蹤商品。');
+  <% end %>
 <% end %>
