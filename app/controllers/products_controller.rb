@@ -10,9 +10,8 @@ class ProductsController < ApplicationController
 
     if params[:cat1_field].present?
       cat1 = Category.find_by(name: params[:cat1_field])
-      @cat2s = cat1.subcategories.joins(:product).group('subcategory_id').having('count(subcategory_id) > 0')
-      puts @cat2s
-      puts 'xxxxxxxxxx'
+      # @cat2s = cat1.subcategories.joins(:product).group('subcategory_id').having('count(subcategory_id) > 0')
+      @cat2s = Subcategory.all
       @products = cat1.product.where(status: 'on_shelf')
     end
 
