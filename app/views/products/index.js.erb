@@ -1,10 +1,7 @@
 <% if @action == 'index' %>
 
   <% if @cat2s.present? && !@cat2_click.present? %>
-  	console.log("<%= @cat2s%>");
-  	console.log("<%= @cat2_click%>");
     $('#cat2').html("<%= j render partial: 'result', locals: { cat2s: @cat2s } %>");
-    console.log("vvvvvvv");
   <% end %>
 
 
