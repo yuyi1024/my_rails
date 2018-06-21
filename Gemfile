@@ -81,7 +81,7 @@ gem 'ecpay_logistics', path: 'vendor/gems/ecpay_logistics-1.0.7'
 # WYSIWYG
 # This is the right gem to use summernote editor in Rails projects.
 gem 'summernote-rails'
-gem 'codemirror-rails'
+# gem 'codemirror-rails'
 gem "font-awesome-rails"
 
 # To solve the problems on the turbolinks
