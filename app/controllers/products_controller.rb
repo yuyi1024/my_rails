@@ -1,4 +1,9 @@
 class ProductsController < ApplicationController
+  def user_add
+    User.create(name: '呱呱',email: 'bonnie831024@gmail.com.tw',password: '00000000',created_at: '2018-04-25 09:06:52',updated_at: '2018-04-25 09:06:52',confirmed_at: '2018-05-25 09:06:52',role: 'admin',true_name: '李呱呱',address: '新北市呱呱區呱呱路', phone: '0988123456')
+    # redirect_to root_path
+  end
+
   def index
     @products = Product.where(status: 'on_shelf')
     @cat1s = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id')
