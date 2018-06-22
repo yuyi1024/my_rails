@@ -28,7 +28,7 @@ h1.title 訂單結帳
                 tr
                   th #{ index+1 }
                   td
-                    img src="/assets/no-image.png" width="50px"
+                    img src="#{ product_image_present(product) }" width="50px"
                   td #{ product.name }
                   td $#{ number_with_delimiter(product.price) }
                   td #{ item.quantity }

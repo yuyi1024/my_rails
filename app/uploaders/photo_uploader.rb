@@ -7,8 +7,8 @@ class PhotoUploader < CarrierWave::Uploader::Base
   #MiniMagick.processor = :gm
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  # storage :file
+  storage :fog
 
   # after :store, :unlink_original
 

@@ -22,9 +22,14 @@ class Console::ProductsController < ApplicationController
   end
 
   def new
-    @product = Product.new
-    cat_to_select
-    subcat_to_select(Category.first.id)
+    if Subcategory.first.present?
+      @product = Product.new
+      cat_to_select
+      subcat_to_select(Category.first.id)
+    else
+      flash[:notice] = '請先新增至少一種分類！'
+      redirect_to new_console_category_path
+    end
   end
 
   def create
@@ -50,6 +55,10 @@ class Console::ProductsController < ApplicationController
   def update
     @product = Product.find(params[:id])
     @product.update(product_params)
+
+    #刪除所有該商品的追蹤
+    @product.favorites.destroy_all if product_params[:status] == 'off_shelf'
+
     if @product.save
       flash[:notice] = '更新成功' 
     else
@@ -107,7 +116,7 @@ class Console::ProductsController < ApplicationController
     @categories = @categories.map{ |cat| [cat.name, cat.id] }
   end
 
-  def subcat_to_select(cat_id) #次分類select_box
+  def subcat_to_select(cat_id = nil) #次分類select_box
     @subcategories = Subcategory.where(category_id: cat_id)
     @subcategories =  @subcategories.map{ |subcat| [subcat.name, subcat.id] }
   end

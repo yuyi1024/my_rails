@@ -15,7 +15,7 @@
         tr class="#{ 'off_shelf' if product.status == 'off_shelf' }"
           td #{ product.id }
           td
-            img src="#{ (product.photo.present?) ? product.photo_url(:thumb) : '/assets/no-image.png'}" style='width:45px;'
+            img src="#{ product_image_present(product) }" style='width:45px;'
           td #{ product.name }
           td $ #{ number_with_delimiter(product.price) }
           td #{ product.category.name } > #{ product.subcategory.name }

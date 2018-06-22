@@ -2,7 +2,7 @@
 - @cart_items.each do |cart_item|
   .item
     = link_to(product_path(cart_item))
-      img src="#{ cart_item[0].photo.present? ? cart_item[0].photo_url(:thumb) : '/assets/no-image.png' }"
+      img src="#{ product_image_present(cart_item[0]) }"
 
     .word
       = link_to cart_item[0].name, product_path(cart_item), class: 'title'

@@ -110,7 +110,7 @@ h1.title 後台儀表板
               tr
                 td 
                   - if @product_buy[index].present?
-                    | #{@product_buy[index].product.name}
+                    = link_to truncate(@product_buy[index].name, length: 18), product_path(@product_buy[index])
                     = king(index)
                 td 
                   - if @product_buy[index].present?
@@ -118,7 +118,7 @@ h1.title 後台儀表板
 
                 td 
                   - if @favorites[index].present?
-                    | #{@favorites[index].product.name}
+                    = link_to truncate(@favorites[index].product.name, length: 18), product_path(@favorites[index].product)
                     = king(index)
                 td 
                   - if @favorites[index].present?
@@ -126,7 +126,7 @@ h1.title 後台儀表板
                 
                 td 
                   - if @product_click[index].present?
-                    | #{@product_click[index].name}
+                    = link_to truncate(@product_click[index].name, length: 18), product_path(@product_click[index])
                     = king(index)
                 td 
                   - if @product_click[index].present?

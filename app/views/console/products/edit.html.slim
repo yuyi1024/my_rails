@@ -15,7 +15,7 @@ ul.pager
             .row
               label.col-sm-2 現在商品照
               
-              img.col-sm-3 src="#{ (@product.photo.present?) ? @product.photo_url(:thumb) : '/assets/no-image.png'}"  
+              img.col-sm-3 src="#{ product_image_present(@product) }"  
             br
             .photo_form.row
               = form_for @product , url: update_photo_console_products_path, method: 'post' do |f|

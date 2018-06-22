@@ -50,7 +50,7 @@
         /分類1按鈕
         #cat1.row 
           - @cat1s.each_with_index do |cat1,index|
-            .col-sm-1 data-target='#cat2' data-name='#{cat1.name}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
+            div data-target='#cat2' data-name='#{cat1.name}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
               = cat1.name
 
         /分類2按鈕

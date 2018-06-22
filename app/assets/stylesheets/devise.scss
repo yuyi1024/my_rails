@@ -110,4 +110,13 @@ h2, em, label, a, .rm{
   }
 }
 
-
+.favorite_list{
+  .cart {
+    background-color: $color_dark_blue;
+    color: #eee;
+    width: 60px;
+    &:hover, &:focus {
+      color: #ddd;
+    }
+  }
+}

@@ -33,10 +33,10 @@ h1.title 會員中心
                   span.glyphicon.glyphicon-heart.favorite id='heart-#{favorite.product.id}'
               td
                 = link_to(product_path(favorite.product))
-                  img src="#{ (favorite.product.photo.present?) ? favorite.product.photo_url(:thumb) : '/assets/no-image.png'}" style='width: 55px;'
+                  img src="#{ product_image_present(favorite.product) }" style='width: 55px;'
               td 
                 = link_to(product_path(favorite.product))
-                 | #{ favorite.product.name }
+                 | #{ truncate(favorite.product.name, length: 18) }
               td #{ favorite.product.category.name } > #{ favorite.product.subcategory.name }
               td NT $ #{ number_with_delimiter(favorite.product.price) }
               td

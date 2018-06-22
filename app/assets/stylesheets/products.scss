@@ -97,8 +97,9 @@
           line-height: 40px;
           border-radius: 10px;
           margin: 5px;
-          padding: 0 5px;
+          padding: 0 20px;
           background-color: #fff;
+          float: left;
         }
       }
       #cat2 {
@@ -109,8 +110,9 @@
           line-height: 35px;
           border-radius: 10px;
           margin: 5px;
-          padding: 0 5px;
+          padding: 0 20px;
           background-color: #fff;
+          float: left;
         }
       }
     }
@@ -184,10 +186,15 @@
       border: 2px #555 solid;
     }
     .caption {
-      h3, p {
+      p {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+      }
+      .product_name {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 5px 0;
       }
       .price{
         font-size: 16px;

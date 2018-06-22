@@ -51,14 +51,11 @@ class CartsController < ApplicationController
 
   def cart_to_array
     @cart_items = []
-    # @total_price = 0
     @cart_length = @carts.items.length
     
     @carts.items.each do |item|
       product = Product.find(item.product_id)
       @cart_items << [ product, item.quantity ]
-      # @cart_items << [ product, item.quantity, item.price ]
-      # @total_price += item.unit_price
     end
   end
 end
