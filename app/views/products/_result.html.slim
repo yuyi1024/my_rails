@@ -1,5 +1,5 @@
 - if @cat2s.present?
   - @cat2s.each do |cat2|
-    .col-sm-1 id='cat2-box-#{cat2.id}' onclick='cat2(this);' data-name='#{cat2.name}' data-id='#{cat2.id}' data-cat1='#{cat2.category_id}' data-category='cat2'
+    div id='cat2-box-#{cat2.id}' onclick='cat2(this);' data-name='#{cat2.name}' data-id='#{cat2.id}' data-cat1='#{cat2.category_id}' data-category='cat2'
       = cat2.name
 

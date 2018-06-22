@@ -1,7 +1,6 @@
 class ProductsController < ApplicationController
   def user_add
     User.create(name: '呱呱',email: 'bonnie831024@gmail.com.tw',password: '00000000',created_at: '2018-04-25 09:06:52',updated_at: '2018-04-25 09:06:52',confirmed_at: '2018-05-25 09:06:52',role: 'admin',true_name: '李呱呱',address: '新北市呱呱區呱呱路', phone: '0988123456')
-    # redirect_to root_path
   end
 
   def index
@@ -50,16 +49,18 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find(params[:id])
-    @product.increment(:click_count)
-    @product.save
-
-    @offer = Offer.where.not(range: 'product').find_by(implement: 'true')
+    @product = Product.where(status: 'on_shelf').find_by_id(params[:id])
+    if @product.present?
+      @product.increment(:click_count)
+      @product.save
+      @offer = Offer.where.not(range: 'product').find_by(implement: 'true')
+    else
+      flash[:notice] = '該商品不存在'
+      redirect_to root_path
+    end
   end
 
   def heart
-    @product = Product.find(params[:id])
-
     favorite = current_user.favorites
 
     if favorite.find_by(product_id: @product.id).present?

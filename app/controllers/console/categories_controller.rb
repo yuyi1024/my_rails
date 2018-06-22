@@ -12,7 +12,7 @@ class Console::CategoriesController < ApplicationController
     if @category.save
       redirect_to new_console_category_path
     else
-      redirect_to products_path
+      redirect_to root_path
     end
   end
 

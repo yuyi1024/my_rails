@@ -4,7 +4,7 @@ h1.title 商品詳細
   .row.product_detail
     p.col-sm-offset-2 全部商品 > #{ @product.category.name } > #{ @product.subcategory.name }
     .col-sm-2.col-sm-offset-3
-      img.product_pic src="#{ (@product.photo.present?) ? @product.photo_url(:thumb) : '/assets/no-image.png'}"
+      img.product_pic src="#{ product_image_present(@product) }"
     .col-sm-3.col-sm-offset-1
       h3 = @product.name
       hr
@@ -39,7 +39,7 @@ h1.title 商品詳細
           p 
             | #{@product.offer.message}
             
-            = image_tag('onsale.gif', class: 'onsale_tag')
+            = image_tag('https://s3-ap-northeast-1.amazonaws.com/bawan-rails/assets/images/onsale.gif', class: 'onsale_tag')
 
   .row.product_description
 

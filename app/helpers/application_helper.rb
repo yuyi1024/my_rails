@@ -8,6 +8,15 @@ module ApplicationHelper
     end
   end
 
+  #如果商品圖片不存在顯示no-image.png
+  def product_image_present(product)
+    if product.photo.present?
+      product.photo_url(:thumb)
+    else
+      'https://s3-ap-northeast-1.amazonaws.com/bawan-rails/assets/images/no-image.png'
+    end
+  end
+
   def role_color(role)
     if role == 'admin'
       'admin_color'

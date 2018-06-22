@@ -8,14 +8,18 @@ class ApplicationController < ActionController::Base
     
     @cart_items = []
     @total_price = 0
-    
+
     @carts.items.each do |item|
-      product = Product.find(item.product_id)
-      @cart_items << [ product, item.quantity]
-      # @cart_items << [ product, item.quantity, item.price ]
-      # @total_price += item.unit_price
+      product = Product.where(status: 'on_shelf').find_by_id(item.product_id) #找不到時回傳nil
+      if !product.nil?
+        @cart_items << [ product, item.quantity]
+      else
+        @carts.items.delete(item)
+      end
     end
-    @cart_length = @carts.items.length
+    session[Cart::SessionKey_cart] = @carts.to_hash
+    
+    @cart_length = @cart_items.length
     @offer = Offer.where(range: ['all', 'price'], implement: 'true').first
     
   end
