@@ -117,7 +117,7 @@ h1.title 後台儀表板
                     | #{@product_buy[index].total}
 
                 td 
-                  - if @favorites[index].present?
+                  - if !@favorites[index].nil?
                     = link_to truncate(@favorites[index].product.name, length: 18), product_path(@favorites[index].product)
                     = king(index)
                 td 

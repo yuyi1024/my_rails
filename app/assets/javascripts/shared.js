@@ -4,6 +4,27 @@ $(document).on('turbolinks:load', function() {
   });
 });
 
+function message_notify(type, msg){
+  if(type == 'danger'){
+    $.notify({
+      icon: 'glyphicon glyphicon-exclamation-sign',
+      message: msg,
+    },{
+      type: type,
+      delay: '0',
+    });
+  }else if(type == 'success'){
+    $.notify({
+      icon: 'glyphicon glyphicon-glyphicon-ok',
+      message: msg,
+    },{
+      type: type,
+      delay: '1000',
+    });
+  }
+
+}
+
 function openCart(){
   $('#sidebar_cart').animate({left:'0px'});
   $('.mask').css('display', 'block');

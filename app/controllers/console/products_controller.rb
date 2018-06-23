@@ -27,22 +27,27 @@ class Console::ProductsController < ApplicationController
       cat_to_select
       subcat_to_select(Category.first.id)
     else
-      flash[:notice] = '請先新增至少一種分類！'
-      redirect_to new_console_category_path
+      redirect_to(new_console_category_path, alert: '請先新增至少一種分類！')
     end
   end
 
   def create
-    @product = Product.create(product_params)
+    @product = Product.new(product_params)
+    raise StandardError, '商品價錢或庫存數量小於 1' if product_params[:price].to_i < 1 || product_params[:quantity].to_i < 1
+
     @product.status = 'off_shelf'
+    
     if @product.save
-      flash[:notice] = '新增成功'
+      flash[:success] = '商品新增成功'
       redirect_to edit_console_product_path(@product)
     else
-      flash[:notice] = '新增失敗'
-      redirect_to new_console_product_path
+      raise StandardError
     end
-    
+  rescue StandardError => e
+    cat_to_select
+    subcat_to_select(Category.first.id)
+    flash[:alert] = "發生錯誤：#{e}"
+    render :new
   end
 
   def edit
@@ -50,9 +55,12 @@ class Console::ProductsController < ApplicationController
     cat_to_select
     subcat_to_select(@product.category_id)
     @product_offers = Offer.where(range: 'product')
+  rescue StandardError => e
+    redirect_back(fallback_location: console_products_path, alert: "#{e}")
   end
 
   def update
+    raise StandardError, '商品價錢或庫存數量小於 1' if product_params[:price].to_i < 1 || product_params[:quantity].to_i < 1
     @product = Product.find(params[:id])
     @product.update(product_params)
 
@@ -60,11 +68,13 @@ class Console::ProductsController < ApplicationController
     @product.favorites.destroy_all if product_params[:status] == 'off_shelf'
 
     if @product.save
-      flash[:notice] = '更新成功' 
+      flash[:success] = '更新成功'
+      redirect_to edit_console_product_path 
     else
-      flash[:notice] = '更新失敗'
+      raise StandardError
     end
-    redirect_to edit_console_product_path
+    rescue StandardError => e
+      redirect_back(fallback_location: console_products_path, alert: "發生錯誤：#{e}")
   end
 
   def get_subcat #選擇主分類後顯示次分類

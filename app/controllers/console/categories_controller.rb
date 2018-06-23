@@ -7,17 +7,22 @@ class Console::CategoriesController < ApplicationController
 
   def create
     @category = Category.find_or_create_by(name: params[:cat])
-    params[:subcat].map{ |subcat| @category.subcategories.find_or_initialize_by(name: subcat, category_id: @category.id) } if params[:subcat].present?
+    params[:subcat].map{ |subcat| 
+      @category.subcategories.find_or_initialize_by(name: subcat, category_id: @category.id) 
+    } if params[:subcat].present?
 
     if @category.save
+      flash[:seccess] = '分類新增成功'
       redirect_to new_console_category_path
     else
-      redirect_to root_path
+      redirect_to(new_console_category_path, alert: '分類新增失敗')
     end
   end
 
   def edit
     @category = Category.find(params[:id])
+  rescue StandardError => e
+    redirect_back(fallback_location: new_console_category, alert: "發生錯誤：#{e}")
   end
 
   def update
@@ -25,7 +30,7 @@ class Console::CategoriesController < ApplicationController
     if !Category.find_by(name: cat_params[:name]).present?
       @category.update(cat_params)
       if @category.save
-        flash[:notice] = '更新成功'
+        flash[:seccess] = '更新成功'
         redirect_to new_console_category_path
       else
         flash[:notice] = '更新失敗'

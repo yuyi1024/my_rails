@@ -19,7 +19,11 @@ class PhotoUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    "#{model.class.to_s.underscore}-#{model.id}-#{model.cache}.jpg"
+    if model.cache.present?
+      "#{model.class.to_s.underscore}-#{model.id}-#{model.cache}.jpg"
+    else
+      nil
+    end
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

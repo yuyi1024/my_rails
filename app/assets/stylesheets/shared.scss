@@ -90,9 +90,13 @@
   position: absolute;
   top: 20px;
   .hello,
-  .notice,
-  .alert {
+  .notice{
     color: $color_dark_blue;
+    font-size: 18px;
+    line-height: 20px;
+  }
+  .alert {
+    color: red;
     font-size: 18px;
     line-height: 20px;
   }
