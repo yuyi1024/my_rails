@@ -5,7 +5,8 @@ class Console::OffersController < ApplicationController
     @offer = Offer.new
   end
 
-  def select_range
+  #新增時選擇優惠範圍
+  def select_range 
     @range = params[:range]
 
     if @range == 'product'
@@ -18,10 +19,50 @@ class Console::OffersController < ApplicationController
   end
 
   def create
+    if offer_params[:range] == 'price'
+      raise StandardError, '訂單金額不得小於1' if offer_params[:range_price].to_i < 1
+    elsif offer_params[:range] == 'product'
+      if offer_params[:range_quantity].to_i < 1
+        raise StandardError, '商品數量不得小於1'
+      elsif offer_params[:range_subcats].nil? && offer_params[:range_products].nil?
+        raise StandardError, '未設定作用商品或分類'
+      end
+    end
+
+    if offer_params[:offer] == 'price'
+      raise StandardError, '折扣金額不得小於1' if offer_params[:offer_price].to_i < 1
+
+      if offer_params[:range] == 'price'
+        raise StandardError, '折扣金額大於訂單金額' if offer_params[:offer_price].to_i >= offer_params[:range_price].to_i
+      
+      elsif offer_params[:range] == 'product'
+        if offer_params[:range_subcats].present?
+          arr = offer_params[:range_subcats].split(',')
+          arr.each do |subcat|
+            Product.where(subcategory_id: subcat).each do |product|
+              raise StandardError, '折扣金額大於部分分類之商品金額' if offer_params[:offer_price].to_i >= product.price
+            end
+          end
+        end
+        
+        if offer_params[:range_products].present?
+          arr = offer_params[:range_products].split(',')
+          arr.each do |product|
+            raise StandardError, '折扣金額大於部分商品金額' if offer_params[:offer_price].to_i >= Product.find(product).price
+          end
+        end
+      end
+    
+    elsif offer_params[:offer] == 'discount'
+      raise StandardError, '打折數錯誤' if !offer_params[:offer_discount].to_i.between?(1, 99)
+    end
+
+
     @offer = Offer.create(offer_params)
     @offer.message = @offer.get_message
     @offer.implement = 'false'
 
+    #優惠類型為打折時，將折數以兩位數儲存
     if @offer.offer == 'discount'
       if @offer.offer_discount.to_s.length == 1
         @offer.offer_discount = (@offer.offer_discount.to_s + '0').to_i
@@ -29,10 +70,17 @@ class Console::OffersController < ApplicationController
     end
     
     if @offer.save
-      redirect_to console_offers_path
+      flash[:success] = '優惠新增成功'
+    else
+      raise StandardError, '優惠新增失敗'
     end
+  rescue StandardError => e
+    flash[:alert] = "發生錯誤：#{e}"
+  ensure
+    redirect_to console_offers_path
   end
 
+  #實施全館優惠
   def implement_all
     Offer.where.not(range: 'product').update_all(implement: 'false')
     if params[:all][0] != 'N'
@@ -40,11 +88,12 @@ class Console::OffersController < ApplicationController
       offer.implement = 'true'
       offer.save
     end
-
+    
     @action = 'implement_all'
     render 'console/offers/offers.js.erb'
   end
 
+  #實施商品優惠
   def implement_product
     offers = Offer.where(id: params[:products])
     @repeat = [false, false]    
