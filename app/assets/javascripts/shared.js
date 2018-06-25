@@ -19,7 +19,7 @@ function message_notify(type, msg){
       message: msg,
     },{
       type: type,
-      delay: '1000',
+      delay: '2000',
     });
   }
 

@@ -47,6 +47,8 @@ class Console::MessagesController < ApplicationController
 
   def edit
     @message = Message.find(params[:id])
+  rescue StandardError => e
+    redirect_to(console_messages_path, alert: "發生問題：#{e}")
   end
 
   def update
@@ -57,17 +59,21 @@ class Console::MessagesController < ApplicationController
       if @message.reply_method == 'email'
         UserMailer.message_email(@message).deliver_now
       end
-      flash[:notice] = '訊息已回覆'
+      flash[:success] = '訊息已回覆'
     else
-      flash[:notice] = '訊息回覆失敗'
+      flash[:alert] = '訊息回覆失敗'
     end
     redirect_to edit_console_message_path(@message)
 
+  rescue StandardError => e
+    flash[:alert] = "發生問題：#{e}"
+    redirect_to console_messages_path
   end
 
   def destroy
     @message = Message.find(params[:id])
     @message.destroy
+    flash[:success] = '刪除成功'
     redirect_to console_messages_path
   end
 
@@ -84,13 +90,12 @@ class Console::MessagesController < ApplicationController
     @message.reply_method = 'message'
 
     if @message.save
-      flash[:notice] = '新增成功，請於右側將新增的問題拖曳至下方區塊'
+      flash[:success] = '新增成功，請於右側將新增的問題拖曳至下方區塊'
       redirect_to qanda_console_messages_path
     end
   end
 
   def sort_qanda
-
     if params[:qanda].present?
       params[:qanda].each_with_index do |item, index|
         qanda = Message.find(item.to_i)
@@ -106,7 +111,7 @@ class Console::MessagesController < ApplicationController
         qanda.save
       end
     end
-    flash[:notice] = '更新成功'
+    flash[:success] = '更新成功'
     redirect_to qanda_console_messages_path
   end
 

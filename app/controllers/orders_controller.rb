@@ -76,7 +76,7 @@
     @order_session.items.each do |item|
       offer_invalid = true if Product.find(item.product_id).offer_id != item.offer_id
     end
-    offer_invalid = true if @order_session.offer_id != whole_store_offer.id
+    offer_invalid = true if @order_session.offer_id != whole_store_offer
 
     if offer_invalid == false
       @order = Order.create(order_params)
@@ -190,8 +190,6 @@
       flash[:notice] = '訂單錯誤'
       redirect_to edit_order_path(@order)
     end
-
-
   end
 
   def show
@@ -260,7 +258,12 @@
   end
 
   def whole_store_offer #實施中的全館優惠
-    Offer.where(range: ['all', 'price'], implement: 'true').first
+    offer = Offer.where(range: ['all', 'price'], implement: 'true').first
+    if offer.nil?
+      offer
+    else
+      offer.id
+    end
   end
 
   private
