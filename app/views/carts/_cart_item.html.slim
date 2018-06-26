@@ -5,7 +5,8 @@
       img src="#{ product_image_present(cart_item[0]) }"
 
     .word
-      = link_to cart_item[0].name, product_path(cart_item), class: 'title'
+      = link_to(product_path(cart_item), class: 'title')
+        | #{cart_item[0].name}
       br
       input type='number' value='#{ cart_item[1] }' onChange='change_item_quantity(this);' id='item-#{ cart_item[0].id }' min='1' max='99'
       |  x $#{ number_with_delimiter(cart_item[0].price) } 
