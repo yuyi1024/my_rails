@@ -6,6 +6,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def show
     @user = current_user
     authorize! :manage, @user
+  rescue SandardError => e
+    redirect_to user_order_list_path
   end
 
   # GET /resource/sign_up
@@ -30,13 +32,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user = current_user
     @user.update(user_params)
     @action = 'update_field'
-    render :template => 'devise/registrations/registrations.js.erb'
+    render 'devise/registrations/registrations.js.erb'
   end
 
   def pwd_field #會員中心更改密碼
     @user = current_user
     @action = 'pwd_field'
-    render :template => 'devise/registrations/registrations.js.erb'
+    render 'devise/registrations/registrations.js.erb'
   end
 
   # def update #update pwd
@@ -45,12 +47,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   def update
-    
     #current_user
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
-
     resource_updated = update_resource(resource, account_update_params) #true/false
     yield resource if block_given?
 
@@ -63,24 +62,30 @@ class Users::RegistrationsController < Devise::RegistrationsController
       bypass_sign_in resource, scope: resource_name
       # respond_with resource, location: after_update_path_for(resource)
       @action = 'update_success'
-      render :template => 'devise/registrations/registrations.js.erb'
+      render 'devise/registrations/registrations.js.erb'
     else
       clean_up_passwords resource
       set_minimum_password_length
 
       # respond_with resource
       @action = 'update_failed'
-      render :template => 'devise/registrations/registrations.js.erb'
+      render 'devise/registrations/registrations.js.erb'
     end
+  rescue SandardError => e
+    redirect_to user_show_path
   end
 
   def order_list #會員中心訂單列表
     @orders = current_user.orders.order('created_at DESC')
     @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
+  rescue SandardError => e
+    redirect_to user_order_list_path
   end
 
   def favorite_list #會員中心追蹤列表
     @favorites = current_user.favorites
+  rescue SandardError => e
+    redirect_to user_order_list_path
   end
 
   # DELETE /resource

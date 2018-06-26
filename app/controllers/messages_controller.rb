@@ -15,10 +15,11 @@ class MessagesController < ApplicationController
 		end
 
 		if @message.save
-			@action = 'create'
-			render 'messages/messages.js.erb'
+			flash[:success] = '訊息發送成功，請耐心等待回覆'
+		else
+			flash[:alert] = '訊息發送失敗，請再嘗試一次'
 		end
-
+		redirect_to messages_path
 	end
 
 	private
