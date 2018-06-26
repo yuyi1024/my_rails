@@ -1,11 +1,24 @@
 @import 'variable';
 
+#store_name{
+  margin-top: 50px;
+  img{
+    width: 500px;
+    margin: 0 auto;
+    display: block;
+  }
+}
+
 
 /*每page標題*/
 
 .title {
   text-align: center;
-  margin: 80px auto 30px;
+  margin: 20px auto 30px;
+}
+
+.space{
+  margin-top: 100px; 
 }
 
 .remark{

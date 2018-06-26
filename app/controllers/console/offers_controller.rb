@@ -1,4 +1,4 @@
-class Console::OffersController < ApplicationController
+class Console::OffersController < Console::DashboardsController
   def index
     @offers_all = Offer.where(range: ['all', 'price'])
     @offers_products = Offer.where(range: 'product')

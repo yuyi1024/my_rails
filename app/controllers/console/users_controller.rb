@@ -1,4 +1,4 @@
-class Console::UsersController < ApplicationController
+class Console::UsersController < Console::DashboardsController
   before_action :authenticate_user!
   before_action :dashboard_authorize
     

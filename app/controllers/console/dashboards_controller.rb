@@ -1,4 +1,5 @@
 class Console::DashboardsController < ApplicationController
+  layout "console"
   def index
 
     authorize! :dashboard, :all

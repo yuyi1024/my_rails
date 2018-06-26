@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title 霸雕爆裂丸
+    title 【後台】霸雕爆裂丸
     link rel="Shortcut Icon" type="image/x-icon" href="https://s3-ap-northeast-1.amazonaws.com/bawan-rails/assets/images/icon.png"
     = csrf_meta_tags
 
@@ -10,16 +10,16 @@ html
 
     /提示視窗
     = javascript_include_tag 'bootstrap-notify'
+
+    /selectbox multiple options
+    = javascript_include_tag 'multiple-select'
+    = stylesheet_link_tag 'multiple-select'
+
   body
-
-    .mask onclick='closeCart();'
     = render 'layouts/message'
+    = render 'shared/employee_header'
+    .space
 
-    #store_name
-      = image_tag('https://s3-ap-northeast-1.amazonaws.com/bawan-rails/assets/images/BawansStore.png')
-    = render 'shared/header'
-    = render 'carts/show'
-    
     = yield 
 
     #to_top

@@ -1,0 +1,14 @@
+.message
+  .hello
+    - if current_user
+      | 您好， #{current_user.name}
+      = user_role(current_user.role)
+      | ！
+  .notice #{ notice }
+
+  - if alert.present?
+    javascript:
+      message_notify('danger', '#{alert}');
+  - elsif flash[:success].present?
+    javascript:
+      message_notify('success', '#{flash[:success]}');

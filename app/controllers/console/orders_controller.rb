@@ -1,4 +1,4 @@
-class Console::OrdersController < ApplicationController
+class Console::OrdersController < Console::DashboardsController
   before_action :dashboard_authorize
   
   def index

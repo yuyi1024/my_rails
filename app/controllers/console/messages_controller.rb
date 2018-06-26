@@ -1,4 +1,4 @@
-class Console::MessagesController < ApplicationController
+class Console::MessagesController < Console::DashboardsController
   def index
     @messages = Message.all
 

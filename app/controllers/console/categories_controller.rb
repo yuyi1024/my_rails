@@ -1,4 +1,4 @@
-class Console::CategoriesController < ApplicationController
+class Console::CategoriesController < Console::DashboardsController
   before_action :dashboard_authorize
 
   def new
