@@ -55,20 +55,20 @@ class ProductsController < ApplicationController
       @product.save
       @offer = Offer.where.not(range: 'product').find_by(implement: 'true')
     else
-      flash[:notice] = '該商品不存在'
-      redirect_to root_path
+      redirect_to(root_path, alert: '該商品不存在')
     end
   end
 
   def heart
     favorite = current_user.favorites
+    @product_id = params[:id]
 
-    if favorite.find_by(product_id: @product.id).present?
-      favorite.find_by(product_id: @product.id).destroy
+    if favorite.find_by(product_id: @product_id).present?
+      favorite.find_by(product_id: @product_id).destroy
       @heart = 'remove'
     else
       if favorite.length <= 10
-        favorite = current_user.favorites.new(product_id: @product.id) 
+        favorite = current_user.favorites.new(product_id: @product_id) 
         favorite.save
         @heart = 'add'
       else
@@ -76,10 +76,7 @@ class ProductsController < ApplicationController
       end
     end
 
-
     @action = 'heart'
-
     render 'products/index.js.erb'
-   
   end
 end

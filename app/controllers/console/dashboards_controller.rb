@@ -14,6 +14,10 @@ class Console::DashboardsController < ApplicationController
 
     @product_click = Product.all.order('click_count DESC').limit(10)
     @product_buy = OrderItem.select("COUNT(order_items.product_id) AS total, order_items.product_id").group('product_id').order('total DESC').limit(10)
+    
+    Favorite.all.each do |f|
+      f.destroy if !f.product.present? || f.product.status == 'off_shelf'
+    end
     @favorites = Favorite.select("COUNT(favorites.product_id) AS total, favorites.product_id").group('product_id').order('total DESC').limit(10)
 
   end

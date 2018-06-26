@@ -10,7 +10,7 @@
 <% elsif @action == 'heart' %>
   
   <% if @heart == 'add' || @heart == 'remove' %>
-    $('#heart-'+'<%=@product.id%>').replaceWith("<%= j render partial: 'heart', locals: { product: @product, heart: @heart } %>");
+    $('#heart-'+'<%=@product_id%>').replaceWith("<%= j render partial: 'heart', locals: { product_id: @product_id, heart: @heart } %>");
   
   <% elsif @heart == 'full' %>
     alert('已超過追蹤上限，請先取消部分追蹤商品。');

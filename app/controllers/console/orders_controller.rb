@@ -63,10 +63,14 @@ class Console::OrdersController < ApplicationController
     end
     @may_status = @order.may_status
     @remit_data = @order.remit_data.split('/') if !@order.remit_data.blank?
+
+  rescue StandardError => e
+    redirect_to(console_orders_path, alert: "發生錯誤：#{e}")
   end
 
   def update
     @order = Order.find_by(process_id: params[:id])
+    
     if params[:order][:status] != '0'
       @order.method(params[:order][:status]).call
       if params[:order][:status] == 'pay'
@@ -74,15 +78,23 @@ class Console::OrdersController < ApplicationController
         hash = @order.ecpay_create
         @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
       end
-      @order.save
-
-      @action = 'update_success'
     else
-      @action = 'update_failded'
-    end  
-    render 'console/orders/orders.js.erb'
+      raise StandardError, '未選擇欲更改的狀態'
+    end
+    
+    if @order.save
+      flash[:success] = '訂單狀態更改成功'
+    else
+      raise StandardError, '訂單狀態更改失敗'
+    end
+
+  rescue StandardError => e
+    flash[:alert] = "發生錯誤：#{e}"
+  ensure
+    redirect_to edit_console_order_path
   end
 
+  #付款資訊有誤，取消付款通知
   def remit_check
     @order = Order.find_by(process_id: params[:process_id])
     @order.paid = 'false'
@@ -90,9 +102,14 @@ class Console::OrdersController < ApplicationController
     @order.remit_data = ''
     
     if @order.save
-      flash[:notice] == '取消付款通知'
+      flash[:success] == '取消付款通知'
       redirect_to edit_console_order_path(@order.process_id)
+    else
+      raise StandardError, '付款通知更動失敗'
     end
+
+  rescue StandardError => e
+    redirect_to(console_orders_path, alert: "發生錯誤：#{e}")
   end
 
   def dashboard_authorize

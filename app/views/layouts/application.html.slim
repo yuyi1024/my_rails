@@ -25,7 +25,15 @@ html
           = user_role(current_user.role)
           | ！
       .notice #{ notice }
-      .alert #{ alert }
+
+      - if alert.present?
+        javascript:
+          message_notify('danger', '#{alert}');
+      - elsif flash[:success].present?
+        javascript:
+          message_notify('success', '#{flash[:success]}');
+
+        
 
     - if request.path.start_with?('/console')
       = render 'shared/employee_header'

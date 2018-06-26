@@ -31,6 +31,8 @@ class Console::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @orders = @user.orders.order('created_at DESC')
+  rescue StandardError => e
+    redirect_to(console_users_path, alert: "發生錯誤：#{e}")
   end
 
   def update
@@ -39,9 +41,9 @@ class Console::UsersController < ApplicationController
     authorize! :manage_role, @user
 
     if @user.save
-      flash[:notice] = '更新成功'
+      flash[:success] = '更新成功'
     else
-      flash[:notice] = '更新失敗'
+      flash[:alert] = '更新失敗'
     end
     redirect_to console_user_path(@user)
   end

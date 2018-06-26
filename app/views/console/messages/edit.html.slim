@@ -73,7 +73,7 @@ ul.pager
 
         .panel-body
           p 刪除該訊息？
-          - if @message.qanda > 0
+          - if @message.qanda.present? && @message.qanda > 0
             p.remark
               | 此為公開 Q&A ，請先至
               = link_to '【Q&A 管理】', qanda_console_messages_path

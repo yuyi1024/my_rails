@@ -110,14 +110,14 @@ h1.title 後台儀表板
               tr
                 td 
                   - if @product_buy[index].present?
-                    = link_to truncate(@product_buy[index].name, length: 18), product_path(@product_buy[index])
+                    = link_to truncate(Product.find(@product_buy[index].product_id).name, length: 18), product_path(@product_buy[index].product_id)
                     = king(index)
                 td 
                   - if @product_buy[index].present?
                     | #{@product_buy[index].total}
 
                 td 
-                  - if @favorites[index].present?
+                  - if !@favorites[index].nil?
                     = link_to truncate(@favorites[index].product.name, length: 18), product_path(@favorites[index].product)
                     = king(index)
                 td 

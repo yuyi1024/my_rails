@@ -81,10 +81,6 @@ class Order < ApplicationRecord
   def may_status
     @may = []
     @may << ['已付款, 待出貨', 'pay'] if self.may_pay?
-    # @may << ['已出貨', 'ship'] if self.may_ship?
-    # @may << ['已到貨', 'deliver'] if self.may_deliver? && self.logistics_subtype == 'Home'
-    # @may << ['已到店', 'deliver_store'] if self.may_deliver_store?  && self.logistics_subtype == 'CVS'
-    # @may << ['已取貨', 'pick_up'] if self.may_pick_up?
     @may << ['結束交易', 'finish'] if self.may_finish?
     @may << ['取消訂單', 'cancel'] if self.may_cancel?
     @may << ['已退貨', 'return'] if self.may_return?
@@ -93,7 +89,6 @@ class Order < ApplicationRecord
   end
 
   def ecpay_create
-
     total_price = (self.price + self.freight).to_s
     is_collection = ( self.pay_method == 'pickup_and_cash' ? 'Y' : 'N' )
 
@@ -176,7 +171,6 @@ class Order < ApplicationRecord
   end
 
   def ecpay_trade_info
-    
     param = {
     'AllPayLogisticsID' => self.ecpay_logistics_id,
     'PlatformID' => ''
@@ -197,9 +191,7 @@ class Order < ApplicationRecord
       self.shipment_no = hash['ShipmentNo'][0]
       self.save
     end
-
     logistics
-   
   end
 
   include AASM
