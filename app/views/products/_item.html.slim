@@ -4,11 +4,11 @@
       .col-sm-2
         .thumbnail
           = link_to(product_path(product), target: :_blank)
-            img.product_pic src="#{ product_image_present(product) }"
+            img.product_pic src="#{ product_image_present(product) }" title="#{product.name}"
             - if product.offer.present?
               = image_tag('https://s3-ap-northeast-1.amazonaws.com/bawan-rails/assets/images/onsale.gif', class: 'onsale_tag')
           .caption
-            p.product_name 
+            p.product_name title="#{product.name}"
               = link_to(product.name, product_path(product), target: :_blank)
             p.price
               - if product.offer.present?
