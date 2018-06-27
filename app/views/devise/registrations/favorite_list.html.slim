@@ -36,9 +36,13 @@ h1.title 會員中心
                   img src="#{ product_image_present(favorite.product) }" style='width: 55px;'
               td 
                 = link_to(product_path(favorite.product))
-                 | #{ truncate(favorite.product.name, length: 18) }
+                  | #{ truncate(favorite.product.name, length: 18) }
+                - if favorite.product.offer.present?
+                  p （#{favorite.product.offer.message}）
+
               td #{ favorite.product.category.name } > #{ favorite.product.subcategory.name }
-              td NT $ #{ number_with_delimiter(favorite.product.price) }
+              /td NT $ #{ number_with_delimiter(favorite.product.price) }
+              td NT $ #{ number_with_delimiter(calc_price_offer(favorite.product.price, favorite.product.offer_id)) }
               td
                 = link_to(add_carts_path(favorite.product), method: :post, remote: :true, class: 'btn cart')
                       span.glyphicon.glyphicon-shopping-cart

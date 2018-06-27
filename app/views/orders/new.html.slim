@@ -16,12 +16,12 @@ h1.title 訂單結帳
         .panel-body
           table.table
             tr
-              th.col-sm-1 
-              th.col-sm-1 
-              th.col-sm-2 商品名稱
-              th.col-sm-2 單價
-              th.col-sm-2 數量
-              th.col-sm-4 小計
+              th 
+              th 
+              th 商品名稱
+              th 單價
+              th 數量
+              th 小計
             tbody
               - @order_session.items.each_with_index do |item, index|
                 - product = Product.find(item.product_id)
@@ -29,7 +29,7 @@ h1.title 訂單結帳
                   th #{ index+1 }
                   td
                     img src="#{ product_image_present(product) }" width="50px"
-                  td #{ product.name }
+                  td title="#{product.name}" #{ truncate(product.name, length: 25) }
                   td $#{ number_with_delimiter(product.price) }
                   td #{ item.quantity }
                   td 

@@ -104,7 +104,6 @@ class Order < ApplicationRecord
       end
     end
       
-
     b2c_param = {
       'MerchantTradeNo' => self.process_id, 
       'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),

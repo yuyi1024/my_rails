@@ -6,8 +6,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def show
     @user = current_user
     authorize! :manage, @user
-  rescue SandardError => e
-    redirect_to user_order_list_path
+  rescue StandardError => e
+    redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")
   end
 
   # GET /resource/sign_up
@@ -71,21 +71,21 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @action = 'update_failed'
       render 'devise/registrations/registrations.js.erb'
     end
-  rescue SandardError => e
-    redirect_to user_show_path
+  rescue StandardError => e
+    redirect_to(user_show_path, alert: "發生錯誤：#{e}")
   end
 
   def order_list #會員中心訂單列表
     @orders = current_user.orders.order('created_at DESC')
     @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
-  rescue SandardError => e
-    redirect_to user_order_list_path
+  rescue StandardError => e
+    redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")
   end
 
   def favorite_list #會員中心追蹤列表
     @favorites = current_user.favorites
-  rescue SandardError => e
-    redirect_to user_order_list_path
+  rescue StandardError => e
+    redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")
   end
 
   # DELETE /resource

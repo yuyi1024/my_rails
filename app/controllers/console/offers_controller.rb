@@ -23,7 +23,7 @@ class Console::OffersController < Console::DashboardsController
       raise StandardError, '訂單金額不得小於1' if offer_params[:range_price].to_i < 1
     elsif offer_params[:range] == 'product'
       raise StandardError, '商品數量不得小於1' if offer_params[:range_quantity].to_i < 1
-      raise StandardError, '未設定作用商品或分類' elsif offer_params[:range_subcats].nil? && offer_params[:range_products].nil?
+      raise StandardError, '未設定作用商品或分類' if !offer_params[:range_subcats].present? && !offer_params[:range_products].present?
     end
 
     if offer_params[:offer] == 'price'

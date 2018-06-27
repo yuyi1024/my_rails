@@ -10,7 +10,7 @@
     #將 cart session 中的資料存入新產生的 order session，以防結帳後再更動 cart
     if session[Cart::SessionKey_cart]["items"].length > 0
       @whole_offer = whole_store_offer
-      @whole_offer = @whole_offer.id if @whole_offer.present?
+      # @whole_offer = @whole_offer if @whole_offer.present?
 
       @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
       @order_session = Cart.new_order_hash(@cart_session, @whole_offer)
@@ -21,10 +21,10 @@
       @ship_method = 'CVS'
       freight_offer #計算運費
     else
-      raise StandardError, '購物車內尚無商品'
+      # raise StandardError, '購物車內尚無商品'
     end
-  rescue StandardError => e
-    redirect_back(fallback_location: root_path, alert: "#{e}")
+  # rescue StandardError => e
+  #   redirect_back(fallback_location: root_path, alert: "#{e}")
   end
 
   def ship_method #選擇送貨方式
@@ -44,6 +44,7 @@
     @total_price = @order_session.order_total_price
     @offer =  whole_store_offer
     if @offer.present?
+      @offer = Offer.find(@offer)
       @offer_price = @offer.calc_total_price_offer(@total_price)
     else
       @offer_price = @total_price
@@ -165,12 +166,65 @@
 
   def update
     @order = Order.find(params[:id])
+
+    #↓↓↓↓↓愉快的判斷資料格式時間↓↓↓↓↓
+
+    #【收件姓名】字元限制為 10 個字元(最多 5 個中文字、10 個英文字)、不可有空白，若帶有空白系統自動去除
+    r_name = order_params[:receiver_name]
+    r_name.gsub!(/\s/, '') if !r_name.match(/\s/).nil? #有空白則去空白
+
+    if (r_name =~ /\p{han}/).nil? #不含中文
+      raise StandardError, '收件人姓名格式錯誤(最多10個英文字)' if r_name.length > 10
+    else #含中文
+      if !r_name.match(/\p{^han}/).nil? #同時含中文與其他字符
+        raise StandardError, '收件人姓名格式錯誤(最多5個中文字、10個英文字)'
+      else #全中文
+        raise StandardError, '收件人姓名格式錯誤(最多5個中文字)' if r_name.length > 5
+      end
+    end
+
+    #【收件手機】只允許數字、10 碼、09 開頭
+    r_cellphone = order_params[:receiver_cellphone]
+    if r_cellphone.match(/\D/).nil? #不含數字外的字符
+      raise StandardError, '手機格式錯誤(必須為10碼)' if r_cellphone.length != 10
+      raise StandardError, '手機格式錯誤(必須為09開頭)' if r_cellphone.match(/^../)[0] != '09'
+    else
+      raise StandardError, '手機格式錯誤(含錯誤字元)'
+    end
+
+    #【收件信箱】需含@
+    if order_params[:receiver_email].present?
+      r_email = order_params[:receiver_email]
+      raise StandardError, '信箱格式錯誤(需含@字元)' if r_email.match(/@/).nil?
+    end
+      
+    #【收件電話】允許數字+特殊符號；特殊符號僅限()-#
+    if order_params[:receiver_phone].present?
+      r_phone = order_params[:receiver_phone]
+      r_phone.gsub!(/(\()|(\))|(-)|(#)/, '') #去除合法特殊字符
+      raise StandardError, '電話格式錯誤(含錯誤字元)' if !r_phone.match(/\D/).nil? #含數字外的字符
+    end
+
+    #【收件地址】制需大於 6 個字元，且不可超過 60個字元。
+    if order_params[:receiver_address].present?
+      r_address = order_params[:receiver_address]
+      raise StandardError, '地址格式錯誤(需大於6個，且不可超過60個字元)' if !r_address.length.between?(7, 60)
+    end
+
+    #↑↑↑↑↑判斷結束↑↑↑↑↑↑
+
     @order.update(order_params)
     
     if @order.pay_method == 'pickup_and_cash'
       @order.wait_shipment
+    
     elsif @order.pay_method == 'cash_card'
-      @order.paid == 'true' ? @order.wait_shipment : @order.wait_payment
+      if @order.paid == 'true' && @order.may_wait_shipment?
+        @order.wait_shipment
+      else
+        @order.wait_payment if @order.may_wait_payment?
+      end
+    
     elsif @order.pay_method == 'atm'
       @order.wait_payment
     end
@@ -268,8 +322,8 @@
       end
     end
     redirect_to cash_card_orders_path(@order.process_id)
-  rescue StandardError => e
-    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+  # rescue StandardError => e
+  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
   def whole_store_offer #實施中的全館優惠

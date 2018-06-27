@@ -46,13 +46,14 @@ module ApplicationHelper
 
   # 計算每樣商品之單價優惠後的金額
   def calc_price_offer(price, offer_id)
-    offer = Offer.find(offer_id)
-    
-    if offer.range_quantity == 1
-      if offer.offer == 'discount'
-        price = (price * (offer.offer_discount / 100.0)).ceil
-      elsif offer.offer == 'price'
-        price = price - offer.offer_price
+    if !offer_id.nil?
+      offer = Offer.find(offer_id)
+      if offer.range_quantity == 1
+        if offer.offer == 'discount'
+          price = (price * (offer.offer_discount / 100.0)).ceil
+        elsif offer.offer == 'price'
+          price = price - offer.offer_price
+        end
       end
     end
     price
