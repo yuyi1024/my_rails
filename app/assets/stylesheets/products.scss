@@ -186,17 +186,27 @@
       border: 2px #555 solid;
     }
     .caption {
-      p {
+      .product_name{
+        height: 46px;
+        p{
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+
+          word-break:break-all; /*單字強制換行*/
+
+          font-size: 16px;
+          font-weight: bold;
+          margin: 5px 0;
+        }
+      }
+      p.price {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-      }
-      .product_name {
-        font-size: 16px;
-        font-weight: bold;
-        margin: 5px 0;
-      }
-      .price{
+
         font-size: 16px;
       }
       .offer_msg{
