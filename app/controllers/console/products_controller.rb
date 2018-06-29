@@ -36,6 +36,16 @@ class Console::ProductsController < Console::DashboardsController
     raise StandardError, '商品價錢或庫存數量小於 1' if product_params[:price].to_i < 1 || product_params[:quantity].to_i < 1
 
     @product.status = 'off_shelf'
+
+    #若該商品子分類有優惠則套用
+    Offer.where(range: 'product', implement: 'true').each do |offer|
+      if offer.range_subcats.present?
+        arr = offer.range_subcats.split(',')
+        if arr.include?(@product.subcategory_id.to_s)
+          @product.offer_id = offer.id
+        end
+      end
+    end
     
     if @product.save
       flash[:success] = '商品新增成功'

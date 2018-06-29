@@ -99,6 +99,7 @@ h1.title 後台儀表板
             |  熱門商品
         table.table
           tr
+            th #
             th.col-sm-3 購買次數
             th.col-sm-1
             th.col-sm-3 追蹤次數
@@ -108,13 +109,14 @@ h1.title 後台儀表板
           tbody
             - 10.times do |index|
               tr
+                td #{index+1}
                 td 
                   - if @product_buy[index].present?
-                    = link_to truncate(Product.find(@product_buy[index].product_id).name, length: 18), product_path(@product_buy[index].product_id)
+                    = link_to truncate(@product_buy[index].name, length: 18), product_path(@product_buy[index].id)
                     = king(index)
                 td 
                   - if @product_buy[index].present?
-                    | #{@product_buy[index].total}
+                    | #{@product_buy[index].sold}
 
                 td 
                   - if !@favorites[index].nil?

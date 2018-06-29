@@ -14,7 +14,7 @@
                   = link_to(product.name, product_path(product), target: :_blank)
               p.price
                 - if product.offer.present?
-                  - if product.offer.range_quantity == 1
+                  - if product.offer.range_quantity == 1 && product.offer.offer != 'freight'
                     span.original_price $#{ number_with_delimiter(product.price) }
                     span.correct_price  $#{number_with_delimiter(calc_price_offer(product.price, product.offer_id))}
                   - else

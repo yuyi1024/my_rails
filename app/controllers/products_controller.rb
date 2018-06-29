@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   def index
     @products = Product.where(status: 'on_shelf')
-    @cat1s = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id')
+    @cat1s = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id').order('id ASC')
 
     if params[:cat1_field].present?
       cat1 = Category.find_by(name: params[:cat1_field])

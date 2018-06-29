@@ -13,9 +13,10 @@ class Console::DashboardsController < ApplicationController
     @w_order = Order.where(created_at: t.all_week)
     @d_order = Order.where(created_at: t.all_day)
 
-    @product_click = Product.all.order('click_count DESC').limit(10)
-    @product_buy = OrderItem.select("COUNT(order_items.product_id) AS total, order_items.product_id").group('product_id').order('total DESC').limit(10)
-    
+    @product_click = Product.where.not(click_count: 0).order('click_count DESC').limit(10)
+    # @product_buy = OrderItem.select("COUNT(order_items.product_id) AS total, order_items.product_id").group('product_id').order('total DESC').limit(10)
+    @product_buy = Product.where.not(sold: 0).order('sold DESC').limit(10)
+
     Favorite.all.each do |f|
       f.destroy if !f.product.present? || f.product.status == 'off_shelf'
     end
