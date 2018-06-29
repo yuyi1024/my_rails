@@ -42,7 +42,7 @@ ul.pager
         .panel-body
 
           p.remark 拖曳並排序 Q&A 之順序
-          p 【未公開】
+          p 【非公開】
 
           ul#drag_box
             - @qusetions.each do |qusetion|
@@ -53,9 +53,9 @@ ul.pager
 
           p.arrow
             span.glyphicon.glyphicon-chevron-down
-          p 【公開】
 
           ul#sortable
+            span【公開】
             - @qandas.each_with_index do |qanda, index|
               li.list-group-item.list-group-item-success data-id='#{qanda.id}' onclick='dragAnswer();'
                 span.index #{index+1}. 
