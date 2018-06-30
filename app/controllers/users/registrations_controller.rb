@@ -16,9 +16,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    params[:user][:role] = 'member'
+    super
+  end
 
   # GET /resource/edit
   def edit
