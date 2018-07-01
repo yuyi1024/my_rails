@@ -22,5 +22,6 @@ class Console::DashboardsController < ApplicationController
     end
     @favorites = Favorite.select("COUNT(favorites.product_id) AS total, favorites.product_id").group('product_id').order('total DESC').limit(10)
 
+    @quantity_alert_products = Product.where('quantity < quantity_alert')
   end
 end

@@ -1,0 +1,5 @@
+<% if @action == 'search' %>
+  $('.product_list').html("<%= j render partial: 'item' %>");
+  $('.count span').text('<%= @rows %>');
+<% end %>
+

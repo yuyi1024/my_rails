@@ -67,6 +67,7 @@ Rails.application.routes.draw do
         delete :subcat_destroy, path: 'subcat_destroy/:id', as: 'subcat_destroy'
       end
     end
+    resources :warehouses, only: [:index, :new, :create, :edit, :update]
     resources :messages do
       collection do
         get :qanda, path: 'qanda', as: 'qanda'
