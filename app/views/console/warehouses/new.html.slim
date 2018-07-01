@@ -1,5 +1,12 @@
-- @w.each do |w|
+/- @w.each do |w|
   p #{w.room}
   - Warehouse.where(room: w.room).each do |r|
     p xxxxxxx-#{r.shelf}-#{r.row}-#{r.column}
+
+
+- @w.each do |w|
+  p #{w.room}：#{w.shelf}-#{w.row}-#{w.column}
+  /- Warehouse.where(room: w.room).each do |r|
+    p xxxxxxx-#{r.shelf}-#{r.row}-#{r.column}
+
 
