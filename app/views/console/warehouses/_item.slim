@@ -1,0 +1,35 @@
+.panel.panel-default.col-sm-offset-1.col-sm-10
+  table.table
+    tr
+      th 編號
+      th
+      th 商品名稱
+      th 分類
+      th 庫存數量
+      th 預警數量
+      th 倉庫名
+      th 櫃位(貨櫃-行-列)
+      th
+    tbody
+      - @products.each do |product|
+        tr class="#{ 'off_shelf' if product.status == 'off_shelf' }"
+          td #{ product.id }
+          td
+            img src="#{ product_image_present(product) }" style='width:45px;'
+          td #{ truncate(product.name, length: 20) }
+          td #{ product.category.name } > #{ product.subcategory.name }
+          td class="#{ product_quantity_alert(product) }" #{ product.quantity }
+          td #{ product.quantity_alert }
+          td
+            b #{ product.warehouse.room }
+          td
+            b #{ product.warehouse.shelf } - #{ product.warehouse.row } - #{ product.warehouse.column }
+          td
+            = link_to(edit_console_warehouse_path(product.id), target: :_blank)
+              button.btn 編輯
+
+.pages.row
+  - if @action.present?
+    = paginate @products, window: 2, remote: 'true'
+  - else
+    = paginate @products, window: 2

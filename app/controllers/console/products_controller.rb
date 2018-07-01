@@ -7,6 +7,8 @@ class Console::ProductsController < Console::DashboardsController
 
     if params[:search].present?
       @action = 'search'
+      
+      @products = @products.where(id: params[:product_id]) if params[:product_id].present?
       @products = @products.where(category_id: params[:cat_box]) if params[:cat_box].present? && params[:cat_box] != 'all'
       @products = @products.where(subcategory_id: params[:subcat_box]) if params[:subcat_box].present? && params[:subcat_box] != 'all'
       @products = @products.keyword(ApplicationController.keyword_split(['name', 'description'], params[:keyword])) if params[:keyword].present?
@@ -32,10 +34,16 @@ class Console::ProductsController < Console::DashboardsController
   end
 
   def create
-    @product = Product.new(product_params)
+    @product = Product.create(product_params)
     raise StandardError, '商品價錢或庫存數量小於 1' if product_params[:price].to_i < 1 || product_params[:quantity].to_i < 1
 
     @product.status = 'off_shelf'
+
+
+    warehouse = Warehouse.where(room: warehouse_params[:warehouse][:room], shelf: warehouse_params[:warehouse][:shelf], row: warehouse_params[:warehouse][:row].to_i, column: warehouse_params[:warehouse][:column].to_i).first
+    warehouse ||= Warehouse.create(warehouse_params[:warehouse])
+    @product.warehouse = warehouse
+
 
     #若該商品子分類有優惠則套用
     Offer.where(range: 'product', implement: 'true').each do |offer|
@@ -51,7 +59,7 @@ class Console::ProductsController < Console::DashboardsController
       flash[:success] = '商品新增成功'
       redirect_to edit_console_product_path(@product)
     else
-      raise StandardError
+      raise StandardError, '儲存失敗'
     end
   rescue StandardError => e
     cat_to_select
@@ -62,6 +70,7 @@ class Console::ProductsController < Console::DashboardsController
 
   def edit
     @product = Product.find(params[:id])
+    @warehouse = @product.warehouse
     cat_to_select
     subcat_to_select(@product.category_id)
     @product_offers = Offer.where(range: 'product')
@@ -70,7 +79,6 @@ class Console::ProductsController < Console::DashboardsController
   end
 
   def update
-    raise StandardError, '商品價錢或庫存數量小於 1' if product_params[:price].to_i < 1 || product_params[:quantity].to_i < 1
     @product = Product.find(params[:id])
     @product.update(product_params)
 
@@ -148,6 +156,10 @@ class Console::ProductsController < Console::DashboardsController
   private
 
   def product_params
-    params.require(:product).permit!
+    params.require(:product).permit(:name, :price, :quantity, :quantity_alert, :category_id, :subcategory_id, :description)
+  end
+
+  def warehouse_params
+    params.require(:product).permit(warehouse: [:room, :shelf, :row, :column])
   end
 end

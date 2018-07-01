@@ -6,15 +6,20 @@ h1.title 商品列表
   .filter
     = form_tag console_products_path, method: :get, :remote => :true, id: 'search_filter'
       .row
-        .col-sm-3.col-sm-offset-1
+        .col-sm-2.col-sm-offset-1
           label 主分類
           br
           = select_tag "cat_box", options_for_select(@categories.insert(0, ["所有主分類", 'all'])), onchange:"cat_select('index');", class: 'col-sm-10'
 
-        .col-sm-3
+        .col-sm-2
           label 次分類
           br
           = select_tag "subcat_box", options_for_select([['所有次分類', 'all']]), class: 'col-sm-10'
+
+        .col-sm-2
+          label 商品編號
+          .input-group.col-sm-10
+            = number_field_tag :product_id, nil, class:"form-control"
 
         .col-sm-3
           label 商品名稱/商品敘述

@@ -1,0 +1,58 @@
+h1.title 庫存商品列表
+
+#console_warehouse.console_page.container
+  .filter
+    = form_tag console_warehouses_path, method: :get, remote: 'true', id: 'search_filter'
+      .row
+        .col-sm-1.col-sm-offset-1
+          label 商品編號
+          .input-group.col-sm-10
+            = number_field_tag :product_id, nil, class:"form-control"
+
+        .col-sm-2
+          label 商品名稱/商品敘述
+          .input-group.col-sm-10
+            = text_field_tag :keyword, nil, class:"form-control", placeholder:"關鍵字"
+
+        .col-sm-2
+          label 倉庫名
+          br
+          = select_tag "room", options_for_select(@rooms.insert(0, ["所有倉庫", 'all'])), class: 'col-sm-10'
+
+        .col-sm-1
+          label 貨櫃編號
+          .input-group.col-sm-10
+            = text_field_tag :shelf, nil, class:"form-control"
+
+        .col-sm-1
+          label 行
+          .input-group.col-sm-10
+            = number_field_tag :row, nil, class:"form-control"
+
+        .col-sm-1
+          label 列
+          .input-group.col-sm-10
+            = number_field_tag :column, nil, class:"form-control"
+
+        .col-sm-2
+          label 庫存狀況
+          br
+          = radio_button_tag 'quantity_status[]', 'shortage', nil, id:"quantity_status_shortage"
+          label for="quantity_status_shortage" 庫存不足
+
+          = radio_button_tag 'quantity_status[]', 'enough', nil, id:"quantity_status_enough"
+          label for="quantity_status_enough" 庫存足夠
+
+
+      .row
+        = hidden_field_tag :search, 'true'
+        = hidden_field_tag :sort_item, 'quantity'
+        = hidden_field_tag :sort_order, 'ASC'
+
+        button.btn 查詢
+        button.btn onclick='clearField();' 清除
+
+  = render 'console/dashboards/sort_by', option: [ ["庫存數量", 'quantity'], ["新增日期", 'created_at'], ["價錢", 'price'], ["已賣數量", 'sold'] ], order: 'asc', var: '件商品'
+
+  .product_list.row
+    = render 'item'

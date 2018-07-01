@@ -39,13 +39,16 @@ function clearField(){
   	
   	if($type == 'checkbox' || $type == 'radio'){
   		$(this).prop("checked", false);
-  	}else if($type == 'text' || $type == 'date'){
+  	}else if($type == 'text' || $type == 'date' || $type == 'number'){
   		$(this).val('');
   	}
   });
   if(document.getElementById("cat_box") != null){
   	document.getElementById("cat_box").selectedIndex = "0";
     $('#subcat_box').html("<option value='all'>所有次分類</option>");
+  }
+  if(document.getElementById("room") != null){
+    document.getElementById("room").selectedIndex = "0";
   }
   $('#search_filter').submit();
 }

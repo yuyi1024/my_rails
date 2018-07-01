@@ -1,0 +1,39 @@
+h1.title 編輯商品庫存
+
+ul.pager
+  li.previous
+    = link_to console_warehouses_path
+      span &larr; 回商品庫存列表
+
+#console_product.console_page.container
+  .row
+    .data_form.col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 修改商品資料
+        = form_for @product, url: console_warehouse_path, method: 'patch' do |f|
+          .row
+            .remark #{'庫存不足' if product_quantity_alert(@product) == 'quantity_red'}
+          .row
+            = f.label :quantity, '庫存數量', class: 'col-sm-2'
+            = f.number_field :quantity, class: 'col-sm-8', required: "required"
+          .row
+            = f.label :quantity_alert, '庫存提醒數量', class: 'col-sm-2'
+            = f.number_field :quantity_alert, class: 'col-sm-8', required: "required"
+        
+          = f.fields_for @warehouse do |c|
+            .row
+              = c.label :room, '倉庫名稱', class: 'col-sm-2'
+              = c.text_field :room, class: 'col-sm-8'
+
+            .row
+              = c.label :shelf, '倉庫櫃位', class: 'col-sm-2'
+              = c.text_field :shelf, placeholder: '貨櫃編號', class: 'col-sm-2'
+              .col-sm-1.dash  — 
+              = c.number_field :row, placeholder: '行', class: 'col-sm-2'
+              .col-sm-1.dash  — 
+              = c.number_field :column, placeholder: '列', class: 'col-sm-2'
+
+
+          = f.submit '更新', class: 'btn submit'
+

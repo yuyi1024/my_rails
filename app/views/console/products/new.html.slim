@@ -15,4 +15,46 @@ ul.pager
         .panel-body
           
           = form_for @product, url: console_products_path, method: 'post' do |f|
-            = render 'product_form', f: f, action: 'new'
+            .row
+              = f.label :name, '商品名稱', class: 'col-sm-2'
+              = f.text_field :name, class: 'col-sm-8', required: "required"
+            .row
+              = f.label :price, '價錢', class: 'col-sm-2'
+              = f.number_field :price, class: 'col-sm-8', required: "required"
+            .row
+              = f.label :quantity, '庫存數量', class: 'col-sm-2'
+              = f.number_field :quantity, class: 'col-sm-8', required: "required"
+            .row
+              = f.label :quantity_alert, '庫存提醒數量', class: 'col-sm-2'
+              = f.number_field :quantity_alert, class: 'col-sm-8', required: "required", value:'20'
+
+            #cats_select_box
+              .row
+                = f.label :category, '主分類', class: 'col-sm-2'
+                = select_tag "cat_box", options_for_select(@categories), onchange:"cat_select('new');", class: 'col-sm-8'
+                = f.hidden_field :category_id, value: @categories[0][1]
+
+              .row
+                = f.label :subcategory, '次分類', class: 'col-sm-2'
+                = select_tag "subcat_box", options_for_select(@subcategories), onchange:"subcat_select();", class: 'col-sm-8'
+                = f.hidden_field :subcategory_id, value: @subcategories[0][1]
+
+            = f.fields_for :warehouse do |c|
+              .row
+                = c.label :room, '倉庫名稱', class: 'col-sm-2'
+                = c.text_field :room, class: 'col-sm-8'
+
+              .row
+                = c.label :shelf, '倉庫櫃位', class: 'col-sm-2'
+                = c.text_field :shelf, placeholder: '貨櫃編號', class: 'col-sm-2'
+                .col-sm-1.dash  — 
+                = c.number_field :row, placeholder: '行', class: 'col-sm-2'
+                .col-sm-1.dash  — 
+                = c.number_field :column, placeholder: '列', class: 'col-sm-2'
+
+            .row
+              .field
+                = f.label :description, '商品敘述'
+                = f.text_area :description, 'id': :summernote
+
+            = f.submit '新增', class: 'btn submit'

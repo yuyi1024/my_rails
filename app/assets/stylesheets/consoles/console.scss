@@ -13,7 +13,7 @@
   }
   .filter{
     .row{
-      margin-bottom: 30px;
+      margin-bottom: 50px;
       &:last-child{
         text-align: center;
         button{
@@ -78,6 +78,10 @@
       display: none;
     }
   }
+  .quantity_red{
+    font-weight: bold;
+    color: red;
+  }
 }
 
 #photo_crop{
@@ -93,6 +97,10 @@
     font-size: 25px;
     margin-bottom: 20px;
     color: #EC7700;
+  }
+  .panel-body{
+    height: 300px;
+    overflow-y: scroll;
   }
   .panel-footer{
     text-align: right;
