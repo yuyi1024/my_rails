@@ -132,7 +132,7 @@
 
     args = {
       'MerchantTradeNo' => order.process_id,
-      'ServerReplyURL' => 'http://localhost:3001/orders/from_map',
+      'ServerReplyURL' => 'https://bawan-store-0225.herokuapp.com/orders/from_map',
       'LogisticsType' => 'CVS',
       'LogisticsSubType' => params[:st_type],
       'IsCollection' => pay,  

@@ -126,7 +126,7 @@ class Order < ApplicationRecord
       'ReceiverPhone' => (self.receiver_phone.blank? ? '' : self.receiver_phone), #Home與手機擇一
       'ReceiverEmail' => (self.receiver_email.blank? ? '' : self.receiver_email), 
       
-      'ServerReplyURL' => 'http://localhost:3001',
+      'ServerReplyURL' => 'https://bawan-store-0225.herokuapp.com/',
       'ClientReplyURL' => '',  
       'LogisticsC2CReplyURL' => '',
       'Remark' => '',
