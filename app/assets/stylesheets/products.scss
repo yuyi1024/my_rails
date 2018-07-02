@@ -19,6 +19,13 @@
       color: $color_dark_blue;
     }
   }
+  #banner{
+    img{
+      width: 60%;
+      margin: 0 auto;
+      display: block;
+    }
+  }
   #search_form {
     height: 60px;
   }
