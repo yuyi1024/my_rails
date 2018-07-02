@@ -229,6 +229,9 @@
 
 #product_show {
   .product_detail {
+    h4{
+      word-break:break-all;
+    }
     .product_pic {
       margin: 60px 0;
       width: 250px;
@@ -268,10 +271,10 @@
       margin-bottom: 20px;
     }
     .offer {
-      border-left: 2px solid #aaa;
-      line-height: 30px;
+      padding: 0;
       p{
         margin: 10px 0;
+        color: #385F71;
       }
     }
   }
