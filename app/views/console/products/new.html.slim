@@ -16,45 +16,71 @@ ul.pager
           
           = form_for @product, url: console_products_path, method: 'post' do |f|
             .row
-              = f.label :name, '商品名稱', class: 'col-sm-2'
+              = f.label :name, class: 'col-sm-2'
+                | 商品名稱
+                span.required  *
               = f.text_field :name, class: 'col-sm-8', required: "required"
             .row
-              = f.label :price, '價錢', class: 'col-sm-2'
+              = f.label :price, class: 'col-sm-2'
+                | 價錢
+                span.required  *
               = f.number_field :price, class: 'col-sm-8', required: "required"
-            .row
-              = f.label :quantity, '庫存數量', class: 'col-sm-2'
-              = f.number_field :quantity, class: 'col-sm-8', required: "required"
-            .row
-              = f.label :quantity_alert, '庫存提醒數量', class: 'col-sm-2'
-              = f.number_field :quantity_alert, class: 'col-sm-8', required: "required", value:'20'
 
             #cats_select_box
               .row
-                = f.label :category, '主分類', class: 'col-sm-2'
+                = f.label :category, class: 'col-sm-2'
+                  | 主分類
+                  span.required  *
                 = select_tag "cat_box", options_for_select(@categories), onchange:"cat_select('new');", class: 'col-sm-8'
                 = f.hidden_field :category_id, value: @categories[0][1]
 
               .row
-                = f.label :subcategory, '次分類', class: 'col-sm-2'
+                = f.label :subcategory, class: 'col-sm-2'
+                  | 次分類
+                  span.required  *
                 = select_tag "subcat_box", options_for_select(@subcategories), onchange:"subcat_select();", class: 'col-sm-8'
                 = f.hidden_field :subcategory_id, value: @subcategories[0][1]
 
+            hr
+
+            .row
+              = f.label :quantity, class: 'col-sm-2'
+                | 庫存數量
+                span.required  *
+              = f.number_field :quantity, class: 'col-sm-8', required: "required"
+            .row
+              = f.label :quantity_alert, class: 'col-sm-2'
+                | 提醒數量
+                span.required  *
+              = f.number_field :quantity_alert, class: 'col-sm-8', required: "required", value:'20'
+
             = f.fields_for :warehouse do |c|
               .row
-                = c.label :room, '倉庫名稱', class: 'col-sm-2'
-                = c.text_field :room, class: 'col-sm-8'
+                = c.label :room, class: 'col-sm-2'
+                  | 倉庫名稱
+                  span.required  *
+                = c.text_field :room, class: 'col-sm-8', required: "required"
 
               .row
-                = c.label :shelf, '倉庫櫃位', class: 'col-sm-2'
-                = c.text_field :shelf, placeholder: '貨櫃編號', class: 'col-sm-2'
+                = c.label :shelf, class: 'col-sm-2'
+                  | 倉庫櫃位
+                  span.required  *
+                = c.text_field :shelf, placeholder: '貨櫃編號', class: 'col-sm-2', required: "required"
                 .col-sm-1.dash  — 
-                = c.number_field :row, placeholder: '行', class: 'col-sm-2'
+                = c.number_field :row, placeholder: '行', class: 'col-sm-2', required: "required"
                 .col-sm-1.dash  — 
-                = c.number_field :column, placeholder: '列', class: 'col-sm-2'
+                = c.number_field :column, placeholder: '列', class: 'col-sm-2', required: "required"
+
+            hr
+
+            .row
+              = f.label :summary, '商品簡介', class: 'col-sm-2'
+              = f.text_area :summary, class: 'col-sm-8'
+              i.col-sm-8.col-sm-offset-2 不建議超過60字或3行
 
             .row
               .field
-                = f.label :description, '商品敘述'
+                = f.label :description, '商品詳述'
                 = f.text_area :description, 'id': :summernote
 
             = f.submit '新增', class: 'btn submit'

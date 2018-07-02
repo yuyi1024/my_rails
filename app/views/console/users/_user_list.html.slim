@@ -20,7 +20,7 @@
           td #{ user.current_sign_in_at.strftime("%Y/%m/%d") if user.current_sign_in_at.present? }
           td
             = link_to(console_user_path(user.id), target: :_blank)
-              button.btn 詳細
+              button.btn.list_btn 詳細
 
 .pages.row
   - if @action.present?

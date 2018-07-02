@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   resources :products, only: [:index, :show] do
     collection do
+      get :index_with_params, path: 'index_with_params/:cat/:subcat', as: 'index_with_params'
       post :heart, path: 'heart/:id', as: 'heart'
       get :user_add, path: 'user_add', as: 'user_add'
     end

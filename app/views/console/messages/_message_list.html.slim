@@ -17,7 +17,7 @@
           td #{ message.qanda.blank? ? '用戶訊息' : 'Q&A' }
           td
             = link_to(edit_console_message_path(message), target: :_blank)
-              button.btn 詳細
+              button.btn.list_btn 詳細
 
 - if @action.present?
   .pages.row

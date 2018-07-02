@@ -75,4 +75,16 @@ class ProductsController < ApplicationController
     @action = 'heart'
     render 'products/index.js.erb'
   end
+
+  def index_with_params
+    cats = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id').order('id ASC')
+    cat = cats.index(cats.find(params[:cat]))
+    subcat = params[:subcat]
+    redirect_to root_path(cat: cat, subcat: subcat)
+  end
+
+
+
+
+
 end

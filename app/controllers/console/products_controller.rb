@@ -156,7 +156,7 @@ class Console::ProductsController < Console::DashboardsController
   private
 
   def product_params
-    params.require(:product).permit(:name, :price, :quantity, :quantity_alert, :category_id, :subcategory_id, :description)
+    params.require(:product).permit(:name, :price, :quantity, :quantity_alert, :category_id, :subcategory_id, :summary, :description)
   end
 
   def warehouse_params

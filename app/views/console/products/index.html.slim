@@ -17,7 +17,7 @@ h1.title 商品列表
           = select_tag "subcat_box", options_for_select([['所有次分類', 'all']]), class: 'col-sm-10'
 
         .col-sm-2
-          label 商品編號
+          label #商品編號
           .input-group.col-sm-10
             = number_field_tag :product_id, nil, class:"form-control"
 

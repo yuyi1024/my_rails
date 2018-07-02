@@ -19,6 +19,7 @@ h1.title 倉庫圖檢視
                 tr
                   - _col.times do |c|
                     td 
+                      span #{r+1}-#{c+1}
                       - pros = _shelf.where(row: r+1, column: c+1)
                       - if pros.present?
                         - pros.first.products.each do |pro|

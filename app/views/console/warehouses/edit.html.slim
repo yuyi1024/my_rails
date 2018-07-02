@@ -15,24 +15,32 @@ ul.pager
           .row
             .remark #{'庫存不足' if product_quantity_alert(@product) == 'quantity_red'}
           .row
-            = f.label :quantity, '庫存數量', class: 'col-sm-2'
+            = f.label :quantity, class: 'col-sm-2'
+              | 庫存數量
+              span.required  *
             = f.number_field :quantity, class: 'col-sm-8', required: "required"
           .row
-            = f.label :quantity_alert, '庫存提醒數量', class: 'col-sm-2'
+            = f.label :quantity_alert, class: 'col-sm-2'
+              | 提醒數量
+              span.required  *
             = f.number_field :quantity_alert, class: 'col-sm-8', required: "required"
         
           = f.fields_for @warehouse do |c|
             .row
-              = c.label :room, '倉庫名稱', class: 'col-sm-2'
+              = c.label :room, class: 'col-sm-2'
+                | 倉庫名稱
+                span.required  *
               = c.text_field :room, class: 'col-sm-8'
 
             .row
-              = c.label :shelf, '倉庫櫃位', class: 'col-sm-2'
-              = c.text_field :shelf, placeholder: '貨櫃編號', class: 'col-sm-2'
+              = c.label :shelf, class: 'col-sm-2'
+                | 倉庫櫃位
+                span.required  *
+              = c.text_field :shelf, placeholder: '貨櫃編號', class: 'col-sm-2', required: "required"
               .col-sm-1.dash  — 
-              = c.number_field :row, placeholder: '行', class: 'col-sm-2'
+              = c.number_field :row, placeholder: '行', class: 'col-sm-2', required: "required"
               .col-sm-1.dash  — 
-              = c.number_field :column, placeholder: '列', class: 'col-sm-2'
+              = c.number_field :column, placeholder: '列', class: 'col-sm-2', required: "required"
 
 
           = f.submit '更新', class: 'btn submit'
