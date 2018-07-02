@@ -1,0 +1,40 @@
+@import 'app';
+
+#console_warehouse{
+
+  .room_box{
+    h3{
+      text-align: center;
+    }
+    .shelf_box{
+      margin: 25px auto;
+      display: table;
+      
+      table{
+        tr{
+          
+          td{
+            width: 125px;
+            height: 100px;
+            max-width: 125px;
+            max-height: 100px;
+            border: 1px #000 solid;
+            overflow-y: scroll;
+            p{
+              background-color: #d9d;
+              margin: 2px 0;
+              padding: 0 4px;
+              border-radius: 4px;
+
+              width: 100%;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+      }
+    }
+  }  
+
+}

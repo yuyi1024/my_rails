@@ -58,8 +58,7 @@ class Console::WarehousesController < Console::DashboardsController
   end
 
   def new
-    # @w = Warehouse.select('DISTINCT room')
-    @w = Warehouse.all.order('room ASC').order('shelf ASC').order('row ASC')
+    @rooms = Warehouse.all.group_by(&:room)  
   end
 
   def kaminari_page #分頁
