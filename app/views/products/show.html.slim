@@ -2,7 +2,12 @@ h1.title 商品詳細
 
 #product_show.product_page.container
   .row.product_detail
-    p.col-sm-offset-2 全部商品 > #{ @product.category.name } > #{ @product.subcategory.name }
+    p.col-sm-offset-2
+      = link_to '全部商品', root_path
+      |  > 
+      = link_to @product.category.name, index_with_params_products_path(@product.category.id, 0)
+      |  > 
+      = link_to @product.subcategory.name, index_with_params_products_path(@product.category.id, @product.subcategory.id)
     .col-sm-2.col-sm-offset-3
       img.product_pic src="#{ product_image_present(@product) }"
     .col-sm-3.col-sm-offset-1
@@ -22,6 +27,7 @@ h1.title 商品詳細
       p 庫存： #{ @product.quantity }
       p 已賣數量： #{ @product.sold }
 
+      .summary #{ raw @product.summary.gsub(/\n/, '<br/>') }
 
       = form_for @product, :url => add_carts_path(@product), method: 'post', remote: :true do |f|
         .input-group.col-sm-10.input-quantity

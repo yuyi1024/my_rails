@@ -7,7 +7,7 @@ h1.title 庫存商品列表
     = form_tag console_warehouses_path, method: :get, remote: 'true', id: 'search_filter'
       .row
         .col-sm-1.col-sm-offset-1
-          label 商品編號
+          label #商品編號
           .input-group.col-sm-10
             = number_field_tag :product_id, nil, class:"form-control"
 

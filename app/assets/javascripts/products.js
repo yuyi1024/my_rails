@@ -1,6 +1,9 @@
 $(document).on('turbolinks:load', function() {
-  var path = window.location.pathname;
-  if (path == '/' || (path.match(/products/g) && path.match(/console/g) == null)){
+  
+  // var path = window.location.pathname;
+  var location = window.location;
+
+  if (location.pathname == '/' || (location.pathname.match(/products/g) && location.pathname.match(/console/g) == null)){
 
     var price_bottom = 0;
     var price_up = 0;
@@ -34,6 +37,22 @@ $(document).on('turbolinks:load', function() {
       }
       $('.input-quantity input').val(q);
     });
+
+
+    //如果有分類params則找出指定分類
+    if(location.search != ''){
+      url = new URL(location.href);
+      cat = url.searchParams.get("cat");
+      subcat = url.searchParams.get("subcat");
+      $('#selector .cat').click();
+      $('#cat1-box-' + cat).click();
+      if(subcat != '0'){
+        setTimeout(function(){
+          $('#cat2-box-'+subcat).click();
+        },1000);
+      }
+    }
+
   }
 });
 

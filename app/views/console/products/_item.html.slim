@@ -13,7 +13,7 @@
     tbody
       - @products.each do |product|
         tr class="#{ 'off_shelf' if product.status == 'off_shelf' }"
-          td #{ product.id }
+          td ##{ product.id }
           td
             img src="#{ product_image_present(product) }" style='width:45px;'
           td #{ product.name }
@@ -24,7 +24,7 @@
           td #{ product.status_cn }
           td
             = link_to(edit_console_product_path(product.id), target: :_blank)
-              button.btn 編輯
+              button.btn.list_btn 編輯
 
 .pages.row
   - if @action.present?

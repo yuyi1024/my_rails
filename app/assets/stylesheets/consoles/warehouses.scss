@@ -12,7 +12,6 @@
       
       table{
         tr{
-          
           td{
             width: 125px;
             height: 100px;
@@ -20,10 +19,17 @@
             max-height: 100px;
             border: 1px #000 solid;
             overflow-y: scroll;
+            padding-top: 20px;
+            position: relative;
+            span{
+              position: absolute;
+              top: 0;
+              color: #999;
+            }
             p{
-              background-color: #d9d;
+              background-color: #F6E7D2;
               margin: 2px 0;
-              padding: 0 4px;
+              padding: 2px 4px;
               border-radius: 4px;
 
               width: 100%;
