@@ -1,4 +1,13 @@
 #product_index.product_page
+  #banner
+    div
+      = image_tag('https://s3-ap-northeast-1.amazonaws.com/bawan-rails/uploads/banner/banner-1.jpg')
+    div
+      = image_tag('https://s3-ap-northeast-1.amazonaws.com/bawan-rails/uploads/banner/banner-2.jpg')
+    div
+      = image_tag('https://s3-ap-northeast-1.amazonaws.com/bawan-rails/uploads/banner/banner-3.jpg')
+
+  
   - if @offer.present?
     .row.horn
       h3

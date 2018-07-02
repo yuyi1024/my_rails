@@ -5,6 +5,14 @@ $(document).on('turbolinks:load', function() {
 
   if (location.pathname == '/' || (location.pathname.match(/products/g) && location.pathname.match(/console/g) == null)){
 
+    $('#banner').slick({
+      autoplay: true,
+      autoplaySpeed: 2000,
+      arrows: false,
+      dots: true,
+      pauseOnHover: false,
+    });
+
     var price_bottom = 0;
     var price_up = 0;
 
