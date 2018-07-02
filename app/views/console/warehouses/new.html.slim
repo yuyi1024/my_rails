@@ -1,12 +1,26 @@
-/- @w.each do |w|
-  p #{w.room}
-  - Warehouse.where(room: w.room).each do |r|
-    p xxxxxxx-#{r.shelf}-#{r.row}-#{r.column}
+h1.title 倉庫圖檢視
 
-
-- @w.each do |w|
-  p #{w.room}：#{w.shelf}-#{w.row}-#{w.column}
-  /- Warehouse.where(room: w.room).each do |r|
-    p xxxxxxx-#{r.shelf}-#{r.row}-#{r.column}
-
+#console_warehouse.console_page.container
+    - @rooms.each do |room|
+      .row.room_box
+        h3 
+          span.glyphicon.glyphicon-align-justify
+          |  #{room[0]}
+        
+        - room[1].group_by(&:shelf).each do |shelf|
+          - _shelf = Warehouse.where(room: room[0], shelf: shelf[0])
+          - _row = _shelf.maximum(:row)
+          - _col = _shelf.maximum(:column)
+          .shelf_box
+            h4 《#{shelf[0]}櫃》  #{_row}行 * #{_col}列
+            
+            table
+              - _row.times do |r|
+                tr
+                  - _col.times do |c|
+                    td 
+                      - pros = _shelf.where(row: r+1, column: c+1)
+                      - if pros.present?
+                        - pros.first.products.each do |pro|
+                          p title="#{pro.name}" ##{pro.id}-#{pro.name}
 

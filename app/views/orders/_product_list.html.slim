@@ -10,12 +10,14 @@
 
     table.table
       tr
-        th.col-sm-1 
-        th.col-sm-1 
-        th.col-sm-2 商品名稱
-        th.col-sm-2 單價
-        th.col-sm-2 數量
-        th.col-sm-4 小計
+        th 
+        th 
+        th 商品名稱
+        th 單價
+        th 數量
+        th 小計
+        - if console == 'Y'
+          th 倉庫櫃位
       tbody
         - sum = 0
         - @order.order_items.each_with_index do |item, index|
@@ -25,13 +27,18 @@
             th #{ index+1 }
             td
               img src="#{ product_image_present(product) }" width="50px"
-            td #{ product.name }
+            td #{ truncate(product.name, length: 20) }
             td $#{ number_with_delimiter(product.price) }
             td #{ item.quantity }
             td 
               | $#{ number_with_delimiter(item.price) }
               - if !item.offer_id.nil?
                 | （#{Offer.find(item.offer_id).message}）
+            - if console == 'Y'
+              td 
+                | #{product.warehouse.room}
+                br
+                | (#{product.warehouse.shelf}-#{product.warehouse.row}-#{product.warehouse.column})
     .panel-footer
       - if @order.offer.present?
         p 優惠： 【#{@order.offer.message}】
