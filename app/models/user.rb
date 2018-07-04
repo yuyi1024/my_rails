@@ -8,7 +8,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  devise :omniauthable, omniauth_providers: %i[google_oauth2 facebook]
+  devise :omniauthable, omniauth_providers: %i[google_oauth2]
+  # devise :omniauthable, omniauth_providers: %i[google_oauth2 facebook]
 
   # def self.from_omniauth_google(access_token)
   #   data = access_token.info

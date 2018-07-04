@@ -21,5 +21,11 @@
 
 - if devise_mapping.omniauthable?
   - resource_class.omniauth_providers.each do |provider|
-    = link_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider)
+    - if provider == :google_oauth2
+      - provider_name = 'Google'
+    - elsif provider == :facebook
+      - provider_name = 'Facebook'
+    = link_to "以 #{provider_name} 帳戶登入", omniauth_authorize_path(resource_name, provider)
+    /= link_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider)
   br
+
