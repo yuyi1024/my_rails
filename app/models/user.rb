@@ -38,7 +38,6 @@ class User < ApplicationRecord
       user.provider = auth.provider
       user.uid = auth.uid
       user.skip_confirmation!
-      vvv
     end
   end
 
