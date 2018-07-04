@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180704122418) do
+ActiveRecord::Schema.define(version: 20180704165054) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(version: 20180704122418) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
-    t.string "role"
+    t.string "role", default: "member"
     t.string "true_name"
     t.string "address"
     t.string "phone"

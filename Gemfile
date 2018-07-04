@@ -46,7 +46,8 @@ gem 'jquery-rails'
 gem 'devise'
 # gem 'settingslogic'
 # gem 'omniauth'
-# gem 'omniauth-facebook'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
 gem 'cancancan', '~> 2.0'
 
 gem 'aasm', '~> 4.12'
@@ -71,7 +72,6 @@ gem 'rails-assets-jcrop', source: 'https://rails-assets.org'
 #gem "papercrop"
 gem "fog-aws"
 # gem 'google-api-client'
-gem 'omniauth-google-oauth2'
 # gem "mime-types"
 
 #paypal
