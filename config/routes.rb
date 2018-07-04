@@ -4,7 +4,8 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    omniauth_callbacks: 'users/omniauth_callbacks'
   }
 
   devise_scope :user do
@@ -19,7 +20,6 @@ Rails.application.routes.draw do
     collection do
       get :index_with_params, path: 'index_with_params/:cat/:subcat', as: 'index_with_params'
       post :heart, path: 'heart/:id', as: 'heart'
-      get :user_add, path: 'user_add', as: 'user_add'
     end
   end
 

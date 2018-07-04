@@ -71,6 +71,7 @@ gem 'rails-assets-jcrop', source: 'https://rails-assets.org'
 #gem "papercrop"
 gem "fog-aws"
 # gem 'google-api-client'
+gem 'omniauth-google-oauth2'
 # gem "mime-types"
 
 #paypal
