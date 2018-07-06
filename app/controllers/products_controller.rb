@@ -57,14 +57,15 @@ class ProductsController < ApplicationController
 
   def heart
     favorite = current_user.favorites
-    @product_id = params[:id]
+    # @product_id = params[:id]
+    @product = Product.find(params[:id])
 
-    if favorite.find_by(product_id: @product_id).present?
-      favorite.find_by(product_id: @product_id).destroy
+    if favorite.find_by(product_id: @product.id).present?
+      favorite.find_by(product_id: @product.id).destroy
       @heart = 'remove'
     else
       if favorite.length <= 10
-        favorite = current_user.favorites.new(product_id: @product_id) 
+        favorite = current_user.favorites.new(product_id: @product.id) 
         favorite.save
         @heart = 'add'
       else

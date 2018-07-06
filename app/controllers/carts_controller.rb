@@ -4,12 +4,13 @@ class CartsController < ApplicationController
 
   def add
     @carts = Cart.from_hash(session[Cart::SessionKey_cart])
+    
+    #params[:product]：加購物車時帶有數量參數 / params[:id]：加購物車時未帶數量參數，預設1
     params[:product].nil? ? quantity = 1 : quantity = params[:product][:quantity].to_i
-    # @carts.add_item(params[:id] ,quantity, Product.find(params[:id]).price)
     @carts.add_item(params[:id] ,quantity, nil, nil)
     session[Cart::SessionKey_cart] = @carts.to_hash
 
-    @add_item = Product.find(params[:id]).name
+    @product = Product.find(params[:id])
     cart_to_array
 
     @action = 'add'

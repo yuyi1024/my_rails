@@ -1,21 +1,28 @@
 <% if @action == 'add' %>
-	$('.items').html("<%= j render partial: 'cart_item' %>");
-	$('.cart_number').text('<%= @cart_length %>');
+  $('.items').html("<%= j render partial: 'cart_item' %>");
+  $('.cart_number').text('<%= @cart_length %>');
 
-	$.notify({
-		icon: 'glyphicon glyphicon-shopping-cart',
-		message: '已將【<%= @add_item %>】加入購物車！',
-	},{
-		type: 'success',
-	});
+  $.notify({
+    icon: 'glyphicon glyphicon-shopping-cart',
+    message: '已將【<%= @product.name %>】加入購物車！',
+  },{
+    type: 'success',
+  });
+
+  fbq('track', 'AddToCart', {
+    content_ids: "<%= @product.id %>",
+    content_name: "<%= @product.name %>",
+    content_category: "<%= @product.category.name %>",
+    content_type: "product",
+  });
 
 <% elsif @action == 'change' %>
-	$('.items').html("<%= j render partial: 'cart_item' %>");
+  $('.items').html("<%= j render partial: 'cart_item' %>");
 
 <% elsif @action == 'destroy' %>
-	$('.items').html("<%= j render partial: 'cart_item' %>");
-	$('.cart_number').text('<%= @cart_length %>');
-	
+  $('.items').html("<%= j render partial: 'cart_item' %>");
+  $('.cart_number').text('<%= @cart_length %>');
+  
 <% end %>
 
 

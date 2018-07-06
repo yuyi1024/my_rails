@@ -58,11 +58,10 @@ h1.title 商品詳細
         = raw @product.description
 
 
-
-
-
-
-
-
-
-
+javascript:
+  fbq('track', 'ViewContent', {
+    content_ids: "#{@product.id}",
+    content_name: "#{@product.name}",
+    content_category: "#{@product.category.name}",
+    content_type: "product",
+  });

@@ -1,18 +1,24 @@
 <% if @action == 'index' %>
-
   <% if @cat2s.present? && !@cat2_click.present? %>
     $('#cat2').html("<%= j render partial: 'result', locals: { cat2s: @cat2s } %>");
   <% end %>
 
-
   $('#item').html("<%= j render partial: 'item', locals: { products: @products } %>");
 
 <% elsif @action == 'heart' %>
-  
   <% if @heart == 'add' || @heart == 'remove' %>
-    $('#heart-'+'<%=@product_id%>').replaceWith("<%= j render partial: 'heart', locals: { product_id: @product_id, heart: @heart } %>");
+    $('#heart-'+'<%=@product.id%>').replaceWith("<%= j render partial: 'heart', locals: { product_id: @product.id, heart: @heart } %>");
   
   <% elsif @heart == 'full' %>
     alert('已超過追蹤上限，請先取消部分追蹤商品。');
+  <% end %>
+
+  <% if @heart == 'add' %>
+	  fbq('track', 'AddToWishlist', {
+	    content_ids: "#{@product.id}",
+	    content_name: "#{@product.name}",
+	    content_category: "#{@product.category.name}",
+	    content_type: "product",
+	  });
   <% end %>
 <% end %>
