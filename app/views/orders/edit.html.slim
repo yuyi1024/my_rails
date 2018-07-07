@@ -11,4 +11,4 @@ h1.title 訂單結帳
   - elsif @order.logistics_type == 'Home'
     = render partial: 'form_home_delivery'
 
-= render 'pixel_purchase.js.erb', order: @order
+= render 'pixel_and_ga.js.erb', order: @order

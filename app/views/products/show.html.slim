@@ -65,3 +65,10 @@ javascript:
     content_category: "#{@product.category.name}",
     content_type: "product",
   });
+
+  ga('require', 'ec');
+  ga('ec:addImpression', {
+    id: "#{@product.id}",
+    name: "#{@product.name}",
+    category: "#{@product.category.name}",
+  });

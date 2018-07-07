@@ -16,12 +16,30 @@
     content_type: "product",
   });
 
+  ga('require', 'ec');
+  ga('ec:addProduct', {
+    id: "#{@product.id}",
+    name: "#{@product.name}",
+    category: "#{@product.category.name}",
+  });
+  ga('ec:setAction', 'purchase', {
+    id: "#{@product.id}",
+    name: "#{@product.name}",
+  });
+  ga('send', 'pageview');
+
 <% elsif @action == 'change' %>
   $('.items').html("<%= j render partial: 'cart_item' %>");
 
 <% elsif @action == 'destroy' %>
   $('.items').html("<%= j render partial: 'cart_item' %>");
   $('.cart_number').text('<%= @cart_length %>');
+
+  ga('ec:setAction', 'refund', {
+    id: "#{@product.id}",
+    name: "#{@product.name}",
+  });
+  ga('send', 'pageview');
   
 <% end %>
 

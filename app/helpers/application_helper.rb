@@ -74,6 +74,9 @@ module ApplicationHelper
       elsif offer.offer == 'price'
         value = quantity / offer.range_quantity
         price = product.price * quantity - offer.offer_price * value
+
+      elsif offer.offer == 'freight'
+        price = product.price * quantity
       end
     price
   end

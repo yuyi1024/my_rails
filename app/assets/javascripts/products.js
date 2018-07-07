@@ -239,9 +239,7 @@ function keywords(){
   fbq('track', 'Search', {
     search_string: tagName,
   });
-  ga('send', 'Search', '/search/'+tagName, {
-    search_string: tagName,
-  });
+  ga('send', 'pageview', '/search/'+tagName);
   form_submit();
 }
 

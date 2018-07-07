@@ -27,7 +27,7 @@ class Cart
       product_quantity = Product.find(found_item.product_id).quantity
       found_item.quantity + quantity > product_quantity ? found_item.change(product_quantity) : found_item.increment(quantity)
     else
-      @items << CartItem.new(product_id, quantity, price, offer_id)
+      @items << CartItem.new(product_id, quantity, Product.find(product_id).price, offer_id)
     end
   end
 
@@ -85,6 +85,9 @@ class Cart
       elsif offer.offer == 'price'
         value = quantity / offer.range_quantity
         price = product.price * quantity - offer.offer_price * value
+
+      elsif offer.offer == 'freight'
+        price = product.price * quantity
       end
     else
       price = product.price * quantity

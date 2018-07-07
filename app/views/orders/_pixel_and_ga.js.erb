@@ -1,5 +1,5 @@
 <script>
-  function pixel_purchase(){
+  function pixel_and_ga(){
     fbq('track', 'Purchase', {
       content_type: 'product_group',
       content_ids: "<%= order.order_items.map{|item| item.product_id }%>",
@@ -20,6 +20,29 @@
         <% end %>
       ],
     });
+ 
+    ga('require', 'ecommerce');
+
+    ga('ecommerce:addTransaction', {
+      id: '<%=order.process_id%>',
+      revenue: '<%=order.price%>',
+      offer: '<%=order.offer.message if @order.offer.present?%>',
+    });
+
+    <% order.order_items.each do |item| %>
+      ga('ecommerce:addItem', {
+        id: '<%=item.product_id%>',
+        name: '<%=item.product.name%>',
+        category: '<%=item.product.category.name%>',
+        price: '<%=item.price%>',
+        offer: '<%=(item.offer.message if item.offer.present?)%>',
+        quantity: '<%=item.quantity%>',
+      });
+    <% end %>
+
+    ga('ecommerce:send');
+    ga('ecommerce:clear');
   }
+
 </script>
 
