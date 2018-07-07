@@ -18,13 +18,13 @@
 
   ga('require', 'ec');
   ga('ec:addProduct', {
-    id: "#{@product.id}",
-    name: "#{@product.name}",
-    category: "#{@product.category.name}",
+    id: "<%= @product.id%>",
+    name: "<%= @product.name%>",
+    category: "<%= @product.category.name%>",
   });
   ga('ec:setAction', 'purchase', {
-    id: "#{@product.id}",
-    name: "#{@product.name}",
+    id: "<%= @product.id%>",
+    name: "<%= @product.name%>",
   });
   ga('send', 'pageview');
 
@@ -36,8 +36,8 @@
   $('.cart_number').text('<%= @cart_length %>');
 
   ga('ec:setAction', 'refund', {
-    id: "#{@product.id}",
-    name: "#{@product.name}",
+    id: "<%=@product.id%>",
+    name: "<%=@product.name%>",
   });
   ga('send', 'pageview');
   
