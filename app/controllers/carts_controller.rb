@@ -40,7 +40,10 @@ class CartsController < ApplicationController
     @carts = Cart.from_hash(session[Cart::SessionKey_cart])
 
     @carts.items.map{ |item| 
-      @carts.items.delete(item) if item.product_id == params[:format] 
+      if item.product_id == params[:format]
+        @carts.items.delete(item)
+        @product = Product.find(params[:format])
+      end
     }
 
     session[Cart::SessionKey_cart] = @carts.to_hash
