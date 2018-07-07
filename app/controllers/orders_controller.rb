@@ -10,7 +10,6 @@
     #將 cart session 中的資料存入新產生的 order session，以防結帳後再更動 cart
     if session[Cart::SessionKey_cart]["items"].length > 0
       @whole_offer = whole_store_offer
-      # @whole_offer = @whole_offer if @whole_offer.present?
 
       @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
       @order_session = Cart.new_order_hash(@cart_session, @whole_offer)
@@ -21,10 +20,10 @@
       @ship_method = 'CVS'
       freight_offer #計算運費
     else
-      # raise StandardError, '購物車內尚無商品'
+      raise StandardError, '購物車內尚無商品'
     end
-  # rescue StandardError => e
-  #   redirect_back(fallback_location: root_path, alert: "#{e}")
+  rescue StandardError => e
+    redirect_back(fallback_location: root_path, alert: "#{e}")
   end
 
   def ship_method #選擇送貨方式

@@ -75,6 +75,11 @@ h1.title 訂單結帳
             p#total
               | 合計：
               span $ #{ number_with_delimiter(@offer_price + @freight) }
-            = f.submit '前往結帳', class:'btn'
+            = f.submit '前往結帳', class:'btn', id:'new_order_submit'
 
-       
+javascript:
+  $('#new_order_submit').click(function(){
+    fbq('track', 'InitiateCheckout', {
+      user_id: "#{current_user.id}",
+    });
+  });

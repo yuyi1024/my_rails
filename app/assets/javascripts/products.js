@@ -46,6 +46,25 @@ $(document).on('turbolinks:load', function() {
       $('.input-quantity input').val(q);
     });
 
+    //input enter
+    $("#price_bottom").keypress(function(e){
+      if (e.keyCode == 13) {
+        price();
+      }
+    });
+    $("#price_top").keypress(function(e){
+      if (e.keyCode == 13) {
+        price();
+      }
+    });
+    $("#keyword").keypress(function(e){
+      if (e.keyCode == 13) {
+        keywords();
+      }
+    });
+
+
+
 
     //如果有分類params則找出指定分類
     if(location.search != ''){
@@ -216,6 +235,10 @@ function keywords(){
   $('#keyword-tag-k').remove();
   tagName = $('#keyword').val();
   tag_create(tagName, 'k', 'keyword');
+
+  fbq('track', 'Search', {
+    search_string: tagName,
+  });
   form_submit();
 }
 

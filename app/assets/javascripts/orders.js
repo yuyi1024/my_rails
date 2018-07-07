@@ -12,7 +12,6 @@ $(document).on('turbolinks:load', function() {
       }
       
     });
-
   }
 });
 
@@ -69,7 +68,7 @@ function store_required(stId, stType){
   }else{
     $('#order_logistics_subtype').val(stType);
     $('#order_receiver_store_id').val(stId);
-    $('.submit_row').html('<input type="submit" name="commit" value="訂單建立" class="btn" data-disable-with="訂單建立">');
+    $('.submit_row').html('<input type="submit" name="commit" value="訂單建立" class="btn" onclick="pixel_purchase();" data-disable-with="訂單建立">');
   }
 }
 

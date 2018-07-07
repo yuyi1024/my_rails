@@ -1,0 +1,25 @@
+<script>
+  function pixel_purchase(){
+    fbq('track', 'Purchase', {
+      content_type: 'product_group',
+      content_ids: "<%= order.order_items.map{|item| item.product_id }%>",
+      currency: 'TWD',
+      process_id: '<%=order.process_id%>',
+      value: '<%=order.price%>',
+      offer: '<%=order.offer.message if @order.offer.present?%>',
+      contents: [
+        <% order.order_items.each do |item| %>
+          {
+            'product_id': '<%=item.product_id%>',
+            'product_name': '<%=item.product.name%>',
+            'product_category': '<%=item.product.category.name%>',
+            'product_price': '<%=item.price%>',
+            'product_offer': '<%=(item.offer if item.offer.present?)%>',
+            'quantity': '<%=item.quantity%>',
+          },
+        <% end %>
+      ],
+    });
+  }
+</script>
+

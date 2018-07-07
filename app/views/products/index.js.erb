@@ -15,9 +15,9 @@
 
   <% if @heart == 'add' %>
 	  fbq('track', 'AddToWishlist', {
-	    content_ids: "#{@product.id}",
-	    content_name: "#{@product.name}",
-	    content_category: "#{@product.category.name}",
+	    content_ids: "<%= @product.id %>",
+	    content_name: "<%= @product.name %>",
+	    content_category: "<%= @product.category.name %>",
 	    content_type: "product",
 	  });
   <% end %>

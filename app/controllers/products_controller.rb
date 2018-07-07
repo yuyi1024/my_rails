@@ -57,7 +57,6 @@ class ProductsController < ApplicationController
 
   def heart
     favorite = current_user.favorites
-    # @product_id = params[:id]
     @product = Product.find(params[:id])
 
     if favorite.find_by(product_id: @product.id).present?

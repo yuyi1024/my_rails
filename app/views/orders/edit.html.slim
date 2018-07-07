@@ -3,11 +3,12 @@ h1.title 訂單結帳
 #order_new.all_orders_page.container  
   
   .row
-  	= render 'product_list', order: @order, toggle: 'Y', console: 'N'
+    = render 'product_list', order: @order, toggle: 'Y', console: 'N'
 
   - if @order.logistics_type == 'CVS'
     = render partial: 'form_in_store'
   
   - elsif @order.logistics_type == 'Home'
     = render partial: 'form_home_delivery'
-  
+
+= render 'pixel_purchase.js.erb', order: @order
