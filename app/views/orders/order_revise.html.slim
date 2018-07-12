@@ -1,0 +1,47 @@
+h1.title 訂單更改
+
+#cart_checkout.container
+
+  = form_for @order, :url => order_update_orders_path, :method => 'patch' do |f|
+    .row
+      .pay_and_ship_method.col-sm-4.col-sm-offset-2
+        .panel.panel-default
+          .panel-heading 
+            h3 更改送貨及付款方式
+
+          .panel-body
+            
+            = f.label :logistics_type, '送貨方式'
+            = f.select :logistics_type, options_for_select([['超商取貨', 'CVS'], ['宅配', 'Home']], @order.logistics_type), {}, onChange:"selectShipMethod('revise', '#{@order.process_id}');"
+            br
+            = f.label :pay_method, '付款方式'
+            = f.select :pay_method, options_for_select([['超商取貨付款', 'pickup_and_cash'], ['信用卡', 'cash_card'], ['實體 ATM', 'atm']], @order.pay_method)
+
+      .order_info.col-sm-4
+        .panel.panel-default
+          .panel-heading 
+            h3 訂單資訊
+          .panel-body
+            p
+              | 小計： 
+              span $ #{ number_with_delimiter(@order.price) }
+            p#freight 
+              | 運費：
+              span $ #{ @freight }
+            hr
+            p#total
+              | 合計：
+              span $ #{ number_with_delimiter(@order.price + @freight) }
+            = f.submit '更改收件資料', class:'btn', id:'new_order_submit'
+
+  / #csv_choose
+  /   - if @order.logistics_type == 'CVS'
+  /     = render 'choose_store'
+  
+  / #form
+  /   - if @order.logistics_type == 'CVS'
+  /     = render 'form_in_store'
+    
+  /   - elsif @order.logistics_type == 'Home'
+  /     = render 'form_home_delivery'
+

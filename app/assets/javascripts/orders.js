@@ -15,13 +15,17 @@ $(document).on('turbolinks:load', function() {
   }
 });
 
-//new_order送貨方式選擇
-function selectShipMethod(){
+//order送貨方式選擇
+function selectShipMethod(m, process_id){
   var ship_method = document.getElementById('order_logistics_type').value;
   $.ajax({
     type: 'get',
     url: '/orders/ship_method/',
-    data : { ship_method: ship_method },
+    data : { 
+      ship_method: ship_method,
+      location: m,
+      process_id: process_id,
+    },
   });
 }
 

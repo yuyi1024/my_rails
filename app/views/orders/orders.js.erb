@@ -1,29 +1,29 @@
 <% if @action == 'ship_method' %>
-	$('#freight span').text('$ <%= @freight %>');
-	$('#total span').text('$ <%= number_with_delimiter(@offer_price) %>');
+  $('#freight span').text('$ <%= @freight %>');
+  $('#total span').text('$ <%= number_with_delimiter(@offer_price) %>');
 
-	<% if @ship_method == 'CVS' %>
-		$('#order_pay_method').html("<option value='pickup_and_cash'>超商取貨付款</option><option value='cash_card'>信用卡</option><option value='atm'>實體ATM</option>");
-	<% else %>
-		$('#order_pay_method').html("<option value='cash_card'>信用卡</option><option value='atm'>實體ATM</option>");
-	<% end %>
-	
+  <% if @ship_method == 'CVS' %>
+    $('#order_pay_method').html("<option value='pickup_and_cash'>超商取貨付款</option><option value='cash_card'>信用卡</option><option value='atm'>實體ATM</option>");
+  <% else %>
+    $('#order_pay_method').html("<option value='cash_card'>信用卡</option><option value='atm'>實體ATM</option>");
+  <% end %>
+  
 <% elsif @action == 'get_user_data' %>
-	$('#order_receiver_name').val("<%= @user.true_name%>");
-	$('#order_receiver_cellphone').val("<%= @user.phone%>");
-	$('#order_receiver_email').val("<%= @user.email%>");
-	$('#order_receiver_address').val("<%= @user.address%>");
+  $('#order_receiver_name').val("<%= @user.true_name%>");
+  $('#order_receiver_cellphone').val("<%= @user.phone%>");
+  $('#order_receiver_email').val("<%= @user.email%>");
+  $('#order_receiver_address').val("<%= @user.address%>");
 
 <% elsif @action == 'remit_finish' %>
-	$('#remit_finish').remove();
-	$('.order_detail').replaceWith("<%= j render partial: 'order_detail', locals: { order: @order } %>");
+  $('#remit_finish').remove();
+  $('.order_detail').replaceWith("<%= j render partial: 'order_detail', locals: { order: @order } %>");
 
-	$.notify({
-		icon: 'glyphicon glyphicon-shopping-cart',
-		message: '已通知付款！',
-	},{
-		type: 'success',
-		timer: 2000,
-	});
+  $.notify({
+    icon: 'glyphicon glyphicon-shopping-cart',
+    message: '已通知付款！',
+  },{
+    type: 'success',
+    timer: 2000,
+  });
 <% end %>
 

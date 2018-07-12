@@ -44,6 +44,8 @@ Rails.application.routes.draw do
       get :cash_card, path: 'cash_card/:process_id', as: 'cash_card'
       post :paid, path: 'paid/:process_id', as: 'paid'
       patch :remit_finish, path: 'remit_finish/:process_id', as: 'remit_finish'
+      get :order_revise, path: 'order_revise/:process_id', as: 'order_revise'
+      patch :order_update, path: 'order_update/:process_id', as: 'order_update' 
     end
   end
 

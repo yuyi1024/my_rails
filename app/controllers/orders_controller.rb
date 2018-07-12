@@ -27,13 +27,22 @@
   end
 
   def ship_method #選擇送貨方式
+    @location = params[:location]
     @ship_method = params[:ship_method]
-    @order_session = Cart.from_hash(session[Cart::SessionKey_order])
 
-    total_and_offer_price #計算優惠前後的價錢
-    freight_offer #計算運費
-    
-    @offer_price += @freight
+    if @location == 'new'
+      @order_session = Cart.from_hash(session[Cart::SessionKey_order])
+
+      total_and_offer_price #計算優惠前後的價錢
+      freight_offer #計算運費
+      @offer_price += @freight
+
+    elsif @location == 'revise'
+      @order = Order.find_by(process_id: params[:process_id])
+      @offer = @order.offer
+      freight_offer
+      @offer_price = @order.price + @freight
+    end
 
     @action = 'ship_method'
     render 'orders/orders.js.erb'
@@ -81,11 +90,17 @@
 
     @order = Order.create(order_params)
     @order.user = current_user
-    @order.offer_id = @order_session.offer_id
 
     total_and_offer_price
     @order.price = @offer_price #不含運
     @order.process_id = @order.g_process_id(current_user.id, current_user.orders.length+1)
+
+    offer = Offer.find(@order_session.offer_id)
+    if offer.range == 'all'
+      @order.offer_id = @order_session.offer_id
+    elsif offer.range == 'price'
+      @order.offer_id = @order_session.offer_id if @offer_price > offer.price
+    end
 
     @ship_method = order_params[:logistics_type]
     freight_offer
@@ -121,6 +136,7 @@
     if !params[:stName].nil?
       @stName = params[:stName]
     end
+    @location = 'edit'
   rescue StandardError => e
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
@@ -321,8 +337,8 @@
       end
     end
     redirect_to cash_card_orders_path(@order.process_id)
-  # rescue StandardError => e
-  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+  rescue StandardError => e
+    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
   def whole_store_offer #實施中的全館優惠
@@ -332,6 +348,32 @@
     else
       offer.id
     end
+  end
+
+  def order_revise
+    @order = Order.find_by(params[:process_id])
+    @location = 'revise'
+    @freight = Order::Freight_in_store
+  rescue StandardError => e
+    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+  end
+
+  def order_update
+    @order = Order.find_by(process_id: params[:process_id])
+    @order.update(order_params)
+    if order_params[:logistics_type] == 'Home'
+      @order.logistics_subtype = 'TCAT'
+    else
+      @order.logistics_subtype = ''
+    end
+    
+    @offer = @order.offer
+    @ship_method = order_params[:logistics_type]
+    freight_offer
+    @order.freight = @freight
+    @order.status = 'pending'
+    @order.save
+    redirect_to edit_order_path(@order.process_id)
   end
 
   private

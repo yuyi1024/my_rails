@@ -6,9 +6,9 @@ h1.title 訂單結帳
     = render 'product_list', order: @order, toggle: 'Y', console: 'N'
 
   - if @order.logistics_type == 'CVS'
-    = render partial: 'form_in_store'
+    = render 'form_in_store'
   
   - elsif @order.logistics_type == 'Home'
-    = render partial: 'form_home_delivery'
+    = render 'form_home_delivery'
 
 = render 'pixel_and_ga.js.erb', order: @order

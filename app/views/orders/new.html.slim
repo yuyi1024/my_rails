@@ -55,7 +55,7 @@ h1.title 訂單結帳
           .panel-body
             
             = f.label :logistics_type, '送貨方式'
-            = f.select :logistics_type, options_for_select([['超商取貨', 'CVS'], ['宅配', 'Home']]), {}, onChange:'selectShipMethod();'
+            = f.select :logistics_type, options_for_select([['超商取貨', 'CVS'], ['宅配', 'Home']]), {}, onChange:"selectShipMethod('new', '');"
             br
             = f.label :pay_method, '付款方式'
             = f.select :pay_method, options_for_select([['超商取貨付款', 'pickup_and_cash'], ['信用卡', 'cash_card'], ['實體 ATM', 'atm']])
