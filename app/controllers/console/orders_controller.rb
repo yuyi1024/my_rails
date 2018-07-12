@@ -31,11 +31,11 @@ class Console::OrdersController < Console::DashboardsController
         @orders = @orders.where(paid: paid)
       end
 
-      if params[:delivered].present?
-        delivered = []
-        delivered << 'true' if params[:delivered].include?('true')
-        delivered += ['false', nil] if params[:delivered].include?('false')
-        @orders = @orders.where(delivered: delivered)
+      if params[:shipped].present?
+        shipped = []
+        shipped << 'true' if params[:shipped].include?('true')
+        shipped += ['false', nil] if params[:shipped].include?('false')
+        @orders = @orders.where(shipped: shipped)
       end
 
       if params[:sort_item].present? && params[:sort_order].present?

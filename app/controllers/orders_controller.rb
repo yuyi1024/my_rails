@@ -302,10 +302,11 @@
 
   def cash_card #信用卡付款頁面
     @order = Order.find_by(process_id: params[:process_id])
+    raise StandardError, '已付款' if @order.paid == 'true'
     total_price = (@order.price + @order.freight).to_s
     @client_token = Braintree::ClientToken.generate
   rescue StandardError => e
-    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+    redirect_to(user_order_list_path, alert: "#{e}")
   end
 
   def paid #信用卡付款認證
@@ -351,9 +352,10 @@
   end
 
   def order_revise
-    @order = Order.find_by(params[:process_id])
+    @order = Order.find_by(process_id: params[:process_id])
     @location = 'revise'
     @freight = Order::Freight_in_store
+    @remittance_info = RemittanceInfo.new
   rescue StandardError => e
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
@@ -372,14 +374,36 @@
     freight_offer
     @order.freight = @freight
     @order.status = 'pending'
+    @order.ecpay_logistics_id = ''
     @order.save
     redirect_to edit_order_path(@order.process_id)
+  end
+
+  def order_cancel
+    @order = Order.find_by(process_id: params[:process_id])
+    if params[:remittance_info].present?
+      @info = @order.remittance_infos.create(remittance_info_params)
+      @info.transfer_type = 'refund'
+      raise StandardError, '訂單取消失敗' if !@info.save
+    end
+    if @order.may_cancel?
+      @order.cancel
+      raise StandardError, '訂單取消失敗' if !@order.save
+    end
+    flash[:success] = '訂單取消成功'
+    redirect_to user_order_list_path
+  rescue StandardError => e
+    redirect_to(user_order_list_path, alert: "#{e}")
   end
 
   private
 
   def order_params
     params.require(:order).permit!
+  end
+
+  def remittance_info_params
+    params.require(:remittance_info).permit!
   end
 
 end

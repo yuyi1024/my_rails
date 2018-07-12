@@ -102,13 +102,13 @@ h1.title 訂單列表
           br
           br
 
-          label 收貨狀態
+          label 出貨狀態
           br
-          = check_box_tag 'delivered[]', 'false', nil, id:'delivered_false'
-          label for='delivered_false' 未收貨
+          = check_box_tag 'shipped[]', 'false', nil, id:'shipped_false'
+          label for='shipped_false' 未出貨
 
-          = check_box_tag 'delivered[]', 'true', nil, id:'delivered_true'
-          label for='delivered_true' 已收貨
+          = check_box_tag 'shipped[]', 'true', nil, id:'shipped_true'
+          label for='shipped_true' 已出貨
 
       .row
         = hidden_field_tag :search, 'true'

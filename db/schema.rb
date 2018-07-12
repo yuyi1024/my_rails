@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180704165054) do
+ActiveRecord::Schema.define(version: 20180712181618) do
+
+  create_table "banks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -101,11 +108,10 @@ ActiveRecord::Schema.define(version: 20180704165054) do
     t.string "receiver_address"
     t.string "receiver_zipcode"
     t.text "note"
-    t.string "remit_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "paid", default: "false"
-    t.string "delivered", default: "false"
+    t.string "shipped", default: "false"
   end
 
   create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -127,6 +133,19 @@ ActiveRecord::Schema.define(version: 20180704165054) do
     t.string "cache"
     t.string "status"
     t.integer "offer_id"
+  end
+
+  create_table "remittance_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "transfer_type"
+    t.integer "price"
+    t.datetime "date"
+    t.string "remit_data"
+    t.string "refund_bank"
+    t.string "refund_account"
+    t.string "checked", default: "false"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "order_id"
   end
 
   create_table "subcategories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

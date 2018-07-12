@@ -21,7 +21,7 @@
             p （#{ order.paid_cn }）
           td
             p #{ order.ship_method_cn }
-            p （#{ order.delivered_cn }）
+            p （#{ order.shipped_cn }）
           td #{ truncate(order.user.email, length:12) }
           td
             = link_to(edit_console_order_path(order.process_id), target: :_blank)

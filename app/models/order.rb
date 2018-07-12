@@ -2,6 +2,7 @@ class Order < ApplicationRecord
   has_many :order_items
   belongs_to :offer, optional: true
   belongs_to :user
+  has_many :remittance_infos
   accepts_nested_attributes_for :order_items
 
   #運費
@@ -74,8 +75,8 @@ class Order < ApplicationRecord
     end
   end
 
-  def delivered_cn
-    self.delivered == 'true' ? '已收貨' : '未收貨'
+  def shipped_cn
+    self.shipped == 'true' ? '已出貨' : '未出貨'
   end
 
   def may_status
@@ -250,12 +251,12 @@ class Order < ApplicationRecord
 
     #已退款
     event :refund do
-      transitions from: [:returned, :paid], to: :refunded
+      transitions from: [:cancel, :returned], to: :refunded
     end
 
     #訂單取消
     event :cancel do
-      transitions from: [:waiting_payment, :waiting_shipment, :refunded], to: :canceled
+      transitions from: [:pending, :waiting_payment, :waiting_shipment, :paid], to: :canceled
     end
 
 
