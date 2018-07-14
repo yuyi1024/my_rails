@@ -75,8 +75,3 @@ function store_required(stId, stType){
     $('.submit_row').html('<input type="submit" name="commit" value="訂單建立" class="btn" onclick="pixel_and_ga();" data-disable-with="訂單建立">');
   }
 }
-
-function remit_submit(){
-  event.preventDefault();
-  $('#remit_data_form').submit();
-}

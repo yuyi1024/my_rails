@@ -6,6 +6,7 @@ ul.pager
       span &larr; 回訂單列表
 
 #order.container
+
   .row
     #order_edit.col-sm-8.col-sm-offset-2
       .panel.panel-default
@@ -13,7 +14,7 @@ ul.pager
           h3 訂單編輯
 
         .panel-body
-          - if !@order.remit_data.blank?
+          - if @remit.present?
             table.table
               tr
                 th 匯款資訊
@@ -24,17 +25,41 @@ ul.pager
                 tr
                   td
                     b 匯款帳號末五碼：
-                    | #{@remit_data[0]}
+                    | #{@remit.remit_data}
                   td
                     b 匯款時間：
-                    | #{@remit_data[1].to_datetime.strftime("%Y/%m/%d %T")}
+                    | #{@remit.date.strftime("%Y/%m/%d %T")}
                   td
                     b 匯款金額：
-                    | #{@remit_data[2]}
+                    | #{number_with_delimiter(@remit.price)}
                   td
                     | 未收到匯款？
                     br
                     = link_to '取消已匯款通知', remit_check_console_orders_path(@order.process_id), method: 'post', style: 'color:red;', data: {confirm: "確定取消匯款通知？"}
+
+          - if @refund.present?
+            table.table
+              tr
+                th.col-sm-6 退款資料
+                th.col-sm-6 通知已退款
+              tbody
+                tr
+                  td 
+                    p 銀行代號： #{@refund.refund_bank}
+                    p 帳號： #{@refund.refund_account}
+                    p 應退金額： $#{number_with_delimiter(@order.price + @order.freight)}
+
+                  td
+                    = form_for @remittance_info, url: refund_console_orders_path(@order.process_id), method: 'post' do |f|
+                      .row
+                        = f.label :date, '退款日期', class:'col-sm-3'
+                        = f.date_field :date, required: 'required', class:'col-sm-6'
+                      br
+                      .row
+                        = f.label :price, '退款金額', class:'col-sm-3'
+                        = f.number_field :price, required: 'required', class:'col-sm-6'
+                      br
+                      = f.submit '通知已退款', class:'btn col-sm-offset-4', data: {confirm: "確認通知買家已退款？"}
 
           table.table
             tr
@@ -48,6 +73,7 @@ ul.pager
                     = f.select :status, options_for_select(@may_status.insert(0, ["未選擇", 0]))
                     = f.submit '確認更改', class:'btn', data: {confirm: "確定更改該訂單之狀態？"}
 
+          
   .row
     = render 'orders/product_list', toggle: 'N', console: 'Y'
 

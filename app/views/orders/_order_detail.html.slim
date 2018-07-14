@@ -27,7 +27,7 @@
                   | #{ @order.shipment_no }
               p 
                 b 訂單狀態： 
-                | #{ @order.status_cn }
+                | #{ @order.status_cn } #{ '(等待退款)' if @order.status == 'canceled' && @order.paid == 'true' }
               p 
                 b 下單日期： 
                 | #{ @order.created_at.strftime("%Y/%m/%d") }
@@ -72,8 +72,23 @@
                 b Email： 
                 | #{ @order.receiver_email }
 
+      - if @refund.present?
+        table.table
+          tr
+            th 退款資訊
 
-      
+          tbody
+            tr
+              td 
+                p
+                  b 帳戶名稱： 
+                  | 霸完股份有限公司
+                p
+                  b 退款金額： 
+                  | $#{number_with_delimiter(@refund.price)}
+                p
+                  b 退款日期： 
+                  | #{@refund.date.strftime("%Y/%m/%d")}
 
       table.table.note
         tr

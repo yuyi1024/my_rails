@@ -43,7 +43,7 @@ Rails.application.routes.draw do
       get :remit_info, path: 'remit_info/:process_id', as: 'remit_info'
       get :cash_card, path: 'cash_card/:process_id', as: 'cash_card'
       post :paid, path: 'paid/:process_id', as: 'paid'
-      patch :remit_finish, path: 'remit_finish/:process_id', as: 'remit_finish'
+      post :remit_finish, path: 'remit_finish/:process_id', as: 'remit_finish'
       get :order_revise, path: 'order_revise/:process_id', as: 'order_revise'
       patch :order_update, path: 'order_update/:process_id', as: 'order_update'
       post :order_cancel, path: 'order_cancel/:process_id', as: 'order_cancel'
@@ -56,6 +56,7 @@ Rails.application.routes.draw do
     resources :orders, only: [:index, :edit, :update] do
       collection do
         post :remit_check, path: 'remit_check/:process_id', as: 'remit_check'
+        post :refund, path: 'refund/:process_id', as: 'refund'
       end
     end
     resources :products, except: [:show] do 

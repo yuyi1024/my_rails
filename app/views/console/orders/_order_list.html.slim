@@ -14,7 +14,9 @@
           td 
             p #{ order.process_id }
             p #{ order.created_at.strftime("%Y/%m/%d") }
-          td class="#{order_status_color(order.status)}" #{ order.status_cn }
+          td class="#{order_status_color(order.status)}" 
+            p #{ order.status_cn }
+            p #{ '（等待退款）'if order.paid == 'true' && order.status == 'canceled' }
           td $ #{ number_with_delimiter(order.price + order.freight) }
           td 
             p #{ order.pay_method_cn }

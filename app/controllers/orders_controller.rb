@@ -276,7 +276,8 @@
     else
       @logistics_status = '未出貨'
     end
-
+    @refund = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').first
+    @remittance_info = RemittanceInfo.new
     authorize! :read, @order
   rescue StandardError => e
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
@@ -289,15 +290,18 @@
   end
 
   def remit_finish #通知已付款
-    @order = current_user.orders.find_by(process_id: params[:process_id])
-    info = params[:name] + '/' + params[:time].to_datetime.strftime("%Y-%m-%d %T") + '/' + params[:price]
-    @order.remit_data = info
-    @order.paid = 'remit'
-    @order.save
-    @logistics_status = '未出貨'
-
-    @action = 'remit_finish'
-    render 'orders/orders.js.erb'
+    @order = Order.find_by(process_id: params[:process_id])
+    @remit = @order.remittance_infos.create(remittance_info_params)
+    @remit.transfer_type = 'remit'
+    @order.wait_check
+    if @remit.save && @order.save
+      flash[:success] = '通知付款成功'
+      redirect_to order_path(@order.process_id)
+    else
+      raise StandardError, '通知付款失敗'
+    end
+    rescue StandardError => e 
+      redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
   def cash_card #信用卡付款頁面

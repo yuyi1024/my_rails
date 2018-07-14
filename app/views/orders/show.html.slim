@@ -1,7 +1,7 @@
 h1.title 訂單詳情
 
 #order.container
-  - if @order.pay_method == 'atm' && @order.remit_data.blank?
+  - if @order.status == 'waiting_payment' && @order.pay_method == 'atm'
     #remit_finish
       .row.remit_btn
         = link_to(remit_info_orders_path(@order.process_id), target: :_blank)
@@ -12,26 +12,34 @@ h1.title 訂單詳情
             .panel-heading 
               h3 匯款通知
             .panel-body
-               = form_tag remit_finish_orders_path(@order.process_id), method: 'patch', remote: 'true', id: 'remit_data_form'
+              = form_for @remittance_info, url: remit_finish_orders_path(@order.process_id), method: 'post' do |f|
                 .row
-                  label.col-sm-3
-                    | 匯款帳號末五碼
-                    span.required  *
-                  = text_field_tag :name, nil, class: 'col-sm-7', required: "required", placeholder: '若使用郵局匯款請填寫【匯款人姓名】'
+                  = f.label :remit_data, '匯款帳號末五碼', class: 'col-sm-2'
+                  = f.text_field :remit_data, required: 'required', class: 'col-sm-8'
                 .row
-                  label.col-sm-3
-                    | 匯款時間
-                    span.required  *
-                  = datetime_local_field_tag :time, nil, required: "required", class: 'col-sm-7'
+                  = f.label :price, '匯款金額', class: 'col-sm-2'
+                  = f.number_field :price, required: 'required', class: 'col-sm-8'
+                .row
+                  = f.label :date, '匯款時間', class: 'col-sm-2'
+                  = f.datetime_field :date, required: 'required', class: 'col-sm-8'
 
-                .row
-                  label.col-sm-3
-                    | 匯款金額
-                    span.required  *
-                  = number_field_tag :price, nil, required: "required", class: 'col-sm-7'
-
-                button.btn.submit onclick='remit_submit();'
-                  | 送出匯款通知
+                = f.submit '通知已匯款', class:'btn submit', data: {confirm: "確認通知匯款？"}
+              
+            - check_return = @order.remittance_infos.where(checked: 'return')
+            - if check_return.present?
+              table.table
+                tr
+                  th 經確認未有對應款項之匯款通知
+                tbody
+                  - check_return.each do |_return|
+                    tr
+                      td
+                        div 匯款帳號末五碼： #{_return.remit_data}
+                        div 匯款金額： $#{number_with_delimiter(_return.price)}
+                        div 匯款時間： #{_return.date.strftime("%Y/%m/%d")}
+                  tr
+                    td
+                      p 若有款項確認之問題，請聯絡我們。
 
 
   .row

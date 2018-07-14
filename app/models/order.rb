@@ -21,6 +21,8 @@ class Order < ApplicationRecord
       '結帳未完成'
     when 'waiting_payment'
       '待付款'
+    when 'waiting_check'
+      '已通知付款'
     when 'waiting_shipment'
       '待出貨'
     when 'paid'
@@ -198,13 +200,18 @@ class Order < ApplicationRecord
 
   aasm column: :status do
     state :pending, initial: true
-    state :waiting_payment, :waiting_shipment, :paid, :shipping #準備流程
+    state :waiting_payment, :waiting_check, :waiting_shipment, :paid, :shipping #準備流程
     state :delivered, :delivered_store, :picked_up, :finished #出貨後流程
     state :returned, :refunded, :canceled #退貨流程
     
     #待付款
     event :wait_payment do 
-      transitions from: :pending, to: :waiting_payment
+      transitions from: [:pending, :waiting_check], to: :waiting_payment
+    end
+
+    #已付款，確認中
+    event :wait_check do 
+      transitions from: :waiting_payment, to: :waiting_check
     end
 
     #待出貨
@@ -214,7 +221,7 @@ class Order < ApplicationRecord
 
     #已付款, 待出貨
     event :pay do
-      transitions from: :waiting_payment, to: :paid
+      transitions from: [:waiting_payment, :waiting_check], to: :paid
     end
 
     #已出貨
@@ -251,7 +258,7 @@ class Order < ApplicationRecord
 
     #已退款
     event :refund do
-      transitions from: [:cancel, :returned], to: :refunded
+      transitions from: [:canceled, :returned], to: :refunded
     end
 
     #訂單取消

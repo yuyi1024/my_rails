@@ -95,13 +95,6 @@ module ApplicationHelper
   def product_quantity_alert(product)
     'quantity_red' if product.quantity <= product.quantity_alert
   end
+
+
 end
-
-
-
-
-
-
-
-
-

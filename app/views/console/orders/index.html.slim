@@ -31,6 +31,9 @@ h1.title 訂單列表
           = check_box_tag 'status[]', 'waiting_shipment', nil, id:'status_waiting_shipment'
           label for='status_waiting_shipment' 待出貨
 
+          = check_box_tag 'status[]', 'waiting_check', nil, id:'status_waiting_check'
+          label for='status_waiting_check' 已通知付款
+
           = check_box_tag 'status[]', 'shipping', nil, id:'status_shipping'
           label for='status_shipping' 運送中
           br
@@ -96,9 +99,7 @@ h1.title 訂單列表
 
           = check_box_tag 'paid[]', 'true', nil, id:'paid_true'
           label for='paid_true' 已付款
-          
-          = check_box_tag 'paid[]', 'remit', nil, id:'paid_remit'
-          label for='paid_remit' 已通知付款
+
           br
           br
 
