@@ -376,6 +376,7 @@
     
     @offer = @order.offer
     @ship_method = order_params[:logistics_type]
+    @offer_price = @order.offer.range_price if @order.offer.range == 'price'
     freight_offer
     @order.freight = @freight
     @order.status = 'pending'
