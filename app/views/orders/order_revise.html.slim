@@ -59,6 +59,6 @@ h1.title 訂單修改
                 = f.submit '取消訂單', class:'btn submit delete', data: {confirm: "訂單一旦取消將無法復原，定取消訂單？"}
 
             - else
-              = link_to(order_cancel_orders_path(@order.process_id), data: {confirm: "訂單一旦取消將無法復原，定取消訂單？"})
+              = link_to(order_cancel_orders_path(@order.process_id), method: 'post', data: {confirm: "訂單一旦取消將無法復原，定取消訂單？"})
                 button.btn.submit.delete 取消訂單
 

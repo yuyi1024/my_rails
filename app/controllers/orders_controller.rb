@@ -276,7 +276,7 @@
     else
       @logistics_status = '未出貨'
     end
-    @refund = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').first
+    @refunded_data = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').first
     @remittance_info = RemittanceInfo.new
     authorize! :read, @order
   rescue StandardError => e
@@ -306,7 +306,7 @@
 
   def cash_card #信用卡付款頁面
     @order = Order.find_by(process_id: params[:process_id])
-    raise StandardError, '已付款' if @order.paid == 'true'
+    # raise StandardError, '已付款' if @order.paid == 'true'
     total_price = (@order.price + @order.freight).to_s
     @client_token = Braintree::ClientToken.generate
   rescue StandardError => e
@@ -357,6 +357,7 @@
 
   def order_revise
     @order = Order.find_by(process_id: params[:process_id])
+    raise StandardError, '請等待確認付款後再進行操作' if @order.status == 'waiting_check'
     @location = 'revise'
     @freight = Order::Freight_in_store
     @remittance_info = RemittanceInfo.new

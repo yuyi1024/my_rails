@@ -1,7 +1,13 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
-	before_action :cart_show
+	before_action :cart_show, :order_pending
   protect_from_forgery with: :exception
+
+  def order_pending
+    if current_user
+      @pending = current_user.orders.where(status: 'pending').length
+    end
+  end
 
   def cart_show
     @carts = Cart.from_hash(session[Cart::SessionKey_cart])

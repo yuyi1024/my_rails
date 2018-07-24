@@ -102,16 +102,15 @@
 .message {
   position: absolute;
   top: 20px;
+  font-size: 18px;
+  line-height: 24px;
   .hello,
   .notice{
     color: $color_dark_blue;
-    font-size: 18px;
-    line-height: 20px;
+
   }
-  .alert {
-    color: red;
-    font-size: 18px;
-    line-height: 20px;
+  .alert, .pending a{
+    color: $color_price_red;
   }
 }
 

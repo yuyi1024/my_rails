@@ -72,7 +72,7 @@
                 b Email： 
                 | #{ @order.receiver_email }
 
-      - if @refund.present?
+      - if @refunded_data.present?
         table.table
           tr
             th 退款資訊
@@ -85,10 +85,10 @@
                   | 霸完股份有限公司
                 p
                   b 退款金額： 
-                  | $#{number_with_delimiter(@refund.price)}
+                  | $#{number_with_delimiter(@refunded_data.price)}
                 p
                   b 退款日期： 
-                  | #{@refund.date.strftime("%Y/%m/%d")}
+                  | #{@refunded_data.date.strftime("%Y/%m/%d")}
 
       table.table.note
         tr

@@ -25,13 +25,13 @@ h1.title 會員中心
           th.col-sm-2
         tbody
           - @orders.each do |order|
-            tr
+            tr class="#{ 'canceled' if order_canceled?(order.status)}"
               td #{ order.process_id }
               td #{ order.status_cn } #{ '(等待退款)' if order.status == 'canceled' && order.paid == 'true'}
               td NT $ #{ number_with_delimiter(order.price + order.freight) }
               td #{ order.created_at.strftime("%Y/%m/%d") }
               td 
-                - if order.shipped != 'true' && ['canceled', 'returned', 'refunded'].exclude?(order.status) 
+                - if order.shipped != 'true' && !order_canceled?(order.status) && order.status != 'waiting_check'
                   = link_to(order_revise_orders_path(order.process_id), target: :_blank)
                     button.btn 訂單修改
 

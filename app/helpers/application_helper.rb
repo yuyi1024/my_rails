@@ -96,5 +96,13 @@ module ApplicationHelper
     'quantity_red' if product.quantity <= product.quantity_alert
   end
 
+  def order_canceled?(status)
+    if ['canceled', 'returned', 'refunded'].include?(status) 
+      true
+    else
+      false
+    end
+  end
+
 
 end

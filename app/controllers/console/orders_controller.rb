@@ -66,6 +66,7 @@ class Console::OrdersController < Console::DashboardsController
     
     @remittance_info = RemittanceInfo.new
     @refund = @order.remittance_infos.where(transfer_type: 'refund', checked: 'false').first
+    @refunded_data = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').first
 
   rescue StandardError => e
     redirect_to(console_orders_path, alert: "發生錯誤：#{e}")
@@ -104,7 +105,9 @@ class Console::OrdersController < Console::DashboardsController
   def remit_check
     @order = Order.find_by(process_id: params[:process_id])
     @order.paid = 'false'
-    @order.wait_payment
+    if @order.status != 'canceled'
+      @order.wait_payment
+    end
     @remit = @order.remittance_infos.where(transfer_type: 'remit', checked: 'false').first
     @remit.checked = 'return'
     
