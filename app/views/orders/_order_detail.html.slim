@@ -27,7 +27,7 @@
                   | #{ @order.shipment_no }
               p 
                 b 訂單狀態： 
-                | #{ @order.status_cn } #{ '(等待退款)' if @order.status == 'canceled' && @order.paid == 'true' }
+                | #{ @order.status_cn }
               p 
                 b 下單日期： 
                 | #{ @order.created_at.strftime("%Y/%m/%d") }

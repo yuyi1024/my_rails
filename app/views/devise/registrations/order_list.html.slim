@@ -27,7 +27,7 @@ h1.title 會員中心
           - @orders.each do |order|
             tr class="#{ 'canceled' if order_canceled?(order.status)}"
               td #{ order.process_id }
-              td #{ order.status_cn } #{ '(等待退款)' if order.status == 'canceled' && order.paid == 'true'}
+              td #{ order.status_cn }
               td NT $ #{ number_with_delimiter(order.price + order.freight) }
               td #{ order.created_at.strftime("%Y/%m/%d") }
               td 

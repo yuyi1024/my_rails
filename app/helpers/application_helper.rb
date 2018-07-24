@@ -97,7 +97,7 @@ module ApplicationHelper
   end
 
   def order_canceled?(status)
-    if ['canceled', 'returned', 'refunded'].include?(status) 
+    if ['canceled', 'returned', 'waiting_refunded', 'refunded'].include?(status) 
       true
     else
       false

@@ -51,10 +51,13 @@ h1.title 訂單列表
 
           = check_box_tag 'status[]', 'finished', nil, id:'status_finished'
           label for='status_finished' 結束交易
-          br
           
           = check_box_tag 'status[]', 'returned', nil, id:'status_returned'
           label for='status_returned' 已退貨
+          br
+
+          = check_box_tag 'status[]', 'waiting_refunded', nil, id:'status_waiting_refunded'
+          label for='status_waiting_refunded' 待退款
 
           = check_box_tag 'status[]', 'refunded', nil, id:'status_refunded'
           label for='status_refunded' 已退款

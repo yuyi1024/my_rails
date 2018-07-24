@@ -387,19 +387,23 @@
 
   def order_cancel
     @order = Order.find_by(process_id: params[:process_id])
+    @order.cancel
+
     if params[:remittance_info].present?
       @info = @order.remittance_infos.create(remittance_info_params)
       @info.transfer_type = 'refund'
+      @order.wait_refunded
       raise StandardError, '訂單取消失敗' if !@info.save
     end
-    if @order.may_cancel?
-      @order.cancel
-      raise StandardError, '訂單取消失敗' if !@order.save
+    # xxx
+    if @order.save 
+      flash[:success] = '訂單取消成功'
+      redirect_to user_order_list_path
+    else
+      raise StandardError, '訂單取消失敗'
     end
-    flash[:success] = '訂單取消成功'
-    redirect_to user_order_list_path
-  rescue StandardError => e
-    redirect_to(user_order_list_path, alert: "#{e}")
+  # rescue StandardError => e
+  #   redirect_to(user_order_list_path, alert: "#{e}")
   end
 
   private

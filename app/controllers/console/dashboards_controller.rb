@@ -8,6 +8,8 @@ class Console::DashboardsController < ApplicationController
     @orders = Order.where("created_at > ?", t.days_ago(30)).order('created_at DESC').limit(10) #30天內
     @messages = Message.where(qanda: [nil, '']).where("created_at > ?", t.days_ago(30)).order('created_at DESC').limit(10)
     
+    @waiting = Order.where(status: ['waiting_check', 'waiting_refunded']).order('created_at DESC')
+
     @y_order = Order.where(created_at: t.all_year)
     @m_order = Order.where(created_at: t.all_month)
     @w_order = Order.where(created_at: t.all_week)
