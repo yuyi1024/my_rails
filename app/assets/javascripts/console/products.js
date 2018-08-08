@@ -43,6 +43,40 @@ $(document).on('turbolinks:load', function() {
   }
 });
 
+//summernote function
+function sendFile(object, file) {
+  var data = new FormData;
+  data.append('image[image]', file); // => params[:image][:image]
+  data.append('image[content_type]', 'description'); // => params[:image][:content_type]
+
+  $.ajax({
+    data: data,
+    type: 'POST',
+    url: '/images', //=> create
+    cache: false,
+    contentType: false,
+    processData: false,
+    success: function(data) {
+      //data => { id, url }
+      var img = document.createElement('img');
+      img.src = data.url;
+      img.setAttribute('id', data.id);
+      $(object).summernote('insertNode', img);
+    }
+  });
+}
+
+//summernote function
+function deleteFile(image_id) {
+  $.ajax({
+    type: 'DELETE',
+    url: '/images/' + image_id,
+    cache: false,
+    contentType: false,
+    processData: false
+  });
+}
+
 function cat_select(m){
   var cat = document.getElementById('cat_box').value;
   $('#product_category_id').val(cat);

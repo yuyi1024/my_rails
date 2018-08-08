@@ -4,25 +4,28 @@
 
   = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| 
     = devise_error_messages!
+    #error_explanation 
+      ul 
+        li #{registration_error_message}
 
     .field
       = f.label :name, '會員名稱'
-      = f.text_field :name, autofocus: true 
+      = f.text_field :name, autofocus: true, required: 'required'
 
     .field
       = f.label :email, '信箱'
-      = f.email_field :email
+      = f.email_field :email, required: 'required'
 
     .field
       = f.label :password, '密碼'
       - if @minimum_password_length
         em 密碼不得少於 #{@minimum_password_length} 個字元
       br
-      = f.password_field :password, autocomplete: "off" 
+      = f.password_field :password, autocomplete: "off" , required: 'required'
 
     .field
       = f.label :password_confirmation, '再次確認密碼'
-      = f.password_field :password_confirmation, autocomplete: "off"
+      = f.password_field :password_confirmation, autocomplete: "off", required: 'required'
 
     .actions.field
       = f.submit "註冊"

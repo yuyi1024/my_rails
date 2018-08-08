@@ -1,8 +1,11 @@
 class MessagesController < ApplicationController
 	def index
 		@messages = Message.where("qanda > 0").order('qanda ASC')
-		@user_messages = current_user.messages.order('created_at DESC')
-		@message = Message.new
+
+		if current_user
+			@user_messages = current_user.messages.order('created_at DESC')
+			@message = Message.new
+		end
 	end
 
 	def create

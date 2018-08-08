@@ -7,12 +7,14 @@
     div
       = image_tag('https://s3-ap-northeast-1.amazonaws.com/bawan-rails/uploads/banner/banner-3.jpg')
 
-  
+  / 全館優惠
   - if @offer.present?
     .row.horn
       h3
         span.glyphicon.glyphicon-bullhorn
         |  #{@offer.message}
+  
+  / filter
   = form_tag products_path, method: :get, remote: :true, id: 'search_form' do
     #selector.row
       .col-sm-3.cat data-target='#cat_box' 
@@ -53,21 +55,21 @@
     br
 
   .container
-    /分類的box
+    / 分類的box
     #boxes.row
       #cat_box.row
-        /分類1按鈕
+        / 分類1按鈕
         #cat1.row 
           - @cat1s.each_with_index do |cat1,index|
             div data-target='#cat2' data-name='#{cat1.name}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
               = cat1.name
 
-        /分類2按鈕
+        / 分類2按鈕
         #cat2.row 
 
     br
 
-    /分類的tag
+    / 分類的tags
     #tag.row
       span.glyphicon.glyphicon-tags
 

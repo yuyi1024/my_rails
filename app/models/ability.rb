@@ -27,7 +27,9 @@ class Ability
           cannot :dashboard, :all
           cannot :manage_role, User
 	      
-        end 
+        end
+      else
+
       end
 
     # can :read, :all . # permissions for every user, even if not logged in    

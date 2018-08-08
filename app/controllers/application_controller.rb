@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   def order_pending
     if current_user
       @pending = current_user.orders.where(status: 'pending').length
+    else
+      @pending = 0
     end
   end
 

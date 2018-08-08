@@ -1,13 +1,17 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-  before_action :authenticate_user!
-  
-  def show
+  # before_action :authenticate_user!
+  before_action :can_manage_user?, except: [:new, :create]
+
+  def can_manage_user?
     @user = current_user
     authorize! :manage, @user
+  end
+  
+  def show #會員資料
   rescue StandardError => e
-    redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")
+    redirect_to(root_path, alert: "發生錯誤：#{e}")
   end
 
   # GET /resource/sign_up
@@ -21,6 +25,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super
   end
 
+# Password confirmation translation missing: zh.activerecord.errors.models.user.attributes.password_confirmation.confirmation
+
   # GET /resource/edit
   def edit
     super
@@ -28,27 +34,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   
-
-  def update_field #會員中心資料更新
-    @user = current_user
+  def update_field #會員資料-資料更新
     @user.update(user_params)
-    @action = 'update_field'
+    @action = __method__.to_s
     render 'devise/registrations/registrations.js.erb'
   end
 
-  def pwd_field #會員中心更改密碼
-    @user = current_user
-    @action = 'pwd_field'
+  def pwd_field #會員資料-顯示密碼更改欄位
+    @action = __method__.to_s
     render 'devise/registrations/registrations.js.erb'
   end
 
-  # def update #update pwd
-  #   super
-  #   redirect_to root_path
-  # end
-
-  def update
-    #current_user
+  def update #會員資料-密碼更新
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
     resource_updated = update_resource(resource, account_update_params) #true/false
@@ -77,14 +74,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def order_list #會員中心訂單列表
-    @orders = current_user.orders.order('created_at DESC')
+    @orders = @user.orders.order('created_at DESC')
     @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
   rescue StandardError => e
     redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")
   end
 
   def favorite_list #會員中心追蹤列表
-    @favorites = current_user.favorites
+    @favorites = @user.favorites
   rescue StandardError => e
     redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")
   end

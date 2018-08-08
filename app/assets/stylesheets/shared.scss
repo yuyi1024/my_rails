@@ -354,18 +354,27 @@
 
 /*message form*/
 
-#new_message{
-  .row{
-    margin: 0 auto 10px;
-    textarea{
-      width: 100%;
-      height: 100px;
-      resize: vertical;
+#message{
+  #new_message{
+    .row{
+      margin: 0 auto 10px;
+      textarea{
+        width: 100%;
+        height: 100px;
+        resize: vertical;
+      }
+      .btn{
+        background-color: #000;
+        color: #fff;
+        width: 100%;
+      }
     }
+  }
+  #sign_in{
+    font-weight: bold;
     .btn{
       background-color: #000;
       color: #fff;
-      width: 100%;
     }
   }
 }

@@ -1,5 +1,21 @@
 module ApplicationHelper
 
+  #註冊錯誤訊息
+  def registration_error_message
+    return "" if resource.errors.empty?
+    details = resource.errors.details
+    key = details.keys[0]
+    message = ''
+    if key == :email
+      message = '該信箱已存在，請登入以繼續操作' if details[key][0][:error] == :taken
+    elsif key == :password
+      message = '密碼太短，請至少包含8個字元' if details[key][0][:error] == :too_short
+    elsif key == :password_confirmation
+      message = '密碼認證錯誤，請重新確認密碼'
+    end
+    message
+  end
+
   def user_role(role)
     if role == 'admin'
       '（管理者）'

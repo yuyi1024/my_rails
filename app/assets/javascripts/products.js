@@ -1,9 +1,9 @@
 $(document).on('turbolinks:load', function() {
-  
+
   // var path = window.location.pathname;
   var location = window.location;
 
-  if (location.pathname == '/' || (location.pathname.match(/products/g) && location.pathname.match(/console/g) == null)){
+  if (location.pathname == '/' || (location.pathname.match(/products/g) && location.pathname.match(/console/g) == null)) {
 
     $('#banner').slick({
       autoplay: true,
@@ -13,9 +13,8 @@ $(document).on('turbolinks:load', function() {
       pauseOnHover: false,
     });
 
-    var price_bottom = 0;
-    var price_up = 0;
 
+    //商品分類filter之開關
     $('#selector .cat').click(function() {
       $target = $($(this).data('target'));
 
@@ -31,93 +30,56 @@ $(document).on('turbolinks:load', function() {
         $('#boxes').removeClass('boxes_visible');
         $target.toggle('slow');
       }
-
     });
 
-
-    $('.input-quantity span').click(function(){
-      event.preventDefault(); 
-      var q = $('.input-quantity input').val();
-      if($(this).hasClass('plus')){
-        q++;
-      }else if($(this).hasClass('minus') && q>1){
-        q--;
-      }
-      $('.input-quantity input').val(q);
-    });
-
-    //input enter
-    $("#price_bottom").keypress(function(e){
+    //filter press Enter
+    $("#price_bottom").keypress(function(e) {
       if (e.keyCode == 13) {
         price();
       }
     });
-    $("#price_top").keypress(function(e){
+    $("#price_top").keypress(function(e) {
       if (e.keyCode == 13) {
         price();
       }
     });
-    $("#keyword").keypress(function(e){
+    $("#keyword").keypress(function(e) {
       if (e.keyCode == 13) {
         keywords();
       }
     });
 
-
-
-
-    //如果有分類params則找出指定分類
-    if(location.search != ''){
+    //如果有url帶分類params則找出指定分類
+    if (location.search != '') {
       url = new URL(location.href);
       cat = url.searchParams.get("cat");
       subcat = url.searchParams.get("subcat");
       $('#selector .cat').click();
       $('#cat1-box-' + cat).click();
-      if(subcat != '0'){
-        setTimeout(function(){
-          $('#cat2-box-'+subcat).click();
-        },1000);
+      if (subcat != '0') {
+        setTimeout(function() {
+          $('#cat2-box-' + subcat).click();
+        }, 1000);
       }
     }
+
+    // product/show增減購買數量
+    $('.input-quantity span').click(function() {
+      event.preventDefault();
+      var q = $('.input-quantity input').val();
+      if ($(this).hasClass('plus')) {
+        q++;
+      } else if ($(this).hasClass('minus') && q > 1) {
+        q--;
+      }
+      $('.input-quantity input').val(q);
+    });
 
   }
 });
 
-//summernote function
-function sendFile(object, file) {
-  var data = new FormData;
-  data.append('image[image]', file); // => params[:image][:image]
-  data.append('image[content_type]', 'description'); // => params[:image][:content_type]
 
-  $.ajax({
-    data: data,
-    type: 'POST',
-    url: '/images', //=> create
-    cache: false,
-    contentType: false,
-    processData: false,
-    success: function(data) {
-      //data => { id, url }
-      var img = document.createElement('img');
-      img.src = data.url;
-      img.setAttribute('id', data.id);
-      $(object).summernote('insertNode', img);
-    }
-  });
-}
-
-//summernote function
-function deleteFile(image_id) {
-  $.ajax({
-    type: 'DELETE',
-    url: '/images/' + image_id,
-    cache: false,
-    contentType: false,
-    processData: false
-  });
-}
-
-//click cat1_box
+//click cat1_box(主分類)
 function cat1(object) {
   $("input[name='cat2_field[]']").remove();
   $("#tag_cat2 .bubble").remove();
@@ -142,7 +104,7 @@ function cat1(object) {
   form_submit();
 }
 
-//click cat2_box
+//click cat2_box(次分類)
 function cat2(object) {
   tagId = $(object).data('id');
   tagName = $(object).data('name');
@@ -158,6 +120,7 @@ function cat2(object) {
     input.name = 'cat2_field[]';
     input.value = tagId;
     input.id = 'cat2-input-' + tagId;
+    // -> <input type="hidden" name="cat2_field[]" value="15" id="cat2-input-15">
     document.getElementById('search_form').appendChild(input);
 
     tag_create(tagName, tagId, 'cat2');
@@ -173,12 +136,13 @@ function cat2(object) {
 //新增tag
 function tag_create(tagName, tagId, cat) {
   var selectBubble = document.createElement('div');
-  var bubbleText = document.createTextNode(tagName + ' x'); //文字
+  var bubbleText = document.createTextNode(tagName + ' x'); //tag文字
   selectBubble.appendChild(bubbleText);
   selectBubble.id = cat + '-tag-' + tagId;
   selectBubble.className = 'bubble'; //class
   selectBubble.setAttribute('onclick', "destroy(this, '" + cat + "')");
   selectBubble.setAttribute('data-id', tagId);
+  // -> <div id="cat2-tag-15" class="bubble" onclick="destroy(this, 'cat2')" data-id="15">惜時 x</div>
   document.getElementById('tag_' + cat).appendChild(selectBubble);
 }
 
@@ -204,7 +168,7 @@ function destroy(object, cat) {
     $('#price-tag-p').remove();
     $('#price_bottom').val('');
     $('#price_top').val('');
-  
+
   } else if (cat == 'keyword') {
     $('#keyword-tag-k').remove();
     $('#keyword').val('');
@@ -212,6 +176,7 @@ function destroy(object, cat) {
   form_submit();
 }
 
+//清除所有tag(重置filter)
 function clear_tag() {
   $('#price_bottom').val('');
   $('#price_top').val('');
@@ -231,7 +196,8 @@ function form_submit() {
   $('#search_form').submit();
 }
 
-function keywords(){
+//關鍵字搜尋
+function keywords() {
   $('#keyword-tag-k').remove();
   tagName = $('#keyword').val();
   tag_create(tagName, 'k', 'keyword');
@@ -239,10 +205,11 @@ function keywords(){
   fbq('track', 'Search', {
     search_string: tagName,
   });
-  ga('send', 'pageview', '/search/'+tagName);
+  ga('send', 'pageview', '/search/' + tagName);
   form_submit();
 }
 
+//價錢搜尋
 function price() {
   $('#price-tag-p').remove();
   var pb = '';
@@ -262,7 +229,8 @@ function price() {
     }
   }
 
-  if (Number.isInteger(pb) && Number.isInteger(pt)) { //if底>高
+  //if 價錢 bottom > top -> 交換
+  if (Number.isInteger(pb) && Number.isInteger(pt)) {
     if (pb > pt) {
       temp = pb;
       pb = pt;
@@ -273,8 +241,9 @@ function price() {
   $('#price_bottom').val(pb);
   $('#price_top').val(pt);
 
-  pb = pb.toLocaleString('en');
-  pt = pt.toLocaleString('en');
+  //number.toLocalString(逗點、to_s)
+  pb = pb.toLocaleString();
+  pt = pt.toLocaleString();
 
   if (pb != '' && pt != '') {
     tagName = '$ ' + pb + ' ~ ' + pt;
@@ -290,7 +259,8 @@ function price() {
   form_submit();
 }
 
-function products_sort_by(){
+//商品排序
+function products_sort_by() {
   $('#sort_item').val($("#sort_by_item").val());
   $('#sort_order').val($("input[name=sequence]:checked").val());
   form_submit();

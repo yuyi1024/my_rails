@@ -1,8 +1,10 @@
 class ProductsController < ApplicationController
-  def index
+  
+  def index #首頁
     @products = Product.where(status: 'on_shelf')
     @cat1s = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id').order('id ASC')
 
+    # ↓↓↓ search begin ↓↓↓
     if params[:cat1_field].present?
       cat1 = Category.find_by(name: params[:cat1_field])
       @cat2s = cat1.subcategories.joins(:product).group('subcategories.id').having('count(subcategory_id) > 0')
@@ -27,6 +29,7 @@ class ProductsController < ApplicationController
     else
       @products = @products.order('sold DESC')
     end
+    # ↑↑↑ search end ↑↑↑
 
     @cat2_click = params[:cat2_click]
 
@@ -35,7 +38,7 @@ class ProductsController < ApplicationController
 
     @favorites = current_user.favorites if current_user.present?
     
-    @action = 'index'
+    @action = __method__.to_s
     
     respond_to do |format|
       format.html
@@ -44,7 +47,7 @@ class ProductsController < ApplicationController
 
   end
 
-  def show
+  def show #商品詳細頁
     @product = Product.where(status: 'on_shelf').find_by_id(params[:id])
     if @product.present?
       @product.increment(:click_count)
@@ -55,7 +58,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  def heart
+  def heart #商品追蹤
     favorite = current_user.favorites
     @product = Product.find(params[:id])
 
@@ -68,23 +71,19 @@ class ProductsController < ApplicationController
         favorite.save
         @heart = 'add'
       else
-        @heart = 'full'
+        @heart = 'full' #追蹤數量超過十筆
       end
     end
 
-    @action = 'heart'
+    @action = __method__.to_s
     render 'products/index.js.erb'
   end
 
-  def index_with_params
+  def index_with_params #首頁url帶分類params
     cats = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id').order('id ASC')
     cat = cats.index(cats.find(params[:cat]))
     subcat = params[:subcat]
     redirect_to root_path(cat: cat, subcat: subcat)
   end
-
-
-
-
 
 end
