@@ -235,6 +235,12 @@ class Order < ApplicationRecord
     raise StandardError, '電話格式錯誤(含錯誤字元)' if !r_phone.match(/\D/).nil? #含數字外的字符
   end
 
+  #【收件地址】制需大於 6 個字元，且不可超過 60個字元
+  def self.receiver_address_format(r_address)
+    raise StandardError, '地址格式錯誤(需大於6個，且不可超過60個字元)' if !r_address.length.between?(7, 60)
+  end
+
+
   include AASM
 
   aasm column: :status do

@@ -1,11 +1,17 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :order_auth, only: [:edit, :show, :order_revise, :to_map, :cash_card, :remit_info]
   
   # 除了from_map的方法都啟動CSRF安全性功能（預設全部方法都啟動
   protect_from_forgery except: :from_map
 
   # ecpay物流串接
   require 'ecpay_logistics'
+
+  def order_auth # 只能查看自己的訂單
+    @order = Order.find_by(process_id: params[:process_id])
+    authorize! :read, @order
+  end
 
   def new #購物車結帳頁面
     if session[Cart::SessionKey_cart]["items"].length > 0
@@ -133,7 +139,6 @@ class OrdersController < ApplicationController
   end
 
   def edit # 訂單資料填寫
-    @order = Order.find_by(process_id: params[:id])
     @stName = params[:stName] if !params[:stName].nil?
     @location = 'edit'
   rescue StandardError => e
@@ -141,11 +146,10 @@ class OrdersController < ApplicationController
   end
 
   def to_map # ecpay CVS 地圖
-    order = Order.find_by(process_id: params[:process_id])
-    pay = (order.pay_method == 'pickup_and_cash' ? 'Y' : 'N')
+    pay = (@order.pay_method == 'pickup_and_cash' ? 'Y' : 'N')
 
     args = {
-      'MerchantTradeNo' => order.process_id,
+      'MerchantTradeNo' => @order.process_id,
       'ServerReplyURL' => 'http://localhost:3000/orders/from_map',
       'LogisticsType' => 'CVS',
       'LogisticsSubType' => params[:st_type],
@@ -179,86 +183,83 @@ class OrdersController < ApplicationController
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def update # 儲存收件資料
-    @order = Order.find(params[:id])
+  def update # 儲存訂單收件資料
+    @order = Order.find_by(process_id: params[:process_id])
 
     # ↓↓↓↓↓愉快的判斷資料格式時間↓↓↓↓↓
     Order.receiver_name_format(order_params[:receiver_name])
     Order.receiver_cellphone_format(order_params[:receiver_cellphone])
     Order.receiver_email_format(order_params[:receiver_email]) if order_params[:receiver_email].present?
     Order.receiver_phone_format(order_params[:receiver_phone]) if order_params[:receiver_phone].present?
-
-
-    #【收件地址】制需大於 6 個字元，且不可超過 60個字元。
-    if order_params[:receiver_address].present?
-      r_address = order_params[:receiver_address]
-      raise StandardError, '地址格式錯誤(需大於6個，且不可超過60個字元)' if !r_address.length.between?(7, 60)
-    end
-
-    #↑↑↑↑↑判斷結束↑↑↑↑↑↑
+    Order.receiver_address_format(order_params[:receiver_address]) if order_params[:receiver_address].present?
 
     @order.update(order_params)
     
+    # 根據 pay_method  更變訂單 status
     if @order.pay_method == 'pickup_and_cash'
       @order.wait_shipment
-    
     elsif @order.pay_method == 'cash_card'
       if @order.paid == 'true' && @order.may_wait_shipment?
         @order.wait_shipment
       else
         @order.wait_payment if @order.may_wait_payment?
       end
-    
     elsif @order.pay_method == 'atm'
       @order.wait_payment
     end
 
+    # 根據 pay_method redirect to page
     if @order.save
+      flash[:success] = '訂單建立'
+
       if @order.pay_method == 'cash_card'
         redirect_to cash_card_orders_path(@order.process_id)
       
       elsif @order.pay_method == 'atm'
-        flash[:success] = '訂單建立'
         redirect_to remit_info_orders_path(@order.process_id)
       
       elsif @order.pay_method == 'pickup_and_cash'
         hash = @order.ecpay_create
         @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
-
         @order.save
-        flash[:success] = '訂單建立'
         redirect_to user_order_list_path
       end
     else
-      raise StandardError, '訂單錯誤'
+      raise StandardError, '訂單發生錯誤'
     end
 
   rescue StandardError => e
-    redirect_back(fallback_location: edit_order_path(@order), alert: "#{e}")
+    redirect_back(fallback_location: edit_order_path(@order.process_id), alert: "#{e}")
   end
 
-  def show
-    @order = Order.find_by(process_id: params[:id])
+  def show # 訂單詳情
+    # ecpay 物流狀態信息
     if @order.ecpay_logistics_id.present?
-      @logistics_status = @order.ecpay_trade_info
-      @logistics_status = @logistics_status.message
+      @logistics_status = @order.ecpay_trade_info.message
     else
       @logistics_status = '未出貨'
     end
-    @refunded_data = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').first
-    @remittance_info = RemittanceInfo.new
-    authorize! :read, @order
+
+    # 公司已退款之資訊
+    @refunded_data = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').order('created_at DESC').first
+
+    # 通知已付款表單
+    if @order.status == 'waiting_payment' && @order.pay_method == 'atm'
+      @remittance_info = RemittanceInfo.new
+      # 被退回的通知付款資料
+      @check_return = @order.remittance_infos.where(checked: 'return').order('created_at DESC')
+    end
+
   rescue StandardError => e
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def remit_info #匯款資訊
-    @order = current_user.orders.find_by(process_id: params[:process_id])
+  def remit_info # 公司付款資訊頁面(atm付款)
   rescue StandardError => e 
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def remit_finish #通知已付款
+  def remit_finish # 通知已付款(atm付款)
     @order = Order.find_by(process_id: params[:process_id])
     @remit = @order.remittance_infos.create(remittance_info_params)
     @remit.transfer_type = 'remit'
@@ -273,16 +274,13 @@ class OrdersController < ApplicationController
       redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def cash_card #信用卡付款頁面
-    @order = Order.find_by(process_id: params[:process_id])
-    # raise StandardError, '已付款' if @order.paid == 'true'
-    total_price = (@order.price + @order.freight).to_s
+  def cash_card # 信用卡付款頁面
     @client_token = Braintree::ClientToken.generate
   rescue StandardError => e
     redirect_to(user_order_list_path, alert: "#{e}")
   end
 
-  def paid #信用卡付款認證
+  def paid # 信用卡付款認證
     @order = Order.find_by(process_id: params[:process_id])
     result = Braintree::Transaction.create(
       :amount => @order.price + @order.freight,
@@ -297,6 +295,7 @@ class OrdersController < ApplicationController
       @order.pay
       @order.paid = 'true'
 
+      # ecpay 物流代碼
       hash = @order.ecpay_create
       @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
       
@@ -325,7 +324,6 @@ class OrdersController < ApplicationController
   end
 
   def order_revise
-    @order = Order.find_by(process_id: params[:process_id])
     raise StandardError, '請等待確認付款後再進行操作' if @order.status == 'waiting_check'
     @location = 'revise'
     @freight = Order::Freight_in_store

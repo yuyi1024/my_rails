@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 		end
 	end
 
-  resources :orders do
+  resources :orders, param: :process_id do
     collection do
       get :ship_method, path: 'ship_method', as: 'ship_method'
       get :to_map, path: 'to_map', as: 'to_map'

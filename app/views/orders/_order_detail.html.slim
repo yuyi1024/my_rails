@@ -72,11 +72,11 @@
                 b Email： 
                 | #{ @order.receiver_email }
 
+      / 公司已退款之資訊
       - if @refunded_data.present?
         table.table
           tr
             th 退款資訊
-
           tbody
             tr
               td 

@@ -62,11 +62,11 @@ class Console::OrdersController < Console::DashboardsController
     end
     @may_status = @order.may_status
     
-    @remit = @order.remittance_infos.where(transfer_type: 'remit', checked: 'false').first
+    @remit = @order.remittance_infos.where(transfer_type: 'remit', checked: 'false').order('created_at DESC').first
     
     @remittance_info = RemittanceInfo.new
-    @refund = @order.remittance_infos.where(transfer_type: 'refund', checked: 'false').first
-    @refunded_data = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').first
+    @refund = @order.remittance_infos.where(transfer_type: 'refund', checked: 'false').order('created_at DESC').first
+    @refunded_data = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').order('created_at DESC').first
 
   rescue StandardError => e
     redirect_to(console_orders_path, alert: "發生錯誤：#{e}")
