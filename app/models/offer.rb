@@ -59,6 +59,7 @@ class Offer < ApplicationRecord
     repeat
   end
 
+  # 確認訂單是否符合全館優惠資格，並計算全館優惠後的總價
   def calc_total_price_offer(price)
     offer_auth = false
     if self.range == 'all'

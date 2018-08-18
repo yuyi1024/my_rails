@@ -4,5 +4,7 @@ javascript:
     stId: '#{@stId}',
     stName: '#{@stName}',
   };
+  
+  // 父視窗執行 callback 方法
   window.opener.callback(data);
   window.close();

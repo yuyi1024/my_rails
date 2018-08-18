@@ -36,6 +36,7 @@ class Cart
     found_item.change(quantity)
   end
 
+  # 計算 order session 中所有商品之總價(含商品優惠、不含全館優惠)
   def order_total_price
     @items.reduce(0){ |sum, item| sum + item.price }
     #[].reduce(initial){ |memo, obj| block }
@@ -49,6 +50,7 @@ class Cart
   end
 
   # class method 類別方法
+  # 將session內容存於hash
   def self.from_hash(hash)
     if hash.nil?
       new []   #new([]) => initialize([])
@@ -95,8 +97,9 @@ class Cart
     price
   end
 
+  # 將 order session 中的 items 存入 OrderItem，並對 product 的已賣/庫存數量作變動
   def session_to_order_items(order)
-    @items.each_with_index do |item,index|
+    @items.each_with_index do |item, index|
       order.order_items[index].product_id = item.product_id
       order.order_items[index].quantity = item.quantity
       order.order_items[index].price = item.price

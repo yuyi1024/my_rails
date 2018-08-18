@@ -1,24 +1,28 @@
- class OrdersController < ApplicationController
+class OrdersController < ApplicationController
   before_action :authenticate_user!
   
-  #除了from_map的方法都啟動CSRF安全性功能（預設全部方法都啟動
-  protect_from_forgery with: :null_session, except: :from_map
+  # 除了from_map的方法都啟動CSRF安全性功能（預設全部方法都啟動
+  protect_from_forgery except: :from_map
 
-  require 'ecpay_logistics'  
+  # ecpay物流串接
+  require 'ecpay_logistics'
 
-  def new #購物車頁面
-    #將 cart session 中的資料存入新產生的 order session，以防結帳後再更動 cart
+  def new #購物車結帳頁面
     if session[Cart::SessionKey_cart]["items"].length > 0
+
+      # 全館優惠，若存在，return offer id；若無，return nil
       @whole_offer = whole_store_offer
 
+      # 將 cart session 中的資料存入新產生的 order session，以防結帳後再更動 cart
       @cart_session = Cart.from_hash(session[Cart::SessionKey_cart])
       @order_session = Cart.new_order_hash(@cart_session, @whole_offer)
       session[Cart::SessionKey_order] = @order_session.to_hash
+      
       @order = Order.new
 
-      total_and_offer_price #計算優惠前後的價錢
+      total_and_offer_price # 計算優惠前後的價錢
       @ship_method = 'CVS'
-      freight_offer #計算運費
+      freight_offer # 計算運費
     else
       raise StandardError, '購物車內尚無商品'
     end
@@ -26,15 +30,15 @@
     redirect_back(fallback_location: root_path, alert: "#{e}")
   end
 
-  def ship_method #選擇送貨方式
-    @location = params[:location]
+  def ship_method # 選擇送貨方式
+    @location = params[:location] # new(新增訂單) or revise(修改訂單)
     @ship_method = params[:ship_method]
 
     if @location == 'new'
       @order_session = Cart.from_hash(session[Cart::SessionKey_order])
 
-      total_and_offer_price #計算優惠前後的價錢
-      freight_offer #計算運費
+      total_and_offer_price # 計算優惠前後的價錢
+      freight_offer # 計算運費
       @offer_price += @freight
 
     elsif @location == 'revise'
@@ -48,9 +52,11 @@
     render 'orders/orders.js.erb'
   end
 
-  def total_and_offer_price #計算優惠前後的價錢
+  def total_and_offer_price # 計算優惠前後的價錢
     @total_price = @order_session.order_total_price
     @offer =  whole_store_offer
+    
+    # 若全館優惠存在則計算優惠後價格；若無，則總價為 order session 之加總
     if @offer.present?
       @offer = Offer.find(@offer)
       @offer_price = @offer.calc_total_price_offer(@total_price)
@@ -59,14 +65,11 @@
     end
   end
 
-  def freight_offer #計算運費
+  def freight_offer # 計算運費
+    # 若符合免運資格則 @freight = 0；否則 @freight = 預設
     if @offer.present?
-      if @offer.range == 'all'
-        @freight = 0 if @offer.offer_freight == 'all' || @offer.offer_freight == @ship_method
-      elsif @offer.range == 'price'
-        if @offer_price >= @offer.range_price
-          @freight = 0 if @offer.offer_freight == 'all' || @offer.offer_freight == @ship_method
-        end
+      if @offer.offer_freight == 'all' || @offer.offer_freight == @ship_method
+        @freight = 0 if @offer.range == 'all' || ( @offer.range == 'price' && @offer_price >= @offer.range_price )
       end
     end
 
@@ -79,10 +82,10 @@
     end
   end
 
-  def create #前往結帳
+  def create # 訂單建立
     @order_session = Cart.from_hash(session[Cart::SessionKey_order])
 
-    #檢查是否有商品之優惠變動
+    # 檢查是否有過期之優惠
     @order_session.items.each do |item|
       raise StandardError, '部分商品優惠已過期，請重新結帳' if Product.find(item.product_id).offer_id != item.offer_id
     end
@@ -92,14 +95,12 @@
     @order.user = current_user
 
     total_and_offer_price
-    @order.price = @offer_price #不含運
-    @order.process_id = @order.g_process_id(current_user.id, current_user.orders.length+1)
+    @order.price = @offer_price # 不含運之總價
+    @order.process_id = @order.g_process_id(current_user.id, current_user.orders.length + 1)
 
     offer = Offer.find(@order_session.offer_id)
-    if offer.range == 'all'
+    if offer.range == 'all' || ( offer.range == 'price' && @offer_price >= offer.range_price)
       @order.offer_id = @order_session.offer_id
-    elsif offer.range == 'price'
-      @order.offer_id = @order_session.offer_id if @offer_price > offer.price
     end
 
     @ship_method = order_params[:logistics_type]
@@ -107,7 +108,7 @@
     @order.freight = @freight
     @order.logistics_subtype = 'TCAT' if @ship_method == 'Home'
 
-    #將 order session 的東西存入 new 的 OrderItem 中、quantity/sold 操作
+    # 將 order session 的東西存入 new 的 OrderItem 中、product 的 quantity/sold 操作
     @order_session.items.length.times{@order.order_items.build}
     @order_session.session_to_order_items(@order)
 
@@ -117,7 +118,7 @@
     if @order.save
       # 刪除 cart session 中已結帳的物品，未結帳的不動
       @order_session['items'].each do |item|
-        @cart_session['items'] = @cart_session['items'].delete_if{|key,_| key['product_id'] == item['product_id'].to_s}
+        @cart_session['items'].delete_if{ |key,_| key['product_id'] == item['product_id'].to_s }
       end
 
       session[Cart::SessionKey_cart] = @cart_session
@@ -131,23 +132,21 @@
     redirect_back(fallback_location: new_order_path, alert: "#{e}")
   end
 
-  def edit #訂單資料填寫
+  def edit # 訂單資料填寫
     @order = Order.find_by(process_id: params[:id])
-    if !params[:stName].nil?
-      @stName = params[:stName]
-    end
+    @stName = params[:stName] if !params[:stName].nil?
     @location = 'edit'
   rescue StandardError => e
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def to_map
+  def to_map # ecpay CVS 地圖
     order = Order.find_by(process_id: params[:process_id])
     pay = (order.pay_method == 'pickup_and_cash' ? 'Y' : 'N')
 
     args = {
       'MerchantTradeNo' => order.process_id,
-      'ServerReplyURL' => 'https://bawan-store-0225.herokuapp.com/orders/from_map',
+      'ServerReplyURL' => 'http://localhost:3000/orders/from_map',
       'LogisticsType' => 'CVS',
       'LogisticsSubType' => params[:st_type],
       'IsCollection' => pay,  
@@ -156,13 +155,15 @@
     }
 
     create = ECpayLogistics::QueryClient.new
-    @map = create.expressmap(args)
+    map = create.expressmap(args) # 回傳一段能 post 到 ecpay 的 html code
+
+    render :inline => map # inline(直接提供 erb)
 
   rescue StandardError => e
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def from_map
+  def from_map # ecpay CVS 回傳資料
     @stType = params[:LogisticsSubType]
     @stId = params[:CVSStoreID]
     @stName = params[:CVSStoreName]
@@ -170,55 +171,23 @@
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def get_user_data #勾選同會員資料
-    @order = Order.find_by(process_id: params[:process_id])
-    @user = @order.user
+  def get_user_data # 勾選同會員資料
+    @user = current_user
     @action = 'get_user_data'
     render 'orders/orders.js.erb'
   rescue StandardError => e
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def update
+  def update # 儲存收件資料
     @order = Order.find(params[:id])
 
-    #↓↓↓↓↓愉快的判斷資料格式時間↓↓↓↓↓
+    # ↓↓↓↓↓愉快的判斷資料格式時間↓↓↓↓↓
+    Order.receiver_name_format(order_params[:receiver_name])
+    Order.receiver_cellphone_format(order_params[:receiver_cellphone])
+    Order.receiver_email_format(order_params[:receiver_email]) if order_params[:receiver_email].present?
+    Order.receiver_phone_format(order_params[:receiver_phone]) if order_params[:receiver_phone].present?
 
-    #【收件姓名】字元限制為 10 個字元(最多 5 個中文字、10 個英文字)、不可有空白，若帶有空白系統自動去除
-    r_name = order_params[:receiver_name]
-    r_name.gsub!(/\s/, '') if !r_name.match(/\s/).nil? #有空白則去空白
-
-    if (r_name =~ /\p{han}/).nil? #不含中文
-      raise StandardError, '收件人姓名格式錯誤(最多10個英文字)' if r_name.length > 10
-    else #含中文
-      if !r_name.match(/\p{^han}/).nil? #同時含中文與其他字符
-        raise StandardError, '收件人姓名格式錯誤(最多5個中文字、10個英文字)'
-      else #全中文
-        raise StandardError, '收件人姓名格式錯誤(最多5個中文字)' if r_name.length > 5
-      end
-    end
-
-    #【收件手機】只允許數字、10 碼、09 開頭
-    r_cellphone = order_params[:receiver_cellphone]
-    if r_cellphone.match(/\D/).nil? #不含數字外的字符
-      raise StandardError, '手機格式錯誤(必須為10碼)' if r_cellphone.length != 10
-      raise StandardError, '手機格式錯誤(必須為09開頭)' if r_cellphone.match(/^../)[0] != '09'
-    else
-      raise StandardError, '手機格式錯誤(含錯誤字元)'
-    end
-
-    #【收件信箱】需含@
-    if order_params[:receiver_email].present?
-      r_email = order_params[:receiver_email]
-      raise StandardError, '信箱格式錯誤(需含@字元)' if r_email.match(/@/).nil?
-    end
-      
-    #【收件電話】允許數字+特殊符號；特殊符號僅限()-#
-    if order_params[:receiver_phone].present?
-      r_phone = order_params[:receiver_phone]
-      r_phone.gsub!(/(\()|(\))|(-)|(#)/, '') #去除合法特殊字符
-      raise StandardError, '電話格式錯誤(含錯誤字元)' if !r_phone.match(/\D/).nil? #含數字外的字符
-    end
 
     #【收件地址】制需大於 6 個字元，且不可超過 60個字元。
     if order_params[:receiver_address].present?

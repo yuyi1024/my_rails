@@ -198,6 +198,43 @@ class Order < ApplicationRecord
     logistics
   end
 
+  #【收件姓名】字元限制為 10 個字元(最多 5 個中文字、10 個英文字)、不可有空白，若帶有空白系統自動去除
+  def self.receiver_name_format(r_name)
+    r_name.gsub!(/\s/, '') if !r_name.match(/\s/).nil? # 有空白則去空白
+
+    if (r_name =~ /\p{han}/).nil? # 不含中文
+      raise StandardError, '收件人姓名格式錯誤(最多10個英文字)' if r_name.length > 10
+    else #含中文
+      if !r_name.match(/\p{^han}/).nil? # 同時含中文與其他字符
+        raise StandardError, '收件人姓名格式錯誤(最多5個中文字、10個英文字)'
+      else #全中文
+        raise StandardError, '收件人姓名格式錯誤(最多5個中文字)' if r_name.length > 5
+      end
+    end
+  end
+
+
+  #【收件手機】只允許數字、10 碼、09 開頭
+  def self.receiver_cellphone_format(r_cellphone)
+    if r_cellphone.match(/\D/).nil? #不含數字外的字符
+      raise StandardError, '手機格式錯誤(必須為10碼)' if r_cellphone.length != 10
+      raise StandardError, '手機格式錯誤(必須為09開頭)' if r_cellphone.match(/^../)[0] != '09'
+    else
+      raise StandardError, '手機格式錯誤(含錯誤字元)'
+    end
+  end
+
+  #【收件信箱】需含@
+  def self.receiver_email_format(r_email)
+    raise StandardError, '信箱格式錯誤(需含@字元)' if r_email.match(/@/).nil?
+  end
+
+  #【收件電話】允許數字+特殊符號；特殊符號僅限()-#
+  def self.receiver_phone_format(r_phone)
+    r_phone.gsub!(/(\()|(\))|(-)|(#)/, '') #去除合法特殊字符
+    raise StandardError, '電話格式錯誤(含錯誤字元)' if !r_phone.match(/\D/).nil? #含數字外的字符
+  end
+
   include AASM
 
   aasm column: :status do

@@ -50,12 +50,15 @@ function chooseType(){
   store_required(stId, stType);
 }
 
+// 開啟 ecpay 地圖
 function chooseStore(){
   var st_type = $("input[name='store[]']:checked").val();
   var process_id = window.location.pathname.split('/')[2];
+  // 開新子視窗執行 to_map，再由 to_map post 資料到 ecpay
   window.open('/orders/to_map?process_id=' + process_id + '&st_type=' + st_type);
 }
 
+// ecpay 回傳
 function callback(data){
   $('#store_' + data['stType']).next().next().next('.st_data').children('.st_id').text(data['stId']);
   $('#store_' + data['stType']).next().next().next('.st_data').children('.st_name').text(data['stName']);

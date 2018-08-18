@@ -1,7 +1,9 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
+  #CSRF protection，需放在最前，若不，可用prepend：true前置
+
 	before_action :configure_permitted_parameters, if: :devise_controller?
 	before_action :cart_show, :order_pending
-  protect_from_forgery with: :exception
 
   def order_pending
     if current_user
