@@ -299,6 +299,7 @@ class OrdersController < ApplicationController
       hash = @order.ecpay_create
       @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
       
+      # ecpay 物流型態
       if @order.logistics_type == 'CVS'
         @order.shipment_no = hash['CVSPaymentNo'][0]
       elsif @order.logistics_type == 'Home'
@@ -314,17 +315,20 @@ class OrdersController < ApplicationController
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def whole_store_offer #實施中的全館優惠
+  def whole_store_offer # 實施中的全館優惠
     offer = Offer.where(range: ['all', 'price'], implement: 'true').first
     if offer.nil?
-      offer
+      offer # nil
     else
       offer.id
     end
   end
 
-  def order_revise
+  def order_revise # 訂單修改(送貨/付款方式)
+
+    # 未確認已付款通知時不可修改訂單
     raise StandardError, '請等待確認付款後再進行操作' if @order.status == 'waiting_check'
+    
     @location = 'revise'
     @freight = Order::Freight_in_store
     @remittance_info = RemittanceInfo.new
@@ -332,7 +336,7 @@ class OrdersController < ApplicationController
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def order_update
+  def order_update # 訂單修改更新(送貨/付款方式)
     @order = Order.find_by(process_id: params[:process_id])
     @order.update(order_params)
     if order_params[:logistics_type] == 'Home'
@@ -352,25 +356,26 @@ class OrdersController < ApplicationController
     redirect_to edit_order_path(@order.process_id)
   end
 
-  def order_cancel
+  def order_cancel # 訂單取消
     @order = Order.find_by(process_id: params[:process_id])
     @order.cancel
 
+    # 買家有填寫退款資料(訂單已付款)
     if params[:remittance_info].present?
       @info = @order.remittance_infos.create(remittance_info_params)
       @info.transfer_type = 'refund'
       @order.wait_refunded
       raise StandardError, '訂單取消失敗' if !@info.save
     end
-    # xxx
+
     if @order.save 
       flash[:success] = '訂單取消成功'
       redirect_to user_order_list_path
     else
       raise StandardError, '訂單取消失敗'
     end
-  # rescue StandardError => e
-  #   redirect_to(user_order_list_path, alert: "#{e}")
+  rescue StandardError => e
+    redirect_to(user_order_list_path, alert: "#{e}")
   end
 
   private

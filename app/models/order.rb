@@ -5,11 +5,11 @@ class Order < ApplicationRecord
   has_many :remittance_infos
   accepts_nested_attributes_for :order_items
 
-  #運費
+  # 預設運費
   Freight_in_store = 60
   Freight_home_delivery = 100
 
-  #訂單序號
+  # 訂單編號
   def g_process_id(user, order)
     t = Time.now
     process_id = t.year.to_s[2,3] + "%02d" % t.mon + "%02d" % t.mday + "%03d" % user + rand(0..9).to_s + "%02d" % order + "%02d" % rand(0..99)
@@ -83,6 +83,7 @@ class Order < ApplicationRecord
     self.shipped == 'true' ? '已出貨' : '未出貨'
   end
 
+  # 可執行的訂單狀態
   def may_status
     @may = []
     @may << ['已付款, 待出貨', 'pay'] if self.may_pay?
@@ -93,10 +94,12 @@ class Order < ApplicationRecord
     @may
   end
 
+  # ecpay 物流訂單建立
   def ecpay_create
     total_price = (self.price + self.freight).to_s
     is_collection = ( self.pay_method == 'pickup_and_cash' ? 'Y' : 'N' )
 
+    # 郵遞區號
     if !self.receiver_zipcode.blank?
       zipcode = self.receiver_zipcode[0..2].to_i
       
@@ -171,9 +174,9 @@ class Order < ApplicationRecord
 
     hash = CGI::parse(res)
     return hash
-    
   end
 
+  # ecpay 送貨編號
   def ecpay_trade_info
     param = {
     'AllPayLogisticsID' => self.ecpay_logistics_id,
@@ -198,6 +201,8 @@ class Order < ApplicationRecord
     logistics
   end
 
+  # ↓↓↓↓↓ ecpay 收件資料驗證 ↓↓↓↓↓
+
   #【收件姓名】字元限制為 10 個字元(最多 5 個中文字、10 個英文字)、不可有空白，若帶有空白系統自動去除
   def self.receiver_name_format(r_name)
     r_name.gsub!(/\s/, '') if !r_name.match(/\s/).nil? # 有空白則去空白
@@ -212,7 +217,6 @@ class Order < ApplicationRecord
       end
     end
   end
-
 
   #【收件手機】只允許數字、10 碼、09 開頭
   def self.receiver_cellphone_format(r_cellphone)
@@ -241,6 +245,7 @@ class Order < ApplicationRecord
   end
 
 
+  # 訂單流程
   include AASM
 
   aasm column: :status do

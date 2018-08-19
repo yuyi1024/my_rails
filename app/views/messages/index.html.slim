@@ -8,7 +8,7 @@ h1.title 聯絡我們
           h3 發送訊息
         .panel-body
           - if current_user
-            = form_for @message, method: 'post', remote: 'true' do |f|
+            = form_for @message, method: 'post' do |f|
               .row
                 label 訊息內容
                 br

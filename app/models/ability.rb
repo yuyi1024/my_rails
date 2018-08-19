@@ -24,6 +24,7 @@ class Ability
         elsif user.role.include? 'member' #一般會員
 	       	can :manage, [Order, OrderItem], user_id: user.id
           can :manage, User, id: user.id
+          can :manage, Message
           cannot :dashboard, :all
           cannot :manage_role, User
 	      

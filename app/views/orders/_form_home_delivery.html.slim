@@ -1,3 +1,4 @@
+/ Home 收件資料
 .row
   .data_form.col-sm-8.col-sm-offset-2
     .panel.panel-default
@@ -18,15 +19,15 @@
               span.required  *
             = f.text_field :receiver_cellphone, class: 'col-sm-8', required: "required", value: @order.receiver_cellphone
           .row
-            = f.label :receiver_address, class: 'col-sm-2'
-              | 收件地址
-              span.required  *
-            = f.text_field :receiver_address, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.receiver_address : @user.address
-          .row
             = f.label :receiver_zipcode, class: 'col-sm-2'
               | 郵遞區號
               span.required  *
             = f.text_field :receiver_zipcode, class: 'col-sm-8', required: "required", value: @order.receiver_zipcode
+          .row
+            = f.label :receiver_address, class: 'col-sm-2'
+              | 收件地址
+              span.required  *
+            = f.text_field :receiver_address, class: 'col-sm-8', required: "required", value: @user.nil? ? @order.receiver_address : @user.address
           .row
             = f.label :receiver_email, '取件人信箱', class: 'col-sm-2'
             = f.email_field :receiver_email, class: 'col-sm-8', value: @user.nil? ? @order.receiver_email : @user.email
