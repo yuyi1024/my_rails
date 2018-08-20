@@ -9,7 +9,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     authorize! :manage, @user
   end
   
-  def show #會員資料
+  def show # 會員資料
   rescue StandardError => e
     redirect_to(root_path, alert: "發生錯誤：#{e}")
   end
@@ -20,7 +20,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  def create
+  def create # 註冊
     params[:user][:role] = 'member'
     super
   end
@@ -28,24 +28,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
 # Password confirmation translation missing: zh.activerecord.errors.models.user.attributes.password_confirmation.confirmation
 
   # GET /resource/edit
-  def edit
-    super
-  end
+  # def edit 
+  #   super
+  # end
 
   # PUT /resource
   
-  def update_field #會員資料-資料更新
+  def update_field # 會員資料-資料更新
     @user.update(user_params)
     @action = __method__.to_s
     render 'devise/registrations/registrations.js.erb'
   end
 
-  def pwd_field #會員資料-顯示密碼更改欄位
+  def pwd_field # 會員資料-顯示密碼更改欄位
     @action = __method__.to_s
     render 'devise/registrations/registrations.js.erb'
   end
 
-  def update #會員資料-密碼更新
+  def update # 會員資料-密碼更新
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
     resource_updated = update_resource(resource, account_update_params) #true/false
@@ -73,14 +73,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
     redirect_to(user_show_path, alert: "發生錯誤：#{e}")
   end
 
-  def order_list #會員中心訂單列表
+  def order_list # 會員中心訂單列表
     @orders = @user.orders.order('created_at DESC')
     @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
   rescue StandardError => e
     redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")
   end
 
-  def favorite_list #會員中心追蹤列表
+  def favorite_list # 會員中心追蹤列表
     @favorites = @user.favorites
   rescue StandardError => e
     redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")

@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   
-  def index #首頁
+  def index # 首頁
     @products = Product.where(status: 'on_shelf')
     @cat1s = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id').order('id ASC')
 
@@ -47,7 +47,7 @@ class ProductsController < ApplicationController
 
   end
 
-  def show #商品詳細頁
+  def show # 商品詳細頁
     @product = Product.where(status: 'on_shelf').find_by_id(params[:id])
     if @product.present?
       @product.increment(:click_count)
@@ -58,7 +58,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  def heart #商品追蹤
+  def heart # 商品追蹤
     favorite = current_user.favorites
     @product = Product.find(params[:id])
 
@@ -71,7 +71,7 @@ class ProductsController < ApplicationController
         favorite.save
         @heart = 'add'
       else
-        @heart = 'full' #追蹤數量超過十筆
+        @heart = 'full' # 追蹤數量超過十筆
       end
     end
 
@@ -79,7 +79,7 @@ class ProductsController < ApplicationController
     render 'products/index.js.erb'
   end
 
-  def index_with_params #首頁url帶分類params
+  def index_with_params # 首頁url帶分類params
     cats = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id').order('id ASC')
     cat = cats.index(cats.find(params[:cat]))
     subcat = params[:subcat]

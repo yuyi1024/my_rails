@@ -2,7 +2,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # You should configure your model like this:
   # devise :omniauthable, omniauth_providers: [:twitter]
 
-  def google_oauth2
+  def google_oauth2 # google login
     @user = User.from_omniauth(request.env["omniauth.auth"])
     if @user.persisted?
       sign_in_and_redirect @user, event: :authentication #this will throw if @user is not activated
@@ -13,6 +13,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  # FB login 因 user 可拒絕分享 email 而不採用 
   # def facebook
   #   @user = User.from_omniauth(request.env["omniauth.auth"])
 

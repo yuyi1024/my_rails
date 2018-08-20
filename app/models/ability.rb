@@ -6,7 +6,7 @@ class Ability
     #
       # user ||= User.new # guest user (not logged in)
       if user.present?
-        can :read, [Product, Category, Subcategory]
+        can :read, [Product, Category, Subcategory, Message]
         can :manage, [Cart, CartItem]
 
 	      if user.role.include? 'admin' #管理員
@@ -24,10 +24,8 @@ class Ability
         elsif user.role.include? 'member' #一般會員
 	       	can :manage, [Order, OrderItem], user_id: user.id
           can :manage, User, id: user.id
-          can :manage, Message
           cannot :dashboard, :all
           cannot :manage_role, User
-	      
         end
       else
 

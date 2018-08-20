@@ -1,6 +1,7 @@
 $(document).on('turbolinks:load', function() {
   if (load_path_shared_js(window.location.pathname, 'orders')){
 
+    // 展開商品詳細
     $('h3.toggle').click(function(){
       $list = $('.product_list .table')
       if(!$list.is(':visible')){
@@ -15,7 +16,7 @@ $(document).on('turbolinks:load', function() {
   }
 });
 
-//order送貨方式選擇
+// 選擇送貨方式(CVS/Home)後顯示對應付款方式
 function selectShipMethod(m, process_id){
   var ship_method = document.getElementById('order_logistics_type').value;
   $.ajax({
@@ -29,7 +30,7 @@ function selectShipMethod(m, process_id){
   });
 }
 
-
+// 超商選擇(7-11/fami/hi-life)
 function chooseType(){
   var stId = '';
   var stType = '';
@@ -58,7 +59,7 @@ function chooseStore(){
   window.open('/orders/to_map?process_id=' + process_id + '&st_type=' + st_type);
 }
 
-// ecpay 回傳
+// ecpay 地圖回傳
 function callback(data){
   $('#store_' + data['stType']).next().next().next('.st_data').children('.st_id').text(data['stId']);
   $('#store_' + data['stType']).next().next().next('.st_data').children('.st_name').text(data['stName']);
@@ -67,6 +68,7 @@ function callback(data){
   store_required(data['stId'], data['stType']);
 }
 
+// 確認已選擇超商，可執行下步驟
 function store_required(stId, stType){
   if(stId == ''){
     $('#order_logistics_subtype').val('');

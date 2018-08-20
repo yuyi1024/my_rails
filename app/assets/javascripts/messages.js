@@ -1,6 +1,7 @@
 $(document).on('turbolinks:load', function() {
   if (load_path_shared_js(window.location.pathname, 'messages')){
   
+    // 展開答案
     $('.question').click(function(){
       $answer = $(this).next('.answer');
       if(!$answer.is(':visible')){
@@ -16,6 +17,7 @@ $(document).on('turbolinks:load', function() {
   }
 });
 
+// 取的 user 的 email
 function userEmail(email){
   if($('#message_reply_method').is(':checked')){
     $('#message_email').val(email);

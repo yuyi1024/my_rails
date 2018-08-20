@@ -11,17 +11,15 @@ class ImagesController < ApplicationController
   def destroy
   	@image = Image.find(params[:id])
 
-  	@image.remove_image! #刪除檔案
+  	@image.remove_image! # 刪除檔案
   	@image.save
   	
-  	@image.destroy #刪除DB資料
+  	@image.destroy # 刪除DB資料
 
   	respond_to do |format|
     	format.json { render :json => { status: :ok } }
   	end
 	end
-
-
 
   private
   def image_params

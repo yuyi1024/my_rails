@@ -4,6 +4,7 @@ $(document).on('turbolinks:load', function() {
   });
 });
 
+// flash alert & success
 function message_notify(type, msg){
   if(type == 'danger'){
     $.notify({
