@@ -17,13 +17,14 @@ class Ability
 	      elsif user.role.include? 'employee' #員工
 	       	can :manage, [Order, OrderItem], user_id: user.id
           can :manage, User, id: user.id
-          
           can :dashboard, :all
+          
           cannot :manage_role, User
 	      
         elsif user.role.include? 'member' #一般會員
 	       	can :manage, [Order, OrderItem], user_id: user.id
           can :manage, User, id: user.id
+          
           cannot :dashboard, :all
           cannot :manage_role, User
         end

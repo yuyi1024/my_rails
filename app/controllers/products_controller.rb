@@ -22,7 +22,7 @@ class ProductsController < ApplicationController
       @products = @products.price_top(params[:price_bottom])
     end
 
-    @products = @products.keyword(ApplicationController.keyword_split(['name', 'description'] ,params[:keyword])) if params[:keyword].present?
+    @products = @products.keyword(keyword_split(['name', 'description'] ,params[:keyword])) if params[:keyword].present?
 
     if params[:sort_item].present? && params[:sort_order].present?
       @products = @products.order(params[:sort_item] + ' ' + params[:sort_order])

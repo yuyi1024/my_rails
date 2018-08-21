@@ -1,8 +1,6 @@
 class Console::OrdersController < Console::DashboardsController
-  before_action :dashboard_authorize
   
   def index
-
     @orders = Order.includes(:user)
 
     if params[:search].present?
@@ -55,17 +53,19 @@ class Console::OrdersController < Console::DashboardsController
     @order = Order.find_by(process_id: params[:id])
     
     if @order.ecpay_logistics_id.present?
-      @logistics_status = @order.ecpay_trade_info
-      @logistics_status = @logistics_status.message
+      @logistics_status = @order.ecpay_trade_info.message
     else
       @logistics_status = '未出貨'
     end
     @may_status = @order.may_status
     
+    # 未確認的通知已付款資料
     @remit = @order.remittance_infos.where(transfer_type: 'remit', checked: 'false').order('created_at DESC').first
-    
+    # 通知退款資料表單
     @remittance_info = RemittanceInfo.new
+    # 買家退款資料(未退款)
     @refund = @order.remittance_infos.where(transfer_type: 'refund', checked: 'false').order('created_at DESC').first
+    # 買家退款資料(已退款)
     @refunded_data = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').order('created_at DESC').first
 
   rescue StandardError => e
@@ -76,7 +76,9 @@ class Console::OrdersController < Console::DashboardsController
     @order = Order.find_by(process_id: params[:id])
     
     if params[:order][:status] != '0'
+      # 根據選擇的 status 改變訂單狀態
       @order.method(params[:order][:status]).call
+      
       if params[:order][:status] == 'pay'
         @order.paid = 'true'
         @remit = @order.remittance_infos.where(transfer_type: 'remit', checked: 'false').first
@@ -101,7 +103,7 @@ class Console::OrdersController < Console::DashboardsController
     redirect_to edit_console_order_path
   end
 
-  #付款資訊有誤，取消付款通知
+  # 付款資訊有誤，取消付款通知
   def remit_check
     @order = Order.find_by(process_id: params[:process_id])
     @order.paid = 'false'
@@ -122,6 +124,7 @@ class Console::OrdersController < Console::DashboardsController
     redirect_to(console_orders_path, alert: "發生錯誤：#{e}")
   end
 
+  # 通知買家已退款
   def refund
     @order = Order.find_by(process_id: params[:process_id])
     @refund = @order.remittance_infos.where(transfer_type: 'refund', checked: 'false').first
@@ -138,17 +141,15 @@ class Console::OrdersController < Console::DashboardsController
       redirect_to(edit_console_order_path(@order.process_id), alert: "發生錯誤：#{e}")
   end
 
-  def dashboard_authorize
-    authorize! :dashboard, Order
-  end
+  
 
-  def kaminari_page #分頁
+  private
+
+  def kaminari_page # 分頁
     @rows = @orders.length
     params[:page] = 1 if !params[:page].present?
     @orders = @orders.page(params[:page]).per(25)
   end
-
-  private
 
   def remittance_info_params
     params.require(:remittance_info).permit!

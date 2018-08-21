@@ -6,8 +6,7 @@ class Offer < ApplicationRecord
   # attr_accessor :subcats
   # attr_accessor :products
 	
-	def get_message
-
+	def get_message # 優惠訊息
 		if self.range == 'all'
       msg1 = '全館'
     elsif self.range == 'price'
@@ -36,28 +35,6 @@ class Offer < ApplicationRecord
 
     msg1 + msg2
 	end
-
-
-  def check_repeat_offer
-    a = ['subcats', 'products']
-
-    arrs = []
-
-    self.map{|offer| arrs << offer.send('range_' + a[0]).split(',')}
-
-    length = arrs.length
-    repeat = false
-
-    arrs.each_with_index do |arr, index|
-      (index+1..length-1).to_a.each do |i|
-        l = arr - arrs[i] 
-        repeat = true if l.length != arr.length
-        break if repeat == true
-      end
-      break if repeat == true
-    end
-    repeat
-  end
 
   # 確認訂單是否符合全館優惠資格，並計算全館優惠後的總價
   def calc_total_price_offer(price)

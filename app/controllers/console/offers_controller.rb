@@ -5,20 +5,8 @@ class Console::OffersController < Console::DashboardsController
     @offer = Offer.new
   end
 
-  #新增時選擇優惠範圍
-  def select_range 
-    @range = params[:range]
-
-    if @range == 'product'
-      @cats = Category.all
-      @products = Product.all
-    end
-
-    @action = 'select_range'
-    render 'console/offers/offers.js.erb'
-  end
-
   def create
+    # 檢查作用範圍設定
     if offer_params[:range] == 'price'
       raise StandardError, '訂單金額不得小於1' if offer_params[:range_price].to_i < 1
     elsif offer_params[:range] == 'product'
@@ -26,12 +14,11 @@ class Console::OffersController < Console::DashboardsController
       raise StandardError, '未設定作用商品或分類' if !offer_params[:range_subcats].present? && !offer_params[:range_products].present?
     end
 
+    # 檢查優惠內容設定
     if offer_params[:offer] == 'price'
       raise StandardError, '折扣金額不得小於1' if offer_params[:offer_price].to_i < 1
-
       if offer_params[:range] == 'price'
         raise StandardError, '折扣金額大於訂單金額' if offer_params[:offer_price].to_i >= offer_params[:range_price].to_i
-      
       elsif offer_params[:range] == 'product'
         if offer_params[:range_subcats].present?
           arr = offer_params[:range_subcats].split(',')
@@ -41,7 +28,6 @@ class Console::OffersController < Console::DashboardsController
             end
           end
         end
-        
         if offer_params[:range_products].present?
           arr = offer_params[:range_products].split(',')
           arr.each do |product|
@@ -59,7 +45,7 @@ class Console::OffersController < Console::DashboardsController
     @offer.message = @offer.get_message
     @offer.implement = 'false'
 
-    #優惠類型為打折時，將折數以兩位數儲存
+    # 優惠類型為打折時，將折數以兩位數儲存
     if @offer.offer == 'discount'
       if @offer.offer_discount.to_s.length == 1
         @offer.offer_discount = (@offer.offer_discount.to_s + '0').to_i
@@ -77,8 +63,7 @@ class Console::OffersController < Console::DashboardsController
     redirect_to console_offers_path
   end
 
-  #實施全館優惠
-  def implement_all
+  def implement_all # 實施全館優惠
     Offer.where.not(range: 'product').update_all(implement: 'false')
     if params[:all][0] != 'N'
       @offer = Offer.find_by(id: params[:all])
@@ -98,13 +83,12 @@ class Console::OffersController < Console::DashboardsController
     redirect_to(console_offers_path)
   end
 
-  #實施商品優惠
-  def implement_product
+  def implement_product # 實施商品優惠
     offers = Offer.where(id: params[:products])
     repeat = [false, false]
     msg = ''  
 
-    #判斷是否有重複設定優惠之商品
+    # 判斷是否有重複設定優惠之商品
     ['subcats', 'products'].each_with_index do |range, index_a|
       arrs = []
       offers.map{|offer| arrs << offer.send('range_' + range).split(',')}
@@ -120,7 +104,7 @@ class Console::OffersController < Console::DashboardsController
       end
     end
 
-    #若有重複，丟錯誤；若沒有重複，更新資料
+    # 若有重複，丟錯誤；若沒有重複，更新資料
     if repeat.include? true
       msg = '多個優惠的'
       msg += '【作用分類】' if repeat[0] == true
@@ -165,6 +149,18 @@ class Console::OffersController < Console::DashboardsController
   end
 
   private
+
+  def select_range # 新增優惠時選擇優惠作用範圍
+    @range = params[:range]
+
+    if @range == 'product'
+      @cats = Category.all
+      @products = Product.all
+    end
+
+    @action = 'select_range'
+    render 'console/offers/offers.js.erb'
+  end
 
   def offer_params
     params.require(:offer).permit!

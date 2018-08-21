@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   # 關鍵字查詢以' '分割
-  def self.keyword_split(cols, k)
+  def keyword_split(cols, k)
     keyword = k.split(' ')
     sql = ''
     cols.each do |col|

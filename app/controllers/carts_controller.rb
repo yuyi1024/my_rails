@@ -44,7 +44,9 @@ class CartsController < ApplicationController
     cart_to_array
   end
 
-  def cart_to_array
+  private
+
+  def cart_to_array # 將 cart 內容存入 array
     @cart_items = []
     @cart_length = @carts.items.length
     @carts.items.each do |item|

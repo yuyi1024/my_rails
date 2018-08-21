@@ -1,5 +1,6 @@
 class Console::CategoriesController < Console::DashboardsController
-  before_action :dashboard_authorize
+  
+  # ↓↓↓↓↓ 主分類操作 ↓↓↓↓↓
 
   def new
     @categories = Category.all
@@ -7,6 +8,8 @@ class Console::CategoriesController < Console::DashboardsController
 
   def create
     @category = Category.find_or_create_by(name: params[:cat])
+    
+    # 檢查新增的一群次分類是否已存在，若不存在則新增
     params[:subcat].map{ |subcat| 
       @category.subcategories.find_or_initialize_by(name: subcat, category_id: @category.id) 
     } if params[:subcat].present?
@@ -19,7 +22,7 @@ class Console::CategoriesController < Console::DashboardsController
     end
   end
 
-  #主分類
+  
   def edit
     @category = Category.find(params[:id])
   rescue StandardError => e
@@ -28,7 +31,7 @@ class Console::CategoriesController < Console::DashboardsController
 
   def update
     @category = Category.find(params[:id])
-    if !Category.find_by(name: cat_params[:name]).present? #是否有與更改後同名的主分類
+    if !Category.find_by(name: cat_params[:name]).present? # 是否有與更改後同名的主分類
       @category.update(cat_params)
       if @category.save
         flash[:seccess] = '更新成功'
@@ -45,6 +48,7 @@ class Console::CategoriesController < Console::DashboardsController
 
   def destroy
     @category = Category.find(params[:id])
+    # 該主分類下無次分類才可以刪除
     @category.destroy if @category.subcategories.length == 0
     if @category.destroyed?
       flash[:success] = '刪除成功' 
@@ -54,7 +58,8 @@ class Console::CategoriesController < Console::DashboardsController
     redirect_to new_console_category_path
   end
 
-  #次分類
+  # ↓↓↓↓↓ 次分類操作 ↓↓↓↓↓
+
   def subcat_edit
     @subcategory = Subcategory.find(params[:id])
   rescue StandardError => e
@@ -80,6 +85,7 @@ class Console::CategoriesController < Console::DashboardsController
 
   def subcat_destroy
     @subcategory = Subcategory.find(params[:id])
+    # 該次分類下無商品才可以刪除
     @subcategory.destroy if @subcategory.product.length == 0 
     if @subcategory.destroyed?
       flash[:success] = '刪除成功'
@@ -87,10 +93,6 @@ class Console::CategoriesController < Console::DashboardsController
       flash[:alert] = '刪除失敗' 
     end
     redirect_to new_console_category_path
-  end
-
-  def dashboard_authorize
-    authorize! :dashboard, Category
   end
 
   private

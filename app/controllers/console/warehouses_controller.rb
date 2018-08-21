@@ -7,7 +7,7 @@ class Console::WarehousesController < Console::DashboardsController
       @action = 'search'
 
       @products = @products.where(id: params[:product_id]) if params[:product_id].present?
-      @products = @products.keyword(ApplicationController.keyword_split(['name', 'description'], params[:keyword])) if params[:keyword].present?
+      @products = @products.keyword(keyword_split(['name', 'description'], params[:keyword])) if params[:keyword].present?
       
       if params[:quantity_status].present?
         if params[:quantity_status][0] == 'shortage'
@@ -44,7 +44,7 @@ class Console::WarehousesController < Console::DashboardsController
     @product.update(product_params)
 
     warehouse = Warehouse.where(room: warehouse_params[:warehouse][:room], shelf: warehouse_params[:warehouse][:shelf], row: warehouse_params[:warehouse][:row].to_i, column: warehouse_params[:warehouse][:column].to_i).first
-    warehouse ||= Warehouse.create(warehouse_params[:warehouse])
+    warehouse ||= Warehouse.create(warehouse_params[:warehouse]) # 若找不到該櫃位則新增一個
     @product.warehouse = warehouse
 
     if @product.save
@@ -57,17 +57,17 @@ class Console::WarehousesController < Console::DashboardsController
     redirect_back(fallback_location: console_warehouses_path, alert: "#{e}")
   end
 
-  def new
+  def new # 這是倉庫檢視圖，不是新增
     @rooms = Warehouse.all.group_by(&:room)  
   end
+
+  private
 
   def kaminari_page #分頁
     @rows = @products.length
     params[:page] = 1 if !params[:page].present?
     @products = @products.page(params[:page]).per(25)
   end
-
-  private
 
   def product_params
     params.require(:product).permit(:quantity, :quantity_alert)

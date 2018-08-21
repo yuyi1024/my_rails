@@ -58,36 +58,6 @@ class OrdersController < ApplicationController
     render 'orders/orders.js.erb'
   end
 
-  def total_and_offer_price # 計算優惠前後的價錢
-    @total_price = @order_session.order_total_price
-    @offer =  whole_store_offer
-    
-    # 若全館優惠存在則計算優惠後價格；若無，則總價為 order session 之加總
-    if @offer.present?
-      @offer = Offer.find(@offer)
-      @offer_price = @offer.calc_total_price_offer(@total_price)
-    else
-      @offer_price = @total_price
-    end
-  end
-
-  def freight_offer # 計算運費
-    # 若符合免運資格則 @freight = 0；否則 @freight = 預設
-    if @offer.present?
-      if @offer.offer_freight == 'all' || @offer.offer_freight == @ship_method
-        @freight = 0 if @offer.range == 'all' || ( @offer.range == 'price' && @offer_price >= @offer.range_price )
-      end
-    end
-
-    if !@freight.present?
-      if @ship_method == 'Home'
-        @freight = Order::Freight_home_delivery
-      elsif @ship_method == 'CVS'
-        @freight = Order::Freight_in_store
-      end
-    end
-  end
-
   def create # 訂單建立
     @order_session = Cart.from_hash(session[Cart::SessionKey_order])
 
@@ -150,7 +120,7 @@ class OrdersController < ApplicationController
 
     args = {
       'MerchantTradeNo' => @order.process_id,
-      'ServerReplyURL' => 'http://localhost:3000/orders/from_map',
+      'ServerReplyURL' => 'https://bawan-store-0225.herokuapp.com/orders/from_map',
       'LogisticsType' => 'CVS',
       'LogisticsSubType' => params[:st_type],
       'IsCollection' => pay,  
@@ -315,15 +285,6 @@ class OrdersController < ApplicationController
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def whole_store_offer # 實施中的全館優惠
-    offer = Offer.where(range: ['all', 'price'], implement: 'true').first
-    if offer.nil?
-      offer # nil
-    else
-      offer.id
-    end
-  end
-
   def order_revise # 訂單修改(送貨/付款方式)
 
     # 未確認已付款通知時不可修改訂單
@@ -379,6 +340,45 @@ class OrdersController < ApplicationController
   end
 
   private
+
+  def total_and_offer_price # 計算優惠前後的價錢
+    @total_price = @order_session.order_total_price
+    @offer =  whole_store_offer
+    
+    # 若全館優惠存在則計算優惠後價格；若無，則總價為 order session 之加總
+    if @offer.present?
+      @offer = Offer.find(@offer)
+      @offer_price = @offer.calc_total_price_offer(@total_price)
+    else
+      @offer_price = @total_price
+    end
+  end
+
+  def freight_offer # 計算運費
+    # 若符合免運資格則 @freight = 0；否則 @freight = 預設
+    if @offer.present?
+      if @offer.offer_freight == 'all' || @offer.offer_freight == @ship_method
+        @freight = 0 if @offer.range == 'all' || ( @offer.range == 'price' && @offer_price >= @offer.range_price )
+      end
+    end
+
+    if !@freight.present?
+      if @ship_method == 'Home'
+        @freight = Order::Freight_home_delivery
+      elsif @ship_method == 'CVS'
+        @freight = Order::Freight_in_store
+      end
+    end
+  end
+
+  def whole_store_offer # 實施中的全館優惠
+    offer = Offer.where(range: ['all', 'price'], implement: 'true').first
+    if offer.nil?
+      offer # nil
+    else
+      offer.id
+    end
+  end
 
   def order_params
     params.require(:order).permit!
