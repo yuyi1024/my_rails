@@ -10,6 +10,9 @@ class User < ApplicationRecord
 
   devise :omniauthable, omniauth_providers: %i[google_oauth2]
 
+  ROLES = %i[admin employee member]
+
+  # google 登入設定
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
@@ -20,8 +23,6 @@ class User < ApplicationRecord
       user.skip_confirmation!
     end
   end
-
-  ROLES = %i[admin employee member]
 
   def role_cn
   	case self.role

@@ -1,6 +1,7 @@
 $(document).on('turbolinks:load', function() {
   if (load_path_console_js(window.location.pathname, 'offers')){
     
+    // 將選擇的免運選項(全部、CVS、Home)存入 hidden_field
     $("input[name='freight[]']").change(function(){
       var arr = [];
       if($('#freight_CVS').is(':checked')){
@@ -19,6 +20,7 @@ $(document).on('turbolinks:load', function() {
   }
 });
 
+// 選擇作用範圍(全館、金額、商品)，顯示範圍設定
 function select_range(){
   var range = $('#offer_range').val();
   $.ajax({
@@ -28,6 +30,7 @@ function select_range(){
   });
 }
 
+// 選擇優惠內容(免運、打折、折金額)，顯示優惠設定
 function select_offer(){
   var offer = $('#offer_offer').val();
   $('#offer_offer_freight').val();

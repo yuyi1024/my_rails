@@ -4,8 +4,7 @@ class Console::MessagesController < Console::DashboardsController
 
     if params[:search].present?
       @messages = @messages.where(user_id: User.find_by(email: params[:email]).id) if params[:email].present?
-    
-      @messages = @messages.where(ApplicationController.keyword_split(['question', 'answer'], params[:keyword])) if params[:keyword].present?
+      @messages = @messages.where(keyword_split(['question', 'answer'], params[:keyword])) if params[:keyword].present?
 
       if params[:date_b].present? || params[:date_f].present?
         params[:date_f] = Time.now if !params[:date_f].present?
@@ -56,6 +55,7 @@ class Console::MessagesController < Console::DashboardsController
     @message.update(message_params)
     
     if @message.save
+      # 將回覆以 email 寄給發問者
       if @message.reply_method == 'email'
         UserMailer.message_email(@message).deliver_now
       end
@@ -77,13 +77,13 @@ class Console::MessagesController < Console::DashboardsController
     redirect_to console_messages_path
   end
 
-  def qanda
+  def qanda # Q&A 管理
     @message = Message.new
     @qandas = Message.where('qanda > 0').order('qanda ASC')
     @qusetions = Message.where(qanda: 0)
   end
 
-  def create
+  def create # 新增 Q&A 問題
     @message = Message.create(qanda_params)
     @message.user = current_user
     @message.qanda = 0
@@ -95,7 +95,8 @@ class Console::MessagesController < Console::DashboardsController
     end
   end
 
-  def sort_qanda
+  def sort_qanda # Q&A 排序
+    # 公開的 Q&A
     if params[:qanda].present?
       params[:qanda].each_with_index do |item, index|
         qanda = Message.find(item.to_i)
@@ -104,6 +105,7 @@ class Console::MessagesController < Console::DashboardsController
       end
     end
 
+    # 不公開的 Q&A
     if params[:holding].present?
       params[:holding].each do |item|
         qanda = Message.find(item.to_i)
@@ -115,16 +117,13 @@ class Console::MessagesController < Console::DashboardsController
     redirect_to qanda_console_messages_path
   end
 
+  private
+
   def kaminari_page #分頁
     @rows = @messages.length
     params[:page] = 1 if !params[:page].present?
     @messages = @messages.page(params[:page]).per(25)
   end
-
-
-
-
-  private
 
   def message_params
     params.require(:message).permit(:question, :answer)

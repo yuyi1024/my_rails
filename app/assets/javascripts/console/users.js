@@ -1,6 +1,7 @@
 $(document).on('turbolinks:load', function() {
   if (load_path_console_js(window.location.pathname, 'users')){
 
+    // 變更用戶類別展開
     $('.role_change .panel-heading').click(function(){
       $body = $('.role_change .panel-body');
       if($body.is(':visible')){

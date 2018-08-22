@@ -141,8 +141,6 @@ class Console::OrdersController < Console::DashboardsController
       redirect_to(edit_console_order_path(@order.process_id), alert: "發生錯誤：#{e}")
   end
 
-  
-
   private
 
   def kaminari_page # 分頁

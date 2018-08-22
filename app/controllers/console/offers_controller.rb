@@ -5,6 +5,16 @@ class Console::OffersController < Console::DashboardsController
     @offer = Offer.new
   end
 
+  def select_range # 新增優惠時選擇優惠作用範圍
+    @range = params[:range]
+    if @range == 'product'
+      @cats = Category.all
+      @products = Product.all
+    end
+    @action = 'select_range'
+    render 'console/offers/offers.js.erb'
+  end
+
   def create
     # 檢查作用範圍設定
     if offer_params[:range] == 'price'
@@ -39,7 +49,6 @@ class Console::OffersController < Console::DashboardsController
     elsif offer_params[:offer] == 'discount'
       raise StandardError, '打折數錯誤' if !offer_params[:offer_discount].to_i.between?(1, 99)
     end
-
 
     @offer = Offer.create(offer_params)
     @offer.message = @offer.get_message
@@ -149,18 +158,6 @@ class Console::OffersController < Console::DashboardsController
   end
 
   private
-
-  def select_range # 新增優惠時選擇優惠作用範圍
-    @range = params[:range]
-
-    if @range == 'product'
-      @cats = Category.all
-      @products = Product.all
-    end
-
-    @action = 'select_range'
-    render 'console/offers/offers.js.erb'
-  end
 
   def offer_params
     params.require(:offer).permit!

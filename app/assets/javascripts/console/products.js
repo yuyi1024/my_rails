@@ -1,6 +1,7 @@
 $(document).on('turbolinks:load', function() {
   if (load_path_console_js(window.location.pathname, 'products')){
 
+    // Summernote 設定(WYSIWYG 文字編輯器)
     $('#summernote').summernote({
       height: '400px',
       placeholder: '為商品新增描述...',
@@ -32,6 +33,7 @@ $(document).on('turbolinks:load', function() {
       }
     });
 
+    // Jcrop 設定(圖片裁減)
     $('#cropbox').Jcrop({
       aspectRatio: 1,
       setSelect: [0, 0, 1000, 1000],
@@ -43,7 +45,27 @@ $(document).on('turbolinks:load', function() {
   }
 });
 
-//summernote function
+// filter 選擇主分類
+function cat_select(m){
+  var cat = document.getElementById('cat_box').value;
+  $('#product_category_id').val(cat);
+  $.ajax({
+    type: 'GET',
+    url: '/console/products/get_subcat',
+    data : { 
+      cat: cat,
+      method: m
+    },
+  });
+}
+
+// filter 選擇次分類
+function subcat_select(){
+  var subcat = document.getElementById('subcat_box').value;
+  $('#product_subcategory_id').val(subcat);
+}
+
+// summernote function
 function sendFile(object, file) {
   var data = new FormData;
   data.append('image[image]', file); // => params[:image][:image]
@@ -66,7 +88,7 @@ function sendFile(object, file) {
   });
 }
 
-//summernote function
+// summernote function
 function deleteFile(image_id) {
   $.ajax({
     type: 'DELETE',
@@ -77,26 +99,7 @@ function deleteFile(image_id) {
   });
 }
 
-function cat_select(m){
-  var cat = document.getElementById('cat_box').value;
-  $('#product_category_id').val(cat);
-
-  $.ajax({
-    type: 'GET',
-    url: '/console/products/get_subcat',
-    data : { 
-      cat: cat,
-      method: m
-    },
-  });
-}
-
-function subcat_select(){
-  var subcat = document.getElementById('subcat_box').value;
-  $('#product_subcategory_id').val(subcat);
-}
-
-//Jcrop
+// Jcrop function(定位圖片位置)
 function showCoords(c) {
   $('#product_crop_x').val(c.x);
   $('#product_crop_y').val(c.y);
