@@ -87,8 +87,9 @@
                   b 退款金額： 
                   | $#{number_with_delimiter(@refunded_data.price)}
                 p
-                  b 退款日期： 
-                  | #{@refunded_data.date.strftime("%Y/%m/%d")}
+                  b 退款時間： 
+                  | #{@refunded_data.date.strftime("%Y/%m/%d")}-
+                  | #{@refunded_data.time.strftime("%H:%M")}
 
       table.table.note
         tr

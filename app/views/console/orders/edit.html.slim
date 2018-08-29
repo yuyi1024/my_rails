@@ -28,7 +28,8 @@ ul.pager
                     | #{@remit.remit_data}
                   td
                     b 匯款時間：
-                    | #{@remit.date.strftime("%Y/%m/%d %T")}
+                    | #{@remit.date.strftime("%Y/%m/%d")}-
+                    | #{@remit.time.strftime("%H:%M")}
                   td
                     b 匯款金額：
                     | #{number_with_delimiter(@remit.price)}
@@ -54,7 +55,9 @@ ul.pager
                       .row
                         = f.label :date, '退款日期', class:'col-sm-3'
                         = f.date_field :date, required: 'required', class:'col-sm-6'
-                      br
+                      .row
+                        = f.label :time, '退款時間', class:'col-sm-3'
+                        = f.time_field :time, required: 'required', class:'col-sm-6'
                       .row
                         = f.label :price, '退款金額', class:'col-sm-3'
                         = f.number_field :price, required: 'required', class:'col-sm-6'

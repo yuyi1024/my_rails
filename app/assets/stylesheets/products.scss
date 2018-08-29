@@ -96,6 +96,10 @@
         text-align: center;
       }
 
+      p{
+        text-align: left;
+      }
+
       #cat1 {
         margin: 0 20px;
         div {
@@ -109,6 +113,11 @@
           float: left;
         }
       }
+
+      hr{
+        border-top-color: #000;
+      }
+
       #cat2 {
         margin: 0 20px;
         div {

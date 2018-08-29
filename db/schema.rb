@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180712181618) do
+ActiveRecord::Schema.define(version: 20180829141301) do
 
   create_table "banks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code"
@@ -138,7 +138,8 @@ ActiveRecord::Schema.define(version: 20180712181618) do
   create_table "remittance_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "transfer_type"
     t.integer "price"
-    t.datetime "date"
+    t.date "date"
+    t.time "time"
     t.string "remit_data"
     t.string "refund_bank"
     t.string "refund_account"

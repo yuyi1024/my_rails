@@ -22,11 +22,9 @@ $(document).on('turbolinks:load', function() {
         $('#boxes').children().each(function() {
           $(this).slideUp();
         });
-        $('span.glyphicon-chevron-left').css('transform', 'rotate(-90deg)');
         $('#boxes').addClass('boxes_visible');
         $target.slideDown('slow');
       } else {
-        $('span.glyphicon-chevron-left').css('transform', 'rotate(0deg)');
         $('#boxes').removeClass('boxes_visible');
         $target.toggle('slow');
       }

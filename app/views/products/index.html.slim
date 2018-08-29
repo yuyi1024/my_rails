@@ -17,9 +17,9 @@
   / filter
   = form_tag products_path, method: :get, remote: :true, id: 'search_form' do
     #selector.row
-      .col-sm-3.cat data-target='#cat_box' 
-        | 商品分類 
-        span.glyphicon.glyphicon-chevron-left
+      .col-sm-3.cat data-target='#cat_box'
+        span.glyphicon.glyphicon-menu-hamburger 
+        |  商品分類
       
       .col-sm-3
         span 價錢 
@@ -59,7 +59,9 @@
     #boxes.row
       #cat_box.row
         / 分類1按鈕
-        #cat1.row 
+        #cat1.row
+          p
+            b 主分類：
           - @cat1s.each_with_index do |cat1,index|
             div data-target='#cat2' data-name='#{cat1.name}' data-id="#{index}" onclick='cat1(this);' id='cat1-box-#{index}'
               = cat1.name
