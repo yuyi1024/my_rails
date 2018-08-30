@@ -78,7 +78,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
     
     # 訂單狀態 select_box
-    status_hash = JSON.parse(File.read('app/assets/javascripts/order_status.json'))
+    status_hash = JSON.parse(File.read('app/assets/json/order_status.json'))
     @status_arr = []
     status_hash['OrderStatus'].map{|s| @status_arr << [s['cn'],s['status']]}
   rescue StandardError => e

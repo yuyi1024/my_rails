@@ -1,0 +1,863 @@
+{
+  "LogisticsStatus":
+  [
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "300", "message": "訂單處理中(已收到訂單資料)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7007", "message": "門市遺失"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7006", "message": "小物流遺失"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7008", "message": "小物流破損，退回物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "310", "message": "上傳電子訂單檔處理中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7009", "message": "商品包裝不良（物流中心反應）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7010", "message": "商品包裝不良（門市反應）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7011", "message": "取件門市閉店，轉退回原寄件店"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7012", "message": "條碼錯誤，物流中心客服處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7015", "message": "條碼重複，物流中心客服處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "5009", "message": "進貨門市發生緊急閉店，提早退貨至物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7016", "message": "超才"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7013", "message": "訂單超過驗收期限（商家未出貨）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "7014", "message": "商家未到貨（若訂單成立隔日未到貨即會發送，直到訂單失效刪除）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "4001", "message": "退貨商品已至門市交寄"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "4002", "message": "退貨商品已至物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3024", "message": "貨件已至物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3025", "message": "退貨已退回物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3020", "message": "貨件未取退回物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3021", "message": "退貨商品未取退回物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3032", "message": "賣家已到門市寄件"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3022", "message": "買家已到店取貨"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3023", "message": "賣家已取買家未取貨"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3018", "message": "到店尚未取貨，簡訊通知取件"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3029", "message": "商品已轉換店（商品送達指定更換之取件店舖）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3019", "message": "退件到店尚未取貨，簡訊通知取件"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "FAMI", "code": "3031", "message": "退貨商品已轉換店（退貨商品送達指定更換之取件店舖）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "300", "message": "訂單處理中(已收到訂單資料)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2030", "message": "物流中心驗收成功"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2046", "message": "貨件未取退回大智通物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2007", "message": "商品類型為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2008", "message": "訂單為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2009", "message": "門市店號為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2010", "message": "出貨日期為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2011", "message": "出貨金額為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2012", "message": "出貨編號不存在"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2013", "message": "母廠商不存在"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2014", "message": "子廠商不存在"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2015", "message": "出貨編號已存在(單筆)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2016", "message": "門市已關轉店，將進行退貨處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2017", "message": "出貨日期不符合規定"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2018", "message": "服務類型不符規定(如只開取貨付款服務，確使用純取貨服務)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2019", "message": "商品類型不符規定"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2020", "message": "廠商尚未申請店配服務"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2021", "message": "同一批次出貨編號重覆(批次)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2022", "message": "出貨金額不符規定"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2023", "message": "取貨人姓名為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2057", "message": "車輛故障，後續配送中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2058", "message": "天候不佳，後續配送中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2059", "message": "道路中斷，後續配送中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2060", "message": "門市停業中，將進行退貨處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2061", "message": "缺件(商品未至門市)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2062", "message": "門市報缺"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2047", "message": "正常二退(退貨時間延長，在判賠期限內退回)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2024", "message": "物流作業驗收中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2025", "message": "門市轉店號(舊門市店號已更新)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2026", "message": "無此門市，將進行退貨處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2027", "message": "門市指定時間不配送(六、日)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2028", "message": "門市關轉店，3日內未更新SUP(新店號)便至退貨流程"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2029", "message": "門市尚未開店"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2031", "message": "未到貨(物流端未收到該商品)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2063", "message": "門市配達"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2048", "message": "商品瑕疵(商品在物流中心)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2049", "message": "門市關店，將進行退貨處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2050", "message": "門市轉店，將進行退貨處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2051", "message": "廠商要求提早退貨（廠商出錯商品）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2052", "message": "違禁品(退貨及罰款處理)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2095", "message": "天候路況不佳"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2065", "message": "EC收退"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2066", "message": "異常收退(商品破損、外袋破損、消費者取錯件、誤刷代收等，提早從門市退貨)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2053", "message": "刷A給B"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2054", "message": "消費者要求提早拉退（消費者下訂單後又跟廠商取消）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2032", "message": "商品瑕疵(進物流中心)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2033", "message": "超材"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2034", "message": "違禁品(退貨及罰款處理)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2035", "message": "訂單資料重覆上傳"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2036", "message": "已過門市進貨日（未於指定時間內寄至物流中心）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2038", "message": "第一段標籤規格錯誤"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2039", "message": "第一段標籤無法判讀"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2040", "message": "第一段標籤資料錯誤"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2041", "message": "物流中心理貨中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2042", "message": "商品遺失"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2043", "message": "門市指定不配送(六、日)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2045", "message": "不正常到貨(商品提早到物流中心)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2002", "message": "出貨單號不合規則"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2003", "message": "XML檔內出貨單號重複"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2004", "message": "出貨單號重複上傳使用(驗收時發現)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2005", "message": "日期格式不符"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2006", "message": "訂單金額或代收金額錯誤"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2071", "message": "門市代碼格式錯誤"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2073", "message": "商品配達買家取貨門市"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2074", "message": "消費者七天未取，商品離開買家取貨門市"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2072", "message": "商品配達賣家取退貨門市"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2075", "message": "廠商未至門市取退貨，商品離開賣家取退貨門市"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2001", "message": "檔案傳送成功"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "310", "message": "上傳電子訂單檔處理中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "4002", "message": "退貨商品已至物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2094", "message": "包裹異常不配送"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2037", "message": "門市關轉(可使用SUP檔案更新原單號更新門市與出貨日)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2070", "message": "退回原寄件門市且已取件"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2067", "message": "消費者成功取件"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "7021", "message": "商品捆包"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "7022", "message": "商品外袋透明"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "7023", "message": "多標籤"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "2055", "message": "更換門市"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "7017", "message": "取件包裹異常協尋中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "7018", "message": "取件遺失進行賠償程序"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "UNIMART", "code": "4001", "message": "退貨商品已至門市交寄"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "300", "message": "訂單處理中(已收到訂單資料)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "310", "message": "上傳電子訂單檔處理中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "311", "message": "上傳退貨電子訂單處理中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "325", "message": "退貨訂單處理中(已收到訂單資料)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2000", "message": "出貨訂單修改"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2001", "message": "檔案傳送成功"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2002", "message": "出貨單號不合規則"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2003", "message": "XML檔內出貨單號重複"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2004", "message": "出貨單號重複上傳使用(驗收時發現)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2005", "message": "日期格式不符"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2006", "message": "訂單金額或代收金額錯誤"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2007", "message": "商品類型為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2009", "message": "門市店號為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2010", "message": "出貨日期為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2011", "message": "出貨金額為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2012", "message": "出貨編號不存在"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2013", "message": "母廠商不存在"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2014", "message": "子廠商不存在"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2015", "message": "出貨編號已存在(單筆)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2016", "message": "門市已關轉店，將進行退貨處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2017", "message": "出貨日期不符合規定"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2018", "message": "服務類型不符規定(如只開取貨付款服務，確使用純取貨服務)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2019", "message": "商品類型不符規定"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2020", "message": "廠商尚未申請店配服務"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2021", "message": "同一批次出貨編號重覆(批次)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2022", "message": "出貨金額不符規定"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2023", "message": "取貨人姓名為空"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2024", "message": "物流作業驗收中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2025", "message": "門市轉店號(舊門市店號已更新)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2026", "message": "無此門市，將進行退貨處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2027", "message": "門市指定時間不配送(六、日)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2028", "message": "門市關轉店，3日內未更新SUP(新店號)便至退貨流程"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2029", "message": "門市尚未開店"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2030", "message": "物流中心驗收成功"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2031", "message": "未到貨(物流端未收到該商品)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2032", "message": "商品瑕疵(進物流中心)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2033", "message": "超材"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2034", "message": "違禁品(退貨及罰款處理)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2035", "message": "訂單資料重覆上傳"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2036", "message": "已過門市進貨日（未於指定時間內寄至物流中心）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2037", "message": "門市關轉(可使用SUP檔案更新原單號更新門市與出貨日)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2038", "message": "第一段標籤規格錯誤"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2039", "message": "第一段標籤無法判讀"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2040", "message": "第一段標籤資料錯誤"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2041", "message": "物流中心理貨中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2042", "message": "商品遺失"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2043", "message": "門市指定不配送(六、日)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2045", "message": "不正常到貨(商品提早到物流中心)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2046", "message": "貨件未取退回大智通物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2047", "message": "正常二退(退貨時間延長，在判賠期限內退回)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2048", "message": "商品瑕疵(商品在物流中心)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2049", "message": "門市關店，將進行退貨處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2050", "message": "門市轉店，將進行退貨處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2051", "message": "廠商要求提早退貨（廠商出錯商品）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2052", "message": "違禁品(退貨及罰款處理)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2053", "message": "刷A給B"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2054", "message": "消費者要求提早拉退（消費者下訂單後又跟廠商取消）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2055", "message": "更換門市"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2057", "message": "車輛故障，後續配送中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2058", "message": "天候不佳，後續配送中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2059", "message": "道路中斷，後續配送中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2060", "message": "門市停業中，將進行退貨處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2061", "message": "缺件(商品未至門市)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2062", "message": "門市報缺"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2063", "message": "門市配達"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2065", "message": "EC收退"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2066", "message": "異常收退(商品破損、外袋破損、消費者取錯件、誤刷代收等，提早從門市退貨)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2067", "message": "消費者成功取件"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2068", "message": "交貨便收件(A門市收到件寄件商品)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2069", "message": "退貨便收件(商品退回指定C門市)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2070", "message": "退回原寄件門市且已取件"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2071", "message": "門市代碼格式錯誤"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2072", "message": "商品配達賣家取退貨門市"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2073", "message": "商品配達買家取貨門市"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2074", "message": "消費者七天未取，商品離開買家取貨門市"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2075", "message": "廠商未至門市取退貨，商品離開賣家取退貨門市"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2101", "message": "門市關轉店"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2102", "message": "門市舊店號更新"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2103", "message": "無取件門市資料"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "2104", "message": "門市臨時關轉店"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3001", "message": "轉運中(即集貨)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3002", "message": "不在家"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3003", "message": "配完"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3004", "message": "送錯BASE (送錯營業所)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3005", "message": "送錯CENTER(送錯轉運中心)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3006", "message": "配送中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3007", "message": "公司行號休息"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3008", "message": "地址錯誤，聯繫收件人"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3009", "message": "搬家"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3010", "message": "轉寄(如原本寄到A，改寄B)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3011", "message": "暫置營業所(收件人要求至營業所取貨)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3012", "message": "到所(收件人要求到站所取件)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3013", "message": "當配下車(當日配送A至B營業所，已抵達B營業所)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3014", "message": "當配上車(當日配送從A至B營業所，已抵達A營業所)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3015", "message": "空運配送中"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3016", "message": "配完狀態刪除"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3017", "message": "退回狀態刪除(代收退貨刪除)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3018", "message": "到店尚未取貨，簡訊通知取件"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3019", "message": "退件到店尚未取貨，簡訊通知取件"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3020", "message": "貨件未取退回物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3021", "message": "退貨商品未取退回物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3022", "message": "買家已到店取貨"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3023", "message": "賣家已取買家未取貨"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3024", "message": "貨件已至物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3025", "message": "退貨已退回物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3029", "message": "商品已轉換店（商品送達指定更換之取件店舖）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3031", "message": "退貨商品已轉換店（退貨商品送達指定更換之取件店舖）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "3032", "message": "賣家已到門市寄件"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "4001", "message": "退貨商品已至門市交寄"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "4002", "message": "退貨商品已至物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "5001", "message": "損壞，站所將協助退貨"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "5002", "message": "遺失"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "5003", "message": "BASE列管(寄件人和收件人聯絡不到)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "5004", "message": "一般單退回"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "5005", "message": "代收退貨"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "5006", "message": "代收毀損"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "5007", "message": "代收遺失"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "5008", "message": "退貨配完"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "5009", "message": "進貨門市發生緊急閉店，提早退貨至物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7001", "message": "超大(通常發生於司機取件，不取件)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7002", "message": "超重(通常發生於司機取件，不取件)"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7003", "message": "地址錯誤，聯繫收件人"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7004", "message": "航班延誤"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7005", "message": "託運單刪除"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7006", "message": "小物流遺失"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7007", "message": "門市遺失"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7008", "message": "小物流破損，退回物流中心"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7009", "message": "商品包裝不良（物流中心反應）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7010", "message": "商品包裝不良（門市反應）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7011", "message": "取件門市閉店，轉退回原寄件店"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7012", "message": "條碼錯誤，物流中心客服處理"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7013", "message": "訂單超過驗收期限（商家未出貨）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "7014", "message": "商家未到貨（若訂單成立隔日未到貨即會發送，直到訂單失效刪除）"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "9001", "message": "退貨已取"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "9002", "message": "退貨已取"
+    },
+    {
+      "logistics_type": "CVS", "logistics_subtype": "HILIFE", "code": "9999", "message": "訂單取消"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "311", "message": "上傳退貨電子訂單處理中"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "300", "message": "訂單處理中(已收到訂單資料)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "310", "message": "上傳電子訂單檔處理中"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "325", "message": "退貨訂單處理中(已收到訂單資料)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3001", "message": "轉運中(即集貨)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3002", "message": "不在家"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3004", "message": "送錯BASE (送錯營業所)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3005", "message": "送錯CENTER(送錯轉運中心)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3006", "message": "配送中"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3007", "message": "公司行號休息"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3008", "message": "地址錯誤，聯繫收件人"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3009", "message": "搬家"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3010", "message": "轉寄(如原本寄到A，改寄B)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3011", "message": "暫置營業所(收件人要求至營業所取貨)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7002", "message": "超重(通常發生於司機取件，不取件)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7003", "message": "地址錯誤，聯繫收件人"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "5005", "message": "代收退貨"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3017", "message": "退回狀態刪除(代收退貨刪除)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3003", "message": "配完"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "5001", "message": "損壞，站所將協助退貨"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "5002", "message": "遺失"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "5003", "message": "BASE列管(寄件人和收件人聯絡不到)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "5004", "message": "一般單退回"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3015", "message": "空運配送中"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3016", "message": "配完狀態刪除"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7005", "message": "託運單刪除"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "5006", "message": "代收毀損"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "5007", "message": "代收遺失"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "5008", "message": "退貨配完"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3012", "message": "到所(收件人要求到站所取件)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3013", "message": "當配下車(當日配送A至B營業所，已抵達B營業所)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "3014", "message": "當配上車(當日配送從A至B營業所，已抵達A營業所)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7001", "message": "超大(通常發生於司機取件，不取件)"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7004", "message": "航班延誤"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7024", "message": "另約時間"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7025", "message": "電聯不上"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7026", "message": "資料有誤"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7027", "message": "無件可退"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7028", "message": "超大超重"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7029", "message": "已回收"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7030", "message": "別家收走"
+    },
+    {
+      "logistics_type": "HOME", "logistics_subtype": "TCAT", "code": "7031", "message": "商品未到"
+    }
+  ]
+}

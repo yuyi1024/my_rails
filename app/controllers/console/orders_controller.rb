@@ -53,7 +53,7 @@ class Console::OrdersController < Console::DashboardsController
     @order = Order.find_by(process_id: params[:id])
     
     if @order.ecpay_logistics_id.present?
-      @logistics_status = @order.ecpay_trade_info.message
+      @logistics_status = @order.ecpay_trade_info[0]['message']
     else
       @logistics_status = '未出貨'
     end

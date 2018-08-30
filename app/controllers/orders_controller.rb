@@ -205,7 +205,7 @@ class OrdersController < ApplicationController
   def show # 訂單詳情
     # ecpay 物流狀態信息
     if @order.ecpay_logistics_id.present?
-      @logistics_status = @order.ecpay_trade_info.message
+      @logistics_status = @order.ecpay_trade_info[0]['message']
     else
       @logistics_status = '未出貨'
     end
@@ -220,8 +220,8 @@ class OrdersController < ApplicationController
       @check_return = @order.remittance_infos.where(checked: 'return').order('created_at DESC')
     end
 
-  rescue StandardError => e
-    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+  # rescue StandardError => e
+  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
   def remit_info # 公司付款資訊頁面(atm付款)
@@ -293,6 +293,11 @@ class OrdersController < ApplicationController
     @location = 'revise'
     @freight = Order::Freight_in_store
     @remittance_info = RemittanceInfo.new
+
+    # 銀行代號 select_box
+    bank_hash = JSON.parse(File.read('app/assets/json/bank.json'))
+    @bank_arr = []
+    bank_hash['Bank'].map{ |bank| @bank_arr << bank['code'] + ' - ' + bank['name'] }
   rescue StandardError => e
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end

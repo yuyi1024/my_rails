@@ -186,13 +186,14 @@ class Order < ApplicationRecord
     res = create.querylogisticstradeinfo(param)
     res = res.sub('1|', '')
     hash = CGI::parse(res)
-    
-    logistics = LogisticsStatus.find_by(logistics_subtype: self.logistics_subtype, code: hash['LogisticsStatus'][0])
 
-    if !logistics.status.blank?
-      self.send(logistics.status) if self.send('may_' + logistics.status + '?')
-      self.save
-    end
+    status_hash = JSON.parse(File.read('app/assets/json/logistics_status.json'))
+    logistics = status_hash['LogisticsStatus'].select{ |status_hash| status_hash['logistics_subtype'] == self.logistics_subtype && status_hash['code'] == hash['LogisticsStatus'][0] }
+
+    # if !logistics.status.blank?
+    #   self.send(logistics.status) if self.send('may_' + logistics.status + '?')
+    #   self.save
+    # end
 
     if self.shipment_no.blank?
       self.shipment_no = hash['ShipmentNo'][0]

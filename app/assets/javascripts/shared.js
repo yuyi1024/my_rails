@@ -1,8 +1,19 @@
 $(document).on('turbolinks:load', function() {
+  //回頁頂
   $('#to_top').click(function(){
-    $(window).scrollTop(0);
+    $('html, body').animate({
+      scrollTop: 0
+    }, 100);
   });
 });
+
+// 按分頁 window 會回商品第一列
+function to_top(){
+  $('html, body').animate({
+      scrollTop: $("#tag").offset().top
+  }, 100);
+  // offset(返回第一個匹配元素的偏移座標) 
+}
 
 // flash alert & success
 function message_notify(type, msg){

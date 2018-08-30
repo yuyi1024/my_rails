@@ -51,7 +51,7 @@ h1.title 訂單修改
               = form_for @remittance_info, url: order_cancel_orders_path(@order.process_id), method: 'post' do |f|
                 .row
                   = f.label :refund_bank, '銀行代號', class: 'col-sm-2'
-                  = f.select :refund_bank, options_for_select(Bank.all.map{ |bank| [bank.code + ' - ' + bank.name] })
+                  = f.select :refund_bank, options_for_select(@bank_arr)
                 .row
                   = f.label :refund_account, '帳號', class: 'col-sm-2'
                   = f.text_field :refund_account, required: 'required', class: 'col-sm-8', onkeyup: 'bank_account(this);'
