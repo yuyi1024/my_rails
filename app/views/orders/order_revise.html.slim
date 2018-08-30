@@ -54,7 +54,7 @@ h1.title 訂單修改
                   = f.select :refund_bank, options_for_select(Bank.all.map{ |bank| [bank.code + ' - ' + bank.name] })
                 .row
                   = f.label :refund_account, '帳號', class: 'col-sm-2'
-                  = f.text_field :refund_account, required: 'required', class: 'col-sm-8'
+                  = f.text_field :refund_account, required: 'required', class: 'col-sm-8', onkeyup: 'bank_account(this);'
 
                 = f.submit '取消訂單', class:'btn submit delete', data: {confirm: "訂單一旦取消將無法復原，確定取消訂單？"}
 

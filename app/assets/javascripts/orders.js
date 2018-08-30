@@ -16,13 +16,18 @@ $(document).on('turbolinks:load', function() {
   }
 });
 
+// 銀行帳號四位數字+空格
+function bank_account(object){
+  object.value = object.value.replace(/\s/g,'').replace(/(\d{4})(?=\d)/g,"$1 ");
+}
+
 // 選擇送貨方式(CVS/Home)後顯示對應付款方式
 function selectShipMethod(m, process_id){
   var ship_method = document.getElementById('order_logistics_type').value;
   $.ajax({
     type: 'get',
     url: '/orders/ship_method/',
-    data : { 
+    data: { 
       ship_method: ship_method,
       location: m,
       process_id: process_id,

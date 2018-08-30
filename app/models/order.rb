@@ -26,7 +26,7 @@ class Order < ApplicationRecord
     when 'waiting_shipment'
       '待出貨'
     when 'paid'
-      '待出貨'
+      '已付款'
     when 'waiting_refunded'
       '待退款'
     when 'shipping'

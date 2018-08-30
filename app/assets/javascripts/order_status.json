@@ -1,0 +1,78 @@
+{
+  "OrderStatus":
+  [
+    {
+      "status": "pending",
+      "may": "",
+      "cn": "結帳未完成"
+    },
+    {
+      "status": "waiting_payment",
+      "may": "wait_payment",
+      "cn": "待付款"
+    },
+    {
+      "status": "waiting_check",
+      "may": "wait_check",
+      "cn": "已通知付款"
+    },
+    {
+      "status": "waiting_shipment",
+      "may": "wait_shipment",
+      "cn": "待出貨"
+    },
+    {
+      "status": "paid",
+      "may": "pay",
+      "cn": "已付款"
+    },
+    {
+      "status": "waiting_refunded",
+      "may": "wait_refunded",
+      "cn": "待退款"
+    },
+    {
+      "status": "shipping",
+      "may": "ship",
+      "cn": "運送中"
+    },
+    {
+      "status": "delivered",
+      "may": "deliver",
+      "cn": "已到貨"
+    },
+    {
+      "status": "delivered_store",
+      "may": "deliver_store",
+      "cn": "已到店"
+    },
+    {
+      "status": "picked_up",
+      "may": "pick_up",
+      "cn": "已取貨"
+    },
+    {
+      "status": "finished",
+      "may": "finish",
+      "cn": "結束交易"
+    },
+    {
+      "status": "returned",
+      "may": "return",
+      "cn": "已退貨"
+    },
+    {
+      "status": "refunded",
+      "may": "refund",
+      "cn": "已退款"
+    },
+    {
+      "status": "canceled",
+      "may": "cancel",
+      "cn": "已取消"
+    }
+  ]
+	
+}
+
+

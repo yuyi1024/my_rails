@@ -1,0 +1,8 @@
+.row
+  ul.nav.nav-tabs.col-sm-offset-2.col-sm-8
+    li.col-sm-4 role="presentation" class="#{'active' if current_page?(user_show_path)}"
+      = link_to '會員資料', user_show_path
+    li.col-sm-4 role="presentation" class="#{'active' if current_page?(user_order_list_path)}"
+      = link_to '我的訂單', user_order_list_path
+    li.col-sm-4 role="presentation" class="#{'active' if current_page?(user_favorite_list_path)}"
+      = link_to '追蹤商品', user_favorite_list_path

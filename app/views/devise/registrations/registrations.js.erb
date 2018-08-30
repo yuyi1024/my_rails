@@ -36,4 +36,7 @@
 		type: 'danger',
 		delay: 3000,
 	});
+
+<% elsif @action == 'order_status_select' %>
+	$("#order_list").html("<%= j render partial: 'order_list_rows' %>")
 <% end %>

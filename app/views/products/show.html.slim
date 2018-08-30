@@ -50,12 +50,21 @@ h1.title 商品詳細
             |  #{@product.offer.message}
 
   .row.product_description
-
     hr
     .col-sm-6.col-sm-offset-3 
       h4 商品敘述
       .description 
         = raw @product.description
+
+  .row.product_recommend
+    hr
+    .col-sm-10.col-sm-offset-1
+      h5 你可能有興趣的商品
+      - @recommends.each do |recommend|
+        .col-sm-2
+          = link_to product_path(recommend.id)
+            = image_tag(product_image_present(recommend))
+            p #{recommend.name}
 
 
 javascript:

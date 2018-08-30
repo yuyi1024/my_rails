@@ -9,3 +9,16 @@ function editData(object){
   $input.css('background-color', '#fff');
   $(object).replaceWith("<input type='submit' name='commit' value='儲存' class='btn save'>");
 }
+
+// 訂單列表選擇status
+function orderStatusSelect(){
+	var status = document.getElementById("order_status").value;
+
+	$.ajax({
+		type: 'get',
+		url: '/user/order_status_select',
+		data: {
+			status: status,
+		},
+	});
+}

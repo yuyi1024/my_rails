@@ -1,19 +1,14 @@
 h1.title 會員中心
 
 #user_show.container
-  .row
-    ul.nav.nav-tabs.col-sm-offset-2.col-sm-8
-      li.col-sm-4 role="presentation" 
-        = link_to '會員資料', user_show_path
-      li.col-sm-4.active role="presentation"
-        = link_to '我的訂單', user_order_list_path
-      li.col-sm-4 role="presentation"
-        = link_to '追蹤商品', user_favorite_list_path
+  = render 'tabs'
 
   #section.row
     .order_list.panel.panel-default.col-sm-offset-2.col-sm-8
       .panel-heading
-        h3.panel-title 我的訂單
+        h3.panel-title 
+          | 我的訂單 
+          = select_tag :order_status, options_for_select(@status_arr.insert(0, ["全部", 'all'])), onchange: 'orderStatusSelect();'
 
       table.table
         tr
@@ -23,31 +18,5 @@ h1.title 會員中心
           th.col-sm-2 下單日期
           th.col-sm-1
           th.col-sm-2
-        tbody
-          - @orders.each do |order|
-            tr class="#{ 'canceled' if order_canceled?(order.status)}"
-              td #{ order.process_id }
-              td #{ order.status_cn }
-              td NT $ #{ number_with_delimiter(order.price + order.freight) }
-              td #{ order.created_at.strftime("%Y/%m/%d") }
-              td 
-                - if order.shipped != 'true' && !order_canceled?(order.status) && order.status != 'waiting_check'
-                  = link_to(order_revise_orders_path(order.process_id), target: :_blank)
-                    button.btn 訂單修改
-
-              td
-                - if order.status == 'pending'
-                  = link_to(edit_order_path(order.process_id), target: :_blank)
-                    button.btn.notice 結帳未完成
-                
-                - elsif order.status == 'waiting_payment' && order.pay_method == 'cash_card'
-                  = link_to(cash_card_orders_path(order.process_id), target: :_blank)
-                    button.btn.notice 信用卡付款
-
-                - elsif order.status == 'waiting_payment' && order.pay_method == 'atm' && order.paid != 'remit'
-                  = link_to(order_path(order.process_id), target: :_blank)
-                    button.btn.notice 通知已付款
-                
-                - else
-                  = link_to(order_path(order.process_id), target: :_blank)
-                    button.btn 查看訂單詳情
+        tbody#order_list
+          = render 'order_list_rows'

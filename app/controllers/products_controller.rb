@@ -53,6 +53,7 @@ class ProductsController < ApplicationController
       @product.increment(:click_count)
       @product.save
       @offer = Offer.where.not(range: 'product').find_by(implement: 'true')
+      @recommends = @product.category.product.where(status: 'on_shelf').order('sold DESC').limit(6)
     else
       redirect_to(root_path, alert: '該商品不存在')
     end

@@ -76,8 +76,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def order_list # 會員中心訂單列表
     @orders = @user.orders.order('created_at DESC')
     @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
+    
+    # 訂單狀態 select_box
+    status_hash = JSON.parse(File.read('app/assets/javascripts/order_status.json'))
+    @status_arr = []
+    status_hash['OrderStatus'].map{|s| @status_arr << [s['cn'],s['status']]}
   rescue StandardError => e
     redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")
+  end
+
+  def order_status_select # 訂單列表選擇 status
+    @orders = current_user.orders
+    @orders = @orders.where(status: params[:status]) if params[:status] != 'all'
+    @action = __method__.to_s
+    render 'devise/registrations/registrations.js.erb'
   end
 
   def favorite_list # 會員中心追蹤列表
