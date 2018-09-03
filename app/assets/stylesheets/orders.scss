@@ -124,6 +124,29 @@
     }
   }
 }
+
+#payment_result, #atm_info{
+  .panel-heading{
+    h4, p{
+      text-align: center;
+    }
+    h4{
+      color: $color_checked_green;
+    }
+  }
+  .price{
+    color: $color_price_red;
+  }
+  p{
+    text-align: right;
+    button{
+      background-color: #000;
+      color: #fff;
+      margin: 0 20px;
+    }
+  }
+}
+
 .all_orders_page{
   .btn{
     background: #000;

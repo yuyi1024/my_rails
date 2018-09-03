@@ -43,7 +43,7 @@ Rails.application.routes.draw do
       get :get_user_data, path: 'get_user_data/:process_id', as: 'get_user_data'
       post :from_ecpay_payment, path: 'from_ecpay_payment', as: 'from_ecpay_payment'
       get :payment_result, path: 'payment_result/:process_id', as: 'payment_result'
-      get :remit_info, path: 'remit_info/:process_id', as: 'remit_info'
+      get :atm_info, path: 'atm_info/:process_id', as: 'atm_info'
       get :cash_card, path: 'cash_card/:process_id', as: 'cash_card'
       post :paid, path: 'paid/:process_id', as: 'paid'
       post :remit_finish, path: 'remit_finish/:process_id', as: 'remit_finish'

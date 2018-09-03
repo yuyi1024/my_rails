@@ -191,7 +191,7 @@ class OrdersController < ApplicationController
           'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),
           'TotalAmount' => @order.price + @order.freight,
           'TradeDesc' => '寵物用品',
-          'ItemName' => '霸雕爆裂丸商品',
+          'ItemName' => '寵物用品',
           'ReturnURL' => 'http://localhost:3001',
           'OrderResultURL' => 'http://localhost:3001/orders/from_ecpay_payment',
         }
@@ -200,7 +200,10 @@ class OrdersController < ApplicationController
         if @order.pay_method == 'Credit'
           res = create.aio_check_out_credit_onetime(params: base_param)
         elsif @order.pay_method == 'ATM'
-          res = create.aio_check_out_atm(params: base_param)
+          pay_info_url = 'http://localhost:3001'
+          exp = '7'
+          cli_redir_url = 'http://localhost:3001/orders/from_ecpay_payment'
+          res = create.aio_check_out_atm(params: base_param, url_return_payinfo: pay_info_url, exp_period: exp, client_redirect:cli_redir_url)
         end  
         render :inline => res
 
@@ -220,21 +223,42 @@ class OrdersController < ApplicationController
 
   def from_ecpay_payment
     @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
-    if params[:RtnCode] == '1' # 付款成功
-      @order.paid = 'true'
-      @order.pay if @order.may_pay?
-      @order.wait_shipment if @order.may_wait_shipment?
-      order.merchant_trade_no = params[:MerchantTradeNo] if @order.merchant_trade_no != params[:MerchantTradeNo]
-      @order.save
-      redirect_to payment_result_orders_path(@order.process_id)
-    else
-      redirect_to root_path
+    
+    if params[:PaymentType] == 'Credit_CreditCard'
+      if params[:RtnCode] == '1' # 付款成功
+        @order.paid = 'true'
+        @order.pay if @order.may_pay?
+        @order.wait_shipment if @order.may_wait_shipment?
+        @order.merchant_trade_no = params[:MerchantTradeNo] if @order.merchant_trade_no != params[:MerchantTradeNo]
+        @order.save
+        redirect_to payment_result_orders_path(@order.process_id)
+      else
+        redirect_to root_path
+      end
+    elsif params[:PaymentType][0..2] == 'ATM'
+      if params[:RtnCode] == '2' # 取號成功
+        v_account = params[:vAccount].gsub(/(\d{4})(?=\d)/,'\1 ')
+        @payment_info = EcpayPaymentAtmInfo.create(bank_code: params[:BankCode], v_account: v_account, expire_date: params[:ExpireDate])
+        @payment_info.order = @order
+        @payment_info.user = @order.user
+        @order.merchant_trade_no = params[:MerchantTradeNo] if @order.merchant_trade_no != params[:MerchantTradeNo]
+        @order.save
+        @payment_info.save
+        redirect_to atm_info_orders_path(@order.process_id)
+      else
+        redirect_to root_path
+      end
     end
+      
   end
 
   def payment_result
     @order = Order.find_by(process_id: params[:process_id])
-    
+  end
+
+  def atm_info
+    @order = Order.find_by(process_id: params[:process_id])
+    @atm_info = @order.ecpay_payment_atm_info
   end
 
   def show # 訂單詳情
@@ -259,10 +283,10 @@ class OrdersController < ApplicationController
   #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  def remit_info # 公司付款資訊頁面(atm付款)
-  rescue StandardError => e 
-    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
-  end
+  # def remit_info # 公司付款資訊頁面(atm付款)
+  # rescue StandardError => e 
+  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+  # end
 
   def remit_finish # 通知已付款(atm付款)
     @order = Order.find_by(process_id: params[:process_id])

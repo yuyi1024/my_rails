@@ -1,13 +1,11 @@
-h1.title 付款結果
+h1.title 付款資料
 
-#payment_result.container  
+#atm_info.container  
   .row
     .col-sm-8.col-sm-offset-2
       .panel.panel-default
         .panel-heading
-          h4 
-            span.glyphicon.glyphicon-check 
-            |  恭喜您，付款成功！
+          p 請於時間內進行付款
           p 本次交易明細如下：
         .panel-body
           table.table
@@ -22,7 +20,7 @@ h1.title 付款結果
                 th 商品明細
                 td 寵物用品
               tr
-                th 實際繳費金額
+                th 訂單金額
                 td 
                   b.price #{number_with_delimiter(@order.price + @order.freight)} 
                   | 元（新台幣）
@@ -30,8 +28,14 @@ h1.title 付款結果
                 th 付款方式
                 td #{@order.pay_method_cn}
               tr
-                th
-                td
+                th 銀行代碼
+                td #{@atm_info.bank_code}
+              tr
+                th ATM 繳費帳號
+                td #{@atm_info.v_account}
+              tr
+                th 繳費截止日期
+                td.price #{@atm_info.expire_date.strftime("%Y/%m/%d")}
           p
-            = link_to = link_to order_path(@order.process_id)
+            = link_to order_path(@order.process_id)
               button.btn 訂單詳情

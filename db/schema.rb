@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180903143728) do
+ActiveRecord::Schema.define(version: 20180903185127) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ecpay_payment_atm_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "order_id"
+    t.integer "user_id"
+    t.string "bank_code"
+    t.string "v_account"
+    t.datetime "expire_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -1,9 +1,15 @@
 h1.title 訂單詳情
 
 #order.container
+
+  - if @order.status == 'waiting_payment' && @order.pay_method == 'ATM'
+    #remit_finish
+      .row.remit_btn
+        = link_to(atm_info_orders_path(@order.process_id))
+          button.btn 查看匯款資料
   
   / 通知匯款表格
-  - if @remittance_info.present?
+  /- if @remittance_info.present?
     #remit_finish
       .row.remit_btn
         = link_to(remit_info_orders_path(@order.process_id), target: :_blank)

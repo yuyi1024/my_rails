@@ -3,6 +3,8 @@ class Order < ApplicationRecord
   belongs_to :offer, optional: true
   belongs_to :user
   has_many :remittance_infos
+  has_one :ecpay_payment_atm_info
+
   accepts_nested_attributes_for :order_items
 
   # 預設運費
@@ -52,9 +54,9 @@ class Order < ApplicationRecord
     case self.pay_method
     when 'pickup_and_cash'
       '取貨付款'
-    when 'cash_card'
+    when 'Credit'
       '信用卡'
-    when 'atm'
+    when 'ATM'
       '實體ATM'
     end
   end
