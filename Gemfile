@@ -77,7 +77,9 @@ gem "fog-aws"
 #paypal
 gem "braintree", "~> 2.88.0"
 
+# ecpay 物流 & 金流
 gem 'ecpay_logistics', path: 'vendor/gems/ecpay_logistics-1.0.7'
+gem 'ecpay_payment', path: 'vendor/gems/ecpay_payment-1.0.9'
 
 # WYSIWYG
 # This is the right gem to use summernote editor in Rails projects.

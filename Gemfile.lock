@@ -3,6 +3,11 @@ PATH
   specs:
     ecpay_logistics (1.0.7)
 
+PATH
+  remote: vendor/gems/ecpay_payment-1.0.9
+  specs:
+    ecpay_payment (1.0.9)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -320,6 +325,7 @@ DEPENDENCIES
   chartkick
   devise
   ecpay_logistics!
+  ecpay_payment!
   faker
   figaro
   fog-aws

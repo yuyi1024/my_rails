@@ -5,8 +5,9 @@ class OrdersController < ApplicationController
   # 除了from_map的方法都啟動CSRF安全性功能（預設全部方法都啟動
   protect_from_forgery except: :from_map
 
-  # ecpay物流串接
+  # ecpay金流物流串接
   require 'ecpay_logistics'
+  require 'ecpay_payment'
 
   def order_auth # 只能查看自己的訂單
     @order = Order.find_by(process_id: params[:process_id])
@@ -168,26 +169,41 @@ class OrdersController < ApplicationController
     # 根據 pay_method  更變訂單 status
     if @order.pay_method == 'pickup_and_cash'
       @order.wait_shipment
-    elsif @order.pay_method == 'cash_card'
+    elsif @order.pay_method == 'Credit'
       if @order.paid == 'true' && @order.may_wait_shipment?
         @order.wait_shipment
       else
         @order.wait_payment if @order.may_wait_payment?
       end
-    elsif @order.pay_method == 'atm'
-      @order.wait_payment
+    elsif @order.pay_method == 'ATM'
+      @order.wait_payment  if @order.may_wait_payment?
     end
 
     # 根據 pay_method redirect to page
     if @order.save
       flash[:success] = '訂單建立'
+      if @order.pay_method == 'Credit' || @order.pay_method == 'ATM'
+        @order.merchant_trade_no = @order.process_id + rand(9).to_s + rand(9).to_s
+        @order.save
 
-      if @order.pay_method == 'cash_card'
-        redirect_to cash_card_orders_path(@order.process_id)
-      
-      elsif @order.pay_method == 'atm'
-        redirect_to remit_info_orders_path(@order.process_id)
-      
+        base_param = {
+          'MerchantTradeNo' => @order.merchant_trade_no,
+          'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),
+          'TotalAmount' => @order.price + @order.freight,
+          'TradeDesc' => '寵物用品',
+          'ItemName' => '霸雕爆裂丸商品',
+          'ReturnURL' => 'http://localhost:3001',
+          'OrderResultURL' => 'http://localhost:3001/orders/from_ecpay_payment',
+        }
+        create = ECpayPayment::ECpayPaymentClient.new
+
+        if @order.pay_method == 'Credit'
+          res = create.aio_check_out_credit_onetime(params: base_param)
+        elsif @order.pay_method == 'ATM'
+          res = create.aio_check_out_atm(params: base_param)
+        end  
+        render :inline => res
+
       elsif @order.pay_method == 'pickup_and_cash'
         hash = @order.ecpay_create
         @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
@@ -198,8 +214,27 @@ class OrdersController < ApplicationController
       raise StandardError, '訂單發生錯誤'
     end
 
-  rescue StandardError => e
-    redirect_back(fallback_location: edit_order_path(@order.process_id), alert: "#{e}")
+  # rescue StandardError => e
+  #   redirect_back(fallback_location: edit_order_path(@order.process_id), alert: "#{e}")
+  end
+
+  def from_ecpay_payment
+    @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
+    if params[:RtnCode] == '1' # 付款成功
+      @order.paid = 'true'
+      @order.pay if @order.may_pay?
+      @order.wait_shipment if @order.may_wait_shipment?
+      order.merchant_trade_no = params[:MerchantTradeNo] if @order.merchant_trade_no != params[:MerchantTradeNo]
+      @order.save
+      redirect_to payment_result_orders_path(@order.process_id)
+    else
+      redirect_to root_path
+    end
+  end
+
+  def payment_result
+    @order = Order.find_by(process_id: params[:process_id])
+    
   end
 
   def show # 訂單詳情

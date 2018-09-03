@@ -18,7 +18,14 @@ $(document).on('turbolinks:load', function() {
 
 // 銀行帳號四位數字+空格
 function bank_account(object){
-  object.value = object.value.replace(/\s/g,'').replace(/(\d{4})(?=\d)/g,"$1 ");
+  object.value = object.value.replace(/\s/g,'').replace(/\D/g,'').replace(/(\d{4})(?=\d)/g,"$1 ");
+  //  \s    -> 空白字符
+  //  \d    -> 數字
+  //  n{X}  -> X個n
+  //  ?=n   -> 後面緊接n的字串     
+  //  $1    -> 第一個匹配的組($0~$9)                      
+  //  replace(/(\d{4})(?=\d)/g,"$1 ") -> (連續4個數字)且(後面緊接數字)時，換成(第一組匹配的組 + ' ')
+  //                                     ex.   12345 -> 把'1234'替換成'1234 '
 }
 
 // 選擇送貨方式(CVS/Home)後顯示對應付款方式

@@ -39,9 +39,9 @@
             = f.text_area :note, class: 'col-sm-8', value: @order.note
 
           - if @location == 'edit'
-            - if @order.pay_method == 'cash_card'
+            - if @order.pay_method == 'Credit'
               = f.submit '信用卡付款', class:'btn', onclick:'pixel_and_ga();'
-            - elsif @order.pay_method == 'atm'
+            - elsif @order.pay_method == 'ATM'
               = f.submit '訂單建立', class:'btn', onclick:'pixel_and_ga();'
           
           - elsif @location == 'revise'

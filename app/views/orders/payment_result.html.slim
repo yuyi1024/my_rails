@@ -1,0 +1,40 @@
+h1.title 付款結果
+
+.container  
+  .row
+    .col-sm-8.col-sm-offset-2
+      .panel.panel-default
+        .panel-heading 
+          h3 交易明細
+        .panel-body
+          / .col-sm-4 訂單編號
+          / .col-sm-8 #{@order.process_id}
+
+          / .col-sm-4 商店名稱
+          / .col-sm-8 霸雕爆裂丸寵物商品
+
+          / .col-sm-4 實際繳費金額
+          / .col-sm-8 #{@order.price + @order.freight}
+
+          / .col-sm-4 付款方式
+          / .col-sm-8 #{@order.pay_method}
+
+
+
+          table.table
+ 
+            tbody
+              tr
+                th 訂單編號
+                td #{@order.process_id}
+              tr
+                th 商店名稱
+                td 霸雕爆裂丸寵物商品
+              tr
+                th 實際繳費金額
+                td #{number_with_delimiter(@order.price + @order.freight)} 元（新台幣）
+              tr
+                th 付款方式
+                td #{@order.pay_method}
+
+        .panel-footer
