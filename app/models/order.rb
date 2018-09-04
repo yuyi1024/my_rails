@@ -57,7 +57,7 @@ class Order < ApplicationRecord
     when 'Credit'
       '信用卡'
     when 'ATM'
-      '實體ATM'
+      'ATM 自動櫃員機'
     end
   end
 
@@ -94,6 +94,33 @@ class Order < ApplicationRecord
     @may << ['已退貨', 'return'] if self.may_return?
     @may << ['已退款', 'refund'] if self.may_refund?
     @may
+  end
+
+  # ecpay 金流建立
+  def ecpay_payment_create
+    self.merchant_trade_no = self.process_id + rand(9).to_s + rand(9).to_s
+    self.save
+
+    base_param = {
+      'MerchantTradeNo' => self.merchant_trade_no,
+      'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),
+      'TotalAmount' => self.price + self.freight,
+      'TradeDesc' => '寵物用品',
+      'ItemName' => '寵物用品',
+      'ReturnURL' => 'http://localhost:3001',
+      'OrderResultURL' => 'http://localhost:3001/orders/from_ecpay_payment',
+    }
+    create = ECpayPayment::ECpayPaymentClient.new
+
+    if self.pay_method == 'Credit' && self.paid == 'false'
+      res = create.aio_check_out_credit_onetime(params: base_param)
+    elsif self.pay_method == 'ATM' && !self.ecpay_payment_atm_info.present?
+      pay_info_url = 'http://localhost:3001'
+      exp = '7'
+      cli_redir_url = 'http://localhost:3001/orders/from_ecpay_payment'
+      res = create.aio_check_out_atm(params: base_param, url_return_payinfo: pay_info_url, exp_period: exp, client_redirect:cli_redir_url)
+    end  
+    return res
   end
 
   # ecpay 物流訂單建立

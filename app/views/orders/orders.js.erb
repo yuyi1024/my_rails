@@ -3,9 +3,9 @@
   $('#total span').text('$ <%= number_with_delimiter(@offer_price) %>');
 
   <% if @ship_method == 'CVS' %>
-    $('#order_pay_method').html("<option value='pickup_and_cash'>超商取貨付款</option><option value='Credit'>信用卡</option><option value='ATM'>實體ATM</option>");
+    $('#order_pay_method').html("<option value='pickup_and_cash'>超商取貨付款</option><option value='Credit'>信用卡</option><option value='ATM'>ATM 自動櫃員機</option>");
   <% else %>
-    $('#order_pay_method').html("<option value='Credit'>信用卡</option><option value='ATM'>實體ATM</option>");
+    $('#order_pay_method').html("<option value='Credit'>信用卡</option><option value='ATM'>ATM 自動櫃員機</option>");
   <% end %>
   
 <% elsif @action == 'get_user_data' %>

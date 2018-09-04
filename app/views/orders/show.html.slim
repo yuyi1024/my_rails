@@ -2,57 +2,16 @@ h1.title 訂單詳情
 
 #order.container
 
-  - if @order.status == 'waiting_payment' && @order.pay_method == 'ATM'
+  - if @order.shipped != 'true' && !order_canceled?(@order.status)
+    .row.remit_btn
+      = link_to(order_revise_orders_path(@order.process_id))
+        button.btn 訂單修改
+
+  /- if @order.status == 'waiting_payment' && @order.pay_method == 'ATM'
     #remit_finish
       .row.remit_btn
         = link_to(atm_info_orders_path(@order.process_id))
           button.btn 查看匯款資料
-  
-  / 通知匯款表格
-  /- if @remittance_info.present?
-    #remit_finish
-      .row.remit_btn
-        = link_to(remit_info_orders_path(@order.process_id), target: :_blank)
-          button.btn 查看匯款資料
-      .row
-        .data_form.col-sm-8.col-sm-offset-2
-          .panel.panel-default
-            .panel-heading 
-              h3 匯款通知
-            .panel-body
-              = form_for @remittance_info, url: remit_finish_orders_path(@order.process_id), method: 'post' do |f|
-                .row
-                  = f.label :remit_data, '匯款帳號末五碼', class: 'col-sm-2'
-                  = f.text_field :remit_data, required: 'required', class: 'col-sm-8'
-                .row
-                  = f.label :price, '匯款金額', class: 'col-sm-2'
-                  = f.number_field :price, required: 'required', class: 'col-sm-8'
-                .row
-                  = f.label :date, '匯款日期', class: 'col-sm-2'
-                  = f.date_field :date, required: 'required', class: 'col-sm-8'
-                .row
-                  = f.label :time, '匯款時間', class: 'col-sm-2'
-                  = f.time_field :time, required: 'required', class: 'col-sm-8'
-
-                = f.submit '通知已匯款', class:'btn submit', data: {confirm: "確認通知匯款？"}
-              
-            / 被退回的通知付款資料
-            - if @check_return.present?
-              table.table
-                tr
-                  th 經確認後未有對應款項之匯款通知
-                tbody
-                  - @check_return.each do |_return|
-                    tr
-                      td
-                        div 匯款帳號末五碼： #{_return.remit_data}
-                        div 匯款金額： $#{number_with_delimiter(_return.price)}
-                        div 匯款日期： #{_return.date.strftime("%Y/%m/%d")}
-                        div 匯款時間： #{_return.time.strftime("%H:%M")}
-                  tr
-                    td
-                      p 若有款項確認之問題，請聯絡我們。
-
 
   .row
     = render 'product_list', toggle: 'N', console: 'N'
