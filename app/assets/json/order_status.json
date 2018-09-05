@@ -12,19 +12,9 @@
       "cn": "待付款"
     },
     {
-      "status": "waiting_check",
-      "may": "wait_check",
-      "cn": "已通知付款"
-    },
-    {
       "status": "waiting_shipment",
       "may": "wait_shipment",
       "cn": "待出貨"
-    },
-    {
-      "status": "paid",
-      "may": "pay",
-      "cn": "已付款"
     },
     {
       "status": "waiting_refunded",

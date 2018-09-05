@@ -107,19 +107,20 @@ class Order < ApplicationRecord
       'TotalAmount' => self.price + self.freight,
       'TradeDesc' => '寵物用品',
       'ItemName' => '寵物用品',
-      'ReturnURL' => 'http://localhost:3001',
-      'OrderResultURL' => 'http://localhost:3001/orders/from_ecpay_payment',
+      'ReturnURL' => 'http://localhost:3001/orders/from_ecpay_paid', # 付款完成時通知回傳(ATM)，更新 DB 資訊
+      'OrderResultURL' => 'http://localhost:3001/orders/payment_result/' + self.process_id, # client 回傳付款結果(Credit) -> 更新 DB -> 顯示付款成功頁面
     }
     create = ECpayPayment::ECpayPaymentClient.new
 
     if self.pay_method == 'Credit' && self.paid == 'false'
       res = create.aio_check_out_credit_onetime(params: base_param)
-    elsif self.pay_method == 'ATM' && !self.ecpay_payment_atm_info.present?
-      pay_info_url = 'http://localhost:3001'
+    
+    elsif self.pay_method == 'ATM'
+      pay_info_url = 'http://localhost:3001/orders/from_ecpay_paid' # 取得請款資訊後回傳
       exp = '7'
-      cli_redir_url = 'http://localhost:3001/orders/from_ecpay_payment'
-      res = create.aio_check_out_atm(params: base_param, url_return_payinfo: pay_info_url, exp_period: exp, client_redirect:cli_redir_url)
-    end  
+      cli_redir_url = 'http://localhost:3001/orders/ecpay_atm_account' # 取得請款資訊後，client 回傳繳費資訊(ATM)，顯示繳費資訊頁面
+      res = create.aio_check_out_atm(params: base_param, url_return_payinfo: pay_info_url, exp_period: exp, client_redirect: cli_redir_url)
+    end
     return res
   end
 
@@ -163,7 +164,7 @@ class Order < ApplicationRecord
       'ReceiverPhone' => (self.receiver_phone.blank? ? '' : self.receiver_phone), #Home與手機擇一
       'ReceiverEmail' => (self.receiver_email.blank? ? '' : self.receiver_email), 
       
-      'ServerReplyURL' => 'https://bawan-store-0225.herokuapp.com/',
+      'ServerReplyURL' => 'http://localhost:3001',
       'ClientReplyURL' => '',  
       'LogisticsC2CReplyURL' => '',
       'Remark' => '',
@@ -197,8 +198,6 @@ class Order < ApplicationRecord
 
     create = ECpayLogistics::CreateClient.new
     res = create.create(b2c_param)
-
-    puts res
     res = res.sub('1|', '')
 
     hash = CGI::parse(res)

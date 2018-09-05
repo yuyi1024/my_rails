@@ -33,5 +33,7 @@ h1.title 付款結果
                 th
                 td
           p
-            = link_to = link_to order_path(@order.process_id)
+            = link_to user_order_list_path
+              button.btn 我的訂單列表
+            = link_to link_to order_path(@order.process_id)
               button.btn 訂單詳情

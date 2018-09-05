@@ -37,5 +37,7 @@ h1.title 付款資料
                 th 繳費截止日期
                 td.price #{@atm_info.expire_date.strftime("%Y/%m/%d")}
           p
+            = link_to user_order_list_path
+              button.btn 我的訂單列表
             = link_to order_path(@order.process_id)
               button.btn 訂單詳情

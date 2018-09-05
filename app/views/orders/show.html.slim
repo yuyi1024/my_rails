@@ -1,18 +1,10 @@
 h1.title 訂單詳情
 
 #order.container
-
   - if @order.shipped != 'true' && !order_canceled?(@order.status)
     .row.remit_btn
       = link_to(order_revise_orders_path(@order.process_id))
         button.btn 訂單修改
-
-  /- if @order.status == 'waiting_payment' && @order.pay_method == 'ATM'
-    #remit_finish
-      .row.remit_btn
-        = link_to(atm_info_orders_path(@order.process_id))
-          button.btn 查看匯款資料
-
   .row
     = render 'product_list', toggle: 'N', console: 'N'
   

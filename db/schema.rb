@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180903185127) do
+ActiveRecord::Schema.define(version: 20180904155845) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -23,7 +23,8 @@ ActiveRecord::Schema.define(version: 20180903185127) do
     t.integer "user_id"
     t.string "bank_code"
     t.string "v_account"
-    t.datetime "expire_date"
+    t.date "expire_date"
+    t.boolean "paid", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

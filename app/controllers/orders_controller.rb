@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
   before_action :order_auth, only: [:edit, :show, :order_revise, :to_map, :cash_card, :remit_info]
   
   # 除了from_map的方法都啟動CSRF安全性功能（預設全部方法都啟動
-  protect_from_forgery except: :from_map
+  protect_from_forgery except: [:from_map, :from_ecpay_paid]
 
   # ecpay金流物流串接
   require 'ecpay_logistics'
@@ -121,7 +121,7 @@ class OrdersController < ApplicationController
 
     args = {
       'MerchantTradeNo' => @order.process_id,
-      'ServerReplyURL' => 'https://bawan-store-0225.herokuapp.com/orders/from_map',
+      'ServerReplyURL' => 'http://localhost:3001/orders/from_map',
       'LogisticsType' => 'CVS',
       'LogisticsSubType' => params[:st_type],
       'IsCollection' => pay,  
@@ -134,8 +134,8 @@ class OrdersController < ApplicationController
 
     render :inline => map # inline(直接提供 erb)
 
-  rescue StandardError => e
-    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+  # rescue StandardError => e
+  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
   def from_map # ecpay CVS 回傳資料
@@ -195,10 +195,11 @@ class OrdersController < ApplicationController
       raise StandardError, '訂單發生錯誤'
     end
 
-  rescue StandardError => e
-    redirect_back(fallback_location: edit_order_path(@order.process_id), alert: "#{e}")
+  # rescue StandardError => e
+  #   redirect_back(fallback_location: edit_order_path(@order.process_id), alert: "#{e}")
   end
 
+  # 根據 pay_method 前往 ecpay 金流頁面
   def to_ecpay_payment
     @order = Order.find_by(process_id: params[:process_id])
     if (@order.pay_method == 'Credit' || @order.pay_method == 'ATM') && @order.status == 'waiting_payment'
@@ -211,48 +212,70 @@ class OrdersController < ApplicationController
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
-  # Ecpay ATM、Credit 付款回傳 
-  def from_ecpay_payment
-    @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
-    
-    if params[:PaymentType] == 'Credit_CreditCard'
-      if params[:RtnCode] == '1' # 付款成功
-        @order.paid = 'true'
-        @order.pay if @order.may_pay?
-        @order.wait_shipment if @order.may_wait_shipment?
-        @order.merchant_trade_no = params[:MerchantTradeNo] if @order.merchant_trade_no != params[:MerchantTradeNo]
-        @order.save
-        redirect_to payment_result_orders_path(@order.process_id)
-      else
-        raise StandardError, '信用卡付款失敗，請再試一次'
-      end
-
-    elsif params[:PaymentType][0..2] == 'ATM'
-      if params[:RtnCode] == '2' # 取號成功
-        v_account = params[:vAccount].gsub(/(\d{4})(?=\d)/,'\1 ')
-        @payment_info = EcpayPaymentAtmInfo.create(bank_code: params[:BankCode], v_account: v_account, expire_date: params[:ExpireDate])
-        @payment_info.order = @order
-        @payment_info.user = @order.user
-        @order.merchant_trade_no = params[:MerchantTradeNo] if @order.merchant_trade_no != params[:MerchantTradeNo]
-        @order.save
-        @payment_info.save
-        redirect_to atm_info_orders_path(@order.process_id)
-      else
-        raise StandardError, 'ATM 付款取號失敗，請再試一次'
-      end
-    end
-
-  rescue StandardError => e
-    redirect_to(order_path(@order.process_id), alert: "#{e}")
-  end
-
+  # 信用卡付款完成後導回
   def payment_result
-    @order = Order.find_by(process_id: params[:process_id])
+    @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
+    if params[:RtnCode] == '1' # 付款成功
+      @order.paid = 'true'
+      @order.pay if @order.may_pay?
+      @order.wait_shipment if @order.may_wait_shipment?
+      @order.merchant_trade_no = params[:MerchantTradeNo] if @order.merchant_trade_no != params[:MerchantTradeNo]
+      @order.save
+    else
+      raise StandardError, '信用卡付款失敗，請再試一次'
+    end
   end
 
+  # ATM 取號成功回傳
+  def ecpay_atm_account
+    @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
+    if params[:RtnCode] == '2' # 取號成功
+      # 若舊的付款資料存在，則刪除舊資料
+      old_info = @order.ecpay_payment_atm_info
+      if old_info.present?
+        if old_info.paid == false
+          old_info.destroy
+        else
+          raise StandardError, '已付款，無法執行此操作'
+        end
+      end
+
+      v_account = params[:vAccount].gsub(/(\d{4})(?=\d)/,'\1 ')
+      atm_info = EcpayPaymentAtmInfo.create(bank_code: params[:BankCode], v_account: v_account, expire_date: params[:ExpireDate])
+      atm_info.order = @order
+      atm_info.user = @order.user
+      @order.merchant_trade_no = params[:MerchantTradeNo] if @order.merchant_trade_no != params[:MerchantTradeNo]
+      @order.save
+      atm_info.save
+      redirect_to atm_info_orders_path(@order.process_id)
+    else
+      raise StandardError, '取號失敗，請再試一次'
+    end
+  rescue StandardError => e
+    redirect_to(user_order_list_path, alert: "#{e}")
+  end
+
+  # ATM 付款資料頁面
   def atm_info
     @order = Order.find_by(process_id: params[:process_id])
     @atm_info = @order.ecpay_payment_atm_info
+  end
+
+  # 買家 ATM 付款成功後回傳 
+  def from_ecpay_paid
+    @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
+    puts 'qwqwqwqwqwqwqwqwqwqwqw'
+    # @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
+    if params[:PaymentType][0..2] == 'ATM'
+      if params[:RtnCode] == '1' # 買家 ATM 付款成功
+        @order.paid = 'true'
+        @order.pay if @order.may_pay?
+        @order.wait_shipment if @order.may_wait_shipment?
+        @order.save
+      end
+    end
+  # rescue StandardError => e
+  #   redirect_to(order_path(@order.process_id), alert: "#{e}")
   end
 
   def show # 訂單詳情
@@ -272,71 +295,9 @@ class OrdersController < ApplicationController
       # 被退回的通知付款資料
       @check_return = @order.remittance_infos.where(checked: 'return').order('created_at DESC')
     end
-
-  # rescue StandardError => e
-  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+  rescue StandardError => e
+    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
-
-  # def remit_info # 公司付款資訊頁面(atm付款)
-  # rescue StandardError => e 
-  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
-  # end
-
-  # def remit_finish # 通知已付款(atm付款)
-  #   @order = Order.find_by(process_id: params[:process_id])
-  #   @remit = @order.remittance_infos.create(remittance_info_params)
-  #   @remit.transfer_type = 'remit'
-  #   @order.wait_check
-  #   if @remit.save && @order.save
-  #     flash[:success] = '通知付款成功'
-  #     redirect_to order_path(@order.process_id)
-  #   else
-  #     raise StandardError, '通知付款失敗'
-  #   end
-  #   rescue StandardError => e 
-  #     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
-  # end
-
-  # def cash_card # 信用卡付款頁面
-  #   @client_token = Braintree::ClientToken.generate
-  # rescue StandardError => e
-  #   redirect_to(user_order_list_path, alert: "#{e}")
-  # end
-
-  # def paid # 信用卡付款認證
-  #   @order = Order.find_by(process_id: params[:process_id])
-  #   result = Braintree::Transaction.create(
-  #     :amount => @order.price + @order.freight,
-  #     :payment_method_nonce => params[:payment_method_nonce],
-  #     :customer_id => @order.user.id,
-  #     :custom_fields => {
-  #     :process_id => @order.process_id
-  #     }
-  #   )
-
-  #   if result
-  #     @order.pay
-  #     @order.paid = 'true'
-
-  #     # ecpay 物流代碼
-  #     hash = @order.ecpay_create
-  #     @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
-      
-  #     # ecpay 物流型態
-  #     if @order.logistics_type == 'CVS'
-  #       @order.shipment_no = hash['CVSPaymentNo'][0]
-  #     elsif @order.logistics_type == 'Home'
-  #       @order.shipment_no = hash['BookingNote'][0]
-  #     end
-
-  #     if @order.save
-  #       flash[:success] = '信用卡付款成功'
-  #     end
-  #   end
-  #   redirect_to cash_card_orders_path(@order.process_id)
-  # rescue StandardError => e
-  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
-  # end
 
   def order_revise # 訂單修改(送貨/付款方式)
 
