@@ -59,7 +59,6 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :show, :update]
     resources :orders, only: [:index, :edit, :update] do
       collection do
-        post :remit_check, path: 'remit_check/:process_id', as: 'remit_check'
         post :refund, path: 'refund/:process_id', as: 'refund'
       end
     end

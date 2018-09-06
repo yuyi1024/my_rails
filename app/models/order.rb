@@ -85,6 +85,17 @@ class Order < ApplicationRecord
     self.shipped == 'true' ? '已出貨' : '未出貨'
   end
 
+  def cvs_subtype_cn
+    case self.logistics_subtype
+    when 'UNIMART'
+      '7-11'
+    when 'FAMI'
+      '全家'
+    when 'HILIFE'
+      '萊爾富'
+    end
+  end
+
   # 可執行的訂單狀態
   def may_status
     @may = []
@@ -107,7 +118,7 @@ class Order < ApplicationRecord
       'TotalAmount' => self.price + self.freight,
       'TradeDesc' => '寵物用品',
       'ItemName' => '寵物用品',
-      'ReturnURL' => 'http://localhost:3001/orders/from_ecpay_paid', # 付款完成時通知回傳(ATM)，更新 DB 資訊
+      'ReturnURL' => 'http://localhost:3001/orders/from_ecpay_paid', # 付款完成時通知回傳(Credit、ATM)，更新 DB 資訊
       'OrderResultURL' => 'http://localhost:3001/orders/payment_result/' + self.process_id, # client 回傳付款結果(Credit) -> 更新 DB -> 顯示付款成功頁面
     }
     create = ECpayPayment::ECpayPaymentClient.new

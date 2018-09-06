@@ -59,14 +59,14 @@ class Console::OrdersController < Console::DashboardsController
     end
     @may_status = @order.may_status
     
-    # 未確認的通知已付款資料
-    @remit = @order.remittance_infos.where(transfer_type: 'remit', checked: 'false').order('created_at DESC').first
-    # 通知退款資料表單
-    @remittance_info = RemittanceInfo.new
-    # 買家退款資料(未退款)
-    @refund = @order.remittance_infos.where(transfer_type: 'refund', checked: 'false').order('created_at DESC').first
-    # 買家退款資料(已退款)
-    @refunded_data = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').order('created_at DESC').first
+    if @order.status == 'waiting_refunded'
+      # 通知已退款資料表單
+      @remittance_info = RemittanceInfo.new
+      # 買家退款資料(未退款)
+      @refund_info = @order.remittance_infos.where(refunded: false).order('created_at DESC').first
+    end
+    # 成功退款資料
+    @refunded_success = @order.remittance_infos.where(refunded: true).order('created_at DESC').first if @order.status == 'canceled'
 
   rescue StandardError => e
     redirect_to(console_orders_path, alert: "發生錯誤：#{e}")
@@ -103,31 +103,10 @@ class Console::OrdersController < Console::DashboardsController
     redirect_to edit_console_order_path
   end
 
-  # 付款資訊有誤，取消付款通知
-  def remit_check
-    @order = Order.find_by(process_id: params[:process_id])
-    @order.paid = 'false'
-    if @order.status != 'canceled'
-      @order.wait_payment
-    end
-    @remit = @order.remittance_infos.where(transfer_type: 'remit', checked: 'false').first
-    @remit.checked = 'return'
-    
-    if @order.save && @remit.save
-      flash[:success] = '取消付款通知'
-      redirect_to edit_console_order_path(@order.process_id)
-    else
-      raise StandardError, '付款通知更動失敗'
-    end
-
-  rescue StandardError => e
-    redirect_to(console_orders_path, alert: "發生錯誤：#{e}")
-  end
-
   # 通知買家已退款
   def refund
     @order = Order.find_by(process_id: params[:process_id])
-    @refund = @order.remittance_infos.where(transfer_type: 'refund', checked: 'false').first
+    @refund = @order.remittance_infos.where(refunded: false).first
     @refund.update(remittance_info_params)
     @refund.checked = 'true'
     @order.refund

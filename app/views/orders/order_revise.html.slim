@@ -16,7 +16,7 @@ h1.title 訂單修改
               = f.select :logistics_type, options_for_select([['超商取貨', 'CVS'], ['宅配', 'Home']]), {}, onChange:"selectShipMethod('revise', '#{@order.process_id}');"
               br
               = f.label :pay_method, '付款方式'
-              = f.select :pay_method, options_for_select([['超商取貨付款', 'pickup_and_cash'], ['信用卡', 'cash_card'], ['ATM 自動櫃員機', 'atm']])
+              = f.select :pay_method, options_for_select([['超商取貨付款', 'pickup_and_cash'], ['信用卡', 'Credit'], ['ATM 自動櫃員機', 'ATM']])
 
         .order_info.col-sm-4
           .panel.panel-default

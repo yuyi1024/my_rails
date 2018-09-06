@@ -55,12 +55,12 @@
                 b 手機： 
                 | #{ @order.receiver_cellphone }
               
-              - if @order.logistics_subtype == 'CVS'
+              - if @order.logistics_type == 'CVS'
                 p 
                   b 門市名稱： 
-                  | #{ @order.receiver_store_id }
+                  | #{ @order.cvs_subtype_cn } - #{ @order.receiver_store_name }
               
-              - else @order.logistics_subtype == 'Home'
+              - else @order.logistics_type == 'Home'
                 p 
                   b 地址： 
                   | #{ @order.receiver_address }

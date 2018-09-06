@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180904155845) do
+ActiveRecord::Schema.define(version: 20180906172640) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 20180904155845) do
     t.string "receiver_phone"
     t.string "receiver_email"
     t.string "receiver_store_id"
+    t.string "receiver_store_name"
     t.string "receiver_address"
     t.string "receiver_zipcode"
     t.text "note"
@@ -131,14 +132,12 @@ ActiveRecord::Schema.define(version: 20180904155845) do
   end
 
   create_table "remittance_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "transfer_type"
+    t.string "refund_bank"
+    t.string "refund_account"
+    t.boolean "refunded", default: false
     t.integer "price"
     t.date "date"
     t.time "time"
-    t.string "remit_data"
-    t.string "refund_bank"
-    t.string "refund_account"
-    t.string "checked", default: "false"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "order_id"

@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  before_action :order_auth, only: [:edit, :show, :order_revise, :to_map, :cash_card, :remit_info]
+  before_action :order_auth, only: [:edit, :show, :order_revise, :to_map, :remit_info]
   
   # 除了from_map的方法都啟動CSRF安全性功能（預設全部方法都啟動
   protect_from_forgery except: [:from_map, :from_ecpay_paid]
@@ -265,7 +265,6 @@ class OrdersController < ApplicationController
   def from_ecpay_paid
     @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
     puts 'qwqwqwqwqwqwqwqwqwqwqw'
-    # @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
     if params[:PaymentType][0..2] == 'ATM'
       if params[:RtnCode] == '1' # 買家 ATM 付款成功
         @order.paid = 'true'
@@ -274,8 +273,6 @@ class OrdersController < ApplicationController
         @order.save
       end
     end
-  # rescue StandardError => e
-  #   redirect_to(order_path(@order.process_id), alert: "#{e}")
   end
 
   def show # 訂單詳情
@@ -300,9 +297,6 @@ class OrdersController < ApplicationController
   end
 
   def order_revise # 訂單修改(送貨/付款方式)
-
-    # 未確認已付款通知時不可修改訂單
-    raise StandardError, '請等待確認付款後再進行操作' if @order.status == 'waiting_check'
     
     @location = 'revise'
     @freight = Order::Freight_in_store
@@ -343,7 +337,6 @@ class OrdersController < ApplicationController
     # 買家有填寫退款資料(訂單已付款)
     if params[:remittance_info].present?
       @info = @order.remittance_infos.create(remittance_info_params)
-      @info.transfer_type = 'refund'
       @order.wait_refunded
       raise StandardError, '訂單取消失敗' if !@info.save
     end
