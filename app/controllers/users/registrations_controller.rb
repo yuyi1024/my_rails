@@ -75,7 +75,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def order_list # 會員中心訂單列表
     @orders = @user.orders.order('created_at DESC')
-    @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
+    @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank? && order.status == 'waiting_shippment'}
     
     # 訂單狀態 select_box
     status_hash = JSON.parse(File.read('app/assets/json/order_status.json'))

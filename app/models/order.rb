@@ -118,8 +118,8 @@ class Order < ApplicationRecord
       'TotalAmount' => self.price + self.freight,
       'TradeDesc' => '寵物用品',
       'ItemName' => '寵物用品',
-      'ReturnURL' => 'https://bawan-store-0225.herokuapp.com/orders/from_ecpay_paid', # 付款完成時通知回傳(Credit、ATM)，更新 DB 資訊
-      'OrderResultURL' => 'https://bawan-store-0225.herokuapp.com/orders/payment_result/' + self.process_id, # client 回傳付款結果(Credit) -> 更新 DB -> 顯示付款成功頁面
+      'ReturnURL' => ENV['server'] + 'orders/from_ecpay_paid', # 付款完成時通知回傳(Credit、ATM)，更新 DB 資訊
+      'OrderResultURL' => ENV['server'] + 'orders/payment_result/' + self.process_id, # client 回傳付款結果(Credit) -> 更新 DB -> 顯示付款成功頁面
     }
     create = ECpayPayment::ECpayPaymentClient.new
 
@@ -127,9 +127,9 @@ class Order < ApplicationRecord
       res = create.aio_check_out_credit_onetime(params: base_param)
     
     elsif self.pay_method == 'ATM'
-      pay_info_url = 'https://bawan-store-0225.herokuapp.com/orders/from_ecpay_paid' # 取得請款資訊後回傳
+      pay_info_url = ENV['server'] + 'orders/from_ecpay_paid' # 取得請款資訊後回傳
       exp = '7'
-      cli_redir_url = 'https://bawan-store-0225.herokuapp.com/orders/ecpay_atm_account' # 取得請款資訊後，client 回傳繳費資訊(ATM)，顯示繳費資訊頁面
+      cli_redir_url = ENV['server'] + 'orders/ecpay_atm_account' # 取得請款資訊後，client 回傳繳費資訊(ATM)，顯示繳費資訊頁面
       res = create.aio_check_out_atm(params: base_param, url_return_payinfo: pay_info_url, exp_period: exp, client_redirect: cli_redir_url)
     end
     return res
@@ -175,7 +175,7 @@ class Order < ApplicationRecord
       'ReceiverPhone' => (self.receiver_phone.blank? ? '' : self.receiver_phone), #Home與手機擇一
       'ReceiverEmail' => (self.receiver_email.blank? ? '' : self.receiver_email), 
       
-      'ServerReplyURL' => 'https://bawan-store-0225.herokuapp.com',
+      'ServerReplyURL' => ENV['server'],
       'ClientReplyURL' => '',  
       'LogisticsC2CReplyURL' => '',
       'Remark' => '',

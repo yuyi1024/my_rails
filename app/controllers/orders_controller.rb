@@ -121,7 +121,7 @@ class OrdersController < ApplicationController
 
     args = {
       'MerchantTradeNo' => @order.process_id,
-      'ServerReplyURL' => 'https://bawan-store-0225.herokuapp.com/orders/from_map',
+      'ServerReplyURL' => ENV['server'] + '/orders/from_map',
       'LogisticsType' => 'CVS',
       'LogisticsSubType' => params[:st_type],
       'IsCollection' => pay,  
@@ -266,7 +266,6 @@ class OrdersController < ApplicationController
   # 買家 ATM 付款成功後回傳 
   def from_ecpay_paid
     @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
-    puts 'qwqwqwqwqwqwqwqwqwqwqw'
     if params[:PaymentType][0..2] == 'ATM'
       if params[:RtnCode] == '1' # 買家 ATM 付款成功
         @order.paid = 'true'
@@ -322,8 +321,8 @@ class OrdersController < ApplicationController
     end
     
     @offer = @order.offer
+    (@offer_price = @order.offer.range_price if @order.offer.range == 'price') if @offer
     @ship_method = order_params[:logistics_type]
-    @offer_price = @order.offer.range_price if @order.offer.range == 'price'
     freight_offer
     @order.freight = @freight
     @order.status = 'pending'
