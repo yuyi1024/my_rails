@@ -23,12 +23,8 @@ class Order < ApplicationRecord
       '結帳未完成'
     when 'waiting_payment'
       '待付款'
-    when 'waiting_check'
-      '已通知付款'
     when 'waiting_shipment'
       '待出貨'
-    when 'paid'
-      '已付款'
     when 'waiting_refunded'
       '待退款'
     when 'shipping'
@@ -45,8 +41,6 @@ class Order < ApplicationRecord
       '已到店'
     when 'picked_up'
       '已取貨'
-    when 'finished'
-      '結束交易'
     end
   end
 
@@ -99,11 +93,8 @@ class Order < ApplicationRecord
   # 可執行的訂單狀態
   def may_status
     @may = []
-    # @may << ['已付款, 待出貨', 'pay'] if self.may_pay?
-    @may << ['結束交易', 'finish'] if self.may_finish?
     @may << ['取消訂單', 'cancel'] if self.may_cancel?
     @may << ['已退貨', 'return'] if self.may_return?
-    # @may << ['已退款', 'refund'] if self.may_refund?
     @may
   end
 
@@ -290,38 +281,23 @@ class Order < ApplicationRecord
 
   aasm column: :status do
     state :pending, initial: true
-    state :waiting_payment, :waiting_shipment, :paid, :waiting_refunded, :shipping #準備流程
-    state :delivered, :delivered_store, :picked_up, :finished #出貨後流程
-    state :returned, :refunded, :canceled #退貨流程
+    state :waiting_payment, :waiting_shipment #準備流程
+    state :shipping, :delivered, :delivered_store, :picked_up #出貨流程
+    state :waiting_refunded, :refunded, :returned, :canceled #退貨/款流程
     
     #待付款
     event :wait_payment do 
       transitions from: [:pending], to: :waiting_payment
     end
 
-    #已付款，確認中
-    # event :wait_check do 
-    #   transitions from: :waiting_payment, to: :waiting_check
-    # end
-
-    #已付款, 待出貨
-    event :pay do
-      transitions from: [:waiting_payment], to: :paid
-    end
-
     #待出貨
     event :wait_shipment do
-      transitions from: [:pending, :paid], to: :waiting_shipment
+      transitions from: [:pending, :waiting_payment], to: :waiting_shipment
     end
 
     #已出貨
     event :ship do 
-      transitions from: [:paid, :waiting_shipment], to: :shipping
-    end
-
-    #待退款
-    event :wait_refunded do 
-      transitions from: :canceled, to: :waiting_refunded
+      transitions from: [:waiting_shipment], to: :shipping
     end
 
     #宅配已到貨（含付款）
@@ -339,27 +315,25 @@ class Order < ApplicationRecord
       transitions from: :delivered_store, to: :picked_up
     end
 
-    #訂單順利結束
-    event :finish do
-      transitions from: [:delivered, :picked_up], to: :finished
-    end
-
-
-    # 已退貨（訂單結束後欲退貨）
-    event :return do
-      transitions from: [:finished], to: :returned
+    #待退款
+    event :wait_refunded do 
+      transitions from: [:waiting_shipment, :returned], to: :waiting_refunded
     end
 
     #已退款
     event :refund do
-      transitions from: [:waiting_refunded, :returned], to: :refunded
+      transitions from: [:waiting_refunded], to: :refunded
     end
 
     #訂單取消
     event :cancel do
-      transitions from: [:pending, :waiting_payment, :waiting_shipment, :paid], to: :canceled
+      transitions from: [:pending, :waiting_payment, :waiting_shipment], to: :canceled
     end
 
+    # 已退貨（訂單結束後欲退貨）
+    event :return do
+      transitions from: [:delivered, :picked_up], to: :returned
+    end
 
   end
 end

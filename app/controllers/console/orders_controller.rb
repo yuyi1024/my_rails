@@ -14,7 +14,6 @@ class Console::OrdersController < Console::DashboardsController
       end
 
       if params[:status].present?
-        params[:status] << 'paid' if params[:status].include?('waiting_shipment')
         @orders = @orders.where(status: params[:status]) 
       end
 
@@ -22,16 +21,14 @@ class Console::OrdersController < Console::DashboardsController
       @orders = @orders.where(ship_method: params[:ship_method]) if params[:ship_method].present?
 
       if params[:paid].present?
-        paid = []
-        paid << 'true' if params[:paid].include?('true')
-        paid += ['false', nil] if params[:paid].include?('false')
+        paid = params[:paid]
+        paid += [nil] if params[:paid].include?('false')
         @orders = @orders.where(paid: paid)
       end
 
       if params[:shipped].present?
-        shipped = []
-        shipped << 'true' if params[:shipped].include?('true')
-        shipped += ['false', nil] if params[:shipped].include?('false')
+        shipped = params[:shipped]
+        shipped += [nil] if params[:shipped].include?('false')
         @orders = @orders.where(shipped: shipped)
       end
 
@@ -78,15 +75,6 @@ class Console::OrdersController < Console::DashboardsController
     if params[:order][:status] != '0'
       # 根據選擇的 status 改變訂單狀態
       @order.method(params[:order][:status]).call
-      
-      # if params[:order][:status] == 'pay'
-      #   @order.paid = 'true'
-      #   @remit = @order.remittance_infos.where(transfer_type: 'remit', checked: 'false').first
-      #   @remit.checked = 'true'
-      #   @remit.save
-      #   hash = @order.ecpay_create
-      #   @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
-      # end
     else
       raise StandardError, '未選擇欲更改的狀態'
     end

@@ -80,13 +80,13 @@
           tbody
             tr
               td 
-                p
+                p.red
                   b 帳戶名稱： 
                   | 霸完股份有限公司
-                p
+                p.red
                   b 退款金額： 
                   | $#{number_with_delimiter(@refunded_data.price)}
-                p
+                p.red
                   b 退款時間： 
                   | #{@refunded_data.date.strftime("%Y/%m/%d")}-
                   | #{@refunded_data.time.strftime("%H:%M")}

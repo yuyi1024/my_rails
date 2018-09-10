@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  #註冊錯誤訊息
+  # 註冊錯誤訊息
   def registration_error_message
     return "" if resource.errors.empty?
     details = resource.errors.details
@@ -16,6 +16,7 @@ module ApplicationHelper
     message
   end
 
+  # 歡迎訊息+role
   def user_role(role)
     if role == 'admin'
       '（管理者）'
@@ -24,7 +25,7 @@ module ApplicationHelper
     end
   end
 
-  #如果商品圖片不存在顯示no-image.png
+  # 如果商品圖片不存在顯示 no-image.png
   def product_image_present(product)
     if product.photo.present?
       product.photo_url(:thumb)
@@ -33,31 +34,9 @@ module ApplicationHelper
     end
   end
 
-  def role_color(role)
-    if role == 'admin'
-      'admin_color'
-    elsif role == 'employee'
-      'employee_color'
-    end
-  end
-
-  def order_status_color(status)
-    if status == 'waiting_shipment' || status == 'paid'
-      status_color = 'status_red'
-    elsif status == 'waiting_payment'
-      status_color = 'status_blue'
-    end
-    status_color
-  end
-
+  # 是否追蹤該商品
   def is_favorite(favorite, id)
     'favorite' if favorite.find_by(product_id: id)
-  end
-
-  def king(index)
-    if index < 3
-      content_tag(:span, nil, class: 'glyphicon glyphicon-king')
-    end
   end
 
   # 計算每樣商品之單價優惠後的金額
@@ -97,7 +76,7 @@ module ApplicationHelper
     price
   end
 
-  #判斷總價優惠前後價格是否改變（是否有全館優惠、是否符合優惠資格、是有為freight優惠）
+  # 判斷總價優惠前後價格是否改變（是否有全館優惠、是否符合優惠資格、是有為freight優惠）
   def price_change_decide(sum, offer)
     price_change = false
     if offer.range == 'all' && offer.offer != 'freight'
@@ -108,10 +87,7 @@ module ApplicationHelper
     price_change
   end
 
-  def product_quantity_alert(product)
-    'quantity_red' if product.quantity <= product.quantity_alert
-  end
-
+  # 訂單列表 取消/退款/退貨 灰底顯示
   def order_canceled?(status)
     if ['canceled', 'returned', 'waiting_refunded', 'refunded'].include?(status) 
       true
@@ -119,4 +95,36 @@ module ApplicationHelper
       false
     end
   end
+
+  # console role 文字顏色
+  def role_color(role)
+    if role == 'admin'
+      'admin_color'
+    elsif role == 'employee'
+      'employee_color'
+    end
+  end
+
+  # console 訂單狀態文字顏色
+  def order_status_color(status)
+    if status == 'waiting_shipment' || status == 'waiting_refunded'
+      status_color = 'status_red'
+    elsif status == 'waiting_payment'
+      status_color = 'status_blue'
+    end
+    status_color
+  end
+
+  # console warehouse 庫存短缺警告
+  def product_quantity_alert(product)
+    'quantity_red' if product.quantity <= product.quantity_alert
+  end
+
+  # console dashboard 排名 icon
+  def king(index)
+    if index < 3
+      content_tag(:span, nil, class: 'glyphicon glyphicon-king')
+    end
+  end
+
 end

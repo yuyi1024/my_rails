@@ -156,32 +156,24 @@ class OrdersController < ApplicationController
 
   def update # 儲存訂單收件資料
     @order = Order.find_by(process_id: params[:process_id])
-
-    # ↓↓↓↓↓愉快的判斷資料格式時間↓↓↓↓↓
-    Order.receiver_name_format(order_params[:receiver_name])
-    Order.receiver_cellphone_format(order_params[:receiver_cellphone])
-    Order.receiver_email_format(order_params[:receiver_email]) if order_params[:receiver_email].present?
-    Order.receiver_phone_format(order_params[:receiver_phone]) if order_params[:receiver_phone].present?
-    Order.receiver_address_format(order_params[:receiver_address]) if order_params[:receiver_address].present?
-
+    receiver_data_check
     @order.update(order_params)
     
     # 根據 pay_method  更變訂單 status
     if @order.pay_method == 'pickup_and_cash'
       @order.wait_shipment
-    elsif @order.pay_method == 'Credit'
-      if @order.paid == 'true' && @order.may_wait_shipment?
-        @order.wait_shipment
+    
+    elsif @order.pay_method == 'Credit' || @order.pay_method == 'ATM'
+      if @order.paid == 'true'
+        @order.wait_shipment if @order.may_wait_shipment?
       else
         @order.wait_payment if @order.may_wait_payment?
       end
-    elsif @order.pay_method == 'ATM'
-      @order.wait_payment  if @order.may_wait_payment?
     end
 
     # 根據 pay_method redirect to page
     if @order.save
-      if (@order.pay_method == 'Credit' || @order.pay_method == 'ATM') && @order.status == 'waiting_payment'
+      if @order.status == 'waiting_payment'
         res = @order.ecpay_payment_create
         render :inline => res
       elsif @order.pay_method == 'pickup_and_cash'
@@ -201,7 +193,7 @@ class OrdersController < ApplicationController
   # 根據 pay_method 前往 ecpay 金流頁面
   def to_ecpay_payment
     @order = Order.find_by(process_id: params[:process_id])
-    if (@order.pay_method == 'Credit' || @order.pay_method == 'ATM') && @order.status == 'waiting_payment'
+    if @order.status == 'waiting_payment'
       res = @order.ecpay_payment_create
       render :inline => res
     else
@@ -216,7 +208,6 @@ class OrdersController < ApplicationController
     @order = Order.find_by(process_id: params[:MerchantTradeNo][0..13])
     if params[:RtnCode] == '1' # 付款成功
       @order.paid = 'true'
-      @order.pay if @order.may_pay?
       @order.wait_shipment if @order.may_wait_shipment?
       @order.merchant_trade_no = params[:MerchantTradeNo] if @order.merchant_trade_no != params[:MerchantTradeNo]
       
@@ -269,7 +260,6 @@ class OrdersController < ApplicationController
     if params[:PaymentType][0..2] == 'ATM'
       if params[:RtnCode] == '1' # 買家 ATM 付款成功
         @order.paid = 'true'
-        @order.pay if @order.may_pay?
         @order.wait_shipment if @order.may_wait_shipment?
         hash = @order.ecpay_create
         @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
@@ -289,10 +279,6 @@ class OrdersController < ApplicationController
     # 公司已退款之資訊
     @refunded_data = @order.remittance_infos.where(refunded: true).order('created_at DESC').first
 
-    # 通知已付款表單
-    if @order.status == 'waiting_payment' && @order.pay_method == 'atm'
-      @remittance_info = RemittanceInfo.new
-    end
   rescue StandardError => e
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
@@ -333,13 +319,16 @@ class OrdersController < ApplicationController
 
   def order_cancel # 訂單取消
     @order = Order.find_by(process_id: params[:process_id])
-    @order.cancel
-
-    # 買家有填寫退款資料(訂單已付款)
-    if params[:remittance_info].present?
-      @info = @order.remittance_infos.create(remittance_info_params)
-      @order.wait_refunded
-      raise StandardError, '訂單取消失敗' if !@info.save
+    if @order.shipped != 'true'
+      if @order.paid == 'true'
+        if params[:remittance_info].present?
+          @info = @order.remittance_infos.create(remittance_info_params)
+          @order.wait_refunded
+          raise StandardError, '訂單取消失敗' if !@info.save
+        end
+      else
+        @order.cancel
+      end
     end
 
     if @order.save 
@@ -391,6 +380,14 @@ class OrdersController < ApplicationController
     else
       offer.id
     end
+  end
+
+  def receiver_data_check # 愉快的判斷資料格式時間
+    Order.receiver_name_format(order_params[:receiver_name])
+    Order.receiver_cellphone_format(order_params[:receiver_cellphone])
+    Order.receiver_email_format(order_params[:receiver_email]) if order_params[:receiver_email].present?
+    Order.receiver_phone_format(order_params[:receiver_phone]) if order_params[:receiver_phone].present?
+    Order.receiver_address_format(order_params[:receiver_address]) if order_params[:receiver_address].present?
   end
 
   def order_params

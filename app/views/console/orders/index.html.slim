@@ -31,9 +31,6 @@ h1.title 訂單列表
           = check_box_tag 'status[]', 'waiting_shipment', nil, id:'status_waiting_shipment'
           label for='status_waiting_shipment' 待出貨
 
-          = check_box_tag 'status[]', 'waiting_check', nil, id:'status_waiting_check'
-          label for='status_waiting_check' 已通知付款
-
           = check_box_tag 'status[]', 'shipping', nil, id:'status_shipping'
           label for='status_shipping' 運送中
           br
@@ -41,19 +38,11 @@ h1.title 訂單列表
           = check_box_tag 'status[]', 'delivered', nil, id:'status_delivered'
           label for='status_delivered' 宅配已到貨
           
-
           = check_box_tag 'status[]', 'deliverd_store', nil, id:'status_deliverd_store'
           label for='status_deliverd_store' 超商已到店
 
           = check_box_tag 'status[]', 'picked_up', nil, id:'status_picked_up'
           label for='status_picked_up' 超商已取貨
-          br
-
-          = check_box_tag 'status[]', 'finished', nil, id:'status_finished'
-          label for='status_finished' 結束交易
-          
-          = check_box_tag 'status[]', 'returned', nil, id:'status_returned'
-          label for='status_returned' 已退貨
           br
 
           = check_box_tag 'status[]', 'waiting_refunded', nil, id:'status_waiting_refunded'
@@ -64,6 +53,10 @@ h1.title 訂單列表
 
           = check_box_tag 'status[]', 'canceled', nil, id:'status_canceled'
           label for='status_canceled' 已取消
+
+          = check_box_tag 'status[]', 'returned', nil, id:'status_returned'
+          label for='status_returned' 已退貨
+          br
 
           = check_box_tag 'status[]', 'pending', nil, id:'status_pending'
           label for='status_pending' 結帳未完成
@@ -77,7 +70,8 @@ h1.title 訂單列表
 
           = check_box_tag 'pay_method[]', 'Credit', nil, id:'pay_method_Credit'
           label for='pay_method_Credit' 信用卡
-
+          br
+          
           = check_box_tag 'pay_method[]', 'ATM', nil, id:'pay_method_ATM'
           label for='pay_method_ATM' ATM 自動櫃員機
 

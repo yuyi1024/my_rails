@@ -1,6 +1,6 @@
 h1.title 訂單詳情
 
-#order.container
+#order.order_show.container
   - if @order.shipped != 'true' && !order_canceled?(@order.status)
     .row.remit_btn
       = link_to(order_revise_orders_path(@order.process_id))

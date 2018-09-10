@@ -42,11 +42,6 @@
       "cn": "已取貨"
     },
     {
-      "status": "finished",
-      "may": "finish",
-      "cn": "結束交易"
-    },
-    {
       "status": "returned",
       "may": "return",
       "cn": "已退貨"

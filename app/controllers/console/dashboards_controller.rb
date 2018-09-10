@@ -6,7 +6,7 @@ class Console::DashboardsController < ApplicationController
     t = Time.now
     
     @orders = Order.where("created_at > ?", t.days_ago(30)).order('created_at DESC').limit(10) #30天內
-    @waiting = Order.where(status: ['waiting_check', 'waiting_refunded']).order('created_at DESC')
+    @waiting = Order.where(status: 'waiting_refunded').order('created_at DESC')
     @quantity_alert_products = Product.where('quantity < quantity_alert')
     @messages = Message.where(qanda: [nil, '']).where("created_at > ?", t.days_ago(30)).order('created_at DESC').limit(10)
 

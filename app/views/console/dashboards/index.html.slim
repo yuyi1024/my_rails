@@ -33,33 +33,27 @@ h1.title 後台儀表板
                     p #{time_ago_in_words(order.created_at)}前
         .panel-footer
           = link_to '訂單管理', console_orders_path, class: 'btn'
-
     .col-sm-5
       .panel.panel-default
         .panel-heading 
           h3
-            span.glyphicon.glyphicon-usd 
-            |  通知已付款/待退款
+            span.glyphicon.glyphicon-comment 
+            |  新訊息
+            span style='font-size:16px;'（最新10筆）
         .panel-body
           table.table
-              tr
-                th 訂單編號
-                th 訂單狀態
-                th 總金額
-                th 下單時間
-              tbody
-                - @waiting.each do |order|
-                  tr
-                    td 
-                      p #{order.process_id}
-                    td 
-                      p #{order.status_cn}
-                    td 
-                      p $ #{number_with_delimiter(order.price)}
-                    td 
-                      p #{time_ago_in_words(order.created_at)}前
+            tr
+              th 訊息內容
+              th 回覆內容
+              th 發問時間
+            tbody
+              - @messages.each do |message|
+                tr
+                  td #{ truncate(message.question, length: 15) }
+                  td #{ message.answer.blank? ? '(未回覆)' : truncate(message.answer, length: 15) }
+                  td #{time_ago_in_words(message.created_at)}前
         .panel-footer
-          = link_to '訂單管理', console_orders_path, class: 'btn'
+          = link_to '訊息管理', console_messages_path, class: 'btn'
 
   .row
     .col-sm-5.col-sm-offset-1
@@ -93,23 +87,28 @@ h1.title 後台儀表板
       .panel.panel-default
         .panel-heading 
           h3
-            span.glyphicon.glyphicon-comment 
-            |  新訊息
-            span style='font-size:16px;'（最新10筆）
+            span.glyphicon.glyphicon-usd 
+            |  待退款
         .panel-body
           table.table
-            tr
-              th 訊息內容
-              th 回覆內容
-              th 發問時間
-            tbody
-              - @messages.each do |message|
-                tr
-                  td #{ truncate(message.question, length: 15) }
-                  td #{ message.answer.blank? ? '(未回覆)' : truncate(message.answer, length: 15) }
-                  td #{time_ago_in_words(message.created_at)}前
+              tr
+                th 訂單編號
+                th 訂單狀態
+                th 總金額
+                th 下單時間
+              tbody
+                - @waiting.each do |order|
+                  tr
+                    td 
+                      p #{order.process_id}
+                    td 
+                      p #{order.status_cn}
+                    td 
+                      p $ #{number_with_delimiter(order.price)}
+                    td 
+                      p #{time_ago_in_words(order.created_at)}前
         .panel-footer
-          = link_to '訊息管理', console_messages_path, class: 'btn'
+          = link_to '訂單管理', console_orders_path, class: 'btn'
      
   .row
     .col-sm-offset-1.col-sm-10
