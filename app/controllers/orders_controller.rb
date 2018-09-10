@@ -121,7 +121,7 @@ class OrdersController < ApplicationController
 
     args = {
       'MerchantTradeNo' => @order.process_id,
-      'ServerReplyURL' => ENV['server'] + '/orders/from_map',
+      'ServerReplyURL' => ENV['server'] + 'orders/from_map',
       'LogisticsType' => 'CVS',
       'LogisticsSubType' => params[:st_type],
       'IsCollection' => pay,  

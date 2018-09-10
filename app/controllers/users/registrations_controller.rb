@@ -81,6 +81,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
     status_hash = JSON.parse(File.read('app/assets/json/order_status.json'))
     @status_arr = []
     status_hash['OrderStatus'].map{|s| @status_arr << [s['cn'],s['status']]}
+
+    @q = ENV['server'] + 'orders/from_map'
+    @q2 = ENV['server']
   rescue StandardError => e
     redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")
   end
