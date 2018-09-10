@@ -99,11 +99,11 @@ class Order < ApplicationRecord
   # 可執行的訂單狀態
   def may_status
     @may = []
-    @may << ['已付款, 待出貨', 'pay'] if self.may_pay?
+    # @may << ['已付款, 待出貨', 'pay'] if self.may_pay?
     @may << ['結束交易', 'finish'] if self.may_finish?
     @may << ['取消訂單', 'cancel'] if self.may_cancel?
     @may << ['已退貨', 'return'] if self.may_return?
-    @may << ['已退款', 'refund'] if self.may_refund?
+    # @may << ['已退款', 'refund'] if self.may_refund?
     @may
   end
 

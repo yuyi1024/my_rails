@@ -79,14 +79,14 @@ class Console::OrdersController < Console::DashboardsController
       # 根據選擇的 status 改變訂單狀態
       @order.method(params[:order][:status]).call
       
-      if params[:order][:status] == 'pay'
-        @order.paid = 'true'
-        @remit = @order.remittance_infos.where(transfer_type: 'remit', checked: 'false').first
-        @remit.checked = 'true'
-        @remit.save
-        hash = @order.ecpay_create
-        @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
-      end
+      # if params[:order][:status] == 'pay'
+      #   @order.paid = 'true'
+      #   @remit = @order.remittance_infos.where(transfer_type: 'remit', checked: 'false').first
+      #   @remit.checked = 'true'
+      #   @remit.save
+      #   hash = @order.ecpay_create
+      #   @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
+      # end
     else
       raise StandardError, '未選擇欲更改的狀態'
     end
@@ -106,9 +106,9 @@ class Console::OrdersController < Console::DashboardsController
   # 通知買家已退款
   def refund
     @order = Order.find_by(process_id: params[:process_id])
-    @refund = @order.remittance_infos.where(refunded: false).first
+    @refund = @order.remittance_infos.where(refunded: false).order('created_at DESC').first
     @refund.update(remittance_info_params)
-    @refund.checked = 'true'
+    @refund.refunded = true
     @order.refund
     if @refund.save && @order.save
       flash[:success] = '退款通知成功'

@@ -134,8 +134,8 @@ class OrdersController < ApplicationController
 
     render :inline => map # inline(直接提供 erb)
 
-  # rescue StandardError => e
-  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+  rescue StandardError => e
+    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
   def from_map # ecpay CVS 回傳資料
@@ -194,9 +194,8 @@ class OrdersController < ApplicationController
     else
       raise StandardError, '訂單發生錯誤'
     end
-
-  # rescue StandardError => e
-  #   redirect_back(fallback_location: edit_order_path(@order.process_id), alert: "#{e}")
+  rescue StandardError => e
+    redirect_back(fallback_location: edit_order_path(@order.process_id), alert: "#{e}")
   end
 
   # 根據 pay_method 前往 ecpay 金流頁面
@@ -220,6 +219,9 @@ class OrdersController < ApplicationController
       @order.pay if @order.may_pay?
       @order.wait_shipment if @order.may_wait_shipment?
       @order.merchant_trade_no = params[:MerchantTradeNo] if @order.merchant_trade_no != params[:MerchantTradeNo]
+      
+      hash = @order.ecpay_create
+      @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
       @order.save
     else
       raise StandardError, '信用卡付款失敗，請再試一次'
@@ -270,6 +272,8 @@ class OrdersController < ApplicationController
         @order.paid = 'true'
         @order.pay if @order.may_pay?
         @order.wait_shipment if @order.may_wait_shipment?
+        hash = @order.ecpay_create
+        @order.ecpay_logistics_id = hash['AllPayLogisticsID'][0]
         @order.save
       end
     end
@@ -284,13 +288,11 @@ class OrdersController < ApplicationController
     end
 
     # 公司已退款之資訊
-    @refunded_data = @order.remittance_infos.where(transfer_type: 'refund', checked: 'true').order('created_at DESC').first
+    @refunded_data = @order.remittance_infos.where(refunded: true).order('created_at DESC').first
 
     # 通知已付款表單
     if @order.status == 'waiting_payment' && @order.pay_method == 'atm'
       @remittance_info = RemittanceInfo.new
-      # 被退回的通知付款資料
-      @check_return = @order.remittance_infos.where(checked: 'return').order('created_at DESC')
     end
   rescue StandardError => e
     redirect_back(fallback_location: user_order_list_path, alert: "#{e}")

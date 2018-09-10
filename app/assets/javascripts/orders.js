@@ -46,6 +46,7 @@ function selectShipMethod(m, process_id){
 function chooseType(){
   var stId = '';
   var stType = '';
+  var stName = '';
 
   $("input[name='store[]']").each(function(){
     $(this).next().next('.select').html('');
@@ -57,10 +58,11 @@ function chooseType(){
       if($st_id.text() != ''){
         stId = $st_id.text();
         stType = $(this).val();
+        stName = $st_id.next('.st_name').text();
       }  
     }
   });
-  store_required(stId, stType);
+  store_required(stId, stType, stName);
 }
 
 // 開啟 ecpay 地圖
@@ -77,18 +79,20 @@ function callback(data){
   $('#store_' + data['stType']).next().next().next('.st_data').children('.st_name').text(data['stName']);
   document.getElementById('store_' + data['stType']).checked = true;
   chooseType();
-  store_required(data['stId'], data['stType']);
+  store_required(data['stId'], data['stType'], data['stName']);
 }
 
 // 確認已選擇超商，可執行下步驟
-function store_required(stId, stType){
+function store_required(stId, stType, stName){
   if(stId == ''){
     $('#order_logistics_subtype').val('');
     $('#order_receiver_store_id').val('');
+    $('#order_receiver_store_name').val('');
     $('.submit_row').html('<p>請先選擇預送貨之超商</p>');
   }else{
     $('#order_logistics_subtype').val(stType);
     $('#order_receiver_store_id').val(stId);
+    $('#order_receiver_store_name').val(stName);
     $('.submit_row').html('<input type="submit" name="commit" value="訂單建立" class="btn" onclick="pixel_and_ga();" data-disable-with="訂單建立">');
   }
 }
