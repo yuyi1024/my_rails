@@ -7,11 +7,10 @@
 
       .panel-body
         .row
-          - store_type_cn = ['7-11', '全家', '萊爾富']
           - store_type_en = ["UNIMART", "FAMI", "HILIFE"]
-          - store_type_en.each_with_index do |store_type, index|
+          - store_type_en.each_with_index do |store_type|
             = radio_button_tag 'store[]', "#{store_type}", nil , onchange: 'chooseType();', id:"store_#{store_type}"
-            label for='store_#{store_type}' #{store_type_cn[index]}
+            label for='store_#{store_type}' #{t(store_type, :scope => "orders.cvs_subtype")}
             .select onclick='chooseStore();'
             p.st_data
               span.st_id

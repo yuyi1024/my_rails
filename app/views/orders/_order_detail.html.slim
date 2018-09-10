@@ -27,7 +27,7 @@
                   | #{ @order.shipment_no }
               p 
                 b 訂單狀態： 
-                | #{ @order.status_cn }
+                | #{t(@order.status, :scope => "orders.status")}
               p 
                 b 下單日期： 
                 | #{ @order.created_at.strftime("%Y/%m/%d") }
@@ -35,14 +35,14 @@
             td 
               p 
                 b 付款方式： 
-                | #{ @order.pay_method_cn }
+                | #{t(@order.pay_method, :scope => "orders.pay_method")}
               p 
                 b 付款狀態： 
-                | #{ @order.paid_cn }
+                | #{t(@order.paid, :scope => "orders.paid")}
 
               p 
                 b 物流方式： 
-                | #{ @order.ship_method_cn }
+                | #{t(@order.logistics_type, :scope => "orders.ship_method")}
               p 
                 b 物流狀態： 
                 | #{ @logistics_status }
@@ -58,7 +58,7 @@
               - if @order.logistics_type == 'CVS'
                 p 
                   b 門市名稱： 
-                  | #{ @order.cvs_subtype_cn } - #{ @order.receiver_store_name }
+                  | #{t(@order.logistics_subtype, :scope => "orders.cvs_subtype")} - #{ @order.receiver_store_name }
               
               - else @order.logistics_type == 'Home'
                 p 

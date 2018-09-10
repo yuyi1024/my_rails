@@ -28,7 +28,7 @@ h1.title 付款結果
                   | 元（新台幣）
               tr
                 th 付款方式
-                td #{@order.pay_method_cn}
+                td #{t(@order.status, :scope => "orders.pay_method")}
               tr
                 th
                 td

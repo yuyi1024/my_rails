@@ -47,7 +47,7 @@ ul.pager
               tr
                 td 
                   = form_for @order, url: console_order_path, method: 'patch', remote: 'true' do |f|
-                    p 訂單狀態： #{ @order.status_cn }
+                    p 訂單狀態： #{t(@order.status, :scope => "orders.status")}
                     label 更改狀態
                     = f.select :status, options_for_select(@may_status.insert(0, ["未選擇", 0]))
                     = f.submit '確認更改', class:'btn', data: {confirm: "確定更改該訂單之狀態？"}

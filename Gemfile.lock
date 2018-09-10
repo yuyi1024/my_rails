@@ -64,8 +64,6 @@ GEM
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
-    braintree (2.88.0)
-      builder (>= 2.0.0)
     builder (3.2.3)
     byebug (10.0.2)
     cancancan (2.2.0)
@@ -316,7 +314,6 @@ DEPENDENCIES
   aasm (~> 4.12)
   awesome_print
   bootstrap-sass (~> 3.3.6)
-  braintree (~> 2.88.0)
   byebug
   cancancan (~> 2.0)
   capistrano-rails

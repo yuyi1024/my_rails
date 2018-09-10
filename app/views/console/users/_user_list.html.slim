@@ -15,7 +15,7 @@
             span.glyphicon.glyphicon-user class='#{role_color(user.role)}'
           td #{ user.email }
           td #{ user.name }
-          td #{ user.role_cn }
+          td #{ t(user.role, :scope => 'role') }
           td #{ user.confirmed_at.present? ? '已認證' : '未認證' }
           td #{ user.current_sign_in_at.strftime("%Y/%m/%d") if user.current_sign_in_at.present? }
           td

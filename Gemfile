@@ -75,7 +75,7 @@ gem "fog-aws"
 # gem "mime-types"
 
 #paypal
-gem "braintree", "~> 2.88.0"
+# gem "braintree", "~> 2.88.0"
 
 # ecpay 物流 & 金流
 gem 'ecpay_logistics', path: 'vendor/gems/ecpay_logistics-1.0.7'

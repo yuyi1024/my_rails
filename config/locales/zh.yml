@@ -128,3 +128,53 @@ zh:
       month: 月
       second: 秒
       year: 年
+
+  orders:
+    status:
+      pending: 結帳未完成
+      waiting_payment: 待付款
+      waiting_shipment: 待出貨
+      waiting_refunded: 待退款
+      shipping: 運送中
+      delivered: 已到貨
+      returned: 已退貨
+      refunded: 已退款
+      canceled: 已取消
+      delivered_store: 已到店
+      picked_up: 已取貨
+
+    pay_method:
+      pickup_and_cash: 取貨付款
+      Credit: 信用卡
+      ATM: ATM 自動櫃員機
+
+    ship_method:
+      CVS: 超商取貨
+      Home: 宅配
+
+    paid:
+      'true': 已付款
+      'false': 未付款
+
+    shipped:
+      'true': 已出貨
+      'false': 未出貨
+
+    cvs_subtype:
+      UNIMART: 7-11
+      FAMI: 全家
+      HILIFE: 萊爾富
+
+  products:
+    status:
+      on_shelf: 上架
+      off_shelf: 下架
+
+  role:
+    admin: 管理員
+    employee: 員工
+    member: 一般會員
+
+  reply_method:
+    message: 站內回覆
+    email: Email 回覆

@@ -19,15 +19,5 @@ class Product < ApplicationRecord
   def crop_photo #商品相片裁剪
   	photo.recreate_versions! if crop_x.present?
 	end
-
-  def status_cn
-    case self.status
-    when 'on_shelf'
-      '上架'
-    when 'off_shelf'
-      '下架'
-    end
-  end
-
 end
 

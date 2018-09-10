@@ -1,7 +1,7 @@
 - @orders.each do |order|
   tr class="#{ 'canceled' if order_canceled?(order.status)}"
     td #{ order.process_id }
-    td #{ order.status_cn }
+    td #{t(order.status, :scope => "orders.status")}
     td NT $ #{ number_with_delimiter(order.price + order.freight) }
     td #{ order.created_at.strftime("%Y/%m/%d") }
     td 

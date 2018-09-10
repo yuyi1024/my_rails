@@ -26,7 +26,7 @@ h1.title 後台儀表板
                   td 
                     p #{order.process_id}
                   td 
-                    p #{order.status_cn}
+                    p #{t(order.status, :scope => "orders.status")}
                   td 
                     p $ #{number_with_delimiter(order.price)}
                   td 
@@ -102,7 +102,7 @@ h1.title 後台儀表板
                     td 
                       p #{order.process_id}
                     td 
-                      p #{order.status_cn}
+                      p #{t(order.status, :scope => "orders.status")}
                     td 
                       p $ #{number_with_delimiter(order.price)}
                     td 

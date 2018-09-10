@@ -21,7 +21,7 @@
           td #{ product.category.name } > #{ product.subcategory.name }
           td #{ product.quantity }
           td #{ product.sold }
-          td #{ product.status_cn }
+          td #{ t(product.status, :scope => "products.status") }   
           td
             = link_to(edit_console_product_path(product.id), target: :_blank)
               button.btn.list_btn 編輯

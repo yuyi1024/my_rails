@@ -26,7 +26,7 @@ h1.title 付款資料
                   | 元（新台幣）
               tr
                 th 付款方式
-                td #{@order.pay_method_cn}
+                td #{t(@order.pay_method, :scope => "orders.pay_method")}
               tr
                 th 銀行代碼
                 td #{@atm_info.bank_code}

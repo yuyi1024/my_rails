@@ -15,14 +15,14 @@
             p #{ order.process_id }
             p #{ order.created_at.strftime("%Y/%m/%d") }
           td class="#{order_status_color(order.status)}" 
-            p #{ order.status_cn }
+            p #{t(order.status, :scope => "orders.status")}
           td $ #{ number_with_delimiter(order.price + order.freight) }
           td 
-            p #{ order.pay_method_cn }
-            p （#{ order.paid_cn }）
+            p #{t(order.pay_method, :scope => "orders.pay_method")}
+            p （#{t(order.paid, :scope => "orders.paid")}）
           td
-            p #{ order.ship_method_cn }
-            p （#{ order.shipped_cn }）
+            p #{t(order.logistics_type, :scope => "orders.ship_method")}
+            p （#{t(order.shipped, :scope => "orders.shipped")}）
           td #{ truncate(order.user.email, length:12) }
           td
             = link_to(edit_console_order_path(order.process_id), target: :_blank)

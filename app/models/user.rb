@@ -24,16 +24,4 @@ class User < ApplicationRecord
       user.skip_confirmation!
     end
   end
-
-  def role_cn
-  	case self.role
-  	when 'admin'
-  		'管理員'
-		when 'employee'
-  		'員工'
-		when 'member'
-  		'一般會員'
-    end
-  end
-
 end
