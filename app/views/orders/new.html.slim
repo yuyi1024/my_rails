@@ -77,6 +77,24 @@ h1.title 訂單結帳
               span $ #{ number_with_delimiter(@offer_price + @freight) }
             = f.submit '前往結帳', class:'btn', id:'new_order_submit'
 
+#test_hint
+  .style1
+    h4 提醒
+    p 系統使用的為 ECPay 測試環境，請勿進行相關的付款動作！
+    ul
+      li 
+        b 信用卡
+        br
+        | 測試卡號：4311 9522 2222 2222
+        br
+        | 認證碼：222
+        br
+        | 日期：大於今日
+        br
+        | 其他：
+        b 需手機簡訊認證
+      br
+
 javascript:
   $('#new_order_submit').click(function(){
     fbq('track', 'InitiateCheckout', {

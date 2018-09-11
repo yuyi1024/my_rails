@@ -41,3 +41,34 @@ h1.title 付款資料
               button.btn 我的訂單列表
             = link_to order_path(@order.process_id)
               button.btn 訂單詳情
+
+
+#test_hint
+  .style1
+    h4 模擬付款
+    p 若需進行 ATM 模擬付款，請依以下步驟：
+    ul
+      li
+        p
+          | 登入 
+          = link_to('https://vendor-stage.ecpay.com.tw/', 'https://vendor-stage.ecpay.com.tw/', target: :_blank)
+          br
+          | 帳號：StageTest
+          br
+          | 密碼：teat1234
+      li
+        p 左邊側欄 > 一般訂單查詢 > 全方位金流訂單
+      li
+        p 
+          | 查詢
+          b 廠商訂單編號： #{@order.process_id}
+      li
+        p 
+          | 將查詢到的訂單拉至最右，按下
+          b 模擬付款
+          | 即可
+      li
+        p 
+          | 系統可能顯示『模擬付款失敗』，但不用擔心，
+          br
+          | 本店會確實收到付款，可回商店重整確認

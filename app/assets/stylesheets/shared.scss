@@ -452,3 +452,18 @@ p.price{
   -webkit-animation-name: fadeOutUp;
   animation-name: fadeOutUp;
 }
+
+#test_hint{
+  .style1{
+    position: fixed;
+    top: 80px;
+    right: 15px;
+    padding: 10px 40px;
+    border-radius: 5px;
+    border: 1px #dd7777 dashed;
+    background-color: rgba(0,0,0,0.1);
+  }
+}
+
+
+
