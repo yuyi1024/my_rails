@@ -15,16 +15,34 @@ nav
 		
     
     - if current_user
-      = link_to user_show_path
-        .button
+      .dropdown
+        .button.btn.btn-default.dropdown-toggle type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
           span.glyphicon.glyphicon-user
-          |  會員中心
+          |  會員中心 
+          span.caret
+
+        ul.dropdown-menu aria-labelledby="dropdownMenu1"
+          li
+            = link_to user_show_path
+              .button 
+                span.glyphicon.glyphicon-edit
+                |  會員資料
+          li
+            = link_to user_order_list_path
+              .button 
+                span.glyphicon.glyphicon-list-alt
+                |  我的訂單
+          li
+            = link_to user_favorite_list_path
+              .button 
+                span.glyphicon.glyphicon-heart-empty
+                |  追蹤商品
+
     - else
       = link_to new_session_path(:user)
         .button
           span.glyphicon.glyphicon-user
           |  會員登入
-      
 			
     /= link_to carts_path
     .button onclick='openCart();'
