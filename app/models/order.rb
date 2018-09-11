@@ -13,7 +13,7 @@ class Order < ApplicationRecord
 
   # 訂單編號
   def g_process_id(user, order)
-    t = Time.now
+    t = Time.now.in_time_zone("Taipei")
     process_id = t.year.to_s[2,3] + "%02d" % t.mon + "%02d" % t.mday + "%03d" % user + rand(0..9).to_s + "%02d" % order + "%02d" % rand(0..99)
   end
 
@@ -32,7 +32,7 @@ class Order < ApplicationRecord
 
     base_param = {
       'MerchantTradeNo' => self.merchant_trade_no,
-      'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),
+      'MerchantTradeDate' => Time.now.in_time_zone("Taipei").strftime("%Y/%m/%d %T"),
       'TotalAmount' => self.price + self.freight,
       'TradeDesc' => '寵物用品',
       'ItemName' => '寵物用品',
@@ -73,7 +73,7 @@ class Order < ApplicationRecord
       
     b2c_param = {
       'MerchantTradeNo' => self.process_id, 
-      'MerchantTradeDate' => Time.now.strftime("%Y/%m/%d %T"),
+      'MerchantTradeDate' => Time.now.in_time_zone("Taipei").strftime("%Y/%m/%d %T"),
       
       'LogisticsType' => self.logistics_type, #CVS/Home
       'LogisticsSubType' => self.logistics_subtype,  
