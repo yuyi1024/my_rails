@@ -286,7 +286,11 @@ class OrdersController < ApplicationController
   def order_revise # 訂單修改(送貨/付款方式)
     
     @location = 'revise'
-    @freight = Order::Freight_in_store
+    if @order.logistics_type == 'CVS'
+      @freight = @order.freight
+    else
+      @freight = Order::Freight_in_store
+    end
     @remittance_info = RemittanceInfo.new
 
     # 銀行代號 select_box
