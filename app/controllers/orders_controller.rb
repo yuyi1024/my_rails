@@ -51,8 +51,9 @@ class OrdersController < ApplicationController
     elsif @location == 'revise'
       @order = Order.find_by(process_id: params[:process_id])
       @offer = @order.offer
+      @offer_price = @order.price
       freight_offer
-      @offer_price = @order.price + @freight
+      @offer_price += @freight
     end
 
     @action = 'ship_method'
