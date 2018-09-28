@@ -90,18 +90,20 @@ h1.title 優惠方案設定
                             span 
                               b
                                 | 作用分類：
-                            - arr = offer.range_subcats.split(',')
-                            - arr.each do |a|
-                              .offer-label #{Subcategory.find(a).category.name} > #{Subcategory.find(a).name} 
+                            - offer.range_subcats.split(',').each do |id|
+                              - _subcat = Subcategory.find_by_id(id)
+                              - if  !_subcat.nil?
+                                .offer-label #{_subcat.category.name} > #{_subcat.name} 
                         
                         - if !offer.range_products.blank?
                           #product_label
                             span 
                               b
                                 | 作用商品：
-                              - arr = offer.range_products.split(',')
-                              - arr.each do |a|
-                                .offer-label #{Product.find(a).name}
+                              - offer.range_products.split(',').each do |id|
+                                - _pro = Product.find_by_id(id)
+                                - if  !_pro.nil?                              
+                                  .offer-label #{_pro.name}
 
                 tr
                   td
