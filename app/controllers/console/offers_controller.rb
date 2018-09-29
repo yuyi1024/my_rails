@@ -129,9 +129,11 @@ class Console::OffersController < Console::DashboardsController
           arrs = offer.send('range_' + range).split(',')
           arrs.each do |arr|
             if range == 'subcats'
-              Subcategory.find(arr.to_i).product.update_all(offer_id: offer.id)
+              s = Subcategory.find_by_id(arr.to_i)
+              s.product.update_all(offer_id: offer.id) if s
             elsif range == 'products'
-              Product.find(arr.to_i).update(offer_id: offer.id)
+              pro = Product.find_by_id(arr.to_i)
+              pro.update(offer_id: offer.id) if pro
             end
           end
         end

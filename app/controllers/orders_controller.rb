@@ -280,8 +280,8 @@ class OrdersController < ApplicationController
     # 公司已退款之資訊
     @refunded_data = @order.remittance_infos.where(refunded: true).order('created_at DESC').first
 
-  rescue StandardError => e
-    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+  # rescue StandardError => e
+  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
   def order_revise # 訂單修改(送貨/付款方式)
