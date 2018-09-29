@@ -272,7 +272,12 @@ class OrdersController < ApplicationController
   def show # 訂單詳情
     # ecpay 物流狀態信息
     if @order.ecpay_logistics_id.present?
-      @logistics_status = @order.ecpay_trade_info[0]['message']
+      msg = @order.ecpay_trade_info
+      if !msg.present?
+        @logistics_status = '無資訊'
+      else
+        @logistics_status = msg[0]['message']        
+      end
     else
       @logistics_status = '未出貨'
     end
@@ -280,8 +285,8 @@ class OrdersController < ApplicationController
     # 公司已退款之資訊
     @refunded_data = @order.remittance_infos.where(refunded: true).order('created_at DESC').first
 
-  # rescue StandardError => e
-  #   redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
+  rescue StandardError => e
+    redirect_back(fallback_location: user_order_list_path, alert: "#{e}")
   end
 
   def order_revise # 訂單修改(送貨/付款方式)

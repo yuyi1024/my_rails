@@ -48,12 +48,18 @@ class Console::OrdersController < Console::DashboardsController
 
   def edit
     @order = Order.find_by(process_id: params[:id])
-    
+
     if @order.ecpay_logistics_id.present?
-      @logistics_status = @order.ecpay_trade_info[0]['message']
+      msg = @order.ecpay_trade_info
+      if !msg.present?
+        @logistics_status = '無資訊'
+      else
+        @logistics_status = msg[0]['message']        
+      end
     else
       @logistics_status = '未出貨'
     end
+    
     @may_status = @order.may_status
     
     if @order.status == 'waiting_refunded'
