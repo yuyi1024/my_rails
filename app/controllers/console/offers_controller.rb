@@ -146,9 +146,10 @@ class Console::OffersController < Console::DashboardsController
   end
 
   def destroy
-    @offer = Offer.find(params[:id])
-    @offer.destroy if @offer.implement != 'true'
-    
+    @offer = Offer.find_by_id(params[:id])
+    if !@order.nil?
+      @offer.destroy if @offer.implement != 'true'
+    end
     if @offer.destroyed?
       flash[:success] = '刪除成功'
     else

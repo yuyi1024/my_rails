@@ -39,8 +39,8 @@ h1.title 優惠方案設定
         .panel-heading 
           h3 選擇優惠
         .panel-body
-          table.table
-            = form_tag implement_all_console_offers_path, method: 'post'
+          = form_tag implement_all_console_offers_path, method: 'post'
+            table.table
               tr
                 th 全館優惠（該區只能選擇一項）
               tbody
@@ -64,8 +64,8 @@ h1.title 優惠方案設定
                   td
                     button.btn.implement_btn 實施選擇的全館優惠
           
-          table.table
-            = form_tag implement_product_console_offers_path, method: 'post'
+          = form_tag implement_product_console_offers_path, method: 'post'  
+            table.table
               tr
                 th 特定商品優惠
               tbody

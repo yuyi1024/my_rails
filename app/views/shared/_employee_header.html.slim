@@ -18,7 +18,7 @@ nav
 
     .dropdown
       .button.btn.btn-default.dropdown-toggle type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-        span.glyphicon.glyphicon-list
+        span.glyphicon.glyphicon-menu-hamburger
         |  商品相關 
         span.caret
 
@@ -50,10 +50,22 @@ nav
         |  用戶管理
     
 
-    = link_to console_messages_path
-      .button
-        span.glyphicon.glyphicon-wrench
-        |  訊息管理
+    .dropdown
+      .button.btn.btn-default.dropdown-toggle type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+        span.glyphicon.glyphicon-menu-hamburger
+        |  訊息管理 
+        span.caret
+      ul.dropdown-menu aria-labelledby="dropdownMenu1"
+        li
+          = link_to console_messages_path
+            .button 
+              span.glyphicon.glyphicon-wrench
+              |  訊息列表
+        li
+          = link_to qanda_console_messages_path
+            .button 
+              span.glyphicon.glyphicon-wrench
+              |  常見Q&A
 
     - if current_user
       = link_to destroy_user_session_path, :method => :delete 

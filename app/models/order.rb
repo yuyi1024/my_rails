@@ -263,4 +263,17 @@ class Order < ApplicationRecord
     end
 
   end
+
+
+  # test data 改日期
+  def self.time_rand(from = 0.0 , to = Time.now)
+    orders = Order.all.order('created_at DESC')
+    orders.each do |order|
+      t = Time.at(from + rand * (to.to_f - from.to_f))
+      order.created_at = t
+      order.updated_at = t
+      order.save
+    end
+  end
+
 end
