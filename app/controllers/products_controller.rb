@@ -1,42 +1,38 @@
 class ProductsController < ApplicationController
+  before_action :cart_show, only: [:index, :show]
   
   def index # 首頁
-    @products = Product.where(status: 'on_shelf')
+    @products = Product.where(status: 'on_shelf').includes(:subcategory => :category).includes(:offer)
     @cat1s = Category.joins(:product).select('categories.id', 'categories.name').where('products.status': 'on_shelf').group('id').order('id ASC')
 
     # ↓↓↓ search begin ↓↓↓
     if params[:cat1_field].present?
-      cat1 = Category.find_by(name: params[:cat1_field])
-      @cat2s = cat1.subcategories.joins(:product).group('subcategories.id').having('count(subcategory_id) > 0')
-      @products = cat1.product.where(status: 'on_shelf')
+      @cat2s = Category.find_by(name: params[:cat1_field]).subcategories.joins(:product).group('subcategories.id').having('count(subcategory_id) > 0')
+      @products = @products.where(categories: {name: params[:cat1_field]})
     end
 
     if params[:cat2_field].present?
-      @products = @products.where(:subcategory => params[:cat2_field])
+      @products = @products.where(subcategories: {id: params[:cat2_field]})
     end
 
     if params[:price_top].present?
-      params[:price_bottom] = 0 if !params[:price_bottom].present?
-      @products = @products.price_search(params[:price_bottom],params[:price_top])
+      @products = @products.price_search(params[:price_bottom], params[:price_top])
     elsif params[:price_bottom].present?
       @products = @products.price_top(params[:price_bottom])
     end
 
     @products = @products.keyword(keyword_split(['name', 'description'] ,params[:keyword])) if params[:keyword].present?
 
-    if params[:sort_item].present? && params[:sort_order].present?
-      @products = @products.order(params[:sort_item] + ' ' + params[:sort_order])
-    else
-      @products = @products.order('sold DESC')
-    end
+    @products = @products.order('products.' + (params[:sort_item] ||= 'sold') + ' ' + (params[:sort_order] ||= 'DESC'))
     # ↑↑↑ search end ↑↑↑
 
     @cat2_click = params[:cat2_click]
 
-    params[:page] = 1 if !params[:page].present?
+    params[:page] ||= 1
     @products = @products.page(params[:page]).per(24)
 
-    @favorites = current_user.favorites if current_user.present?
+    @favorites = []
+    current_user.favorites.select(:product_id).map{|favorite| @favorites << favorite.product_id} if current_user.present?
     
     @action = __method__.to_s
     
@@ -44,7 +40,6 @@ class ProductsController < ApplicationController
       format.html
       format.js
     end
-
   end
 
   def show # 商品詳細頁

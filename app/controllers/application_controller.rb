@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   #CSRF protection，需放在最前，若不，可用prepend：true前置
 
 	before_action :configure_permitted_parameters, if: :devise_controller?
-	before_action :cart_show, :order_pending
+  before_action :order_pending
 
   # 是否有未結帳訂單
   def order_pending
@@ -20,11 +20,12 @@ class ApplicationController < ActionController::Base
     
     @cart_items = []
     @total_price = 0
-
+    
+    products = Product.where(status: 'on_shelf', id: [] << @carts.items.map{|i| i.product_id})
     @carts.items.each do |item|
-      product = Product.where(status: 'on_shelf').find_by_id(item.product_id) # 找不到時回傳nil
-      if product
-        @cart_items << [ product, item.quantity ]
+      product = products.select{|p| p.id == item.product_id.to_i}
+      if product.present?
+        @cart_items << [ product[0], item.quantity ]
       else
         @carts.items.delete(item) # 找不到購物車中的商品或商品下架則刪除
       end

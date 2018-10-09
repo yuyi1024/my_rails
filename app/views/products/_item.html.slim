@@ -25,15 +25,14 @@
 
               p.tags
                 span.glyphicon.glyphicon-tags
-                | #{ product.category.name }、#{ product.subcategory.name } 
+                | #{ product.subcategory.category.name }、#{ product.subcategory.name } 
               
               = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn cart')
                 span.glyphicon.glyphicon-shopping-cart
               
               - if current_user
                 = link_to(heart_products_path(product.id), method: :post, remote: :true)
-                  span.glyphicon.glyphicon-heart class="#{ is_favorite(@favorites, product.id) }" id='heart-#{product.id}'
+                  span.glyphicon.glyphicon-heart class="#{ 'favorite' if @favorites.include?(product.id) }" id='heart-#{product.id}'
         
   .pages.row
     = paginate @products, window: 2, remote: true
-

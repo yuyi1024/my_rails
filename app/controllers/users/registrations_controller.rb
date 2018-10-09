@@ -3,6 +3,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
   # before_action :authenticate_user!
   before_action :can_manage_user?, except: [:new, :create]
+  before_action :cart_show, only: [:show, :order_list, :favorite_list]
 
   def can_manage_user?
     @user = current_user
@@ -93,7 +94,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def favorite_list # 會員中心追蹤列表
-    @favorites = @user.favorites
+    @favorites = @user.favorites.includes(:product => [:subcategory, :category, :offer])
   rescue StandardError => e
     redirect_to(user_order_list_path, alert: "發生錯誤：#{e}")
   end

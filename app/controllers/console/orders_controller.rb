@@ -2,7 +2,6 @@ class Console::OrdersController < Console::DashboardsController
   
   def index
     @orders = Order.includes(:user)
-
     if params[:search].present?
       @orders = @orders.where(process_id: params[:process_id]) if params[:process_id].present?
       @orders = @orders.where(:users => { :email => params[:email] }) if params[:email].present?

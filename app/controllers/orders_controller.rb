@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: :from_ecpay_paid
   before_action :order_auth, only: [:edit, :show, :order_revise, :to_map, :remit_info]
-  
+  before_action :cart_show, only: [:new, :show, :payment_result, :atm_info]
   # 除了from_map的方法都啟動CSRF安全性功能（預設全部方法都啟動
   protect_from_forgery except: [:from_map, :from_ecpay_paid]
 

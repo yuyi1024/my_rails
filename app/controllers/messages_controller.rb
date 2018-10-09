@@ -1,4 +1,5 @@
 class MessagesController < ApplicationController
+  before_action :cart_show, only: [:index]
 
 	def index # 聯絡我們
 		@messages = Message.where("qanda > 0").order('qanda ASC')
