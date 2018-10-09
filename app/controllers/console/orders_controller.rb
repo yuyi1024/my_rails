@@ -41,7 +41,9 @@ class Console::OrdersController < Console::DashboardsController
       render 'console/orders/orders.js.erb' 
     else
       @orders = @orders.order("created_at DESC")
-      @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
+      @orders.map{|order| 
+        order.ecpay_trade_info if order.status == 'waiting_shipment' && order.shipment_no.blank?
+      }
       kaminari_page
     end
   end

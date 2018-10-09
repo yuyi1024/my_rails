@@ -62,9 +62,10 @@ class Order < ApplicationRecord
     if !self.receiver_zipcode.blank?
       zipcode = self.receiver_zipcode[0..2].to_i
       
-      if zipcode >= 207 && zipcode <= 253
+      case zipcode
+      when 207..253
         distance = '00'
-      elsif zipcode >= 880 && zipcode <= 896
+      when 880..896
         distance = '02'
       else
         distance = '01'
