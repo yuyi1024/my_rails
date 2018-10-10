@@ -78,15 +78,11 @@ h1.title 訂單列表
         .col-sm-2
           label 送貨方式
           br
-          = check_box_tag 'ship_method[]', 'pickup_and_cash', nil, id:'ship_method_pickup_and_cash'
-          label for='ship_method_pickup_and_cash' 取貨付款
+          = check_box_tag 'logistics_type[]', 'CVS', nil, id:'logistics_type_CVS'
+          label for='logistics_type_CVS' 超商取貨
 
-          = check_box_tag 'ship_method[]', 'only_pickup', nil, id:'ship_method_only_pickup'
-          label for='ship_method_only_pickup' 純取貨
-          br
-
-          = check_box_tag 'ship_method[]', 'home_delivery', nil, id:'ship_method_home_delivery'
-          label for='ship_method_home_delivery' 宅配
+          = check_box_tag 'logistics_type[]', 'TCAT', nil, id:'logistics_type_TCAT'
+          label for='logistics_type_TCAT' 宅配
 
         .col-sm-3
           label 付款狀態

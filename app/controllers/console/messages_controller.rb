@@ -1,47 +1,38 @@
 class Console::MessagesController < Console::DashboardsController
   def index
-    @messages = Message.all
-
+    @messages = Message.includes(:user)
     if params[:search].present?
-      @messages = @messages.where(user_id: User.find_by(email: params[:email]).id) if params[:email].present?
+      @messages = @messages.where(users: {email: params[:email]}) if params[:email].present?
       @messages = @messages.where(keyword_split(['question', 'answer'], params[:keyword])) if params[:keyword].present?
 
       if params[:date_b].present? || params[:date_f].present?
         params[:date_f] = Time.now if !params[:date_f].present?
         params[:date_b] = Date.new(2018, 1, 1) if !params[:date_b].present?
-        @messages = @messages.where(:created_at => params[:date_b].to_date..params[:date_f].to_date+1.days)
+        @messages = @messages.where(created_at: params[:date_b].to_date..params[:date_f].to_date+1.days)
       end
 
       if params[:status].present?
         if params[:status].include? 'true'
-          if !params[:status].include? 'false'
-            @messages = @messages.where.not(answer: [nil, '']) 
-          end
+          @messages = @messages.where.not(answer: [nil, '']) if !params[:status].include? 'false'
         elsif params[:status].include? 'false'
           @messages = @messages.where(answer: [nil, '']) 
         end
       end
 
       if params[:qanda].present?
-        if params[:qanda].include? 'true'
-          if !params[:qanda].include? 'false'
-            @messages = @messages.where('qanda >= 0') 
-          end
+        if params[:qanda].include? 'true'  
+          @messages = @messages.where('qanda >= 0') if !params[:qanda].include? 'false'
         elsif params[:qanda].include? 'false'
           @messages = @messages.where(qanda: [nil, '']) 
         end
       end
 
       @messages = @messages.where(reply_method: params[:reply_method]) if params[:reply_method].present?
-      @messages = @messages.order(params[:sort_item] + ' ' + params[:sort_order])
-      kaminari_page
-      
       @action = 'index'
-      render 'console/messages/messages.js.erb'
     end
-    
-    @messages = @messages.order('created_at DESC')
-    kaminari_page
+      @messages = @messages.order('messages.' + (params[:sort_item] ||= 'created_at') + ' ' + (params[:sort_order] ||= 'DESC')) 
+      @messages = kaminari_page(@messages)
+      render 'console/messages/messages.js.erb' if params[:search].present?
   end
 
   def edit
@@ -79,8 +70,10 @@ class Console::MessagesController < Console::DashboardsController
 
   def qanda # Q&A 管理
     @message = Message.new
-    @qandas = Message.where('qanda > 0').order('qanda ASC')
-    @qusetions = Message.where(qanda: 0)
+
+    messages = Message.all
+    @qandas = messages.select{|m| !m.qanda.nil? && m.qanda > 0}.sort_by{|m| m.qanda}
+    @qusetions = messages.select{|m| m.qanda == 0}
   end
 
   def create # 新增 Q&A 問題
@@ -118,12 +111,6 @@ class Console::MessagesController < Console::DashboardsController
   end
 
   private
-
-  def kaminari_page #分頁
-    @rows = @messages.length
-    params[:page] = 1 if !params[:page].present?
-    @messages = @messages.page(params[:page]).per(25)
-  end
 
   def message_params
     params.require(:message).permit(:question, :answer)

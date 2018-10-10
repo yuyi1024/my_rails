@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :cart_show, only: [:index, :show]
+  before_action :order_pending, only: [:index, :show]
   
   def index # 首頁
     @products = Product.where(status: 'on_shelf').includes(:subcategory => :category).includes(:offer)

@@ -1,9 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   #CSRF protection，需放在最前，若不，可用prepend：true前置
-
 	before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :order_pending
 
   # 是否有未結帳訂單
   def order_pending

@@ -26,6 +26,13 @@ class Console::DashboardsController < ApplicationController
     @favorites.includes(:product).map{ |f| Favorite.where(product_id: f.product_id).destroy_all if !f.product.present? || f.product.status == 'off_shelf' }
   end
 
+  def kaminari_page(o) #分頁
+    @rows = o.count
+    params[:page] ||= 1
+    object = o.page(params[:page]).per(25)
+    return object
+  end
+
   private
 
   def dashboard_authorize

@@ -1,14 +1,12 @@
 class Console::WarehousesController < Console::DashboardsController
   def index
-    @products = Product.includes(:warehouse)
+    @products = Product.includes(:category, :subcategory, :warehouse)
     @rooms = Warehouse.select('DISTINCT room').map{|room| [room.room, room.room]}
 
     if params[:search].present?
       @action = 'search'
-
       @products = @products.where(id: params[:product_id]) if params[:product_id].present?
       @products = @products.keyword(keyword_split(['name', 'description'], params[:keyword])) if params[:keyword].present?
-      
       if params[:quantity_status].present?
         if params[:quantity_status][0] == 'shortage'
           @products = @products.where('quantity <= quantity_alert')
@@ -16,20 +14,15 @@ class Console::WarehousesController < Console::DashboardsController
           @products = @products.where('quantity > quantity_alert')
         end
       end
-
       @products = @products.where(:warehouses => {:room => params[:room]}) if params[:room].present? && params[:room] != 'all'
       @products = @products.where(:warehouses => {:shelf => params[:shelf]}) if params[:shelf].present?
       @products = @products.where(:warehouses => {:row => params[:row]}) if params[:row].present?
       @products = @products.where(:warehouses => {:column => params[:column]}) if params[:column].present?
-
-      @products = @products.order(params[:sort_item] + ' ' + params[:sort_order]) if params[:sort_item].present? && params[:sort_order].present?
-
-      kaminari_page
-
-      render 'console/warehouses/warehouses.js.erb'
     end
-    @products = @products.order('quantity ASC')
-    kaminari_page
+
+      @products = @products.order('products.' + (params[:sort_item] ||= 'quantity')+ ' ' + (params[:sort_order] ||= 'ASC'))
+      @products = kaminari_page(@products)
+      render 'console/warehouses/warehouses.js.erb' if params[:search].present?
   end
 
   def edit
@@ -58,16 +51,10 @@ class Console::WarehousesController < Console::DashboardsController
   end
 
   def new # 這是倉庫檢視圖，不是新增
-    @rooms = Warehouse.all.group_by(&:room)  
+    @rooms = Warehouse.includes(:products).references(:products).group_by(&:room) 
   end
 
   private
-
-  def kaminari_page #分頁
-    @rows = @products.length
-    params[:page] = 1 if !params[:page].present?
-    @products = @products.page(params[:page]).per(25)
-  end
 
   def product_params
     params.require(:product).permit(:quantity, :quantity_alert)

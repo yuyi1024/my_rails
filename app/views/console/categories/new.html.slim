@@ -48,8 +48,7 @@ ul.pager
               br
               br
               span 次分類： 
-              - @subcat = cat.subcategories
-              - @subcat.each_with_index do |subcat, index|
+              - cat.subcategories.each_with_index do |subcat, index|
                 = link_to subcat_edit_console_categories_path(subcat)
                   span.label.label_subcat #{subcat.name} (#{subcat.product.length})
             hr

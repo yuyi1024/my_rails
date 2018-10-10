@@ -4,6 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :authenticate_user!
   before_action :can_manage_user?, except: [:new, :create]
   before_action :cart_show, only: [:show, :order_list, :favorite_list]
+  before_action :order_pending, only: [:show, :order_list, :favorite_list]
 
   def can_manage_user?
     @user = current_user
