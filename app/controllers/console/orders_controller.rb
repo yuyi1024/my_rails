@@ -45,7 +45,7 @@ class Console::OrdersController < Console::DashboardsController
 
   def edit
     @order = Order.find_by(process_id: params[:id])
-    @order_items = @order.order_items.includes(:product => :warehouse)
+    @order_items = @order.order_items.includes([{:product => :warehouse}, :offer])
 
     if @order.ecpay_logistics_id.present?
       msg = @order.ecpay_trade_info

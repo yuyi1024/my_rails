@@ -1,8 +1,8 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: :from_ecpay_paid
   before_action :order_auth, only: [:edit, :show, :order_revise, :to_map, :remit_info]
-  before_action :cart_show, only: [:new, :show, :edit, :payment_result, :atm_info]
-  before_action :order_pending, only: [:new, :show, :payment_result, :atm_info]
+  before_action :cart_show, only: [:new, :show, :edit, :from_map, :payment_result, :atm_info, :order_revise]
+  before_action :order_pending, only: [:new, :show, :edit, :from_map, :payment_result, :atm_info, :order_revise]
   # 除了from_map的方法都啟動CSRF安全性功能（預設全部方法都啟動
   protect_from_forgery except: [:from_map, :from_ecpay_paid]
 
@@ -273,7 +273,7 @@ class OrdersController < ApplicationController
 
   def show # 訂單詳情
     # ecpay 物流狀態信息
-    @order_items = @order.order_items.includes(:product)
+    @order_items = @order.order_items.includes([:product, :offer])
     if @order.ecpay_logistics_id.present?
       msg = @order.ecpay_trade_info
       if !msg.present?

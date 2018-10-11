@@ -23,7 +23,7 @@ ul.pager
               	| #{@message.created_at.strftime("%Y/%m/%d")}
               p
               	b 回覆方式： 
-              	| #{ t(@message.reply_method, :scope => "reply_method") } #{ '（本系統除站內回覆將會自動再以 Email 方式寄出回覆）' if @message.reply_method == 'email'}
+              	| #{ t(@message.reply_method, :scope => "reply_method") } #{ '（本系統將自動以 Email 方式寄出回覆）' if @message.reply_method == 'email'}
               p
               	b 回覆 Email： 
               	| #{@message.email.blank? ? '無' : @message.email}

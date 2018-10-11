@@ -138,7 +138,7 @@ h1.title 後台儀表板
                 = pie_chart @w_order.group_by_day(format: "%m/%d"){|order| order.created_at}.map{|title,order| [title, order.sum(&:price)]}, width: "90%"
                 p 本週的每日收入比例
               td.col-sm-2
-                = pie_chart @m_order.group_by_week(format: "%m/%d(第%W週)"){|order| order.created_at}.map{|title,order| [title, order.sum(&:price)]}, width: "90%"
+                = pie_chart @m_order.group_by_week(format: "第%W週(%m/%d~)"){|order| order.created_at}.map{|title,order| [title, order.sum(&:price)]}, width: "90%"
                 p 本月的每週收入比例
               td.col-sm-2
                 = pie_chart @y_order.group_by_month(format: "%m月"){|order| order.created_at}.map{|title,order| [title, order.sum(&:price)]}, width: "90%"

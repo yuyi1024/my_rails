@@ -32,7 +32,7 @@
             td 
               | $#{ number_with_delimiter(item.price) }
               - if !item.offer_id.nil?
-                | （#{item.product.offer.message}）
+                | （#{item.offer.message}）
             - if console == 'Y'
               td 
                 | #{item.product.warehouse.room}

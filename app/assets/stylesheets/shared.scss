@@ -108,15 +108,9 @@
   .hello, .notice{
     color: $color_dark_blue;
   }
-  .alert{
+  .alert, .pending a{
     color: $color_price_red;
   }
-}
-
-.pending a {
-  position: absolute;
-  top: 50px;
-  color: $color_price_red;
 }
 
 #to_top{

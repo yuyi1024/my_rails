@@ -267,6 +267,7 @@ class Order < ApplicationRecord
 
 
   # test data 改日期
+  # Order.time_rand(Time.new(2018, 9, 1), Time.now)
   def self.time_rand(from = 0.0 , to = Time.now)
     orders = Order.all.order('created_at DESC')
     orders.each do |order|
@@ -276,5 +277,4 @@ class Order < ApplicationRecord
       order.save
     end
   end
-
 end
