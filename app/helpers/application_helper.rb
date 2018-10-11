@@ -34,11 +34,6 @@ module ApplicationHelper
     end
   end
 
-  # 是否追蹤該商品
-  def is_favorite(favorite, id)
-    'favorite' if favorite.find_by(product_id: id)
-  end
-
   # 計算每樣商品之單價優惠後的金額
   def calc_price_offer(price, offer_id)
     if !offer_id.nil?
@@ -125,6 +120,11 @@ module ApplicationHelper
     if index < 3
       content_tag(:span, nil, class: 'glyphicon glyphicon-king')
     end
+  end
+
+  # console dashboard 收入計算
+  def dashboard_revenue(order)
+    order.reduce(0){|sum, o| sum += o.price.to_i}
   end
 
 end

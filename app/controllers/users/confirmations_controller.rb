@@ -1,4 +1,5 @@
 class Users::ConfirmationsController < Devise::ConfirmationsController
+  before_action :cart_show
   # GET /resource/confirmation/new
   # def new
   #   super

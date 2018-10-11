@@ -1,7 +1,8 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: :from_ecpay_paid
   before_action :order_auth, only: [:edit, :show, :order_revise, :to_map, :remit_info]
-  
+  before_action :cart_show, only: [:new, :show, :edit, :payment_result, :atm_info]
+  before_action :order_pending, only: [:new, :show, :payment_result, :atm_info]
   # 除了from_map的方法都啟動CSRF安全性功能（預設全部方法都啟動
   protect_from_forgery except: [:from_map, :from_ecpay_paid]
 
@@ -51,8 +52,9 @@ class OrdersController < ApplicationController
     elsif @location == 'revise'
       @order = Order.find_by(process_id: params[:process_id])
       @offer = @order.offer
+      @offer_price = @order.price
       freight_offer
-      @offer_price = @order.price + @freight
+      @offer_price += @freight
     end
 
     @action = 'ship_method'
@@ -110,6 +112,7 @@ class OrdersController < ApplicationController
   end
 
   def edit # 訂單資料填寫
+    @order_items = @order.order_items.includes([:product, :offer])
     @stName = params[:stName] if !params[:stName].nil?
     @location = 'edit'
   rescue StandardError => e
@@ -270,8 +273,14 @@ class OrdersController < ApplicationController
 
   def show # 訂單詳情
     # ecpay 物流狀態信息
+    @order_items = @order.order_items.includes(:product)
     if @order.ecpay_logistics_id.present?
-      @logistics_status = @order.ecpay_trade_info[0]['message']
+      msg = @order.ecpay_trade_info
+      if !msg.present?
+        @logistics_status = '無資訊'
+      else
+        @logistics_status = msg[0]['message']        
+      end
     else
       @logistics_status = '未出貨'
     end
@@ -284,9 +293,12 @@ class OrdersController < ApplicationController
   end
 
   def order_revise # 訂單修改(送貨/付款方式)
-    
     @location = 'revise'
-    @freight = Order::Freight_in_store
+    if @order.logistics_type == 'CVS'
+      @freight = @order.freight
+    else
+      @freight = Order::Freight_in_store
+    end
     @remittance_info = RemittanceInfo.new
 
     # 銀行代號 select_box

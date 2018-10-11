@@ -65,6 +65,9 @@ GEM
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
     builder (3.2.3)
+    bullet (5.7.6)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11.0)
     byebug (10.0.2)
     cancancan (2.2.0)
     capistrano (3.11.0)
@@ -209,6 +212,8 @@ GEM
     public_suffix (3.0.2)
     puma (3.11.4)
     rack (2.0.5)
+    rack-mini-profiler (1.0.0)
+      rack (>= 1.2.0)
     rack-test (1.0.0)
       rack (>= 1.0, < 3)
     rails (5.1.6)
@@ -294,6 +299,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.1.12)
       execjs (>= 0.3.0, < 3)
+    uniform_notifier (1.11.0)
     warden (1.2.7)
       rack (>= 1.0)
     web-console (3.6.2)
@@ -314,6 +320,7 @@ DEPENDENCIES
   aasm (~> 4.12)
   awesome_print
   bootstrap-sass (~> 3.3.6)
+  bullet
   byebug
   cancancan (~> 2.0)
   capistrano-rails
@@ -341,6 +348,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   pg
   puma (~> 3.7)
+  rack-mini-profiler
   rails (~> 5.1.3)
   rails-assets-jcrop!
   sass-rails (~> 5.0)
