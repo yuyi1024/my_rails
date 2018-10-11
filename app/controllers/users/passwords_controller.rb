@@ -1,4 +1,5 @@
 class Users::PasswordsController < Devise::PasswordsController
+  before_action :cart_show
   # GET /resource/password/new
   # def new
   #   super

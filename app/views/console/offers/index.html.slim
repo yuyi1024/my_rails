@@ -90,21 +90,18 @@ h1.title 優惠方案設定
                             span 
                               b
                                 | 作用分類：
-                            - offer.range_subcats.split(',').each do |id|
-                              - _subcat = Subcategory.find_by_id(id)
-                              - if  !_subcat.nil?
-                                .offer-label #{_subcat.category.name} > #{_subcat.name} 
-                        
+                              - arr = offer.range_subcats.split(',')
+                              - @subcategories.select{|s| arr.include?(s.id.to_s)}.each do |subcat|
+                                .offer-label #{subcat.category.name} > #{subcat.name}
+   
                         - if !offer.range_products.blank?
                           #product_label
                             span 
                               b
                                 | 作用商品：
-                              - offer.range_products.split(',').each do |id|
-                                - _pro = Product.find_by_id(id)
-                                - if  !_pro.nil?                              
-                                  .offer-label #{_pro.name}
-
+                              - arr = offer.range_products.split(',')
+                              - @products.select{|p| arr.include?(p.id.to_s)}.each do |pro|
+                                .offer-label #{pro.name}
                 tr
                   td
                     button.btn.implement_btn 實施選擇的特定商品優惠

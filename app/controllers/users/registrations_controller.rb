@@ -76,7 +76,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def order_list # 會員中心訂單列表
-    @orders = @user.orders.order('created_at DESC')
+    @orders = @user.orders.order('created_at DESC').includes(:ecpay_payment_atm_info)
     @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank? && order.status == 'waiting_shippment'}
     
     # 訂單狀態 select_box

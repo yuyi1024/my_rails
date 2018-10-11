@@ -23,7 +23,8 @@ class Console::DashboardsController < ApplicationController
     @product_buy = products.select{|p| p.sold > 0}.sort_by{|p| -p.sold}[0..9]
 
     @favorites = Favorite.select("COUNT(favorites.product_id) AS total, favorites.product_id").group('product_id').order('total DESC')
-    @favorites.includes(:product).map{ |f| Favorite.where(product_id: f.product_id).destroy_all if !f.product.present? || f.product.status == 'off_shelf' }
+    @favorites = @favorites.includes(:product)
+    @favorites.map{ |f| Favorite.where(product_id: f.product_id).destroy_all if !f.product.present? || f.product.status == 'off_shelf' }    
   end
 
   def kaminari_page(o) #分頁
