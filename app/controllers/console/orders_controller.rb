@@ -2,15 +2,14 @@ class Console::OrdersController < Console::DashboardsController
   
   def index
     @orders = Order.includes(:user)
-
     if params[:search].present?
       @orders = @orders.where(process_id: params[:process_id]) if params[:process_id].present?
-      @orders = @orders.where(:users => { :email => params[:email] }) if params[:email].present?
+      @orders = @orders.where(users: { :email => params[:email] }) if params[:email].present?
       
       if params[:date_b].present? || params[:date_f].present?
         params[:date_f] = Time.now if !params[:date_f].present?
         params[:date_b] = Date.new(2018, 1, 1) if !params[:date_b].present?
-        @orders = @orders.where(:created_at => params[:date_b].to_date..params[:date_f].to_date+1.days)
+        @orders = @orders.where(created_at: params[:date_b].to_date..params[:date_f].to_date+1.days)
       end
 
       if params[:status].present?
@@ -18,7 +17,7 @@ class Console::OrdersController < Console::DashboardsController
       end
 
       @orders = @orders.where(pay_method: params[:pay_method]) if params[:pay_method].present?
-      @orders = @orders.where(ship_method: params[:ship_method]) if params[:ship_method].present?
+      @orders = @orders.where(logistics_type: params[:logistics_type]) if params[:logistics_type].present?
 
       if params[:paid].present?
         paid = params[:paid]
@@ -31,29 +30,34 @@ class Console::OrdersController < Console::DashboardsController
         shipped += [nil] if params[:shipped].include?('false')
         @orders = @orders.where(shipped: shipped)
       end
-
-      if params[:sort_item].present? && params[:sort_order].present?
-        @orders = @orders.order('orders.' + params[:sort_item] + ' ' + params[:sort_order])
-      end
-      kaminari_page
-      
       @action = 'index'
-      render 'console/orders/orders.js.erb' 
     else
-      @orders = @orders.order("created_at DESC")
-      @orders.map{|order| order.ecpay_trade_info if !order.ecpay_logistics_id.blank?}
-      kaminari_page
+      @orders.map{|order| 
+        order.ecpay_trade_info if order.status == 'waiting_shipment' && order.shipment_no.blank?
+      }
     end
+
+    @orders = @orders.order('orders.' + (params[:sort_item] ||= 'created_at')+ ' ' + (params[:sort_order] ||= 'DESC'))
+    @orders = kaminari_page(@orders)
+    
+    render 'console/orders/orders.js.erb' if params[:search].present?
   end
 
   def edit
     @order = Order.find_by(process_id: params[:id])
-    
+    @order_items = @order.order_items.includes(:product => :warehouse)
+
     if @order.ecpay_logistics_id.present?
-      @logistics_status = @order.ecpay_trade_info[0]['message']
+      msg = @order.ecpay_trade_info
+      if !msg.present?
+        @logistics_status = '無資訊'
+      else
+        @logistics_status = msg[0]['message']        
+      end
     else
       @logistics_status = '未出貨'
     end
+    
     @may_status = @order.may_status
     
     if @order.status == 'waiting_refunded'
@@ -64,6 +68,7 @@ class Console::OrdersController < Console::DashboardsController
     end
     # 成功退款資料
     @refunded_success = @order.remittance_infos.where(refunded: true).order('created_at DESC').first if @order.status == 'canceled'
+
 
   rescue StandardError => e
     redirect_to(console_orders_path, alert: "發生錯誤：#{e}")
@@ -109,13 +114,7 @@ class Console::OrdersController < Console::DashboardsController
   end
 
   private
-
-  def kaminari_page # 分頁
-    @rows = @orders.length
-    params[:page] = 1 if !params[:page].present?
-    @orders = @orders.page(params[:page]).per(25)
-  end
-
+  
   def remittance_info_params
     params.require(:remittance_info).permit!
   end

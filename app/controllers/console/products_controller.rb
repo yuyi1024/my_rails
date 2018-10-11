@@ -1,25 +1,20 @@
 class Console::ProductsController < Console::DashboardsController
   def index
-    @products = Product.all
-    cat_to_select
+    @products = Product.includes(:category, :subcategory)
+    cat_to_select # 取得下拉可選擇的分類
 
     if params[:search].present?
       @action = 'search'
-      
       @products = @products.where(id: params[:product_id]) if params[:product_id].present?
       @products = @products.where(category_id: params[:cat_box]) if params[:cat_box].present? && params[:cat_box] != 'all'
       @products = @products.where(subcategory_id: params[:subcat_box]) if params[:subcat_box].present? && params[:subcat_box] != 'all'
       @products = @products.keyword(keyword_split(['name', 'description'], params[:keyword])) if params[:keyword].present?
       @products = @products.where(status: params[:status]) if params[:status].present?
-      @products = @products.order(params[:sort_item] + ' ' + params[:sort_order]) if params[:sort_item].present? && params[:sort_order].present?
-
-      kaminari_page
-
-      render 'console/products/products.js.erb'
-    else
-      @products = @products.order('created_at DESC')
-      kaminari_page
     end
+
+    @products = @products.order('products.' + (params[:sort_item] ||= 'created_at')+ ' ' + (params[:sort_order] ||= 'DESC'))
+    @products = kaminari_page(@products)
+    render 'console/products/products.js.erb' if params[:search].present?
   end
 
   def new
@@ -27,7 +22,7 @@ class Console::ProductsController < Console::DashboardsController
     if Subcategory.first.present?
       @product = Product.new
       cat_to_select
-      subcat_to_select(Category.first.id)
+      subcat_to_select(@categories[0][1])
     else
       redirect_to(new_console_category_path, alert: '請先新增至少一種分類！')
     end
@@ -132,13 +127,7 @@ class Console::ProductsController < Console::DashboardsController
   end
 
   private
-
-  def kaminari_page
-    @rows = @products.length
-    params[:page] = 1 if !params[:page].present?
-    @products = @products.page(params[:page]).per(25)
-  end
-
+  
   def cat_to_select # 主分類 select_box
     @categories = Category.all
     @categories = @categories.map{ |cat| [cat.name, cat.id] }

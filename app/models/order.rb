@@ -62,9 +62,10 @@ class Order < ApplicationRecord
     if !self.receiver_zipcode.blank?
       zipcode = self.receiver_zipcode[0..2].to_i
       
-      if zipcode >= 207 && zipcode <= 253
+      case zipcode
+      when 207..253
         distance = '00'
-      elsif zipcode >= 880 && zipcode <= 896
+      when 880..896
         distance = '02'
       else
         distance = '01'
@@ -263,4 +264,17 @@ class Order < ApplicationRecord
     end
 
   end
+
+
+  # test data 改日期
+  def self.time_rand(from = 0.0 , to = Time.now)
+    orders = Order.all.order('created_at DESC')
+    orders.each do |order|
+      t = Time.at(from + rand * (to.to_f - from.to_f))
+      order.created_at = t
+      order.updated_at = t
+      order.save
+    end
+  end
+
 end

@@ -20,25 +20,24 @@
           th 倉庫櫃位
       tbody
         - sum = 0
-        - @order.order_items.each_with_index do |item, index|
+        - @order_items.each_with_index do |item, index|
           - sum += item.price
-          - product = Product.find(item.product_id)
           tr
             th #{ index+1 }
             td
-              img src="#{ product_image_present(product) }" width="50px"
-            td #{ truncate(product.name, length: 20) }
-            td $#{ number_with_delimiter(product.price) }
+              img src="#{ product_image_present(item.product) }" width="50px"
+            td #{ truncate(item.product.name, length: 20) }
+            td $#{ number_with_delimiter(item.product.price) }
             td #{ item.quantity }
             td 
               | $#{ number_with_delimiter(item.price) }
               - if !item.offer_id.nil?
-                | （#{Offer.find(item.offer_id).message}）
+                | （#{item.product.offer.message}）
             - if console == 'Y'
               td 
-                | #{product.warehouse.room}
+                | #{item.product.warehouse.room}
                 br
-                | (#{product.warehouse.shelf}-#{product.warehouse.row}-#{product.warehouse.column})
+                | (#{item.product.warehouse.shelf}-#{item.product.warehouse.row}-#{item.product.warehouse.column})
     .panel-footer
       - if @order.offer.present?
         p 優惠： 【#{@order.offer.message}】

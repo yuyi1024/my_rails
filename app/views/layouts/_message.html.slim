@@ -6,13 +6,6 @@
       | ！
   .notice #{ notice }
 
-  - if @pending > 0
-    .pending
-      = link_to(user_order_list_path)
-        .glyphicon.glyphicon-exclamation-sign
-        |  您有 #{@pending} 筆訂單尚未完成結帳
-      
-
   - if alert.present?
     javascript:
       message_notify('danger', '#{alert}');

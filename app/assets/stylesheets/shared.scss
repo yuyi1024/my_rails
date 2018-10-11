@@ -105,14 +105,18 @@
   top: 20px;
   font-size: 18px;
   line-height: 24px;
-  .hello,
-  .notice{
+  .hello, .notice{
     color: $color_dark_blue;
-
   }
-  .alert, .pending a{
+  .alert{
     color: $color_price_red;
   }
+}
+
+.pending a {
+  position: absolute;
+  top: 50px;
+  color: $color_price_red;
 }
 
 #to_top{

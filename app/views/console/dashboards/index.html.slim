@@ -126,22 +126,22 @@ h1.title 後台儀表板
             tr
               td 
                 | $NT 
-                b #{number_with_delimiter(@d_order.sum(:price))}
+                b #{number_with_delimiter(dashboard_revenue(@d_order))}
               td 
                 | $NT 
-                b #{number_with_delimiter(@w_order.sum(:price))}
+                b #{number_with_delimiter(dashboard_revenue(@w_order))}
               td 
                 | $NT 
-                b #{number_with_delimiter(@m_order.sum(:price))}
+                b #{number_with_delimiter(dashboard_revenue(@m_order))}
             tr
               td.col-sm-2
-                = pie_chart @w_order.group_by_day(:created_at, format: "%m/%d").sum(:price), width: "90%"
+                = pie_chart @w_order.group_by_day(format: "%m/%d"){|order| order.created_at}.map{|title,order| [title, order.sum(&:price)]}, width: "90%"
                 p 本週的每日收入比例
               td.col-sm-2
-                = pie_chart @m_order.group_by_week(:created_at, format: "%m/%d(第%W週)").sum(:price), width: "90%"
+                = pie_chart @m_order.group_by_week(format: "%m/%d(第%W週)"){|order| order.created_at}.map{|title,order| [title, order.sum(&:price)]}, width: "90%"
                 p 本月的每週收入比例
               td.col-sm-2
-                = pie_chart @y_order.group_by_month(:created_at, format: "%m月").sum(:price), width: "90%"
+                = pie_chart @y_order.group_by_month(format: "%m月"){|order| order.created_at}.map{|title,order| [title, order.sum(&:price)]}, width: "90%"
                 p 本年的每月收入比例
 
 

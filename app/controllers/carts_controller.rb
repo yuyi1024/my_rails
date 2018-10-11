@@ -1,5 +1,5 @@
 class CartsController < ApplicationController
-
+  before_action :cart_show
   # show 在 application_controller
 
   def add # add product to cart

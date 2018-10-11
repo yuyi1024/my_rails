@@ -1,14 +1,19 @@
 class Console::OffersController < Console::DashboardsController
   def index
-    @offers_all = Offer.where(range: ['all', 'price'])
-    @offers_products = Offer.where(range: 'product')
+    offers = Offer.all
+    @offers_all = offers.select{|o| ['all', 'price'].include?(o.range)}
+    @offers_products = offers.select{|o| o.range == 'product'}
+    
+    @subcategories = Subcategory.includes(:category)
+    @products = Product.all
+
     @offer = Offer.new
   end
 
   def select_range # 新增優惠時選擇優惠作用範圍
     @range = params[:range]
     if @range == 'product'
-      @cats = Category.all
+      @cats = Category.includes(:subcategories)
       @products = Product.all
     end
     @action = 'select_range'
@@ -32,17 +37,13 @@ class Console::OffersController < Console::DashboardsController
       elsif offer_params[:range] == 'product'
         if offer_params[:range_subcats].present?
           arr = offer_params[:range_subcats].split(',')
-          arr.each do |subcat|
-            Product.where(subcategory_id: subcat).each do |product|
-              raise StandardError, '折扣金額大於部分分類之商品金額' if offer_params[:offer_price].to_i >= product.price
-            end
-          end
+          range_subcats = Product.where(subcategory_id: arr).pluck(:price).find{|price| price <= offer_params[:offer_price].to_i}
+          raise StandardError, '折扣金額大於部分分類之商品金額' if !range_subcats.nil?
         end
         if offer_params[:range_products].present?
           arr = offer_params[:range_products].split(',')
-          arr.each do |product|
-            raise StandardError, '折扣金額大於部分商品金額' if offer_params[:offer_price].to_i >= Product.find(product).price
-          end
+          range_products = Product.where(id: arr).pluck(:price).find{|price| price <= offer_params[:offer_price].to_i}
+          raise StandardError, '折扣金額大於部分商品金額' if !range_products.nil?
         end
       end
     
@@ -126,13 +127,11 @@ class Console::OffersController < Console::DashboardsController
 
       ['subcats', 'products'].each do |range|
         offers.each do |offer|
-          arrs = offer.send('range_' + range).split(',')
-          arrs.each do |arr|
-            if range == 'subcats'
-              Subcategory.find(arr.to_i).product.update_all(offer_id: offer.id)
-            elsif range == 'products'
-              Product.find(arr.to_i).update(offer_id: offer.id)
-            end
+          arrs = offer.send('range_' + range).split(',').map{|a| a.to_i}
+          if range == 'subcats'
+            Product.where(subcategory_id: arrs).update_all(offer_id: offer.id)
+          elsif range == 'products'
+            Product.where(id: arrs).update_all(offer_id: offer.id)
           end
         end
       end
@@ -146,9 +145,10 @@ class Console::OffersController < Console::DashboardsController
   end
 
   def destroy
-    @offer = Offer.find(params[:id])
-    @offer.destroy if @offer.implement != 'true'
-    
+    @offer = Offer.find_by_id(params[:id])
+    if !@offer.nil?
+      @offer.destroy if @offer.implement != 'true'
+    end
     if @offer.destroyed?
       flash[:success] = '刪除成功'
     else

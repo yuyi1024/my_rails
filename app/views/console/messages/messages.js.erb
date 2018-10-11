@@ -1,4 +1,4 @@
 <% if @action == 'index' %>
-  $('.message_list').html("<%= j render 'message_list', locals:{ messages: @messages } %>");
+  $('.message_list').html("<%= j render partial: 'message_list', locals: { messages: @messages } %>");
   $('.count span').text('<%= @rows %>');
 <% end %>

@@ -3,7 +3,7 @@ class Console::CategoriesController < Console::DashboardsController
   # ↓↓↓↓↓ 主分類操作 ↓↓↓↓↓
 
   def new
-    @categories = Category.all
+    @categories = Category.includes(:subcategories => :product)
   end
 
   def create
