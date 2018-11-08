@@ -28,7 +28,7 @@ h1.title 商品詳細
       p 已賣數量： #{ @product.sold }
 
       - if @product.summary.present?
-        .summary #{ raw @product.summary.gsub(/\n/, '<br/>') }
+        .summary #{ sanitize @product.summary.gsub(/\n/, '<br/>') }
 
       = form_for @product, :url => add_carts_path(@product), method: 'post', remote: :true do |f|
         .input-group.col-sm-10.input-quantity
@@ -54,7 +54,7 @@ h1.title 商品詳細
     .col-sm-6.col-sm-offset-3 
       h4 商品敘述
       .description 
-        = raw @product.description
+        = sanitize @product.description
 
   .row.product_recommend
     hr

@@ -241,6 +241,14 @@
   .pages{
     text-align: center;
   }
+  .not_found{
+    text-align: center;
+    height: 150px;
+    p{
+      color: $color_dark_blue;
+      font-size: 24px;
+    }
+  }
 }
 
 #product_show {
@@ -312,6 +320,9 @@
     hr {
       width: 90%;
       border-top: 1px solid #ccc;
+    }
+    img{
+      width: 100%;
     }
   }
 }

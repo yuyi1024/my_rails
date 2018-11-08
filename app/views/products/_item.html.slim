@@ -36,3 +36,12 @@
         
   .pages.row
     = paginate @products, window: 2, remote: true
+
+
+- else
+  .row.not_found
+    p 
+      span.glyphicon.glyphicon-search
+      |  查無結果
+
+

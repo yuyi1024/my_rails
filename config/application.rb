@@ -15,6 +15,11 @@ module MyRails
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+    
+    # html逸出白名單
+    config.action_view.sanitized_allowed_tags = %w[ table tbody tr td pre u strike ]
+    config.action_view.sanitized_allowed_attributes = %w[ style color ]
+
     ActionMailer::Base.delivery_method = :smtp
     ActionMailer::Base.smtp_settings = {
       address: "smtp.gmail.com",
