@@ -97,6 +97,10 @@
   }
 }
 
+.rwd_nav{
+  display: none;
+}
+
 
 /*提示訊息*/
 
@@ -466,3 +470,36 @@ p.price{
 
 
 
+@media (max-width: 944px){
+  .message {
+    top: 60px;
+  }
+  #store_name {
+    margin-top: 120px;
+  }
+  .navbar{
+    .button{
+      width: 105px !important;
+      background-color: rgba(255, 255, 255, 0.9) !important;
+    }
+  }
+}
+
+
+@media (max-width: 582px){
+  #store_name {
+    img{
+      width: 100% !important;
+    }
+  }
+  .no_rwd{
+    display: none;
+  }
+  .rwd_nav{
+    display: block !important;
+    position: fixed;
+    top: 5px;
+    right: 10px;
+    z-index: 997;
+  }
+}

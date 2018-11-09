@@ -56,7 +56,7 @@ GEM
     airbrussh (1.3.0)
       sshkit (>= 1.6.1, != 1.7.0)
     arel (8.0.0)
-    autoprefixer-rails (8.6.3)
+    autoprefixer-rails (9.3.1)
       execjs
     awesome_print (1.8.0)
     bcrypt (3.1.12)
@@ -65,9 +65,6 @@ GEM
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
     builder (3.2.3)
-    bullet (5.7.6)
-      activesupport (>= 3.0.0)
-      uniform_notifier (~> 1.11.0)
     byebug (10.0.2)
     cancancan (2.2.0)
     capistrano (3.11.0)
@@ -299,7 +296,6 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.1.12)
       execjs (>= 0.3.0, < 3)
-    uniform_notifier (1.11.0)
     warden (1.2.7)
       rack (>= 1.0)
     web-console (3.6.2)
@@ -320,7 +316,6 @@ DEPENDENCIES
   aasm (~> 4.12)
   awesome_print
   bootstrap-sass (~> 3.3.6)
-  bullet
   byebug
   cancancan (~> 2.0)
   capistrano-rails

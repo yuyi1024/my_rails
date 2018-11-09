@@ -1,38 +1,38 @@
 - if @products.present? 
-  - @products.in_groups_of(6, false) do |products_group|
-    .row
-      - products_group.each do |product|
-        .col-sm-2
-          .thumbnail
-            = link_to(product_path(product), target: :_blank)
-              img.product_pic src="#{ product_image_present(product) }" title="#{product.name}"
+  /- @products.in_groups_of(6, false) do |products_group|
+  .row
+    - @products.each do |product|
+      .col-sm-2
+        .thumbnail
+          = link_to(product_path(product), target: :_blank)
+            img.product_pic src="#{ product_image_present(product) }" title="#{product.name}"
+            - if product.offer.present?
+              = image_tag('https://s3-ap-northeast-1.amazonaws.com/bawan-rails/assets/images/onsale.gif', class: 'onsale_tag')
+          .caption
+            .product_name
+              p title="#{product.name}"
+                = link_to(product.name, product_path(product), target: :_blank)
+            p.price
               - if product.offer.present?
-                = image_tag('https://s3-ap-northeast-1.amazonaws.com/bawan-rails/assets/images/onsale.gif', class: 'onsale_tag')
-            .caption
-              .product_name
-                p title="#{product.name}"
-                  = link_to(product.name, product_path(product), target: :_blank)
-              p.price
-                - if product.offer.present?
-                  - if product.offer.range_quantity == 1 && product.offer.offer != 'freight'
-                    span.original_price $#{ number_with_delimiter(product.price) }
-                    span.correct_price  $#{number_with_delimiter(calc_price_offer(product.price, product.offer_id))}
-                  - else
-                    span.correct_price $#{ number_with_delimiter(product.price) }
-                    span.offer_msg （#{product.offer.message}）
+                - if product.offer.range_quantity == 1 && product.offer.offer != 'freight'
+                  span.original_price $#{ number_with_delimiter(product.price) }
+                  span.correct_price  $#{number_with_delimiter(calc_price_offer(product.price, product.offer_id))}
                 - else
                   span.correct_price $#{ number_with_delimiter(product.price) }
+                  span.offer_msg （#{product.offer.message}）
+              - else
+                span.correct_price $#{ number_with_delimiter(product.price) }
 
-              p.tags
-                span.glyphicon.glyphicon-tags
-                | #{ product.subcategory.category.name }、#{ product.subcategory.name } 
-              
-              = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn cart')
-                span.glyphicon.glyphicon-shopping-cart
-              
-              - if current_user
-                = link_to(heart_products_path(product.id), method: :post, remote: :true)
-                  span.glyphicon.glyphicon-heart class="#{ 'favorite' if @favorites.include?(product.id) }" id='heart-#{product.id}'
+            p.tags
+              span.glyphicon.glyphicon-tags
+              | #{ product.subcategory.category.name }、#{ product.subcategory.name } 
+            
+            = link_to(add_carts_path(product), method: :post, remote: :true, class: 'btn cart')
+              span.glyphicon.glyphicon-shopping-cart
+            
+            - if current_user
+              = link_to(heart_products_path(product.id), method: :post, remote: :true)
+                span.glyphicon.glyphicon-heart class="#{ 'favorite' if @favorites.include?(product.id) }" id='heart-#{product.id}'
         
   .pages.row
     = paginate @products, window: 2, remote: true

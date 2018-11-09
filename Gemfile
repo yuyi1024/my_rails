@@ -56,6 +56,7 @@ gem "nested_form"
 
 gem 'kaminari'
 
+# gem 'bootstrap', '~> 4.1.3'
 gem 'bootstrap-sass', '~> 3.3.6'
 
 #chart
@@ -117,7 +118,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # find n+1 queries
-  gem 'bullet'
+  # gem 'bullet'
   gem 'rack-mini-profiler'
 end
 

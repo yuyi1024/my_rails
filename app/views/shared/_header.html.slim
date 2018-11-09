@@ -1,5 +1,5 @@
 nav
-  .navbar
+  .navbar.no_rwd
 
     - if can? :dashboard, :all
     
@@ -61,6 +61,16 @@ nav
           span.glyphicon.glyphicon-log-out
           |  登出
 
+
+  .rwd_nav
+    .button onclick='openCart();'
+      span.glyphicon.glyphicon-shopping-cart
+      span.cart_number #{ @cart_length }
+
+    .button
+      span.glyphicon.glyphicon-menu-hamburger
+
+    
 
 / - if current_user 
 /   = link_to('登出', destroy_user_session_path, :method => :delete) 

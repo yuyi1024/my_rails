@@ -30,7 +30,7 @@ class ProductsController < ApplicationController
     @cat2_click = params[:cat2_click]
 
     params[:page] ||= 1
-    @products = @products.page(params[:page]).per(24)
+    @products = @products.page(params[:page]).per(30)
 
     @favorites = []
     current_user.favorites.select(:product_id).map{|favorite| @favorites << favorite.product_id} if current_user.present?
