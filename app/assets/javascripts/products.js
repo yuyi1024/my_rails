@@ -29,6 +29,10 @@ $(document).on('turbolinks:load', function() {
         $target.toggle('slow');
       }
     });
+    $('#box_close').click(function() {
+      $target = $($(this).data('target'));
+      $target.slideUp();
+    });
 
     //filter press Enter
     $("#price_bottom").keypress(function(e) {

@@ -482,6 +482,9 @@ p.price{
       width: 105px !important;
       background-color: rgba(255, 255, 255, 0.9) !important;
     }
+    .dashboard{
+      display: none !important;
+    }
   }
 }
 
@@ -492,14 +495,24 @@ p.price{
       width: 100% !important;
     }
   }
+  .navbar{
+    .btn{
+      width: 80px !important;
+    }
+    .dropdown-menu{
+      left: -24px;
+    }
+  }
   .no_rwd{
     display: none;
   }
   .rwd_nav{
     display: block !important;
-    position: fixed;
-    top: 5px;
-    right: 10px;
-    z-index: 997;
   }
+}
+
+@media (max-width: 422px){
+  #sidebar_cart{
+    width: 80% !important;
+  } 
 }

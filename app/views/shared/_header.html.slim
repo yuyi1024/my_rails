@@ -62,13 +62,47 @@ nav
           |  登出
 
 
-  .rwd_nav
-    .button onclick='openCart();'
+  .navbar.rwd_nav
+
+    .button.btn onclick='openCart();'
       span.glyphicon.glyphicon-shopping-cart
       span.cart_number #{ @cart_length }
+    
+    
+    .dropdown
+      .button.btn.btn-default.dropdown-toggle type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+        span.glyphicon.glyphicon-menu-hamburger
 
-    .button
-      span.glyphicon.glyphicon-menu-hamburger
+      ul.dropdown-menu aria-labelledby="dropdownMenu1"
+        li
+          = link_to root_path
+            .button 
+              span.glyphicon.glyphicon-home
+              |  所有商品
+
+        - if current_user
+          li
+            = link_to user_show_path
+              .button 
+                span.glyphicon.glyphicon-user
+                |  會員中心
+          li
+            = link_to messages_path
+              .button 
+                span.glyphicon.glyphicon-comment
+                |  聯絡我們
+          li
+            = link_to destroy_user_session_path, :method => :delete 
+              .button 
+                span.glyphicon.glyphicon-log-out
+                |  登出
+        - else
+          = link_to new_session_path(:user)
+            .button 
+              span.glyphicon.glyphicon-user
+              |  會員登入         
+
+ 
 
     
 
