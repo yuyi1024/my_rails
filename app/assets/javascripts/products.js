@@ -35,19 +35,9 @@ $(document).on('turbolinks:load', function() {
     });
 
     //filter press Enter
-    $("#price_bottom").keypress(function(e) {
+    $("#selector input").keypress(function(e) {
       if (e.keyCode == 13) {
-        price();
-      }
-    });
-    $("#price_top").keypress(function(e) {
-      if (e.keyCode == 13) {
-        price();
-      }
-    });
-    $("#keyword").keypress(function(e) {
-      if (e.keyCode == 13) {
-        keywords();
+        fieldSearch();
       }
     });
 
@@ -198,16 +188,14 @@ function form_submit() {
   $('#search_form').submit();
 }
 
-//關鍵字搜尋
-function keywords() {
-  $('#keyword-tag-k').remove();
-  tagName = $('#keyword').val();
-  tag_create(tagName, 'k', 'keyword');
-
-  fbq('track', 'Search', {
-    search_string: tagName,
-  });
-  ga('send', 'pageview', '/search/' + tagName);
+//價錢or關鍵字搜尋
+function fieldSearch(){
+  if($('#price_bottom')[0].value != '' || $('#price_top')[0].value != ''){
+    price();
+  }
+  if($('#keyword')[0].value != ''){
+    keywords();
+  }
   form_submit();
 }
 
@@ -258,7 +246,18 @@ function price() {
   }
 
   tag_create(tagName, 'p', 'price');
-  form_submit();
+}
+
+//關鍵字搜尋
+function keywords() {
+  $('#keyword-tag-k').remove();
+  tagName = $('#keyword').val();
+  tag_create(tagName, 'k', 'keyword');
+
+  fbq('track', 'Search', {
+    search_string: tagName,
+  });
+  ga('send', 'pageview', '/search/' + tagName);
 }
 
 //商品排序

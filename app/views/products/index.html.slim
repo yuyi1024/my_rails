@@ -23,14 +23,14 @@
       
       .col-sm-3
         span 價錢 
-        = text_field_tag :price_bottom
+        = number_field_tag :price_bottom
         span  ～ 
-        = text_field_tag :price_top
-        button.label.btn onclick='price();' Search
+        = number_field_tag :price_top
+        button.label.btn onclick='fieldSearch();' Search
       .col-sm-3 
         span 關鍵字 
         = text_field_tag :keyword, nil, placeholder: "商品名稱/敘述"
-        button.label.btn onclick='keywords();' Search
+        button.label.btn onclick='fieldSearch();' Search
       
       .col-sm-3 
         | 依 

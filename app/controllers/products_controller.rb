@@ -17,6 +17,7 @@ class ProductsController < ApplicationController
     end
 
     if params[:price_top].present?
+      params[:price_bottom] = 0 if params[:price_bottom].blank?
       @products = @products.price_search(params[:price_bottom], params[:price_top])
     elsif params[:price_bottom].present?
       @products = @products.price_top(params[:price_bottom])
