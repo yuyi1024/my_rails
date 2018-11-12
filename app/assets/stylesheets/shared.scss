@@ -474,7 +474,7 @@ p.price{
 
 
 /*RWD*/
-@media (max-width: 944px){
+@media only screen and (max-width: 944px){
   .message {
     top: 60px;
   }
@@ -492,7 +492,7 @@ p.price{
   }
 }
 
-@media (max-width: 582px){
+@media only screen and (max-width: 582px){
   #store_name {
     img{
       width: 100% !important;
@@ -514,7 +514,7 @@ p.price{
   }
 }
 
-@media (max-width: 422px){
+@media only screen and (max-width: 422px){
   div, p, input, select, a, button, label{
     font-size: 12px !important;
   }

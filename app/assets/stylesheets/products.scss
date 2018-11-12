@@ -338,7 +338,7 @@
 
 
 /*RWD*/
-@media (max-width: 1344px){
+@media only screen and (max-width: 1344px){
   .container{
     width: 100% !important;
   }
@@ -393,7 +393,7 @@
   }
 }
 
-@media (max-width: 944px){
+@media only screen and (max-width: 944px){
   #product_index {
     #banner{
       img{
@@ -441,7 +441,7 @@
   }
 }
 
-@media (max-width: 582px){
+@media only screen and (max-width: 582px){
   #product_index{
     .col-sm-2{
       width:50%;
@@ -503,9 +503,8 @@
   }
 }
 
-@media (max-width: 422px){
+@media only screen and (max-width: 422px){
   body{
-    background-color: rgba(0,0,255,0.2) !important;
     margin: 0px !important;
   }
   h3{

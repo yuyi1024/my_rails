@@ -127,7 +127,7 @@ h2, em, label, a, .rm{
 
 
 /*RWD*/
-@media (max-width: 944px){
+@media only screen and (max-width: 944px){
   .col-sm-6{
     width: 80% !important;
   }
@@ -164,7 +164,7 @@ h2, em, label, a, .rm{
   }
 }
 
-@media (max-width: 582px){
+@media only screen and (max-width: 582px){
   .container{
     &>.row{
       margin: 0 !important;
@@ -196,7 +196,7 @@ h2, em, label, a, .rm{
   }
 }
 
-@media (max-width: 422px){
+@media only screen and (max-width: 422px){
   #user_show{
     ul{
       margin-top: 0 !important;
