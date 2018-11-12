@@ -338,7 +338,7 @@
 
 
 /*RWD*/
-@media only screen and (max-width: 1344px){
+@media (max-width: 1344px){
   .container{
     width: 100% !important;
   }
@@ -393,7 +393,7 @@
   }
 }
 
-@media only screen and (max-width: 944px){
+@media (max-width: 944px){
   #product_index {
     #banner{
       img{
@@ -441,7 +441,7 @@
   }
 }
 
-@media only screen and (max-width: 582px){
+@media (max-width: 582px){
   #product_index{
     .col-sm-2{
       width:50%;
@@ -503,7 +503,7 @@
   }
 }
 
-@media only screen and (max-width: 422px){
+@media (max-width: 422px){
   body{
     margin: 0px !important;
   }
@@ -557,5 +557,58 @@
       width: 20% !important;
       min-width: 50px;
     }
+  }
+}
+
+
+
+@media (max-width: 1000px){
+  body{
+    background-color: rgba(0, 0, 0, 0.3) !important;
+  }
+}
+@media (max-width: 900px){
+  body{
+    background-color: rgba(255, 0, 0, 0.3) !important;
+  }
+}
+@media (max-width: 800px){
+  body{
+    background-color: rgba(0, 255, 0, 0.3) !important;
+  }
+}
+@media (max-width: 700px){
+  body{
+    background-color: rgba(0, 0, 255, 0.3) !important;
+  }
+}
+@media (max-width: 600px){
+  body{
+    background-color: rgba(255, 255, 0, 0.3) !important;
+  }
+}
+@media (max-width: 500px){
+  body{
+    background-color: rgba(0, 255, 255, 0.3) !important;
+  }
+}
+@media (max-width: 400px){
+  body{
+    background-color: rgba(255, 0, 255, 0.3) !important;
+  }
+}
+@media (max-width: 300px){
+  body{
+    background-color: rgba(100, 50, 50, 0.5) !important;
+  }
+}
+@media (max-width: 200px){
+  body{
+    background-color: rgba(50, 100, 50, 0.5) !important;
+  }
+}
+@media (max-width: 100px){
+  body{
+    background-color: rgba(50, 50, 100, 0.5) !important;
   }
 }

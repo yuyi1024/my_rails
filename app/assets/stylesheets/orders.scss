@@ -185,7 +185,7 @@
 
 
 /*RWD*/
-@media only screen and (max-width: 944px){
+@media (max-width: 944px){
   #test_hint{
     display: none;
   }
@@ -225,7 +225,7 @@
   }
 }
 
-@media only screen and (max-width: 582px){
+@media (max-width: 582px){
   #cart_checkout{
     .col-sm-8{
       padding: 0 !important;
@@ -277,7 +277,7 @@
   }
 }
 
-@media only screen and (max-width: 422px){
+@media (max-width: 422px){
   #cart_checkout{
     .col-sm-8{
       img{
