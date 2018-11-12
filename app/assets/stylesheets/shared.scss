@@ -473,6 +473,7 @@ p.price{
 
 
 
+/*RWD*/
 @media (max-width: 944px){
   .message {
     top: 60px;
@@ -489,23 +490,7 @@ p.price{
       display: none !important;
     }
   }
-  #order_new{
-    .product_list, .select_store, .data_form{
-      width: 100% !important;
-      margin-left: 0 !important;
-    }
-    .data_form{
-      label{
-        width: 25% !important;
-        font-size: 12px !important;
-      }
-      input, textarea{
-        width: 65% !important;
-      }
-    }
-  }
 }
-
 
 @media (max-width: 582px){
   #store_name {
@@ -527,34 +512,6 @@ p.price{
   .rwd_nav{
     display: block !important;
   }
-  #order_new{
-    padding: 0 !important;
-    .product_list{
-      .hide-when-rwd{
-        display: none !important;
-      }
-      .rwd{
-        display: block !important;
-        hr{
-          margin: 5px 0 !important;
-        }
-      }
-    }
-    .data_form{
-      label{
-        width: 100% !important;
-      }
-      input, textarea{
-        width: 90% !important;
-        margin: 0 auto !important;
-        display: block !important;
-      }
-    }
-    .btn[type=submit]{
-      width: fit-content !important;
-      margin-bottom: 50px !important;
-    }
-  }
 }
 
 @media (max-width: 422px){
@@ -565,5 +522,3 @@ p.price{
     width: 80% !important;
   }
 }
-
-

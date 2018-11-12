@@ -172,7 +172,7 @@
   .btn{
     background-color: $color_price_red;
     color: #fff;
-    width: 25%;
+    width: fit-content;
     margin-bottom: 25px;
   }
 }
@@ -184,6 +184,7 @@
 
 
 
+/*RWD*/
 @media (max-width: 944px){
   #test_hint{
     display: none;
@@ -199,8 +200,30 @@
       float: left;
     }
   }
+  #order_new{
+    .product_list, .select_store, .data_form{
+      width: 100% !important;
+      margin-left: 0 !important;
+    }
+    .data_form{
+      #new_order_form{
+        label{
+          width: 25% !important;
+          font-size: 12px !important;
+        }
+        input, textarea{
+          width: 65% !important;
+        }
+      }
+    }
+  }
+  .order_show{
+    .col-sm-8{
+      width: 100% !important;
+      margin-left: 0 !important;
+    }
+  }
 }
-
 
 @media (max-width: 582px){
   #cart_checkout{
@@ -220,8 +243,39 @@
       width: 100% !important;
     }
   }
+  #order_new, .order_show{
+    .product_list{
+      .hide-when-rwd{
+        display: none !important;
+      }
+      .rwd{
+        display: block !important;
+        hr{
+          margin: 5px 0 !important;
+        }
+      }
+    }
+  }
+  #order_new{
+    padding: 0 !important;
+    .data_form{
+      #new_order_form{
+        label{
+          width: 100% !important;
+        }
+        input, textarea{
+          width: 90% !important;
+          margin: 0 auto !important;
+          display: block !important;
+        }
+        .btn[type=submit]{
+          width: fit-content !important;
+          margin-bottom: 50px !important;
+        }
+      }
+    }
+  }
 }
-
 
 @media (max-width: 422px){
   #cart_checkout{
@@ -233,5 +287,18 @@
         padding: 8px 3px !important;
       }
     }
+  }
+  #atm_info, #payment_result{
+    padding: 0 !important;
+    p{
+      text-align: left !important;
+      .btn{
+        padding: 5px 8px !important;
+        margin: 0 2px 20px !important;
+      }
+    }
+  }
+  .order_show{
+    padding: 0 !important;
   }
 }

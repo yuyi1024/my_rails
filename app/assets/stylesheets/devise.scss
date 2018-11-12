@@ -126,9 +126,7 @@ h2, em, label, a, .rm{
 
 
 
-
-
-
+/*RWD*/
 @media (max-width: 944px){
   .col-sm-6{
     width: 80% !important;
@@ -139,9 +137,11 @@ h2, em, label, a, .rm{
   .edit_user{
     .col-sm-2{
       width: 20%;
+      float: left;
     }
     .col-sm-8{
-      width: 70%;
+      width: 60%;
+      float: left;
     }
     .btn{
       margin: 0 auto 10px;
@@ -208,7 +208,3 @@ h2, em, label, a, .rm{
     }
   }
 }
-
-
-
-

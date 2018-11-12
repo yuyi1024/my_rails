@@ -7,10 +7,7 @@
     .panel-body
       table.table
         tr
-          th.col-sm-4 訂單資訊
-          th.col-sm-4 付款/物流狀態
-          th.col-sm-4 出貨資訊
-
+          th 訂單資訊
         tbody
           tr
             td 
@@ -32,6 +29,10 @@
                 b 下單日期： 
                 | #{ @order.created_at.strftime("%Y/%m/%d") }
 
+        tr
+          th 付款/物流狀態
+        tbody
+          tr
             td 
               p 
                 b 付款方式： 
@@ -47,6 +48,10 @@
                 b 物流狀態： 
                 | #{ @logistics_status }
 
+        tr
+          th 出貨資訊
+        tbody
+          tr
             td
               p 
                 b 收件人： 
@@ -71,6 +76,8 @@
               p 
                 b Email： 
                 | #{ @order.receiver_email }
+
+
 
       / 公司已退款之資訊
       - if @refunded_data.present?

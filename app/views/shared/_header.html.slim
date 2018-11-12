@@ -79,6 +79,11 @@ nav
             .button 
               span.glyphicon.glyphicon-home
               |  所有商品
+        li
+            = link_to messages_path
+              .button 
+                span.glyphicon.glyphicon-comment
+                |  聯絡我們
 
         - if current_user
           li
@@ -86,11 +91,6 @@ nav
               .button 
                 span.glyphicon.glyphicon-user
                 |  會員中心
-          li
-            = link_to messages_path
-              .button 
-                span.glyphicon.glyphicon-comment
-                |  聯絡我們
           li
             = link_to destroy_user_session_path, :method => :delete 
               .button 

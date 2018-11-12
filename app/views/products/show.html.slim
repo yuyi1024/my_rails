@@ -8,46 +8,47 @@ h1.title 商品詳細
       = link_to @product.category.name, index_with_params_products_path(@product.category.id, 0)
       |  > 
       = link_to @product.subcategory.name, index_with_params_products_path(@product.category.id, @product.subcategory.id)
-    .col-sm-2.col-sm-offset-3
-      img.product_pic src="#{ product_image_present(@product) }"
-    .col-sm-3.col-sm-offset-1
-      h4 = @product.name
-      hr
+    .row
+      .col-sm-6
+        img.product_pic src="#{ product_image_present(@product) }"
+      .col-sm-4
+        h4 = @product.name
+        hr
 
-      p.price
-        - if @product.offer.present?
-          - if @product.offer.range_quantity == 1
-            span.original_price $#{ number_with_delimiter(@product.price) }
-            span.correct_price  $#{number_with_delimiter(calc_price_offer(@product.price, @product.offer_id))}
+        p.price
+          - if @product.offer.present?
+            - if @product.offer.range_quantity == 1
+              span.original_price $#{ number_with_delimiter(@product.price) }
+              span.correct_price  $#{number_with_delimiter(calc_price_offer(@product.price, @product.offer_id))}
+            - else
+              span.correct_price $#{ number_with_delimiter(@product.price) }
           - else
             span.correct_price $#{ number_with_delimiter(@product.price) }
-        - else
-          span.correct_price $#{ number_with_delimiter(@product.price) }
 
-      p 庫存： #{ @product.quantity }
-      p 已賣數量： #{ @product.sold }
+        p 庫存： #{ @product.quantity }
+        p 已賣數量： #{ @product.sold }
 
-      - if @product.summary.present?
-        .summary #{ sanitize @product.summary.gsub(/\n/, '<br/>') }
+        - if @product.summary.present?
+          .summary #{ sanitize @product.summary.gsub(/\n/, '<br/>') }
 
-      = form_for @product, :url => add_carts_path(@product), method: 'post', remote: :true do |f|
-        .input-group.col-sm-10.input-quantity
-          span.input-group-btn.minus
-            button.btn.btn-default -
-          = f.text_field :quantity, class: 'form-control', value: '1'
-          span.input-group-btn.plus
-            button.btn.btn-default +
-        = f.submit '加入購物車', class: 'col-sm-5 btn add-to-cart'
+        = form_for @product, :url => add_carts_path(@product), method: 'post', remote: :true do |f|
+          .input-group.col-sm-10.input-quantity
+            span.input-group-btn.minus
+              button.btn.btn-default -
+            = f.text_field :quantity, class: 'form-control', value: '1'
+            span.input-group-btn.plus
+              button.btn.btn-default +
+          = f.submit '加入購物車', class: 'col-sm-5 btn add-to-cart'
 
-      .col-sm-12.offer
-        - if @offer.present?
-          p
-            span.glyphicon.glyphicon-gift 
-            |  #{@offer.message}
-        - if !@product.offer_id.nil?
-          p
-            span.glyphicon.glyphicon-gift
-            |  #{@product.offer.message}
+        .col-sm-12.offer
+          - if @offer.present?
+            p
+              span.glyphicon.glyphicon-gift 
+              |  #{@offer.message}
+          - if !@product.offer_id.nil?
+            p
+              span.glyphicon.glyphicon-gift
+              |  #{@product.offer.message}
 
   .row.product_description
     hr
