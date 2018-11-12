@@ -12,16 +12,16 @@ h1.title 會員中心
         tr
           th #
           th
-          th
           th 商品名稱
-          th 分類
+          th.hide 分類
           th 金額
           th
         tbody
           - @favorites.each_with_index do |favorite, index|
             tr
-              td #{ index + 1 }
-              td
+              td 
+                | #{ index + 1 }
+              
                 = link_to(heart_products_path(favorite.product), method: :post, remote: :true)
                   span.glyphicon.glyphicon-heart.favorite id='heart-#{favorite.product.id}'
               td
@@ -33,7 +33,7 @@ h1.title 會員中心
                 - if favorite.product.offer.present?
                   p （#{favorite.product.offer.message}）
 
-              td #{ favorite.product.category.name } > #{ favorite.product.subcategory.name }
+              td.hide #{ favorite.product.category.name } > #{ favorite.product.subcategory.name }
               /td NT $ #{ number_with_delimiter(favorite.product.price) }
               td NT $ #{ number_with_delimiter(calc_price_offer(favorite.product.price, favorite.product.offer_id)) }
               td

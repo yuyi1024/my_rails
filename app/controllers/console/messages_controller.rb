@@ -3,7 +3,7 @@ class Console::MessagesController < Console::DashboardsController
     @messages = Message.includes(:user)
     if params[:search].present?
       @messages = @messages.where(users: {email: params[:email]}) if params[:email].present?
-      @messages = @messages.where(keyword_split(['question', 'answer'], params[:keyword])) if params[:keyword].present?
+      @messages = @messages.where(keyword_split(['question', 'answer'], params[:keyword], 'messages')) if params[:keyword].present?
 
       if params[:date_b].present? || params[:date_f].present?
         params[:date_f] = Time.now if !params[:date_f].present?

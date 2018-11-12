@@ -2,8 +2,8 @@ class Console::UsersController < Console::DashboardsController
   def index
     @users = User.all
     if params[:search].present?
-      @users = @users.where(keyword_split(['email'], params[:email])) if params[:email].present?
-      @users = @users.where(keyword_split(['name', 'true_name', 'address'], params[:keyword])) if params[:keyword].present?
+      @users = @users.where(keyword_split(['email'], params[:email], 'users')) if params[:email].present?
+      @users = @users.where(keyword_split(['name', 'true_name', 'address'], params[:keyword], 'users')) if params[:keyword].present?
       @users = @users.where(role: params[:role]) if params[:role].present?
       if params[:confirm].present?
         @users = (params[:confirm].include?('true') ? @users.where.not(confirmed_at: nil) : @users.where(confirmed_at: nil))

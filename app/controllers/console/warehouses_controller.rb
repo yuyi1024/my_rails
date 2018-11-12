@@ -6,7 +6,7 @@ class Console::WarehousesController < Console::DashboardsController
     if params[:search].present?
       @action = 'search'
       @products = @products.where(id: params[:product_id]) if params[:product_id].present?
-      @products = @products.keyword(keyword_split(['name', 'description'], params[:keyword])) if params[:keyword].present?
+      @products = @products.keyword(keyword_split(['name', 'description'], params[:keyword], 'products')) if params[:keyword].present?
       if params[:quantity_status].present?
         if params[:quantity_status][0] == 'shortage'
           @products = @products.where('quantity <= quantity_alert')

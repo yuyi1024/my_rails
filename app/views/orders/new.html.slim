@@ -19,9 +19,10 @@ h1.title 訂單結帳
               th 
               th 
               th 商品名稱
-              th 單價
-              th 數量
-              th 小計
+              th.hide-when-rwd 單價
+              th.hide-when-rwd 數量
+              th.hide-when-rwd 小計
+
             tbody
               - @order_session.items.each_with_index do |item, index|
                 - product = Product.find(item.product_id)
@@ -29,13 +30,27 @@ h1.title 訂單結帳
                   th #{ index+1 }
                   td
                     img src="#{ product_image_present(product) }" width="50px"
-                  td title="#{product.name}" #{ truncate(product.name, length: 25) }
-                  td $#{ number_with_delimiter(product.price) }
-                  td #{ item.quantity }
-                  td 
+                  td title="#{product.name}" 
+                    | #{ truncate(product.name, length: 25) }
+                    
+                    .rwd
+                      hr
+                      | $#{ number_with_delimiter(product.price) } * 
+                      | #{ item.quantity } 
+                      span.glyphicon.glyphicon-triangle-right  
+                      | $#{ number_with_delimiter(item.price) }
+                      - if !item.offer_id.nil?
+                        br
+                        | （#{Offer.find(item.offer_id).message}）
+
+                  td.hide-when-rwd $#{ number_with_delimiter(product.price) }
+                  td.hide-when-rwd #{ item.quantity }
+                  td.hide-when-rwd 
                     | $#{ number_with_delimiter(item.price) }
                     - if !item.offer_id.nil?
                       | （#{Offer.find(item.offer_id).message}）
+
+
         .panel-footer
           - if @offer.present? && @offer.offer != 'freight'
             p 

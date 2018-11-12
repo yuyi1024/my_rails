@@ -8,7 +8,7 @@ class Console::ProductsController < Console::DashboardsController
       @products = @products.where(id: params[:product_id]) if params[:product_id].present?
       @products = @products.where(category_id: params[:cat_box]) if params[:cat_box].present? && params[:cat_box] != 'all'
       @products = @products.where(subcategory_id: params[:subcat_box]) if params[:subcat_box].present? && params[:subcat_box] != 'all'
-      @products = @products.keyword(keyword_split(['name', 'description'], params[:keyword])) if params[:keyword].present?
+      @products = @products.keyword(keyword_split(['name', 'description'], params[:keyword], 'products')) if params[:keyword].present?
       @products = @products.where(status: params[:status]) if params[:status].present?
     end
 

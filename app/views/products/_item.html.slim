@@ -35,7 +35,7 @@
                 span.glyphicon.glyphicon-heart class="#{ 'favorite' if @favorites.include?(product.id) }" id='heart-#{product.id}'
         
   .pages.row
-    = paginate @products, window: 2, remote: true
+    = paginate @products, window: 2, next_page: false, remote: true
 
 
 - else

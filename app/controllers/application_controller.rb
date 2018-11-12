@@ -36,11 +36,11 @@ class ApplicationController < ActionController::Base
   end
 
   # 關鍵字查詢以' '分割
-  def keyword_split(cols, k)
+  def keyword_split(cols, k, table)
     keyword = k.split(' ')
     sql = ''
     cols.each do |col|
-      m = keyword.reduce(''){ |memo, obj| memo += col + " LIKE '%"+ obj + "%' AND " }
+      m = keyword.reduce(''){ |memo, obj| memo += table + "." + col + " LIKE '%"+ obj + "%' AND " }
       sql += '(' + m.chomp(' AND ') + ')' + ' OR '
     end
     sql = sql.chomp(' OR ')
